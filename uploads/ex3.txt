@@ -1,0 +1,13 @@
+1)
+-If x = 0, then we have a deadlock (clear). 
+-If x = 1, then it's obviousM that process D can run to completion. 
+When it's finished, vector would be {1, 1, 2, 2, 1}. 
+-We see, that now A can run to complete, vector would be {2, 1, 4, 3, 2}. 
+-Then C can run successfully, it would return vector {3, 2, 4, 4, 2}. 
+-Then B can be runned. 
+Sequence is: D A C B.
+
+2)
+Deadlock is impossible in this system. 
+We can say, that each process has only one resource. There is one resource that is free. 
+As we can see, deadlock is impossible.
