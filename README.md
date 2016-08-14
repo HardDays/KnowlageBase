@@ -1,3 +1,0 @@
-# KnowlageBase
-
-##Good luck=)
