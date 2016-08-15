@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="Jersey" />
+        <module name="knowladge-base" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Jersey" target="1.5" />
+      <module name="knowladge-base" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

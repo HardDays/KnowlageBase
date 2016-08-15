@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="Jersey:war">
+  <artifact type="war" name="knowladge-base:war">
     <output-path>$PROJECT_DIR$/target</output-path>
     <root id="archive" name="knowladge-base.war">
-      <element id="artifact" artifact-name="Jersey:war exploded" />
+      <element id="artifact" artifact-name="knowladge-base:war exploded" />
     </root>
   </artifact>
 </component>
