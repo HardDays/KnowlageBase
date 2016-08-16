@@ -4,7 +4,7 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="knowladge-base" />
+          <element id="module-output" name="knowledge-base" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: postgresql:postgresql:9.1-901.jdbc4" />
@@ -56,7 +56,7 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/target/knowledge-base/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="knowladge-base/web/Web" />
+      <element id="javaee-facet-resources" facet="knowledge-base/web/Web" />
     </root>
   </artifact>
 </component>
