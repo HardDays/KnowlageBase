@@ -1,6 +1,4 @@
-package ru.knowladgebase.dbmodule.DAO;
-
-import static org.junit.Assert.*;
+package ru.knowledgebase.dbmodule.DAO;
 
 /**
  * Created by root on 15.08.16.

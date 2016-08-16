@@ -1,4 +1,4 @@
-package ru.knowladgebase.dbmodule.models;
+package ru.knowledgebase.dbmodule.models;
 
 import javax.persistence.*;
 

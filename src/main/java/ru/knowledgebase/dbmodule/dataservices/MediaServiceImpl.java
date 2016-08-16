@@ -1,7 +1,7 @@
-package ru.knowladgebase.dbmodule.dataservices;
+package ru.knowledgebase.dbmodule.dataservices;
 
-import ru.knowladgebase.dbmodule.models.*;
-import ru.knowladgebase.dbmodule.DAO.*;
+import ru.knowledgebase.dbmodule.models.*;
+import ru.knowledgebase.dbmodule.DAO.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

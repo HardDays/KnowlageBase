@@ -1,9 +1,9 @@
-package ru.knowladgebase.dbmodule;
+package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.knowladgebase.dbmodule.dataservices.*;
-import ru.knowladgebase.dbmodule.models.*;
+import ru.knowledgebase.dbmodule.dataservices.*;
+import ru.knowledgebase.dbmodule.models.*;
 
 import java.util.LinkedList;
 import java.util.List;

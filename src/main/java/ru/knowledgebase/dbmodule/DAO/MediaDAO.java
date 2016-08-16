@@ -1,8 +1,8 @@
-package ru.knowladgebase.dbmodule.DAO;
+package ru.knowledgebase.dbmodule.DAO;
 
 import org.springframework.stereotype.Repository;
-import ru.knowladgebase.dbmodule.models.Article;
-import ru.knowladgebase.dbmodule.models.Users;
+import ru.knowledgebase.dbmodule.models.Article;
+import ru.knowledgebase.dbmodule.models.Users;
 
 import java.util.List;
 

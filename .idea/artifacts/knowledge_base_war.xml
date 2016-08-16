@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="knowledge-base:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="knowledge-base.war">
+      <element id="artifact" artifact-name="knowledge-base:war exploded" />
+    </root>
+  </artifact>
+</component>

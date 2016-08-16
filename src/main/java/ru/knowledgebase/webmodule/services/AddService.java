@@ -1,4 +1,4 @@
-package ru.knowladgebase.webmodule.services;
+package ru.knowledgebase.webmodule.services;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
