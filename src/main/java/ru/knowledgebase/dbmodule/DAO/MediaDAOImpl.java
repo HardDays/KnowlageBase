@@ -1,10 +1,10 @@
-package ru.knowladgebase.dbmodule.DAO; /**
+package ru.knowledgebase.dbmodule.DAO; /**
  * Created by root on 10.08.16.
  */
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import ru.knowladgebase.dbmodule.models.*;
+import ru.knowledgebase.dbmodule.models.*;
 
 import javax.persistence.PersistenceContext;
 import java.util.List;

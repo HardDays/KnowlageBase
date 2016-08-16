@@ -1,6 +1,6 @@
-package ru.knowladgebase.dbmodule.dataservices;
+package ru.knowledgebase.dbmodule.dataservices;
 
-import ru.knowladgebase.dbmodule.models.*;
+import ru.knowledgebase.dbmodule.models.*;
 
 import java.util.List;
 

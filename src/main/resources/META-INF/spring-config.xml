@@ -10,13 +10,13 @@
     <!--@Transaction annotation support -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <context:component-scan base-package="ru.knowladgebase.dbmodule.models" />
+    <context:component-scan base-package="ru.knowledgebase.dbmodule.models" />
 
     <!--Activates various annotations to be detected in bean classes: Spring's @Required and @Autowired and so on-->
     <context:annotation-config/>
 
-    <bean id="storageService" class="ru.knowladgebase.dbmodule.dataservices.MediaServiceImpl" />
-    <bean id = "MediaDAO" class = "ru.knowladgebase.dbmodule.DAO.MediaDAOImpl" />
+    <bean id="storageService" class="ru.knowledgebase.dbmodule.dataservices.MediaServiceImpl" />
+    <bean id = "MediaDAO" class = "ru.knowledgebase.dbmodule.DAO.MediaDAOImpl" />
 
     <!-- Datasource. Источник данных - база PostgreSQL -->
     <bean id="dataSource"
