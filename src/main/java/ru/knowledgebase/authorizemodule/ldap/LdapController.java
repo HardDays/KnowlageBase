@@ -16,7 +16,10 @@ public class LdapController {
     private final String adminPass = "12345";
     private final String domain = "dc=db,dc=test";
 
-    //singleton
+    /**
+     * Get instance of a class
+     * @return instance of a class
+    */
     public static LdapController getInstance() {
         LdapController localInstance = instance;
         if (localInstance == null) {
@@ -29,27 +32,30 @@ public class LdapController {
         }
         return localInstance;
     }
-
-    //form environment for context
+    /**
+     * Form environment for context
+     * @return environment hashtable
+     */
     private Hashtable<String,String> formEnvironment() throws Exception {
         Hashtable<String,String> env = new Hashtable <String,String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY, contextFactory);
         env.put(Context.PROVIDER_URL, ldapURI);
         return env;
     }
-
-    //form context from environment
+    /**
+     * Form context from environment
+     * @param env hashtable with environment
+     * @return context for ldap
+     */
     private DirContext formContext(Hashtable<String, String> env) throws Exception {
         DirContext ctx = null;
-        try {
-            ctx = new InitialDirContext(env);
-        }catch(javax.naming.CommunicationException e){
-            throw new NoConnectionException();
-        }
+        ctx = new InitialDirContext(env);
         return ctx;
     }
-
-    //form context with admin authorization
+    /**
+     * Form context with admin authorization parameters
+     * @return context with admin parameters
+     */
     private DirContext formAdminContext() throws Exception {
         Hashtable<String,String> env = formEnvironment();
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
@@ -57,8 +63,12 @@ public class LdapController {
         env.put(Context.SECURITY_CREDENTIALS, adminPass);
         return formContext(env);
     }
-
-    //form context with user authorization
+    /**
+     * Form context with user authorization parameters
+     * @param domain domain with user id, domains etc
+     * @param password user password
+     * @return context with user parameters
+     */
     private DirContext formAuthContext(String domain, String password) throws Exception {
         Hashtable<String,String> env = formEnvironment();
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
@@ -66,9 +76,12 @@ public class LdapController {
         env.put(Context.SECURITY_CREDENTIALS, password);
         return formContext(env);
     }
-
-    //find user domain by id
-    private String getUserDomain(String uid) throws Exception {
+    /**
+     * Find domain by user id
+     * @param uid user id
+     * @return domain string
+     */
+    private String findUserDomain(String uid) throws Exception {
         DirContext ctx = formContext(formEnvironment());
         //can be changed to cn
         String filter = "(uid=" + uid + ")";
@@ -83,34 +96,51 @@ public class LdapController {
             resDomain = result.getNameInNamespace();
         }
         else {
-            resDomain = null;
+            throw new Exception("No user!");
         }
-
         answer.close();
         return resDomain;
     }
-
-    //authorize user
-    public void authorize(String uid, String password) throws Exception {
+    /**
+     * Authorize user with uid and password
+     * @param uid user id
+     * @param password user password
+     * @return answer with result
+     */
+    public LdapAnswer authorize(String uid, String password){
         //find user domain
-        String domain = getUserDomain(uid);
-        if (domain == null){
-            throw new WrongUsernameException();
+        String domain = null;
+        try {
+            domain = findUserDomain(uid);
+        }catch (Exception e){
+            return LdapAnswer.WRONG_UID;
         }
         //try authorize
         try {
             formAuthContext(domain, password);
         }catch (javax.naming.AuthenticationException e) {
-            throw new WrongPasswordException();
+            return LdapAnswer.WRONG_PASSWORD;
         }catch (javax.naming.OperationNotSupportedException e){
-            throw new WrongPasswordException();
+            return LdapAnswer.EMPTY_PASSWORD;
+        }catch (javax.naming.CommunicationException e){
+            return LdapAnswer.CONNECTION_ERROR;
+        }catch (Exception e){
+            return LdapAnswer.UNKNOWN_ERROR;
         }
+        return LdapAnswer.OK;
     }
-
-    //create new user
-    public void createUser(String uid, String password, String type) throws Exception{
+    /**
+     * Create new user
+     * @param uid user id
+     * @param password user password
+     * @param type category of user
+     * @return answer with result
+     */
+    public LdapAnswer createUser(String uid, String password, String type) {
         if (password.length() == 0){
-            throw new LdapException("Cannot create new user!");
+            return LdapAnswer.EMPTY_PASSWORD;
+        }else if (uid.length() == 0){
+            return LdapAnswer.EMPTY_UID;
         }
         String userDomain = "uid=" + uid + ",ou=" + type + "," + domain;
         //make attributes
@@ -133,18 +163,24 @@ public class LdapController {
             ctx.createSubcontext(userDomain, entry);
             ctx.close();
         }catch (javax.naming.NameAlreadyBoundException e){
-            throw new UserAlreadyExistsException();
+            return LdapAnswer.USER_ALREADY_EXISTS;
         }catch (Exception e) {
-            throw new LdapException("Cannot create new user!");
+            return LdapAnswer.UNKNOWN_ERROR;
         }
+        return LdapAnswer.OK;
     }
-
-    //delete user
-    public void deleteUser(String uid) throws Exception{
+    /**
+     * Delete user with uid
+     * @param uid user id
+     * @return answer with result
+     */
+    public LdapAnswer deleteUser(String uid){
         //find domain
-        String domain = getUserDomain(uid);
-        if (domain == null){
-            throw new WrongUsernameException();
+        String domain = null;
+        try {
+            domain = findUserDomain(uid);
+        }catch (Exception e){
+            return LdapAnswer.WRONG_UID;
         }
         DirContext ctx = null;
         try {
@@ -154,18 +190,26 @@ public class LdapController {
             ctx.destroySubcontext(domain);
             ctx.close();
         }catch (Exception e){
-            throw new LdapException("Cannot delete user!");
+            return LdapAnswer.UNKNOWN_ERROR;
         }
+        return LdapAnswer.OK;
     }
-    //change user password
-    public void changePass(String uid, String password) throws Exception{
+    /**
+     * Change user password
+     * @param uid user id
+     * @param password new user password
+     * @return answer with result
+     */
+    public LdapAnswer changePass(String uid, String password) {
         if (password.length() == 0){
-            throw new WrongPasswordException();
+            return LdapAnswer.EMPTY_PASSWORD    ;
         }
         //form user domain
-        String domain = getUserDomain(uid);
-        if (domain == null){
-            throw new WrongUsernameException();
+        String domain = null;
+        try {
+            domain = findUserDomain(uid);
+        }catch (Exception e){
+            return LdapAnswer.WRONG_UID;
         }
         DirContext ctx = null;
         try {
@@ -178,8 +222,9 @@ public class LdapController {
             ctx.modifyAttributes(domain, mods);
             ctx.close();
         }catch (Exception e){
-            throw new LdapException("Cannot change password!");
+            return LdapAnswer.UNKNOWN_ERROR;
         }
+        return LdapAnswer.OK;
     }
 }
 

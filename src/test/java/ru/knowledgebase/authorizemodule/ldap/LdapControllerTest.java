@@ -2,6 +2,10 @@ package ru.knowledgebase.authorizemodule.ldap;
 
 import org.junit.*;
 
+import javax.validation.constraints.AssertTrue;
+
+import static org.junit.Assert.assertTrue;
+
 /**
  * Created by vova on 15.08.16.
  */
@@ -14,64 +18,64 @@ public class LdapControllerTest{
 
     @Test
     public void authorize() throws Exception {
-        LdapController.getInstance().authorize("testuser1", "testuser1");
+        assertTrue(LdapController.getInstance().authorize("testuser1", "testuser1") == LdapAnswer.OK);
     }
 
-    @Test(expected = WrongUsernameException.class)
+    @Test
     public void authorizeWrongUser() throws Exception {
-        LdapController.getInstance().authorize("testuser2", "testuser1");
+        assertTrue(LdapController.getInstance().authorize("testuser2", "testuser1") == LdapAnswer.WRONG_UID);
     }
 
-    @Test(expected = WrongUsernameException.class)
+    @Test
     public void authorizeWrongUser2() throws Exception {
-        LdapController.getInstance().authorize("", "testuser1");
+        assertTrue(LdapController.getInstance().authorize("", "testuser1") == LdapAnswer.WRONG_UID);
     }
 
-    @Test(expected = WrongPasswordException.class)
+    @Test
     public void authorizeWrongPass() throws Exception {
-        LdapController.getInstance().authorize("testuser1", "testuser2");
+        assertTrue(LdapController.getInstance().authorize("testuser1", "testuser2") == LdapAnswer.WRONG_PASSWORD);
     }
 
-    @Test(expected = WrongPasswordException.class)
+    @Test
     public void authorizeWrongPass2() throws Exception {
-        LdapController.getInstance().authorize("testuser1", "");
+         assertTrue(LdapController.getInstance().authorize("testuser1", "") == LdapAnswer.EMPTY_PASSWORD);
     }
 
-    @Test(expected = UserAlreadyExistsException.class)
+    @Test
     public void createUserExist() throws Exception {
-        LdapController.getInstance().createUser("testuser1", "testuser1", "User");
+         assertTrue(LdapController.getInstance().createUser("testuser1", "testuser1", "User") == LdapAnswer.USER_ALREADY_EXISTS);
     }
 
-    @Test(expected = LdapException.class)
-    public void createUser1() throws Exception {
-        LdapController.getInstance().createUser("", "test", "User");
+    @Test
+    public void createWrongUser1() throws Exception {
+         assertTrue(LdapController.getInstance().createUser("", "test", "User") == LdapAnswer.EMPTY_UID);
     }
 
-    @Test(expected = LdapException.class)
-    public void createUser2() throws Exception {
-        LdapController.getInstance().createUser("testtest", "", "User");
+    @Test
+    public void createWrongUser2() throws Exception {
+         assertTrue(LdapController.getInstance().createUser("testtest", "", "User") == LdapAnswer.EMPTY_PASSWORD);
     }
 
     @Test
     public void changePass() throws Exception {
-        LdapController.getInstance().changePass("testuser1", "newpass");
-        LdapController.getInstance().authorize("testuser1", "newpass");
-        LdapController.getInstance().changePass("testuser1", "testuser1");
+         assertTrue(LdapController.getInstance().changePass("testuser1", "newpass") == LdapAnswer.OK);
+         assertTrue(LdapController.getInstance().authorize("testuser1", "newpass") == LdapAnswer.OK);
+         assertTrue(LdapController.getInstance().changePass("testuser1", "testuser1") == LdapAnswer.OK);
     }
 
-    @Test(expected = WrongPasswordException.class)
+    @Test
     public void changePass2() throws Exception {
-        LdapController.getInstance().changePass("testuser1", "");
+        assertTrue(LdapController.getInstance().changePass("testuser1", "") == LdapAnswer.EMPTY_PASSWORD);
     }
 
-    @Test(expected = WrongUsernameException.class)
+    @Test
     public void deleteUser() throws Exception {
-        LdapController.getInstance().deleteUser("nousername");
+         assertTrue(LdapController.getInstance().deleteUser("nousername") == LdapAnswer.WRONG_UID);
     }
 
     @AfterClass
     public static void deleteUser2() throws Exception {
-        LdapController.getInstance().deleteUser("testuser1");
+        assertTrue(LdapController.getInstance().deleteUser("testuser1") == LdapAnswer.OK);
     }
 
 }
