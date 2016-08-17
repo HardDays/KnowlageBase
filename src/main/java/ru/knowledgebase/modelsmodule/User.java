@@ -1,12 +1,12 @@
-package ru.knowledgebase.dbmodule.models;
+package ru.knowledgebase.modelsmodule;
 
 import javax.persistence.*;
 
 /**
  * Created by root on 09.08.16.
  */
-@Entity
-public class Users {
+@Entity(name = "users")
+public class User {
     @Id
     @SequenceGenerator(name="user_id_seq",
             sequenceName="user_id_seq",
@@ -26,12 +26,12 @@ public class Users {
         this.id = id;
     }
 
-    public Users(String str) {
+    public User(String str) {
         login = str;
         password = str;
     }
 
-    public Users(){}
+    public User(){}
 
     @Basic
     @Column(name = "login")
@@ -58,7 +58,7 @@ public class Users {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Users users = (Users) o;
+        User users = (User) o;
 
         if (id != users.id) return false;
         if (login != null ? !login.equals(users.login) : users.login != null) return false;

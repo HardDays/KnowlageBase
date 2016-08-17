@@ -2,8 +2,9 @@ package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.knowledgebase.dbmodule.dataservices.*;
-import ru.knowledgebase.dbmodule.models.*;
+import ru.knowledgebase.dbmodule.dataservices.ArticleService;
+import ru.knowledgebase.modelsmodule.Article;
+import ru.knowledgebase.modelsmodule.User;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,30 +19,28 @@ public class Program {
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
-        MediaService service = (MediaService) context.getBean("storageService");
-        List<Users> users = generateUsers();
-        for (Users u : users) {
-            service.save(u);
-        }
-        List<Article> list = getArticles(users);
-        long b = System.nanoTime();
+        ArticleService service = (ArticleService) context.getBean("articleService");
+
+        List<User> users = generateUsers();
+                List<Article> list = getArticles(users);
         for (Article a : list)
-            service.save(a);
-        long e = System.nanoTime();
-        System.out.println(e-b * 10e9);
+            service.create(a);
+
+        List<Article> arts = service.getAll();
+        System.out.println(arts.size());
 
     }
 
-    public static List<Users> generateUsers() {
-        List<Users> users = new LinkedList<Users>();
+    public static List<User> generateUsers() {
+        List<User> users = new LinkedList<User>();
         for (int i = 0 ; i < MAX_USER_NUMBER; i++) {
-            users.add(new Users(new Integer(rand.nextInt(MAX_USER_NUMBER)).toString()));
+            users.add(new User(new Integer(rand.nextInt(MAX_USER_NUMBER)).toString()));
         }
         return users;
     }
 
 
-    public static List<Article> getArticles(List<Users> users) {
+    public static List<Article> getArticles(List<User> users) {
         List<Article> arts = new LinkedList<Article>();
         for (int i = 0; i < MAX_ART_NUMBER; i++) {
             arts.add(new Article(new Integer(rand.nextInt(MAX_USER_NUMBER)).toString(),
