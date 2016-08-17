@@ -2,9 +2,14 @@ package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+<<<<<<< .merge_file_R50Js5
 import ru.knowledgebase.dbmodule.dataservices.ArticleService;
 import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.User;
+=======
+import ru.knowledgebase.dbmodule.dataservices.*;
+import ru.knowledgebase.dbmodule.models.*;
+>>>>>>> .merge_file_pUxWh5
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +23,7 @@ public class Program {
     private static Random rand = new Random();
 
     public static void main(String[] args) {
+<<<<<<< .merge_file_R50Js5
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
         ArticleService service = (ArticleService) context.getBean("articleService");
 
@@ -49,6 +55,14 @@ public class Program {
         }
         return arts;
     }
+=======
+
+    }
+
+
+
+
+>>>>>>> .merge_file_pUxWh5
 
 
 }
