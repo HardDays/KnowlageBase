@@ -15,7 +15,7 @@ public class LdapController {
     private final String adminName = "admin";
     private final String adminPass = "12345";
     private final String domain = "dc=db,dc=test";
-
+    
     /**
      * Get instance of a class
      * @return instance of a class

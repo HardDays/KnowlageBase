@@ -29,4 +29,7 @@ public class MediaDAOImpl implements MediaDAO{
     public List<Article> getAll() {
         return em.createQuery("from Article", Article.class).getResultList();
     }
+
+
+
 }
