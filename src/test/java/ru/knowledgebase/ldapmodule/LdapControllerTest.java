@@ -1,8 +1,6 @@
-package ru.knowledgebase.authorizemodule.ldap;
+package ru.knowledgebase.ldapmodule;
 
 import org.junit.*;
-
-import javax.validation.constraints.AssertTrue;
 
 import static org.junit.Assert.assertTrue;
 

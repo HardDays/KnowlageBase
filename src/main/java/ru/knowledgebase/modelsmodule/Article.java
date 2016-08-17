@@ -1,4 +1,4 @@
-package ru.knowledgebase.dbmodule.models;
+package ru.knowledgebase.modelsmodule;
 
 import javax.persistence.*;
 
@@ -20,17 +20,15 @@ public class Article {
     @Column
     private String body;
 
-    /*
     @ManyToOne(cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "uid")
-    private Users author;
-    */
+    private User author;
+
     public Article(){}
 
-    public Article(String t, String s, Users u) {
+    public Article(String t, String s, User u) {
         title = t;
         body = s;
-        //author = u;
+        author = u;
     }
 
 

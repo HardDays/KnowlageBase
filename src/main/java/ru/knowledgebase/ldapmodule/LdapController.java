@@ -1,4 +1,4 @@
-package ru.knowledgebase.authorizemodule.ldap;
+package ru.knowledgebase.ldapmodule;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -10,8 +10,8 @@ public class LdapController {
     private static volatile LdapController instance;
 
     //params
-    private final String ldapURI = "ldap://localhost";
-    private final String contextFactory = "com.sun.jndi.ldap.LdapCtxFactory";
+    private final String ldapURI = "ldapmodule://localhost";
+    private final String contextFactory = "com.sun.jndi.ldapmodule.LdapCtxFactory";
     private final String adminName = "admin";
     private final String adminPass = "12345";
     private final String domain = "dc=db,dc=test";
@@ -45,7 +45,7 @@ public class LdapController {
     /**
      * Form context from environment
      * @param env hashtable with environment
-     * @return context for ldap
+     * @return context for ldapmodule
      */
     private DirContext formContext(Hashtable<String, String> env) throws Exception {
         DirContext ctx = null;
