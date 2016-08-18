@@ -1,7 +1,9 @@
 package ru.knowledgebase.usermodule;
 
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.modelsmodule.Token;
 import ru.knowledgebase.modelsmodule.User;
+import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
 import ru.knowledgebase.usermodule.ldapmodule.LdapController;
 
 /**
@@ -11,7 +13,11 @@ public class UserDeleteController {
     public static void delete(String login) throws Exception{
         DataCollector collector = new DataCollector();
         User user = collector.findUserByLogin(login);
-        collector.deleteToken(collector.getUserToken(user));
+        if (user == null)
+            throw new UserNotFoundException();
+        Token token = collector.getUserToken(user);
+        if (token != null)
+            collector.deleteToken(token);
         collector.deleteUser(user);
         LdapController.getInstance().deleteUser(login);
     }

@@ -7,6 +7,7 @@ package ru.knowledgebase.usermodule;
 import org.apache.commons.codec.digest.DigestUtils;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
+import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
 import ru.knowledgebase.usermodule.ldapmodule.LdapController;
 import ru.knowledgebase.modelsmodule.User;
 
@@ -15,6 +16,9 @@ import ru.knowledgebase.modelsmodule.User;
  */
 public class RegisterController {
     public static void register(String login, String password) throws Exception{
+        if (login.length() == 0 || password.length() == 0){
+            throw new WrongUserDataException();
+        }
         DataCollector collector = new DataCollector();
         password = DigestUtils.md5Hex(password);
         try {

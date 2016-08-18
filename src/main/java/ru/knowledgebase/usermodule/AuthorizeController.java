@@ -17,33 +17,28 @@ public class AuthorizeController {
     public static Token authorize(String login, String password) throws Exception{
         User user = null;
         DataCollector collector = new DataCollector();
-        try {
-            user = collector.findUserByLogin(login);
-            if (user == null){
-                throw new UserNotFoundException();
-            }else if (!user.getPassword().equals(password)){
-                throw new WrongPasswordException();
-            }
-            Date date = new Date(new java.util.Date().getTime());
-            String tokenStr = DigestUtils.md5Hex(user.getLogin() + date.toString());
-            Token token = new Token(user, tokenStr, date);
-            Token oldToken = collector.getUserToken(user);
-            if (oldToken == null){
-                collector.addToken(token);
-            }else{
-                token.setId(oldToken.getId());
-                collector.updateToken(token);
-            }
-            return token;
-        }catch (Exception e){
-            e.printStackTrace();
+        password = DigestUtils.md5Hex(password);
+        user = collector.findUserByLogin(login);
+        if (user == null){
+            throw new UserNotFoundException();
+        }else if (!user.getPassword().equals(password)){
+            throw new WrongPasswordException();
         }
-        return null;
+        Date date = new Date(new java.util.Date().getTime());
+        String tokenStr = DigestUtils.md5Hex(user.getLogin() + date.toString());
+        Token token = new Token(user, tokenStr, date);
+        Token oldToken = collector.getUserToken(user);
+        if (oldToken == null){
+            collector.addToken(token);
+        }else{
+            token.setId(oldToken.getId());
+            collector.updateToken(token);
+        }
+        return token;
     }
 
     public static Token authorizeLdap(String login, String password) throws Exception{
-        password = DigestUtils.md5Hex(password);
-        LdapController.getInstance().authorize(login, password);
+        LdapController.getInstance().authorize(login, DigestUtils.md5Hex(password));
         return authorize(login, password);
     }
 }
