@@ -14,8 +14,11 @@ import java.util.List;
 
 
 public interface UserRepository extends CrudRepository<User, Long> {
-    @Query("select u from users u where u.login = ?1 and u.password = ?2")
-    public List<User> findByCredentials(String login, String password) throws Exception;
 
+    @Query("select u from users u where u.login = ?1")
+    public List<User> findByLogin(String login) throws Exception;
+
+    @Query("select u from users u where u.id = ?1")
+    public List<User> findOne1(int id) throws Exception;
 }
 

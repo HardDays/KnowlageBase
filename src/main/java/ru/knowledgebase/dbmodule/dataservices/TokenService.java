@@ -43,4 +43,9 @@ public class TokenService {
         oldToken.copy(token);
         tokenRepository.save(oldToken);
     }
+
+    @Transactional
+    public void delete(Token token) throws Exception{
+        tokenRepository.delete(token);
+    }
 }

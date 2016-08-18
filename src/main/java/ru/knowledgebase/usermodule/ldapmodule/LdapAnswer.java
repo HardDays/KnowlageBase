@@ -1,4 +1,4 @@
-package ru.knowledgebase.ldapmodule;
+package ru.knowledgebase.usermodule.ldapmodule;
 
 /**
  * Created by vova on 16.08.16.

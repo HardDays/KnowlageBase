@@ -80,6 +80,12 @@ public class User {
         return true;
     }
 
+    public void copy(User second){
+        this.id = second.id;
+        this.login = second.login;
+        this.password = second.password;
+    }
+
     @Override
     public int hashCode() {
         int result = id;

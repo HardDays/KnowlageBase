@@ -1,8 +1,9 @@
-package ru.knowledgebase.authorizemodule;
+package ru.knowledgebase.usermodule;
 
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.ldapmodule.LdapAnswer;
-import ru.knowledgebase.ldapmodule.LdapController;
+import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
+import ru.knowledgebase.usermodule.exceptions.WrongPasswordException;
+import ru.knowledgebase.usermodule.ldapmodule.LdapController;
 import ru.knowledgebase.modelsmodule.Token;
 import ru.knowledgebase.modelsmodule.User;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -13,13 +14,15 @@ import java.sql.Date;
  * Created by vova on 17.08.16.
  */
 public class AuthorizeController {
-    public static Token authorize(String login, String password){
+    public static Token authorize(String login, String password) throws Exception{
         User user = null;
         DataCollector collector = new DataCollector();
         try {
-            user = collector.findUserByCredentials(login, password);
+            user = collector.findUserByLogin(login);
             if (user == null){
-                throw new Exception("User not found");
+                throw new UserNotFoundException();
+            }else if (!user.getPassword().equals(password)){
+                throw new WrongPasswordException();
             }
             Date date = new Date(new java.util.Date().getTime());
             String tokenStr = DigestUtils.md5Hex(user.getLogin() + date.toString());
@@ -38,11 +41,9 @@ public class AuthorizeController {
         return null;
     }
 
-    public static Token authorizeLdap(String login, String password) {
-        LdapAnswer res = LdapController.getInstance().authorize(login, password);
-        if (res == LdapAnswer.OK){
-            return authorize(login, password);
-        }
-        return null;
+    public static Token authorizeLdap(String login, String password) throws Exception{
+        password = DigestUtils.md5Hex(password);
+        LdapController.getInstance().authorize(login, password);
+        return authorize(login, password);
     }
 }

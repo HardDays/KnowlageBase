@@ -1,4 +1,9 @@
-package ru.knowledgebase.ldapmodule;
+package ru.knowledgebase.usermodule.ldapmodule;
+
+import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
+import ru.knowledgebase.usermodule.exceptions.WrongPasswordException;
+import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
+import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -10,8 +15,8 @@ public class LdapController {
     private static volatile LdapController instance;
 
     //params
-    private final String ldapURI = "ldapmodule://localhost";
-    private final String contextFactory = "com.sun.jndi.ldapmodule.LdapCtxFactory";
+    private final String ldapURI = "ldap://localhost";
+    private final String contextFactory = "com.sun.jndi.ldap.LdapCtxFactory";
     private final String adminName = "admin";
     private final String adminPass = "12345";
     private final String domain = "dc=db,dc=test";
@@ -96,7 +101,7 @@ public class LdapController {
             resDomain = result.getNameInNamespace();
         }
         else {
-            throw new Exception("No user!");
+            throw new WrongPasswordException();
         }
         answer.close();
         return resDomain;
@@ -105,42 +110,37 @@ public class LdapController {
      * Authorize user with uid and password
      * @param uid user id
      * @param password user password
-     * @return answer with result
      */
-    public LdapAnswer authorize(String uid, String password){
+    public void authorize(String uid, String password) throws Exception{
         //find user domain
         String domain = null;
         try {
             domain = findUserDomain(uid);
         }catch (Exception e){
-            return LdapAnswer.WRONG_UID;
+            throw new UserNotFoundException();
         }
         //try authorize
         try {
             formAuthContext(domain, password);
         }catch (javax.naming.AuthenticationException e) {
-            return LdapAnswer.WRONG_PASSWORD;
+            throw new WrongPasswordException();
         }catch (javax.naming.OperationNotSupportedException e){
-            return LdapAnswer.EMPTY_PASSWORD;
+            throw new WrongPasswordException();
         }catch (javax.naming.CommunicationException e){
-            return LdapAnswer.CONNECTION_ERROR;
+            throw new LdapConnectionException();
         }catch (Exception e){
-            return LdapAnswer.UNKNOWN_ERROR;
+            throw new LdapException();
         }
-        return LdapAnswer.OK;
     }
     /**
      * Create new user
      * @param uid user id
      * @param password user password
      * @param type category of user
-     * @return answer with result
      */
-    public LdapAnswer createUser(String uid, String password, String type) {
-        if (password.length() == 0){
-            return LdapAnswer.EMPTY_PASSWORD;
-        }else if (uid.length() == 0){
-            return LdapAnswer.EMPTY_UID;
+    public void createUser(String uid, String password, String type) throws Exception{
+        if ((password.length() == 0) || (uid.length() == 0)){
+            throw new WrongUserDataException();
         }
         String userDomain = "uid=" + uid + ",ou=" + type + "," + domain;
         //make attributes
@@ -163,24 +163,25 @@ public class LdapController {
             ctx.createSubcontext(userDomain, entry);
             ctx.close();
         }catch (javax.naming.NameAlreadyBoundException e){
-            return LdapAnswer.USER_ALREADY_EXISTS;
+            throw new UserAlreadyExistsException();
+        }catch (javax.naming.CommunicationException e){
+            throw new LdapConnectionException();
         }catch (Exception e) {
-            return LdapAnswer.UNKNOWN_ERROR;
+            e.printStackTrace();
+            throw new LdapException();
         }
-        return LdapAnswer.OK;
     }
     /**
      * Delete user with uid
      * @param uid user id
-     * @return answer with result
      */
-    public LdapAnswer deleteUser(String uid){
+    public void deleteUser(String uid) throws Exception {
         //find domain
         String domain = null;
         try {
             domain = findUserDomain(uid);
         }catch (Exception e){
-            return LdapAnswer.WRONG_UID;
+            throw new UserNotFoundException();
         }
         DirContext ctx = null;
         try {
@@ -189,27 +190,27 @@ public class LdapController {
             //delete user
             ctx.destroySubcontext(domain);
             ctx.close();
-        }catch (Exception e){
-            return LdapAnswer.UNKNOWN_ERROR;
+        }catch (javax.naming.CommunicationException e){
+            throw new LdapConnectionException();
+        }catch (Exception e) {
+            throw new LdapException();
         }
-        return LdapAnswer.OK;
     }
     /**
      * Change user password
      * @param uid user id
      * @param password new user password
-     * @return answer with result
      */
-    public LdapAnswer changePass(String uid, String password) {
+    public void changePass(String uid, String password) throws Exception{
         if (password.length() == 0){
-            return LdapAnswer.EMPTY_PASSWORD    ;
+            throw new WrongUserDataException();
         }
         //form user domain
         String domain = null;
         try {
             domain = findUserDomain(uid);
         }catch (Exception e){
-            return LdapAnswer.WRONG_UID;
+            throw new UserNotFoundException();
         }
         DirContext ctx = null;
         try {
@@ -221,10 +222,11 @@ public class LdapController {
             mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, newPass);
             ctx.modifyAttributes(domain, mods);
             ctx.close();
+        }catch (javax.naming.CommunicationException e){
+            throw new LdapConnectionException();
         }catch (Exception e){
-            return LdapAnswer.UNKNOWN_ERROR;
+             throw new LdapException();
         }
-        return LdapAnswer.OK;
     }
 }
 

@@ -23,28 +23,37 @@ public class DataCollector {
         userService = (UserService) context.getBean("userService");
     }
 
-    public boolean addUser(User user) throws Exception{
-        return userService.create(user);
+    public void addUser(User user) throws Exception{
+        userService.create(user);
     }
 
     // to add
-    public boolean addToken(Token token) throws Exception{
+    public void addToken(Token token) throws Exception{
         tokenService.create(token);
-        return true;
     }
 
     public void updateToken(Token token) throws Exception{
         tokenService.update(token);
     }
 
-    public User findUserByCredentials(String login, String password) throws Exception{
-        return userService.findByCredentials(login, password);
+    public void deleteToken(Token token) throws Exception{
+        tokenService.delete(token);
+    }
+
+    public void updateUser(User user) throws Exception{
+        userService.update(user);
+    }
+
+    public User findUserByLogin(String login) throws Exception{
+        return userService.findByLogin(login);
     }
 
     public Token getUserToken(User user) throws Exception{
         return tokenService.getUserToken(user);
     }
 
-
+    public void deleteUser(User user) throws Exception{
+        userService.delete(user);
+    }
 
 }

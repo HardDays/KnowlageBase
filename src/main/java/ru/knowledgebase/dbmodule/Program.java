@@ -2,15 +2,12 @@ package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.knowledgebase.authorizemodule.AuthorizeController;
+import ru.knowledgebase.usermodule.AuthorizeController;
 import ru.knowledgebase.dbmodule.dataservices.ArticleService;
-import ru.knowledgebase.dbmodule.dataservices.UserService;
 import ru.knowledgebase.modelsmodule.Article;
-import ru.knowledgebase.modelsmodule.Token;
 import ru.knowledgebase.modelsmodule.User;
-import ru.knowledgebase.registermodule.RegisterController;
+import ru.knowledgebase.usermodule.RegisterController;
 
-import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -38,9 +35,9 @@ public class Program {
 
 
         AuthorizeController contr = new AuthorizeController();
-        contr.authorize("user0", "user0");
-        RegisterController.register("userNew", "userNew");
-        RegisterController.register("userNew", "userNew");
+     //   contr.authorize("user0", "user0");
+       // RegisterController.register("userNew", "userNew");
+       // RegisterController.register("userNew", "userNew");
 
 
     }
