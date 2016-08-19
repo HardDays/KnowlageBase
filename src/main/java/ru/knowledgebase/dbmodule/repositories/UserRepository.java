@@ -13,7 +13,7 @@ import ru.knowledgebase.modelsmodule.User;
 import java.util.List;
 
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Query("select u from users u where u.login = ?1")
     public List<User> findByLogin(String login) throws Exception;

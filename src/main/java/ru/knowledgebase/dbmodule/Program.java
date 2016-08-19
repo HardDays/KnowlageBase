@@ -2,11 +2,11 @@ package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.knowledgebase.usermodule.AuthorizeController;
+import ru.knowledgebase.modelsmodule.GlobalRole;
+import ru.knowledgebase.modelsmodule.SectionRole;
 import ru.knowledgebase.dbmodule.dataservices.ArticleService;
 import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.User;
-import ru.knowledgebase.usermodule.RegisterController;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,11 +34,18 @@ public class Program {
           //  System.out.println(service2.create(u));
 
 
-        AuthorizeController contr = new AuthorizeController();
+     //   AuthorizeController contr = new AuthorizeController();
      //   contr.authorize("user0", "user0");
        // RegisterController.register("userNew", "userNew");
        // RegisterController.register("userNew", "userNew");
-
+        DataCollector d = new DataCollector();
+        try {
+            createRoles();
+       //     d.addRole(new SectionRole("AddUser"));
+        //    d.addRole(new SectionRole("DeleteUser"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -50,6 +57,40 @@ public class Program {
         return users;
     }
 
+
+    public static void createRoles() throws Exception{
+        DataCollector coll = new DataCollector();
+
+        GlobalRole gr = new GlobalRole("SuperUser");
+        gr.setCanAddUser(true);
+        gr.setCanEditUser(true);
+        gr.setCanDeleteUser(true);
+        gr.setCanEditUserRoles(true);
+
+        coll.addGlobalRole(gr);
+
+        SectionRole r = new SectionRole("SuperUser");
+
+        r.setCanAddSection(true);
+        r.setCanEditSection(true);
+        r.setCanViewSection(true);
+        r.setCanDeleteSection(true);
+
+        r.setCanAddArticle(true);
+        r.setCanEditArticle(true);
+        r.setCanDeleteArticle(true);
+        r.setCanViewArticle(true);
+
+        r.setCanSearch(true);
+        r.setCanAddNews(true);
+        r.setCanAddMistakes(true);
+        r.setCanViewMistakes(true);
+        r.setCanGetReports(true);
+        r.setCanOnOffNotifications(true);
+
+        coll.addSectionRole(r);
+
+    }
 
     public static List<Article> getArticles(List<User> users) {
         List<Article> arts = new LinkedList<Article>();
