@@ -13,14 +13,19 @@ public class UserGlobalRole {
             generator="user_global_role_id_seq")
     private int id;
 
-    @OneToOne(cascade = {CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.REMOVE})
     private User user;
 
-    @OneToOne(cascade = {CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.REMOVE})
     private GlobalRole globalRole;
 
     public UserGlobalRole(){
 
+    }
+
+    public UserGlobalRole(User user, GlobalRole globalRole){
+        this.user = user;
+        this.globalRole = globalRole;
     }
 
 }

@@ -25,6 +25,10 @@ public class Article {
 
     public Article(){}
 
+    public Article(int id){
+        this.id = id;
+    }
+
     public Article(String t, String s, User u) {
         title = t;
         body = s;

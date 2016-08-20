@@ -3,6 +3,7 @@ package ru.knowledgebase.usermodule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ru.knowledgebase.modelsmodule.User;
 import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
 import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
 import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
@@ -13,6 +14,7 @@ import static org.junit.Assert.*;
  * Created by vova on 18.08.16.
  */
 public class UserEditControllerTest {
+    User user = null;
     @BeforeClass
     public static void createUser() throws Exception{
         RegisterController.register("testuser1", "testuser1");

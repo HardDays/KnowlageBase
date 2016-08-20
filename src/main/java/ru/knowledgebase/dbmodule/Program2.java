@@ -2,18 +2,19 @@ package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.knowledgebase.modelsmodule.ArticleRole;
 import ru.knowledgebase.modelsmodule.GlobalRole;
-import ru.knowledgebase.modelsmodule.SectionRole;
 import ru.knowledgebase.dbmodule.dataservices.ArticleService;
 import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.User;
+import ru.knowledgebase.usermodule.RegisterController;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 
-public class Program {
+public class Program2 {
 
     private static final int MAX_USER_NUMBER = 10;
     private static final int MAX_ART_NUMBER = 100;
@@ -40,9 +41,11 @@ public class Program {
        // RegisterController.register("userNew", "userNew");
         DataCollector d = new DataCollector();
         try {
-            createRoles();
-       //     d.addRole(new SectionRole("AddUser"));
-        //    d.addRole(new SectionRole("DeleteUser"));
+           // createRoles();
+
+            RegisterController.register("testrole2", "testrole2");
+       //     d.addRole(new ArticleRole("AddUser"));
+        //    d.addRole(new ArticleRole("DeleteUser"));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -69,14 +72,17 @@ public class Program {
 
         coll.addGlobalRole(gr);
 
-        SectionRole r = new SectionRole("SuperUser");
+        gr = new GlobalRole("User");
+        gr.setCanAddUser(false);
+        gr.setCanEditUser(false);
+        gr.setCanDeleteUser(false);
+        gr.setCanEditUserRoles(false);
 
-        r.setCanAddSection(true);
-        r.setCanEditSection(true);
-        r.setCanViewSection(true);
-        r.setCanDeleteSection(true);
+        coll.addGlobalRole(gr);
 
-        r.setCanAddArticle(true);
+        ArticleRole r = new ArticleRole("SuperUser");
+
+        r.setCanAddArticles(true);
         r.setCanEditArticle(true);
         r.setCanDeleteArticle(true);
         r.setCanViewArticle(true);
@@ -88,7 +94,16 @@ public class Program {
         r.setCanGetReports(true);
         r.setCanOnOffNotifications(true);
 
-        coll.addSectionRole(r);
+        coll.addArticleRole(r);
+
+        r = new ArticleRole("User");
+
+        r.setCanViewArticle(true);
+        r.setCanSearch(true);
+        r.setCanAddMistakes(true);
+        r.setCanViewMistakes(true);
+
+        coll.addArticleRole(r);
 
     }
 

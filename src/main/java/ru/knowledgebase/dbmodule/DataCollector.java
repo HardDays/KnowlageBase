@@ -14,26 +14,32 @@ public class DataCollector {
     private ArticleService articleService;
     private TokenService tokenService;
     private UserService userService;
-    private SectionRoleService sectionRoleService;
+    private ArticleRoleService articleRoleService;
     private GlobalRoleService globalRoleService;
-    private UserSectionRoleService userSectionRoleService;
+    private UserArticleRoleService userArticleRoleService;
+    private UserGlobalRoleService userGlobalRoleService;
 
     public DataCollector() {
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
         articleService = (ArticleService) context.getBean("articleService");
         tokenService = (TokenService) context.getBean("tokenService");
         userService = (UserService) context.getBean("userService");
-        sectionRoleService = (SectionRoleService) context.getBean("sectionRoleService");
+        articleRoleService = (ArticleRoleService) context.getBean("articleRoleService");
         globalRoleService = (GlobalRoleService) context.getBean("globalRoleService");
-        userSectionRoleService = (UserSectionRoleService) context.getBean("userSectionRoleService");
+        userArticleRoleService = (UserArticleRoleService) context.getBean("userArticleRoleService");
+        userGlobalRoleService = (UserGlobalRoleService) context.getBean("userGlobalRoleService");
 
-    }
-
-    public void addUser(User user) throws Exception{
-        userService.create(user);
     }
 
     // to add
+    public Article findArticleById(int id) throws Exception{
+        return articleService.findById(id);
+    }
+
+    public User addUser(User user) throws Exception{
+        return userService.create(user);
+    }
+
     public void addToken(Token token) throws Exception{
         tokenService.create(token);
     }
@@ -54,6 +60,10 @@ public class DataCollector {
         return userService.findByLogin(login);
     }
 
+    public User findUserById(int id) throws Exception{
+        return userService.findById(id);
+    }
+
     public Token getUserToken(User user) throws Exception{
         return tokenService.getUserToken(user);
     }
@@ -62,14 +72,21 @@ public class DataCollector {
         userService.delete(user);
     }
 
-    public void addSectionRole(SectionRole sectionRole) throws Exception{
-        sectionRoleService.create(sectionRole);
+    public void addArticleRole(ArticleRole articleRole) throws Exception{
+        articleRoleService.create(articleRole);
     }
 
-    public List<SectionRole> getSectionRoles() throws Exception{
-        return sectionRoleService.getAll();
+    public List<ArticleRole> getArticleRoles() throws Exception{
+        return articleRoleService.getAll();
     }
 
+    public GlobalRole findGlobalRoleByName(String name) throws Exception{
+        return globalRoleService.findByName(name);
+    }
+
+    public ArticleRole findArticleRoleByName(String name) throws Exception{
+        return articleRoleService.findByName(name);
+    }
 
     public void addGlobalRole(GlobalRole sectionRole) throws Exception{
         globalRoleService.create(sectionRole);
@@ -79,9 +96,12 @@ public class DataCollector {
         return globalRoleService.getAll();
     }
 
+    public void addUserArticleRole(UserArticleRole role) throws Exception{
+        userArticleRoleService.create(role);
+    }
 
-    public void addUserSectionRole(UserSectionRole role) throws Exception{
-        userSectionRoleService.create(role);
+    public void addUserGlobalRole(UserGlobalRole role) throws Exception{
+        userGlobalRoleService.create(role);
     }
 
 

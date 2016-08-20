@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.repositories.GlobalRoleRepository;
-import ru.knowledgebase.dbmodule.repositories.SectionRoleRepository;
 import ru.knowledgebase.modelsmodule.GlobalRole;
-import ru.knowledgebase.modelsmodule.SectionRole;
 
 import java.util.List;
 
@@ -26,5 +24,13 @@ public class GlobalRoleService {
 
     public List<GlobalRole> getAll() throws Exception{
         return globalRoleRepository.getAll();
+    }
+
+    public GlobalRole findByName(String name) throws Exception{
+        List<GlobalRole> res = globalRoleRepository.findByName(name);
+        if (res.size() == 1){
+            return res.get(0);
+        }
+        return null;
     }
 }

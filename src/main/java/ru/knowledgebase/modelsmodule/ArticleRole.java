@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by vova on 19.08.16.
  */
 @Entity
-public class SectionRole {
+public class ArticleRole {
 
     @Id
     @SequenceGenerator(name="section_role_id_seq",
@@ -20,7 +20,7 @@ public class SectionRole {
     private String name;
 
     @Column
-    private boolean canAddArticle;
+    private boolean canAddArticles;
 
     @Column
     private boolean canEditArticle;
@@ -30,18 +30,6 @@ public class SectionRole {
 
     @Column
     private boolean canViewArticle;
-
-    @Column
-    private boolean canAddSection;
-
-    @Column
-    private boolean canEditSection;
-
-    @Column
-    private boolean canDeleteSection;
-
-    @Column
-    private boolean canViewSection;
 
     @Column
     private boolean canAddNews;
@@ -61,11 +49,15 @@ public class SectionRole {
     @Column
     private boolean canSearch;
 
-    public SectionRole(){
+    public ArticleRole(){
 
     }
 
-    public SectionRole(String name){
+    public ArticleRole(int id){
+        this.id = id;
+    }
+
+    public ArticleRole(String name){
         this.name = name;
     }
 
@@ -86,12 +78,12 @@ public class SectionRole {
     }
 
 
-    public boolean isCanAddArticle() {
-        return canAddArticle;
+    public boolean isCanAddArticles() {
+        return canAddArticles;
     }
 
-    public void setCanAddArticle(boolean canAddArticle) {
-        this.canAddArticle = canAddArticle;
+    public void setCanAddArticles(boolean canAddArticles) {
+        this.canAddArticles = canAddArticles;
     }
 
     public boolean isCanEditArticle() {
@@ -116,38 +108,6 @@ public class SectionRole {
 
     public void setCanViewArticle(boolean canViewArticle) {
         this.canViewArticle = canViewArticle;
-    }
-
-    public boolean isCanAddSection() {
-        return canAddSection;
-    }
-
-    public void setCanAddSection(boolean canAddSection) {
-        this.canAddSection = canAddSection;
-    }
-
-    public boolean isCanEditSection() {
-        return canEditSection;
-    }
-
-    public void setCanEditSection(boolean canEditSection) {
-        this.canEditSection = canEditSection;
-    }
-
-    public boolean isCanDeleteSection() {
-        return canDeleteSection;
-    }
-
-    public void setCanDeleteSection(boolean canDeleteSection) {
-        this.canDeleteSection = canDeleteSection;
-    }
-
-    public boolean isCanViewSection() {
-        return canViewSection;
-    }
-
-    public void setCanViewSection(boolean canViewSection) {
-        this.canViewSection = canViewSection;
     }
 
     public boolean isCanAddNews() {

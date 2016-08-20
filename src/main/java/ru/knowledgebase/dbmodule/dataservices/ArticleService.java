@@ -25,4 +25,8 @@ public class ArticleService {
     public List<Article> getAll() throws Exception{
         return articleRepository.getAll();
     }
+
+    public Article findById(int id) throws Exception{
+        return articleRepository.findOne(id);
+    }
 }

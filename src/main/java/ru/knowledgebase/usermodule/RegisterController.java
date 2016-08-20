@@ -6,6 +6,11 @@ package ru.knowledgebase.usermodule;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.modelsmodule.Article;
+import ru.knowledgebase.modelsmodule.ArticleRole;
+import ru.knowledgebase.modelsmodule.GlobalRole;
+import ru.knowledgebase.rolemodule.ArticleRoleController;
+import ru.knowledgebase.rolemodule.GlobalRoleController;
 import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
 import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
 import ru.knowledgebase.usermodule.ldapmodule.LdapController;
@@ -21,14 +26,23 @@ public class RegisterController {
         }
         DataCollector collector = new DataCollector();
         password = DigestUtils.md5Hex(password);
+        GlobalRole globalRole = collector.findGlobalRoleByName("User");
+        ArticleRole articleRole = collector.findArticleRoleByName("User");
+        Article article = collector.findArticleById(1);
+
+        if (articleRole == null || globalRole == null){
+            throw new Exception("role not found!");
+        }
         try {
-            collector.addUser(new User(login, password));
+
+            User resUser = collector.addUser(new User(login, password));
+            GlobalRoleController.assignUserRole(resUser, new GlobalRole(2));
+            ArticleRoleController.assignUserRole(resUser, new ArticleRole(2), new Article(1));
         }catch(org.springframework.dao.DataIntegrityViolationException e){
             throw new UserAlreadyExistsException();
         }catch (Exception e){
             throw e;
         }
         LdapController.getInstance().createUser(login, password, "User");
-
     }
 }

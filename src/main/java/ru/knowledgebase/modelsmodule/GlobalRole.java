@@ -34,6 +34,10 @@ public class GlobalRole {
 
     }
 
+    public GlobalRole(int id){
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

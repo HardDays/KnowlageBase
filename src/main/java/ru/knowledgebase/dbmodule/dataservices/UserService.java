@@ -18,8 +18,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void create(User user) throws Exception{
-        userRepository.save(user);
+    public User create(User user) throws Exception{
+        return userRepository.save(user);
     }
 
     public User findByLogin(String login) throws Exception{
@@ -28,6 +28,10 @@ public class UserService {
             return res.get(0);
         }
         return null;
+    }
+
+    public User findById(int id) throws Exception{
+        return userRepository.findOne(id);
     }
 
     @Transactional
