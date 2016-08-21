@@ -2,12 +2,12 @@ package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.knowledgebase.modelsmodule.ArticleRole;
-import ru.knowledgebase.modelsmodule.GlobalRole;
+import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.dbmodule.dataservices.ArticleService;
 import ru.knowledgebase.modelsmodule.Article;
-import ru.knowledgebase.modelsmodule.User;
-import ru.knowledgebase.usermodule.RegisterController;
+import ru.knowledgebase.modelsmodule.usermodels.User;
+import ru.knowledgebase.rolemodule.ArticleRoleController;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,15 +35,27 @@ public class Program2 {
           //  System.out.println(service2.create(u));
 
 
-     //   AuthorizeController contr = new AuthorizeController();
+     //   UserController contr = new UserController();
      //   contr.authorize("user0", "user0");
        // RegisterController.register("userNew", "userNew");
        // RegisterController.register("userNew", "userNew");
         DataCollector d = new DataCollector();
         try {
-           // createRoles();
+            ArticleRole r = new ArticleRole("User");
+            r.setCanViewArticle(true);
+            r.setCanSearch(true);
+            r.setCanAddMistakes(true);
+            r.setCanViewMistakes(true);
 
-            RegisterController.register("testrole2", "testrole2");
+           // ArticleRoleController.createRole(r);
+
+        //     ArticleRoleController.updateRole(2, r);
+            //UserEditController.changePassword("testrole7", "passsss");
+
+        //    createRoles();
+          //  UserEditController.changePassword("testrole7", "11111");
+           // LdapController.getInstance().createRole("testrolesss.");
+      //      RegisterController.register("testrole14", "testrole8");
        //     d.addRole(new ArticleRole("AddUser"));
         //    d.addRole(new ArticleRole("DeleteUser"));
         }catch (Exception e){

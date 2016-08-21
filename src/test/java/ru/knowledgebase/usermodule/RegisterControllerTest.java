@@ -14,26 +14,26 @@ import static org.junit.Assert.*;
 public class RegisterControllerTest {
     @BeforeClass
     public static void createUser() throws Exception{
-        RegisterController.register("testuser1", "testuser1");
+        UserController.register("testuser1", "testuser1");
     }
 
     @Test(expected = UserAlreadyExistsException.class)
     public void createExistsUser() throws Exception{
-        RegisterController.register("testuser1", "testuser1");
+        UserController.register("testuser1", "testuser1");
     }
 
     @Test(expected = WrongUserDataException.class)
     public void createUserWrong() throws Exception{
-        RegisterController.register("", "testuser1");
+        UserController.register("", "testuser1");
     }
 
     @Test(expected = WrongUserDataException.class)
     public void createUserWrong2() throws Exception{
-        RegisterController.register("ttttt", "");
+        UserController.register("ttttt", "");
     }
 
     @AfterClass
     public static void deleteUser() throws Exception{
-        UserDeleteController.delete("testuser1");
+        UserController.delete("testuser1");
     }
 }

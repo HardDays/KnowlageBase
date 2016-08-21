@@ -3,7 +3,19 @@ package ru.knowledgebase.dbmodule;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.knowledgebase.dbmodule.dataservices.*;
+import ru.knowledgebase.dbmodule.dataservices.roleservices.ArticleRoleService;
+import ru.knowledgebase.dbmodule.dataservices.roleservices.GlobalRoleService;
+import ru.knowledgebase.dbmodule.dataservices.roleservices.UserArticleRoleService;
+import ru.knowledgebase.dbmodule.dataservices.roleservices.UserGlobalRoleService;
+import ru.knowledgebase.dbmodule.dataservices.userservices.TokenService;
+import ru.knowledgebase.dbmodule.dataservices.userservices.UserService;
 import ru.knowledgebase.modelsmodule.*;
+import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
+import ru.knowledgebase.modelsmodule.usermodels.Token;
+import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import java.util.List;
 
@@ -88,12 +100,24 @@ public class DataCollector {
         return articleRoleService.findByName(name);
     }
 
+    public ArticleRole findArticleRoleById(int id) throws Exception{
+        return articleRoleService.findById(id);
+    }
+
+    public void updateArticleRole(ArticleRole role) throws Exception{
+        articleRoleService.update(role);
+    }
+
     public void addGlobalRole(GlobalRole sectionRole) throws Exception{
         globalRoleService.create(sectionRole);
     }
 
     public List<GlobalRole> getGlobalRoles() throws Exception{
         return globalRoleService.getAll();
+    }
+
+    public GlobalRole findGlobalRoleById(int id) throws Exception{
+        return globalRoleService.findById(id);
     }
 
     public void addUserArticleRole(UserArticleRole role) throws Exception{
@@ -104,5 +128,6 @@ public class DataCollector {
         userGlobalRoleService.create(role);
     }
 
+    //TODO: delete roles, delete userroles
 
 }

@@ -1,5 +1,7 @@
 package ru.knowledgebase.modelsmodule;
 
+import ru.knowledgebase.modelsmodule.usermodels.User;
+
 import javax.persistence.*;
 
 /**

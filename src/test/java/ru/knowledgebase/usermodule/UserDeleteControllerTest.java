@@ -14,16 +14,16 @@ import static org.junit.Assert.*;
 public class UserDeleteControllerTest {
     @BeforeClass
     public static void createUser() throws Exception{
-        RegisterController.register("testuser1", "testuser1");
+        UserController.register("testuser1", "testuser1");
     }
 
     @Test(expected = UserNotFoundException.class)
     public void editPass() throws Exception{
-        UserDeleteController.delete("testuser123");
+        UserController.delete("testuser123");
     }
 
     @AfterClass
     public static void deleteUser() throws Exception{
-        UserDeleteController.delete("testuser1");
+        UserController.delete("testuser1");
     }
 }

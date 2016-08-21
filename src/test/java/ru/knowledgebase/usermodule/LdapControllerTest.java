@@ -5,7 +5,7 @@ import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
 import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
 import ru.knowledgebase.usermodule.exceptions.WrongPasswordException;
 import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
-import ru.knowledgebase.usermodule.ldapmodule.LdapController;
+import ru.knowledgebase.ldapmodule.exceptions.LdapController;
 
 import static org.junit.Assert.assertTrue;
 
