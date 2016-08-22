@@ -3,27 +3,28 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd" >
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <!--@Transaction annotation support -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <context:component-scan base-package="ru.knowledgebase.dbmodule.models" />
+    <context:component-scan base-package="ru.knowledgebase.modelsmodule" />
+    <context:component-scan base-package="ru.knowledgebase.dbmodule.dataservices" />
+    <jpa:repositories base-package="ru.knowledgebase.dbmodule.repositories" />
 
     <!--Activates various annotations to be detected in bean classes: Spring's @Required and @Autowired and so on-->
     <context:annotation-config/>
-
-    <bean id="storageService" class="ru.knowledgebase.dbmodule.dataservices.MediaServiceImpl" />
-    <bean id = "MediaDAO" class = "ru.knowledgebase.dbmodule.DAO.MediaDAOImpl" />
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
     <!-- Datasource. Источник данных - база PostgreSQL -->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"/>
         <property name="url" value="jdbc:postgresql://localhost:5432/test"/>
-        <property name="username" value="postgres"/>
+        <property name="username" value="pisatel"/>
         <property name="password" value="root"/>
     </bean>
 

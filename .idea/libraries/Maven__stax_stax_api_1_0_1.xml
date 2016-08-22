@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="Maven: stax:stax-api:1.0.1">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/stax/stax-api/1.0.1/stax-api-1.0.1.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/stax/stax-api/1.0.1/stax-api-1.0.1-javadoc.jar!/" />
     </JAVADOC>
