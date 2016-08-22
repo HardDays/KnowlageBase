@@ -18,9 +18,37 @@ public class ArticleService {
     private ArticleRepository articleRepository;
 
     @Transactional
-    public void create(Article a) {
-        articleRepository.save(a);
+    public Article create(Article article) {
+        return articleRepository.save(article);
     }
 
+    @Transactional
+    public Article findById(int articleId) throws Exception {
+        return articleRepository.findOne(articleId);
+    }
+
+    @Transactional
+    public Article update(Article article) throws Exception{
+        Article oldActicle = articleRepository.findOne(article.getId());
+        oldActicle.copy(article);
+        return articleRepository.save(oldActicle);
+    }
+
+    @Transactional
+    public void delete(Article article) {
+        articleRepository.delete(article.getId());
+    }
+
+    @Transactional
+    public boolean exists(int id) {
+        return articleRepository.exists(id);
+    }
+
+    @Transactional
+    public List<Article> findByTitle(String title) {
+        return articleRepository.findByTitle(title);
+    }
+
+    @Transactional
     public List<Article> getAll(){ return articleRepository.getAll(); }
 }

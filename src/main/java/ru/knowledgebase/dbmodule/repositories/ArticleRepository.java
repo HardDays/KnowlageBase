@@ -9,7 +9,10 @@ import ru.knowledgebase.modelsmodule.Article;
 
 import java.util.List;
 
-public interface ArticleRepository extends CrudRepository<Article, Long> {
+public interface ArticleRepository extends CrudRepository<Article, Integer> {
     @Query("from Article")
     public List<Article> getAll();
+
+    @Query("from Article where title = ?1")
+    public List<Article> findByTitle(String title);
 }

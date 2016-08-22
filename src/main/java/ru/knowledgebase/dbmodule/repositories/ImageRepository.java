@@ -6,8 +6,8 @@ package ru.knowledgebase.dbmodule.repositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import ru.knowledgebase.modelsmodule.Token;
+import ru.knowledgebase.modelsmodule.Image;
 
-public interface TokenRepository extends CrudRepository<Token, Integer> {
-    
+public interface ImageRepository extends CrudRepository<Image, String> {
+
 }

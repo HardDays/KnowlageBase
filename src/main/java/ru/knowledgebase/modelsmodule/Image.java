@@ -1,6 +1,9 @@
 package ru.knowledgebase.modelsmodule;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * Created by root on 10.08.16.
@@ -9,28 +12,39 @@ import javax.persistence.*;
 @Entity
 public class Image {
 
-    public int getId() {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    private String id;
+
+    @Column
+    private String path;
+
+    public Image() {}
+
+    public Image(String path) {
+        this.path = path;
+    }
+
+    @ManyToOne
+    private Article article;
+
+
+    //BEGIN SG METHODS
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getPath() {
+        return path;
     }
 
-    public byte[] getContent() {
-        return content;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public void setContent(byte[] content) {
-        this.content = content;
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private int id;
-
-    @Column
-    private byte[] content;
+    //END SG METHODS
 
 }

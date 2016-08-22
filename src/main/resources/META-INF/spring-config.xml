@@ -11,7 +11,6 @@
     <!--@Transaction annotation support -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-<<<<<<< .merge_file_5D0Kbb
     <context:component-scan base-package="ru.knowledgebase.modelsmodule" />
     <context:component-scan base-package="ru.knowledgebase.dbmodule.dataservices" />
     <jpa:repositories base-package="ru.knowledgebase.dbmodule.repositories" />
@@ -19,15 +18,6 @@
     <!--Activates various annotations to be detected in bean classes: Spring's @Required and @Autowired and so on-->
     <context:annotation-config/>
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
-=======
-    <context:component-scan base-package="ru.knowledgebase.dbmodule.models" />
-
-    <!--Activates various annotations to be detected in bean classes: Spring's @Required and @Autowired and so on-->
-    <context:annotation-config/>
-
-    <bean id="storageService" class="ru.knowledgebase.dbmodule.dataservices.MediaServiceImpl" />
-    <bean id = "MediaDAO" class = "ru.knowledgebase.dbmodule.DAO.MediaDAOImpl" />
->>>>>>> .merge_file_C7RHC9
 
     <!-- Datasource. Источник данных - база PostgreSQL -->
     <bean id="dataSource"

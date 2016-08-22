@@ -1,6 +1,11 @@
 package ru.knowledgebase.modelsmodule;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import java.util.List;
 
 /**
  * Created by root on 09.08.16.
@@ -14,7 +19,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator="user_id_seq")
     private int id;
+
+    @OneToMany(mappedBy="author")
+    @Cascade({CascadeType.ALL})
+    private List<Article> article;
+
+    @Column
     private String login;
+    @Column
     private String password;
 
 
@@ -33,8 +45,6 @@ public class User {
 
     public User(){}
 
-    @Basic
-    @Column(name = "login")
     public String getLogin() {
         return login;
     }
@@ -43,8 +53,6 @@ public class User {
         this.login = login;
     }
 
-    @Basic
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }

@@ -15,13 +15,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public boolean create(User user) {
-        try {
-            userRepository.save(user);
-        }
-        catch (Exception ex) {
-            return false;
-        }
-        return true;
+    public User create(User user){
+        return userRepository.save(user);
     }
 }

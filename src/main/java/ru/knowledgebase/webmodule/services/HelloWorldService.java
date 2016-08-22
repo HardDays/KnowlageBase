@@ -11,11 +11,7 @@ public class HelloWorldService {
     @GET
     @Path("/say/{param}")
     public Response getMessage(@PathParam("param") String message) {
-<<<<<<< .merge_file_eXFfV6
         String output = "Jersey says: " + message;
-=======
-        String output = "Jersey says " + message;
->>>>>>> .merge_file_RKZN46
         return Response.status(200).entity(output).build();
     }
 

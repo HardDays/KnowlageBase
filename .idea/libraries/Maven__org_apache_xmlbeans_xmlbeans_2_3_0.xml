@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="Maven: org.apache.xmlbeans:xmlbeans:2.3.0">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/apache/xmlbeans/xmlbeans/2.3.0/xmlbeans-2.3.0.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/xmlbeans/xmlbeans/2.3.0/xmlbeans-2.3.0-javadoc.jar!/" />
     </JAVADOC>
