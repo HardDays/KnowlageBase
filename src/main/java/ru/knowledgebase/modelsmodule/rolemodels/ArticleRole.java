@@ -16,6 +16,9 @@ public class ArticleRole {
             generator="section_role_id_seq")
     private int id;
 
+    @OneToOne(mappedBy = "articleRole", cascade = {CascadeType.REMOVE})
+    private UserArticleRole userArticleRole;
+
     @Column
     private String name;
 

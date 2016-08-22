@@ -68,7 +68,6 @@ public class UserController {
         GlobalRole globalRole = collector.findGlobalRoleById(defaultGlobalRoleId);
 
         if (article == null || articleRole == null || globalRole == null){
-            System.out.println(article);
             throw new AssignDefaultRoleException();
         }
         try {
@@ -78,19 +77,15 @@ public class UserController {
         }catch(org.springframework.dao.DataIntegrityViolationException e){
             throw new UserAlreadyExistsException();
         }
-        LdapController.getInstance().createUser(login, password, "User");
+       // LdapController.getInstance().createUser(login, password, "User");
     }
 
     public static void delete(User user) throws Exception{
         DataCollector collector = new DataCollector();
         if (user == null)
             throw new UserNotFoundException();
-        Token token = collector.getUserToken(user);
-        if (token != null)
-            collector.deleteToken(token);
         collector.deleteUser(user);
-
-        LdapController.getInstance().deleteUser(user.getLogin());
+   //     LdapController.getInstance().deleteUser(user.getLogin());
     }
 
     public static void delete(int id) throws Exception{

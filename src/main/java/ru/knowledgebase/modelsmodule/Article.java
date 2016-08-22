@@ -1,5 +1,6 @@
 package ru.knowledgebase.modelsmodule;
 
+import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.persistence.*;
@@ -37,7 +38,8 @@ public class Article {
         author = u;
     }
 
-
+    @OneToOne(mappedBy = "article", cascade = {CascadeType.REMOVE})
+    private UserArticleRole userArticleRole;
 
     public int getId() {
         return id;
@@ -62,8 +64,5 @@ public class Article {
     public void setBody(String body) {
         this.body = body;
     }
-
-
-
 
 }

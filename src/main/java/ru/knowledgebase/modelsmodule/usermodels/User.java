@@ -1,5 +1,9 @@
 package ru.knowledgebase.modelsmodule.usermodels;
 
+import ru.knowledgebase.modelsmodule.Article;
+import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
+
 import javax.persistence.*;
 
 /**
@@ -13,11 +17,23 @@ public class User {
             allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator="user_id_seq")
+    @Column(name = "id")
     private int id;
+
     @Column(name = "login", unique = true, nullable = false)
     private String login;
+
     @Column(name = "password", nullable = false)
     private String password;
+
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private Token token;
+
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private UserGlobalRole userGlobalRole;
+
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private UserArticleRole userArticleRole;
 
 
     public int getId() {

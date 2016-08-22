@@ -15,7 +15,7 @@ public interface ArticleRoleRepository extends CrudRepository<ArticleRole, Integ
     @Query("from ArticleRole")
     public List<ArticleRole> getAll() throws Exception;
 
-    @Query("select g from ArticleRole g where g.name = ?1")
+    @Query("select r from ArticleRole r where r.name = ?1")
     public List<ArticleRole> findByName(String name) throws Exception;
 
 }

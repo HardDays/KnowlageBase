@@ -17,7 +17,7 @@ public class Token {
             generator="token_id_seq")
     private int id;
 
-    @OneToOne(cascade = {CascadeType.MERGE})
+    @OneToOne
     private User user;
 
     @Column

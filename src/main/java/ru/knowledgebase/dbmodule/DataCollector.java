@@ -124,10 +124,12 @@ public class DataCollector {
         userArticleRoleService.create(role);
     }
 
+    public UserArticleRole findUserArticleRole(User user, Article article) throws Exception{
+        return userArticleRoleService.find(user, article);
+    }
+
     public void addUserGlobalRole(UserGlobalRole role) throws Exception{
         userGlobalRoleService.create(role);
     }
-
-    //TODO: delete roles, delete userroles
 
 }

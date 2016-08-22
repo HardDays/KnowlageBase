@@ -15,10 +15,10 @@ public class UserGlobalRole {
             generator="user_global_role_id_seq")
     private int id;
 
-    @OneToOne(cascade = {CascadeType.REMOVE})
+    @OneToOne
     private User user;
 
-    @OneToOne(cascade = {CascadeType.REMOVE})
+    @OneToOne
     private GlobalRole globalRole;
 
     public UserGlobalRole(){

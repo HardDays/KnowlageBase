@@ -4,10 +4,13 @@ import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by root on 17.08.16.
  */
+
+
 @Entity
 public class UserArticleRole {
 
@@ -19,13 +22,13 @@ public class UserArticleRole {
             generator="user_article_role_id_seq")
     private int id;
 
-    @OneToOne(cascade = {CascadeType.MERGE})
+    @OneToOne
     private User user;
 
-    @OneToOne(cascade = {CascadeType.MERGE})
+    @OneToOne
     private Article article;
 
-    @OneToOne(cascade = {CascadeType.MERGE})
+    @OneToOne
     private ArticleRole articleRole;
 
     public UserArticleRole(){
@@ -36,6 +39,14 @@ public class UserArticleRole {
         this.user = user;
         this.articleRole = articleRole;
         this.article = article;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

@@ -1,5 +1,9 @@
 package ru.knowledgebase.convertermodule;
 
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.HWPFDocumentCore;
+import org.apache.poi.hwpf.converter.WordToHtmlConverter;
+import org.apache.poi.hwpf.converter.WordToHtmlUtils;
 import org.apache.poi.xwpf.converter.core.FileImageExtractor;
 import org.apache.poi.xwpf.converter.core.FileURIResolver;
 import org.apache.poi.xwpf.converter.xhtml.XHTMLConverter;
@@ -12,6 +16,21 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
+import java.util.Base64;
+
+import org.apache.poi.hwpf.converter.WordToHtmlConverter;
+import org.apache.poi.hwpf.usermodel.Picture;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 
 /**
@@ -34,10 +53,60 @@ public class ArticleConverter {
         return localInstance;
     }
 
-    public void convert(InputStream input) throws Exception{
+
+    public class InlineImageWordToHtmlConverter extends WordToHtmlConverter {
+
+        public InlineImageWordToHtmlConverter(Document document) {
+            super(document);
+        }
+
+        @Override
+        protected void processImageWithoutPicturesManager(Element currentBlock,
+                                                          boolean inlined, Picture picture)
+        {
+            Element imgNode = currentBlock.getOwnerDocument().createElement("img");
+            StringBuilder sb = new StringBuilder();
+            sb.append(Base64.getMimeEncoder().encodeToString(picture.getRawContent()));
+            sb.insert(0, "data:"+picture.getMimeType()+";base64,");
+            imgNode.setAttribute("src", sb.toString());
+            currentBlock.appendChild(imgNode);
+        }
+
+    }
+
+    public void convertDoc(InputStream input, String outputFile) throws Exception{
+        try {
+            HWPFDocumentCore wordDocument = WordToHtmlUtils.loadDoc(input);
+                WordToHtmlConverter wordToHtmlConverter = new InlineImageWordToHtmlConverter(
+                    DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                            .newDocument());
+            wordToHtmlConverter.processDocument(wordDocument);
+
+            StringWriter stringWriter = new StringWriter();
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+            transformer.setOutputProperty(OutputKeys.METHOD, "html");
+            transformer.transform(new DOMSource( wordToHtmlConverter.getDocument()), new StreamResult( stringWriter ) );
+
+            String html = stringWriter.toString();
+
+            FileOutputStream fos=new FileOutputStream(new File(outputFile));
+            DataOutputStream dos;
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos,"UTF-8"));
+            out.write(html);
+            out.close();
+        }
+        catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void convert(InputStream input, String outputFile) throws Exception{
         try {
             XWPFDocument document = new XWPFDocument(input);
-            File outFile = new File("/home/vova/Project BZ/trash/docx/target/d.html");
+            File outFile = new File(outputFile);
             outFile.getParentFile().mkdirs();
             List<XWPFTable> tables = document.getTables();
             //add borders to tables
@@ -75,6 +144,7 @@ public class ArticleConverter {
             XHTMLConverter.getInstance().convert(document,out,options);
         }
         catch (Throwable e) {
+            e.printStackTrace();
             throw new Exception();
         }
 

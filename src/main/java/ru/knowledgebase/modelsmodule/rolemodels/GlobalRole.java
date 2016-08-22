@@ -15,6 +15,9 @@ public class GlobalRole {
             generator="global_role_id_seq")
     private int id;
 
+    @OneToOne(mappedBy = "globalRole", cascade = {CascadeType.REMOVE})
+    private UserGlobalRole userGlobalRole;
+
     @Column
     private String name;
 

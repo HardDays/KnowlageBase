@@ -18,22 +18,27 @@ public class ArticleRoleController {
         coll.addArticleRole(role);
     }
 
-    public static void assignUserRole(User user, ArticleRole role, Article article) throws Exception{
+    public static void assignUserRole(User user, ArticleRole articleRole, Article article) throws Exception{
         DataCollector coll = new DataCollector();
-        coll.addUserArticleRole(new UserArticleRole(user, role, article));
+        if (user == null)
+            throw new UserNotFoundException();
+        if (articleRole == null)
+            throw new RoleNotFoundException();
+        if (article == null)
+            throw new ArticleNotFoundException();
+        UserArticleRole newRole = new UserArticleRole(user, articleRole, article);
+        UserArticleRole role = coll.findUserArticleRole(user, article);
+        if (role != null){
+            newRole.setId(role.getId());
+        }
+        coll.addUserArticleRole(newRole);
     }
 
     public static void assignUserRole(int userId, int roleId, int articleId) throws Exception{
         DataCollector coll = new DataCollector();
         User user = coll.findUserById(userId);
-        if (user == null)
-            throw new UserNotFoundException();
         ArticleRole role = coll.findArticleRoleById(roleId);
-        if (role == null)
-            throw new RoleNotFoundException();
         Article article = coll.findArticleById(articleId);
-        if (article == null)
-            throw new ArticleNotFoundException();
         assignUserRole(user, role, article);
     }
 
