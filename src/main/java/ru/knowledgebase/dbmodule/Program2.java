@@ -69,9 +69,11 @@ public class Program2 {
         //    service.create(a);
          //   createRoles();
          // UserController.register("testrole19", "testrole15");
-            ArticleRoleController.assignUserRole(4, 1, 1);
+       //     ArticleRoleController.assignUserRole(4, 1, 1);
        //  UserController.authorize("testrole19", "testrole15");
           // UserController.delete("testrole19");
+            ArticleRole res = ArticleRoleController.findUserRole(4, 1);
+            System.out.println(res.getName());
 
         }catch (Exception e){
             e.printStackTrace();

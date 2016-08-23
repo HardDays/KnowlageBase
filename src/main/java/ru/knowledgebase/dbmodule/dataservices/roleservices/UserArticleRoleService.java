@@ -33,4 +33,9 @@ public class UserArticleRoleService {
         }
         return null;
     }
+
+    @Transactional
+    public void delete(UserArticleRole role) throws Exception{
+        userArticleRoleRepository.delete(role);
+    }
 }

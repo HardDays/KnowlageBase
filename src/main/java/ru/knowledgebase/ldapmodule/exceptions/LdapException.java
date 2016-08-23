@@ -1,4 +1,4 @@
-package ru.knowledgebase.ldapmodule;
+package ru.knowledgebase.ldapmodule.exceptions;
 
 /**
  * Created by vova on 18.08.16.

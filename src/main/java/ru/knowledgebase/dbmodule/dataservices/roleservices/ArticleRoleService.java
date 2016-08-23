@@ -26,7 +26,7 @@ public class ArticleRoleService {
         return articleRoleRepository.getAll();
     }
 
-    public ArticleRole findByName(String name) throws Exception{
+    public ArticleRole find(String name) throws Exception{
         List<ArticleRole> res = articleRoleRepository.findByName(name);
         if (res.size() == 1){
             return res.get(0);
@@ -34,11 +34,15 @@ public class ArticleRoleService {
         return null;
     }
 
-    public ArticleRole findById(int id) throws Exception{
+    public ArticleRole find(int id) throws Exception{
         return articleRoleRepository.findOne(id);
     }
 
     public void update(ArticleRole role) throws Exception{
         articleRoleRepository.save(role);
+    }
+
+    public void delete(ArticleRole role) throws Exception{
+        articleRoleRepository.delete(role);
     }
 }

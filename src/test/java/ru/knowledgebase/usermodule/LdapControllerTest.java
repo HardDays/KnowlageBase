@@ -5,7 +5,7 @@ import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
 import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
 import ru.knowledgebase.usermodule.exceptions.WrongPasswordException;
 import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
-import ru.knowledgebase.ldapmodule.exceptions.LdapController;
+import ru.knowledgebase.ldapmodule.LdapController;
 
 import static org.junit.Assert.assertTrue;
 
@@ -56,14 +56,14 @@ public class LdapControllerTest{
 
     @Test
     public void changePass() throws Exception {
-         LdapController.getInstance().changePass("testuser1", "newpass");
+         LdapController.getInstance().changePassword("testuser1", "newpass");
          LdapController.getInstance().authorize("testuser1", "newpass");
-         LdapController.getInstance().changePass("testuser1", "testuser1");
+         LdapController.getInstance().changePassword("testuser1", "testuser1");
     }
 
     @Test(expected = WrongUserDataException.class)
     public void changePass2() throws Exception {
-        LdapController.getInstance().changePass("testuser1", "");
+        LdapController.getInstance().changePassword("testuser1", "");
     }
 
     @Test(expected = UserNotFoundException.class)

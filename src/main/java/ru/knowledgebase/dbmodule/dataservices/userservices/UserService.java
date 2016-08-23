@@ -22,7 +22,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findByLogin(String login) throws Exception{
+    public User find(String login) throws Exception{
         List<User> res = userRepository.findByLogin(login);
         if (res.size() == 1){
             return res.get(0);
@@ -30,7 +30,7 @@ public class UserService {
         return null;
     }
 
-    public User findById(int id) throws Exception{
+    public User find(int id) throws Exception{
         return userRepository.findOne(id);
     }
 

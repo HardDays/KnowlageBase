@@ -44,8 +44,8 @@ public class DataCollector {
     }
 
     // to add
-    public Article findArticleById(int id) throws Exception{
-        return articleService.findById(id);
+    public Article findArticle(int id) throws Exception{
+        return articleService.find(id);
     }
 
     public User addUser(User user) throws Exception{
@@ -68,12 +68,12 @@ public class DataCollector {
         userService.update(user);
     }
 
-    public User findUserByLogin(String login) throws Exception{
-        return userService.findByLogin(login);
+    public User findUser(String login) throws Exception{
+        return userService.find(login);
     }
 
-    public User findUserById(int id) throws Exception{
-        return userService.findById(id);
+    public User findUser(int id) throws Exception{
+        return userService.find(id);
     }
 
     public Token getUserToken(User user) throws Exception{
@@ -88,44 +88,52 @@ public class DataCollector {
         articleRoleService.create(articleRole);
     }
 
+    public void updateArticleRole(ArticleRole role) throws Exception {
+        articleRoleService.update(role);
+    }
+
+    public void deleteArticleRole(ArticleRole role) throws Exception {
+        articleRoleService.delete(role);
+    }
+
     public List<ArticleRole> getArticleRoles() throws Exception{
         return articleRoleService.getAll();
     }
 
-    public GlobalRole findGlobalRoleByName(String name) throws Exception{
-        return globalRoleService.findByName(name);
+    public ArticleRole findArticleRole(String name) throws Exception{
+        return articleRoleService.find(name);
     }
 
-    public ArticleRole findArticleRoleByName(String name) throws Exception{
-        return articleRoleService.findByName(name);
-    }
-
-    public ArticleRole findArticleRoleById(int id) throws Exception{
-        return articleRoleService.findById(id);
-    }
-
-    public void updateArticleRole(ArticleRole role) throws Exception{
-        articleRoleService.update(role);
-    }
-
-    public void addGlobalRole(GlobalRole sectionRole) throws Exception{
-        globalRoleService.create(sectionRole);
-    }
-
-    public List<GlobalRole> getGlobalRoles() throws Exception{
-        return globalRoleService.getAll();
-    }
-
-    public GlobalRole findGlobalRoleById(int id) throws Exception{
-        return globalRoleService.findById(id);
+    public ArticleRole findArticleRole(int id) throws Exception{
+        return articleRoleService.find(id);
     }
 
     public void addUserArticleRole(UserArticleRole role) throws Exception{
         userArticleRoleService.create(role);
     }
 
+    public void deleteUserArticleRole(UserArticleRole role) throws Exception{
+        userArticleRoleService.delete(role);
+    }
+
     public UserArticleRole findUserArticleRole(User user, Article article) throws Exception{
         return userArticleRoleService.find(user, article);
+    }
+
+    public void addGlobalRole(GlobalRole sectionRole) throws Exception{
+        globalRoleService.create(sectionRole);
+    }
+
+    public GlobalRole findGlobalRole(String name) throws Exception{
+        return globalRoleService.find(name);
+    }
+
+    public List<GlobalRole> getGlobalRoles() throws Exception{
+        return globalRoleService.getAll();
+    }
+
+    public GlobalRole findGlobalRole(int id) throws Exception{
+        return globalRoleService.find(id);
     }
 
     public void addUserGlobalRole(UserGlobalRole role) throws Exception{

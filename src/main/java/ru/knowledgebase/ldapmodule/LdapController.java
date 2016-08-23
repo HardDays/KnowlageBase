@@ -1,6 +1,7 @@
-package ru.knowledgebase.ldapmodule.exceptions;
+package ru.knowledgebase.ldapmodule;
 
-import ru.knowledgebase.ldapmodule.LdapException;
+import ru.knowledgebase.ldapmodule.exceptions.LdapConnectionException;
+import ru.knowledgebase.ldapmodule.exceptions.LdapException;
 import ru.knowledgebase.rolemodule.exceptions.RoleAlreadyExistsException;
 import ru.knowledgebase.rolemodule.exceptions.RoleNotFoundException;
 import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
@@ -207,7 +208,7 @@ public class LdapController {
      * @param uid user id
      * @param password new user password
      */
-    public void changePass(String uid, String password) throws Exception{
+    public void changePassword(String uid, String password) throws Exception{
         if (password.length() == 0){
             throw new WrongUserDataException();
         }
@@ -293,6 +294,40 @@ public class LdapController {
         }catch (javax.naming.CommunicationException e){
             throw new LdapConnectionException();
         }catch (Exception e) {
+            throw new LdapException();
+        }
+    }
+
+    public void changeLogin(String uid, String newUid) throws Exception{
+        if (uid.length() == 0) {
+            throw new WrongUserDataException();
+        }
+        //form user domain
+        String domain = null;
+        try {
+            domain = findUserDomain(uid);
+        } catch (Exception e) {
+            throw new UserNotFoundException();
+        }
+        DirContext ctx = null;
+        try {
+            //authorize as admin
+            ctx = formAdminContext();
+            Pattern pattern = Pattern.compile("uid=[a-zA-Z0-9]*");
+            Matcher matcher = pattern.matcher(domain);
+            if (matcher.find()) {
+                String newDomain = domain.replace(matcher.group(0), "uid=" + newUid);
+                ctx.rename(domain, newDomain);
+                ctx.close();
+            } else {
+                throw new LdapException();
+            }
+        } catch (javax.naming.NameNotFoundException e) {
+            throw new RoleNotFoundException();
+        } catch (javax.naming.CommunicationException e) {
+            throw new LdapConnectionException();
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new LdapException();
         }
     }

@@ -13,7 +13,7 @@ import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
 import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
 import ru.knowledgebase.usermodule.exceptions.WrongPasswordException;
 import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
-import ru.knowledgebase.ldapmodule.exceptions.LdapController;
+import ru.knowledgebase.ldapmodule.LdapController;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Date;
@@ -30,7 +30,7 @@ public class UserController {
         User user = null;
         DataCollector collector = new DataCollector();
         password = DigestUtils.md5Hex(password);
-        user = collector.findUserByLogin(login);
+        user = collector.findUser(login);
         if (user == null){
             throw new UserNotFoundException();
         }else if (!user.getPassword().equals(password)){
@@ -54,30 +54,32 @@ public class UserController {
         return authorize(login, password);
     }
 
-    public static void register(String login, String password) throws Exception{
-        if (login.length() == 0 || password.length() == 0){
-            throw new WrongUserDataException();
-        }
+    public static void register(User user) throws Exception{
         DataCollector collector = new DataCollector();
-        password = DigestUtils.md5Hex(password);
 
-        User resUser = null;
-
-        Article article = collector.findArticleById(defaultRootArticleId);
-        ArticleRole articleRole = collector.findArticleRoleById(defaultArticleRoleId);
-        GlobalRole globalRole = collector.findGlobalRoleById(defaultGlobalRoleId);
+        Article article = collector.findArticle(defaultRootArticleId);
+        ArticleRole articleRole = collector.findArticleRole(defaultArticleRoleId);
+        GlobalRole globalRole = collector.findGlobalRole(defaultGlobalRoleId);
 
         if (article == null || articleRole == null || globalRole == null){
             throw new AssignDefaultRoleException();
         }
         try {
-            resUser = collector.addUser(new User(login, password));
+            User resUser = collector.addUser(user);
             GlobalRoleController.assignUserRole(resUser, globalRole);
-            ArticleRoleController.assignUserRole(resUser, articleRole, article);
+            ArticleRoleController.assignUserRole(resUser, article, articleRole);
         }catch(org.springframework.dao.DataIntegrityViolationException e){
             throw new UserAlreadyExistsException();
         }
-       // LdapController.getInstance().createUser(login, password, "User");
+        // LdapController.getInstance().createUser(login, password, "User");
+    }
+
+    public static void register(String login, String password) throws Exception{
+        if (login.length() == 0 || password.length() == 0){
+            throw new WrongUserDataException();
+        }
+        password = DigestUtils.md5Hex(password);
+        register(new User(login, password));
     }
 
     public static void delete(User user) throws Exception{
@@ -90,13 +92,13 @@ public class UserController {
 
     public static void delete(int id) throws Exception{
         DataCollector collector = new DataCollector();
-        User user = collector.findUserById(id);
+        User user = collector.findUser(id);
         delete(user);
     }
 
     public static void delete(String login) throws Exception{
         DataCollector collector = new DataCollector();
-        User user = collector.findUserByLogin(login);
+        User user = collector.findUser(login);
         delete(user);
     }
 
@@ -109,18 +111,44 @@ public class UserController {
             throw new UserNotFoundException();
         user.setPassword(newPass);
         collector.updateUser(user);
-        LdapController.getInstance().changePass(user.getLogin(), newPass);
+        LdapController.getInstance().changePassword(user.getLogin(), newPass);
     }
 
     public static void changePassword(int id, String newPass) throws Exception{
         DataCollector collector = new DataCollector();
-        User user = collector.findUserById(id);
+        User user = collector.findUser(id);
         changePassword(user, newPass);
     }
 
     public static void changePassword(String login, String newPass) throws Exception{
         DataCollector collector = new DataCollector();
-        User user = collector.findUserByLogin(login);
+        User user = collector.findUser(login);
         changePassword(user, newPass);
     }
+
+    public static void changeLogin(User user, String newLogin) throws Exception{
+        if (newLogin.length() == 0)
+            throw new WrongUserDataException();
+        DataCollector collector = new DataCollector();
+        if (user == null)
+            throw new UserNotFoundException();
+        if (collector.findUser(newLogin) != null)
+            throw new UserAlreadyExistsException();
+        user.setLogin(newLogin);
+        collector.updateUser(user);
+        //LdapController.getInstance().changeLogin(user.getLogin(), newLogin);
+    }
+
+    public static void changeLogin(String login, String newLogin) throws Exception{
+        DataCollector collector = new DataCollector();
+        User user = collector.findUser(login);
+        changeLogin(user, newLogin);
+    }
+
+    public static void changeLogin(int id, String newLogin) throws Exception{
+        DataCollector collector = new DataCollector();
+        User user = collector.findUser(id);
+        changeLogin(user, newLogin);
+    }
+
 }

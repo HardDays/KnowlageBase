@@ -23,10 +23,10 @@ public class GlobalRoleController {
 
     public static void assignUserRole(int userId, int roleId) throws Exception{
         DataCollector coll = new DataCollector();
-        User user = coll.findUserById(userId);
+        User user = coll.findUser(userId);
         if (user == null)
             throw new UserNotFoundException();
-        GlobalRole role = coll.findGlobalRoleById(roleId);
+        GlobalRole role = coll.findGlobalRole(roleId);
         if (role == null)
             throw new RoleNotFoundException();
         assignUserRole(user, role);

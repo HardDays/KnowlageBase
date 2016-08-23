@@ -35,10 +35,34 @@ public class UserArticleRole {
 
     }
 
-    public UserArticleRole(User user, ArticleRole articleRole, Article article){
+    public UserArticleRole(User user, Article article, ArticleRole articleRole){
         this.user = user;
         this.articleRole = articleRole;
         this.article = article;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+    public ArticleRole getArticleRole() {
+        return articleRole;
+    }
+
+    public void setArticleRole(ArticleRole articleRole) {
+        this.articleRole = articleRole;
     }
 
     public int getId() {

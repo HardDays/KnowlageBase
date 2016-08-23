@@ -26,7 +26,7 @@ public class GlobalRoleService {
         return globalRoleRepository.getAll();
     }
 
-    public GlobalRole findByName(String name) throws Exception{
+    public GlobalRole find(String name) throws Exception{
         List<GlobalRole> res = globalRoleRepository.findByName(name);
         if (res.size() == 1){
             return res.get(0);
@@ -34,7 +34,7 @@ public class GlobalRoleService {
         return null;
     }
 
-    public GlobalRole findById(int id) throws Exception{
+    public GlobalRole find(int id) throws Exception{
         return globalRoleRepository.findOne(id);
     }
 }
