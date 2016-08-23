@@ -120,8 +120,16 @@ public class DataCollector {
         return userArticleRoleService.find(user, article);
     }
 
-    public void addGlobalRole(GlobalRole sectionRole) throws Exception{
-        globalRoleService.create(sectionRole);
+    public void addGlobalRole(GlobalRole globalRole) throws Exception{
+        globalRoleService.create(globalRole);
+    }
+
+    public void updateGlobalRole(GlobalRole globalRole) throws Exception{
+        globalRoleService.update(globalRole);
+    }
+
+    public void deleteGlobalRole(GlobalRole globalRole) throws Exception{
+        globalRoleService.delete(globalRole);
     }
 
     public GlobalRole findGlobalRole(String name) throws Exception{
@@ -138,6 +146,15 @@ public class DataCollector {
 
     public void addUserGlobalRole(UserGlobalRole role) throws Exception{
         userGlobalRoleService.create(role);
+    }
+
+    public UserGlobalRole findUserGlobalRole(User user) throws Exception{
+        return userGlobalRoleService.find(user);
+    }
+
+    public void deleteUserGlobalRole(UserGlobalRole role) throws Exception{
+        userGlobalRoleService.delete(role);
+
     }
 
 }

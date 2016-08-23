@@ -25,6 +25,30 @@ public class UserGlobalRole {
 
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public GlobalRole getGlobalRole() {
+        return globalRole;
+    }
+
+    public void setGlobalRole(GlobalRole globalRole) {
+        this.globalRole = globalRole;
+    }
+
     public UserGlobalRole(User user, GlobalRole globalRole){
         this.user = user;
         this.globalRole = globalRole;

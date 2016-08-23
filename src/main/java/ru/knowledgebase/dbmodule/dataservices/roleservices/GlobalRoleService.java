@@ -37,4 +37,12 @@ public class GlobalRoleService {
     public GlobalRole find(int id) throws Exception{
         return globalRoleRepository.findOne(id);
     }
+
+    public void update(GlobalRole role) throws Exception{
+        globalRoleRepository.save(role);
+    }
+
+    public void delete(GlobalRole role) throws Exception{
+        globalRoleRepository.delete(role);
+    }
 }

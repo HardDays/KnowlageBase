@@ -25,7 +25,15 @@ public class ArticleRoleController {
     }
 
     public static void delete(ArticleRole role) throws Exception{
+        if (role == null)
+            throw new RoleNotFoundException();
         DataCollector collector = new DataCollector();
+        collector.deleteArticleRole(role);
+    }
+
+    public static void delete(int id) throws Exception{
+        DataCollector collector = new DataCollector();
+        ArticleRole role = collector.findArticleRole(id);
         collector.deleteArticleRole(role);
     }
 
@@ -48,9 +56,8 @@ public class ArticleRoleController {
     public static void assignUserRole(UserArticleRole role) throws Exception{
         DataCollector collector = new DataCollector();
         UserArticleRole existRole = collector.findUserArticleRole(role.getUser(),role.getArticle());
-        if (existRole != null){
+        if (existRole != null)
             role.setId(existRole.getId());
-        }
         collector.addUserArticleRole(role);
     }
 
