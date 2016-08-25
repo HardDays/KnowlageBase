@@ -6,66 +6,92 @@ import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
-import ru.knowledgebase.rolemodule.exceptions.RoleAlreadyExistsException;
-import ru.knowledgebase.rolemodule.exceptions.RoleNotFoundException;
-import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
+import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
+import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 
 /**
  * Created by vova on 20.08.16.
  */
 public class ArticleRoleController {
 
-    public static void create(ArticleRole role) throws Exception{
-        DataCollector collector = new DataCollector();
+    private static DataCollector collector = new DataCollector();
+
+    /**
+     * Create new article role
+     * @param articleRole article role formed object
+     */
+    public static void create(ArticleRole articleRole) throws Exception{
         try {
-            collector.addArticleRole(role);
+            collector.addArticleRole(articleRole);
         }catch (org.springframework.dao.DataIntegrityViolationException e) {
             throw new RoleAlreadyExistsException();
         }
     }
-
-    public static void update(ArticleRole role) throws Exception{
-        DataCollector collector = new DataCollector();
-        collector.updateArticleRole(role);
+    /**
+     * Update article role
+     * @param articleRole article role object (important: id should be specified)
+     */
+    public static void update(ArticleRole articleRole) throws Exception{
+        collector.updateArticleRole(articleRole);
     }
-
-    public static void delete(ArticleRole role) throws Exception{
-        if (role == null)
+    /**
+     * Delete article role
+     * @param articleRole article role object (important: id should be specified)
+     */
+    public static void delete(ArticleRole articleRole) throws Exception{
+        if (articleRole == null)
             throw new RoleNotFoundException();
-        DataCollector collector = new DataCollector();
+        collector.deleteArticleRole(articleRole);
+    }
+    /**
+     * Update article role
+     * @param articleRoleId id of article role
+     */
+    public static void delete(int articleRoleId) throws Exception{
+        ArticleRole role = collector.findArticleRole(articleRoleId);
         collector.deleteArticleRole(role);
     }
-
-    public static void delete(int id) throws Exception{
-        DataCollector collector = new DataCollector();
-        ArticleRole role = collector.findArticleRole(id);
-        collector.deleteArticleRole(role);
-    }
-
+    /**
+     * Find user role for article
+     * @param user user object (important: id should be specified)
+     * @param article article object (important: id should be specified)
+     * @return article role object
+     */
     public static ArticleRole findUserRole(User user, Article article) throws Exception{
         if (user == null)
             throw new UserNotFoundException();
         if (article == null)
             throw new ArticleNotFoundException();
-        DataCollector collector = new DataCollector();
         return collector.findUserArticleRole(user, article).getArticleRole();
     }
-
+    /**
+     * Find user role for article
+     * @param userId id of user
+     * @param articleId id of article
+     * @return article role object
+     */
     public static ArticleRole findUserRole(int userId, int articleId) throws Exception{
-        DataCollector collector = new DataCollector();
         User user = collector.findUser(userId);
         Article article = collector.findArticle(articleId);
         return findUserRole(user, article);
     }
-
+    /**
+     * Create user role for specified article
+     * @param role formed object
+     */
     public static void assignUserRole(UserArticleRole role) throws Exception{
-        DataCollector collector = new DataCollector();
         UserArticleRole existRole = collector.findUserArticleRole(role.getUser(),role.getArticle());
         if (existRole != null)
             role.setId(existRole.getId());
         collector.addUserArticleRole(role);
     }
-
+    /**
+     * Create user role for specified article
+     * @param user user object (important: id should be specified)
+     * @param article article object (important: id should be specified)
+     * @param articleRole article role object (important: id should be specified)
+     */
     public static void assignUserRole(User user, Article article, ArticleRole articleRole) throws Exception{
         if (user == null)
             throw new UserNotFoundException();
@@ -75,20 +101,31 @@ public class ArticleRoleController {
             throw new RoleNotFoundException();
         assignUserRole(new UserArticleRole(user, article, articleRole));
     }
-
-    public static void assignUserRole(int userId, int articleId, int roleId) throws Exception{
-        DataCollector collector = new DataCollector();
+    /**
+     * Create user role for specified article
+     * @param userId user id
+     * @param articleId article id
+     * @param articleRoleId article role id
+     */
+    public static void assignUserRole(int userId, int articleId, int articleRoleId) throws Exception{
         User user = collector.findUser(userId);
         Article article = collector.findArticle(articleId);
-        ArticleRole articleRole = collector.findArticleRole(roleId);
+        ArticleRole articleRole = collector.findArticleRole(articleRoleId);
         assignUserRole(user, article, articleRole);
     }
-
+    /**
+     * Delete user role for specified article
+     * @param role role formed object (important: id should be specified)
+     */
     private static void deleteUserRole(UserArticleRole role) throws Exception{
-        DataCollector collector = new DataCollector();
         collector.deleteUserArticleRole(role);
     }
-
+    /**
+     * Create user role for specified article
+     * @param user user object (important: id should be specified)
+     * @param article article object (important: id should be specified)
+     * @param articleRole article role object (important: id should be specified)
+     */
     public static void deleteUserRole(User user, Article article, ArticleRole articleRole) throws Exception{
         if (user == null)
             throw new UserNotFoundException();
@@ -98,12 +135,16 @@ public class ArticleRoleController {
             throw new RoleNotFoundException();
         deleteUserRole(new UserArticleRole(user, article, articleRole));
     }
-
-    public static void deleteUserRole(int userId, int articleId, int roleId) throws Exception{
-        DataCollector collector = new DataCollector();
+    /**
+     * Delete user role for specified article
+     * @param userId user id
+     * @param articleId article id
+     * @param articleRoleId article role id
+     */
+    public static void deleteUserRole(int userId, int articleId, int articleRoleId) throws Exception{
         User user = collector.findUser(userId);
         Article article = collector.findArticle(articleId);
-        ArticleRole articleRole = collector.findArticleRole(roleId);
+        ArticleRole articleRole = collector.findArticleRole(articleRoleId);
         deleteUserRole(user, article, articleRole);
     }
 

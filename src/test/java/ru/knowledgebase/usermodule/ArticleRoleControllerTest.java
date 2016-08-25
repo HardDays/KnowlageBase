@@ -9,15 +9,10 @@ import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
-import ru.knowledgebase.rolemodule.exceptions.RoleAlreadyExistsException;
-import ru.knowledgebase.rolemodule.exceptions.RoleNotFoundException;
-import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
-import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
-import ru.knowledgebase.usermodule.exceptions.WrongPasswordException;
-import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
+import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
+import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 import ru.knowledgebase.ldapmodule.LdapController;
-
-import javax.validation.constraints.AssertTrue;
 
 import static org.junit.Assert.assertTrue;
 /**

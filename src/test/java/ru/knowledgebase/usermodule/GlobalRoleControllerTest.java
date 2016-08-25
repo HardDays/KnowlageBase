@@ -2,20 +2,17 @@ package ru.knowledgebase.usermodule;
 
 import org.junit.Before;
 import org.junit.Test;
-import ru.knowledgebase.articlemodule.ArticleNotFoundException;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.ldapmodule.LdapController;
 import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.rolemodule.GlobalRoleController;
-import ru.knowledgebase.rolemodule.exceptions.RoleAlreadyExistsException;
-import ru.knowledgebase.rolemodule.exceptions.RoleNotFoundException;
-import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
+import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
+import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 
 import static org.junit.Assert.assertTrue;
 

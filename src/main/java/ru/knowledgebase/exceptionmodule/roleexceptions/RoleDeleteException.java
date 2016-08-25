@@ -1,4 +1,4 @@
-package ru.knowledgebase.rolemodule.exceptions;
+package ru.knowledgebase.exceptionmodule.roleexceptions;
 
 /**
  * Created by vova on 25.08.16.

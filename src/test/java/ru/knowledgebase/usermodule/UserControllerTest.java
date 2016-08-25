@@ -10,10 +10,10 @@ import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
-import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
-import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
-import ru.knowledgebase.usermodule.exceptions.WrongPasswordException;
-import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
+import ru.knowledgebase.exceptionmodule.userexceptions.UserAlreadyExistsException;
+import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.WrongPasswordException;
+import ru.knowledgebase.exceptionmodule.userexceptions.WrongUserDataException;
 
 /**
  * Created by vova on 18.08.16.

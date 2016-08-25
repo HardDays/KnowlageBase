@@ -1,12 +1,10 @@
 package ru.knowledgebase.usermodule;
 
 import org.junit.*;
-import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.rolemodule.exceptions.RoleNotFoundException;
-import ru.knowledgebase.usermodule.exceptions.UserAlreadyExistsException;
-import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
-import ru.knowledgebase.usermodule.exceptions.WrongPasswordException;
-import ru.knowledgebase.usermodule.exceptions.WrongUserDataException;
+import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.UserAlreadyExistsException;
+import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.WrongPasswordException;
 import ru.knowledgebase.ldapmodule.LdapController;
 
 import static org.junit.Assert.assertTrue;

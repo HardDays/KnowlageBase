@@ -1,4 +1,4 @@
-package ru.knowledgebase.usermodule.exceptions;
+package ru.knowledgebase.exceptionmodule.userexceptions;
 
 /**
  * Created by vova on 18.08.16.
