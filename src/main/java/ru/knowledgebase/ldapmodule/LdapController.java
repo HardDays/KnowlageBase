@@ -3,6 +3,7 @@ package ru.knowledgebase.ldapmodule;
 import ru.knowledgebase.ldapmodule.exceptions.LdapConnectionException;
 import ru.knowledgebase.ldapmodule.exceptions.LdapException;
 import ru.knowledgebase.rolemodule.exceptions.RoleAlreadyExistsException;
+import ru.knowledgebase.rolemodule.exceptions.RoleDeleteException;
 import ru.knowledgebase.rolemodule.exceptions.RoleNotFoundException;
 import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
 import ru.knowledgebase.usermodule.exceptions.WrongPasswordException;
@@ -106,13 +107,51 @@ public class LdapController {
         if (answer.hasMore()) {
             SearchResult result = (SearchResult) answer.next();
             resDomain = result.getNameInNamespace();
-        }
-        else {
-            throw new WrongPasswordException();
+        } else {
+            throw new UserNotFoundException();
         }
         answer.close();
         return resDomain;
     }
+
+    public boolean isUserExists(String uid) throws Exception{
+        try {
+            findUserDomain(uid);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    private String findRoleDomain(String role) throws Exception {
+        DirContext ctx = formContext(formEnvironment());
+        //can be changed to cn
+        String filter = "(ou=" + role + ")";
+        //search user with uid
+        SearchControls ctrl = new SearchControls();
+        ctrl.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        NamingEnumeration answer = ctx.search(domain, filter, ctrl);
+        //go through result
+        String resDomain;
+        if (answer.hasMore()) {
+            SearchResult result = (SearchResult) answer.next();
+            resDomain = result.getNameInNamespace();
+        } else {
+            throw new RoleNotFoundException();
+        }
+        answer.close();
+        return resDomain;
+    }
+
+    public boolean isRoleExists(String role) throws Exception{
+        try {
+            findRoleDomain(role);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Authorize user with uid and password
      * @param uid user id
@@ -143,18 +182,18 @@ public class LdapController {
      * Create new user
      * @param uid user id
      * @param password user password
-     * @param type category of user
+     * @param role category of user
      */
-    public void createUser(String uid, String password, String type) throws Exception{
+    public void createUser(String uid, String password, String role) throws Exception{
         if ((password.length() == 0) || (uid.length() == 0)){
             throw new WrongUserDataException();
         }
-        String userDomain = "uid=" + uid + ",ou=" + type + "," + domain;
+        String userDomain = "uid=" + uid + ",ou=" + role + "," + domain;
         //make attributes
         Attribute uidAttr = new BasicAttribute("uid", uid);
         Attribute passAttr = new BasicAttribute("userPassword", password);
         Attribute ocAttr = new BasicAttribute("objectClass");
-        //type of object
+        //role of object
         ocAttr.add("account");
         ocAttr.add("simpleSecurityObject");
 
@@ -171,10 +210,11 @@ public class LdapController {
             ctx.close();
         }catch (javax.naming.NameAlreadyBoundException e){
             throw new UserAlreadyExistsException();
-        }catch (javax.naming.CommunicationException e){
+        }catch (javax.naming.CommunicationException e) {
             throw new LdapConnectionException();
+        }catch(javax.naming.NameNotFoundException e){
+            throw new RoleNotFoundException();
         }catch (Exception e) {
-            e.printStackTrace();
             throw new LdapException();
         }
     }
@@ -293,6 +333,30 @@ public class LdapController {
             throw new RoleAlreadyExistsException();
         }catch (javax.naming.CommunicationException e){
             throw new LdapConnectionException();
+        }catch (Exception e) {
+            throw new LdapException();
+        }
+    }
+
+    public void deleteRole(String role) throws Exception {
+        //find domain
+        String domain = null;
+        try {
+            domain = findRoleDomain(role);
+        }catch (Exception e){
+            throw new RoleNotFoundException();
+        }
+        DirContext ctx = null;
+        try {
+            //authorize as admin
+            ctx = formAdminContext();
+            //delete role
+            ctx.destroySubcontext(domain);
+            ctx.close();
+        }catch (javax.naming.CommunicationException e) {
+            throw new LdapConnectionException();
+        } catch(javax.naming.ContextNotEmptyException e){
+            throw new RoleDeleteException();
         }catch (Exception e) {
             throw new LdapException();
         }

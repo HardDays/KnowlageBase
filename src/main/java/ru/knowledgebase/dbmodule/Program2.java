@@ -3,6 +3,7 @@ package ru.knowledgebase.dbmodule;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.knowledgebase.convertermodule.ArticleConverter;
+import ru.knowledgebase.ldapmodule.LdapController;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.dbmodule.dataservices.ArticleService;
@@ -56,6 +57,12 @@ public class Program2 {
             r.setCanAddMistakes(true);
             r.setCanViewMistakes(true);
 
+           // UserController.register("tt5", "tt");
+           // UserController.register("tt6", "tt");
+    //        LdapController.getInstance().deleteRole("User");
+      //      System.out.println(LdapController.getInstance().isRoleExists("User"));
+            //   UserController.changeLogin("tt", "tt4");
+
            // ArticleRoleController.createRole(r);
 
         //     ArticleRoleController.updateRole(2, r);
@@ -72,8 +79,9 @@ public class Program2 {
        //     ArticleRoleController.assignUserRole(4, 1, 1);
        //  UserController.authorize("testrole19", "testrole15");
           // UserController.delete("testrole19");
-            ArticleRole res = ArticleRoleController.findUserRole(4, 1);
-            System.out.println(res.getName());
+           // ArticleRole res = ArticleRoleController.findUserRole(4, 1);
+           // System.out.println(res.getName());
+
 
         }catch (Exception e){
             e.printStackTrace();

@@ -15,10 +15,10 @@ public class UserGlobalRole {
             generator="user_global_role_id_seq")
     private int id;
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
-    @OneToOne
+    @ManyToOne
     private GlobalRole globalRole;
 
     public UserGlobalRole(){

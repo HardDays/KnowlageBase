@@ -29,4 +29,8 @@ public class ArticleService {
     public Article find(int id) throws Exception{
         return articleRepository.findOne(id);
     }
+
+    public void delete(Article article) throws Exception{
+        articleRepository.delete(article);
+    }
 }

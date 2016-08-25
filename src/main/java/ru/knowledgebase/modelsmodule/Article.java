@@ -4,6 +4,7 @@ import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by root on 10.08.16.
@@ -38,8 +39,8 @@ public class Article {
         author = u;
     }
 
-    @OneToOne(mappedBy = "article", cascade = {CascadeType.REMOVE})
-    private UserArticleRole userArticleRole;
+    @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
+    private List<UserArticleRole> userArticleRole;
 
     public int getId() {
         return id;

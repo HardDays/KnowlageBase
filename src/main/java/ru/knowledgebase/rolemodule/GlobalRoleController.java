@@ -4,6 +4,7 @@ import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
+import ru.knowledgebase.rolemodule.exceptions.RoleAlreadyExistsException;
 import ru.knowledgebase.rolemodule.exceptions.RoleNotFoundException;
 import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
 
@@ -14,7 +15,11 @@ public class GlobalRoleController {
 
     public static void create(GlobalRole role) throws Exception{
         DataCollector collector = new DataCollector();
-        collector.addGlobalRole(role);
+        try {
+            collector.addGlobalRole(role);
+        }catch (org.springframework.dao.DataIntegrityViolationException e){
+            throw new RoleAlreadyExistsException();
+        }
     }
 
     public static void update(GlobalRole role) throws Exception{
@@ -59,7 +64,20 @@ public class GlobalRoleController {
         assignUserRole(user, role);
     }
 
-    public static void deleteUserRole(UserGlobalRole role) throws Exception{
+    public static GlobalRole findUserRole(User user) throws Exception{
+        if (user == null)
+            throw new UserNotFoundException();
+        DataCollector collector = new DataCollector();
+        return collector.findUserGlobalRole(user).getGlobalRole();
+    }
+
+    public static GlobalRole findUserRole(int userId) throws Exception{
+        DataCollector collector = new DataCollector();
+        User user = collector.findUser(userId);
+        return findUserRole(user);
+    }
+
+    private static void deleteUserRole(UserGlobalRole role) throws Exception{
         DataCollector collector = new DataCollector();
         collector.deleteUserGlobalRole(role);
     }
@@ -72,7 +90,7 @@ public class GlobalRoleController {
         deleteUserRole(new UserGlobalRole(user, globalRole));
     }
 
-    public static void deleteGlobalRole(int userId, int roleId) throws Exception{
+    public static void deleteUserRole(int userId, int roleId) throws Exception{
         DataCollector collector = new DataCollector();
         User user = collector.findUser(userId);
         GlobalRole role = collector.findGlobalRole(roleId);

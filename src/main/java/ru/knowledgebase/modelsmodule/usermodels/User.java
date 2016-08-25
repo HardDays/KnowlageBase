@@ -5,6 +5,7 @@ import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by root on 09.08.16.
@@ -29,11 +30,11 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private Token token;
 
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE})
-    private UserGlobalRole userGlobalRole;
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<UserGlobalRole> userGlobalRoles;
 
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE})
-    private UserArticleRole userArticleRole;
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<UserArticleRole> userArticleRoles;
 
 
     public int getId() {

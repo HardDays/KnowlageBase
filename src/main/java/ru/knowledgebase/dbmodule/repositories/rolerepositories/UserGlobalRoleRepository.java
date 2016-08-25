@@ -12,7 +12,7 @@ import java.util.List;
  * Created by vova on 20.08.16.
  */
 public interface UserGlobalRoleRepository  extends CrudRepository<UserGlobalRole, Integer> {
-    @Query("select r from UserGlboalRole r where  r.user =?1")
+    @Query("select r from UserGlobalRole r where  r.user =?1")
     public List<UserGlobalRole> find(User user) throws Exception;
 
 }

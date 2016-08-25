@@ -41,6 +41,29 @@
           <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi-scratchpad:3.9" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi:3.9" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:apache-ldap-api:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-asn1-api:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-i18n:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-ldap-client-api:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-ldap-codec-core:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-ldap-extras-codec:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-ldap-extras-codec-api:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.mina:mina-core:2.0.9" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-ldap-extras-aci:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.servicemix.bundles:org.apache.servicemix.bundles.antlr:2.7.7_5" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-ldap-model:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-asn1-ber:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-ldap-schema-converter:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-ldap-schema-data:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-util:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.directory.api:api-all:1.0.0-M32" />
+          <element id="library" level="project" name="Maven: org.apache.servicemix.bundles:org.apache.servicemix.bundles.xpp3:1.1.4c_6" />
+          <element id="library" level="project" name="Maven: org.apache.servicemix.bundles:org.apache.servicemix.bundles.dom4j:1.6.1_5" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.10" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.10" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:15.0" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.containers:jersey-container-servlet:2.10.1" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.containers:jersey-container-servlet-core:2.10.1" />
@@ -61,7 +84,6 @@
           <element id="library" level="project" name="Maven: org.jvnet.mimepull:mimepull:1.9.3" />
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-jpa:1.0.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons-core:1.1.0.RELEASE" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.1" />
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.8" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.9" />

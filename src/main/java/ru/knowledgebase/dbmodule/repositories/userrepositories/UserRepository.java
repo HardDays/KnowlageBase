@@ -16,5 +16,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Query("select u from users u where u.login = ?1")
     public List<User> findByLogin(String login) throws Exception;
 
+    @Query("from users")
+    public List<User> getAll() throws Exception;
 }
 

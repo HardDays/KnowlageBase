@@ -1,6 +1,7 @@
 package ru.knowledgebase.modelsmodule.rolemodels;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by vova on 19.08.16.
@@ -15,10 +16,10 @@ public class GlobalRole {
             generator="global_role_id_seq")
     private int id;
 
-    @OneToOne(mappedBy = "globalRole", cascade = {CascadeType.REMOVE})
-    private UserGlobalRole userGlobalRole;
+    @OneToMany(mappedBy = "globalRole", cascade = {CascadeType.REMOVE})
+    private List<UserGlobalRole> userGlobalRole;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @Column

@@ -22,13 +22,13 @@ public class UserArticleRole {
             generator="user_article_role_id_seq")
     private int id;
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
-    @OneToOne
+    @ManyToOne
     private Article article;
 
-    @OneToOne
+    @ManyToOne
     private ArticleRole articleRole;
 
     public UserArticleRole(){

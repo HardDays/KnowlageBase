@@ -1,6 +1,7 @@
 package ru.knowledgebase.modelsmodule.rolemodels;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by vova on 19.08.16.
@@ -16,10 +17,10 @@ public class ArticleRole {
             generator="section_role_id_seq")
     private int id;
 
-    @OneToOne(mappedBy = "articleRole", cascade = {CascadeType.REMOVE})
-    private UserArticleRole userArticleRole;
+    @OneToMany(mappedBy = "articleRole", cascade = {CascadeType.REMOVE})
+    private List<UserArticleRole> userArticleRoles;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @Column

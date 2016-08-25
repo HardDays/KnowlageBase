@@ -6,6 +6,7 @@ import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+import ru.knowledgebase.rolemodule.exceptions.RoleAlreadyExistsException;
 import ru.knowledgebase.rolemodule.exceptions.RoleNotFoundException;
 import ru.knowledgebase.usermodule.exceptions.UserNotFoundException;
 
@@ -16,7 +17,11 @@ public class ArticleRoleController {
 
     public static void create(ArticleRole role) throws Exception{
         DataCollector collector = new DataCollector();
-        collector.addArticleRole(role);
+        try {
+            collector.addArticleRole(role);
+        }catch (org.springframework.dao.DataIntegrityViolationException e) {
+            throw new RoleAlreadyExistsException();
+        }
     }
 
     public static void update(ArticleRole role) throws Exception{
@@ -79,7 +84,7 @@ public class ArticleRoleController {
         assignUserRole(user, article, articleRole);
     }
 
-    public static void deleteUserRole(UserArticleRole role) throws Exception{
+    private static void deleteUserRole(UserArticleRole role) throws Exception{
         DataCollector collector = new DataCollector();
         collector.deleteUserArticleRole(role);
     }

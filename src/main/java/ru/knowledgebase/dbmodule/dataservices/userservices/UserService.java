@@ -22,6 +22,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public List<User> getAll() throws Exception{
+        return userRepository.getAll();
+    }
+
     public User find(String login) throws Exception{
         List<User> res = userRepository.findByLogin(login);
         if (res.size() == 1){
@@ -36,9 +40,6 @@ public class UserService {
 
     @Transactional
     public void update(User user) throws Exception{
-        //User oldUser = userRepository.findOne(new Long(user.getId()));
-     //   User oldUser = userRepository.findOne1(user.getId()).get(0);
-      //  oldUser.copy(user);
         userRepository.save(user);
     }
 

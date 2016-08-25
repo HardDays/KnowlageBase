@@ -93,6 +93,12 @@
       <version>3.9</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.apache.directory.api/apache-ldap-api -->
+    <dependency>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>apache-ldap-api</artifactId>
+      <version>1.0.0-M32</version>
+    </dependency>
 
 
       <dependency>

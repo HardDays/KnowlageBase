@@ -44,8 +44,17 @@ public class DataCollector {
     }
 
     // to add
+
+    public void addArticle(Article article) throws Exception{
+        articleService.create(article);
+    }
+
     public Article findArticle(int id) throws Exception{
         return articleService.find(id);
+    }
+
+    public void deleteArticle(Article article) throws Exception{
+        articleService.delete(article);
     }
 
     public User addUser(User user) throws Exception{
@@ -74,6 +83,10 @@ public class DataCollector {
 
     public User findUser(int id) throws Exception{
         return userService.find(id);
+    }
+
+    public List<User> getAllUsers() throws Exception{
+        return userService.getAll();
     }
 
     public Token getUserToken(User user) throws Exception{

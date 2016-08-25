@@ -22,13 +22,15 @@ import java.sql.Date;
  * Created by vova on 17.08.16.
  */
 public class UserController {
-    private final static int defaultGlobalRoleId = 2;
-    private final static int defaultArticleRoleId = 2;
+
+    private final static int defaultGlobalRoleId = 1;
+    private final static int defaultArticleRoleId = 1;
     private final static int defaultRootArticleId = 1;
+
+    private static final DataCollector collector = new DataCollector();
 
     public static Token authorize(String login, String password) throws Exception{
         User user = null;
-        DataCollector collector = new DataCollector();
         password = DigestUtils.md5Hex(password);
         user = collector.findUser(login);
         if (user == null){
@@ -55,8 +57,6 @@ public class UserController {
     }
 
     public static void register(User user) throws Exception{
-        DataCollector collector = new DataCollector();
-
         Article article = collector.findArticle(defaultRootArticleId);
         ArticleRole articleRole = collector.findArticleRole(defaultArticleRoleId);
         GlobalRole globalRole = collector.findGlobalRole(defaultGlobalRoleId);
@@ -71,7 +71,7 @@ public class UserController {
         }catch(org.springframework.dao.DataIntegrityViolationException e){
             throw new UserAlreadyExistsException();
         }
-        // LdapController.getInstance().createUser(login, password, "User");
+        LdapController.getInstance().createUser(user.getLogin(), user.getPassword(), globalRole.getName());
     }
 
     public static void register(String login, String password) throws Exception{
@@ -83,21 +83,18 @@ public class UserController {
     }
 
     public static void delete(User user) throws Exception{
-        DataCollector collector = new DataCollector();
         if (user == null)
             throw new UserNotFoundException();
         collector.deleteUser(user);
-   //     LdapController.getInstance().deleteUser(user.getLogin());
+        LdapController.getInstance().deleteUser(user.getLogin());
     }
 
     public static void delete(int id) throws Exception{
-        DataCollector collector = new DataCollector();
         User user = collector.findUser(id);
         delete(user);
     }
 
     public static void delete(String login) throws Exception{
-        DataCollector collector = new DataCollector();
         User user = collector.findUser(login);
         delete(user);
     }
@@ -106,7 +103,6 @@ public class UserController {
         if (newPass.length() == 0)
             throw new WrongUserDataException();
         newPass = DigestUtils.md5Hex(newPass);
-        DataCollector collector = new DataCollector();
         if (user == null)
             throw new UserNotFoundException();
         user.setPassword(newPass);
@@ -115,13 +111,11 @@ public class UserController {
     }
 
     public static void changePassword(int id, String newPass) throws Exception{
-        DataCollector collector = new DataCollector();
         User user = collector.findUser(id);
         changePassword(user, newPass);
     }
 
     public static void changePassword(String login, String newPass) throws Exception{
-        DataCollector collector = new DataCollector();
         User user = collector.findUser(login);
         changePassword(user, newPass);
     }
@@ -129,24 +123,22 @@ public class UserController {
     public static void changeLogin(User user, String newLogin) throws Exception{
         if (newLogin.length() == 0)
             throw new WrongUserDataException();
-        DataCollector collector = new DataCollector();
         if (user == null)
             throw new UserNotFoundException();
         if (collector.findUser(newLogin) != null)
             throw new UserAlreadyExistsException();
+        String oldLogin = user.getLogin();
         user.setLogin(newLogin);
         collector.updateUser(user);
-        //LdapController.getInstance().changeLogin(user.getLogin(), newLogin);
+        LdapController.getInstance().changeLogin(oldLogin, newLogin);
     }
 
     public static void changeLogin(String login, String newLogin) throws Exception{
-        DataCollector collector = new DataCollector();
         User user = collector.findUser(login);
         changeLogin(user, newLogin);
     }
 
     public static void changeLogin(int id, String newLogin) throws Exception{
-        DataCollector collector = new DataCollector();
         User user = collector.findUser(id);
         changeLogin(user, newLogin);
     }
