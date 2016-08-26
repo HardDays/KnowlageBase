@@ -84,6 +84,13 @@ public class GlobalRoleController {
         delete(globalRole);
     }
     /**
+     * Finds global role
+     * @param id id of global role
+     */
+    public GlobalRole findGlobalRole(int id) throws Exception{
+        return collector.findGlobalRole(id);
+    }
+    /**
      * Assign global role for specified user
      * @param role formed object
      */

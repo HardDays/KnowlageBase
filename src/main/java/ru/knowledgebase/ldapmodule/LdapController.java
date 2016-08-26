@@ -23,8 +23,8 @@ public class LdapController {
     private String ldapURI = "ldap://localhost";
     private String contextFactory = "com.sun.jndi.ldap.LdapCtxFactory";
     private String adminName = "admin";
-    private String adminPass = "12345";
-    private String domain = "dc=db,dc=test";
+    private String adminPass = "d2434fg4hjS2340_113";
+    private String domain = "knowledge.base";
     private String defaultRole = "User";
 
     private static volatile LdapController instance;
