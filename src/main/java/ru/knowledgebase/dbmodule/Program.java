@@ -27,14 +27,20 @@ public class Program {
         ImageService is = (ImageService) context.getBean("imageService");
         UserService us = (UserService) context.getBean("userService");
 
-        User au = new User("Anon");
+        User au = new User("Anton");
         au = us.create(au);
+        //au = us.find(3);
+
 
         List<Image> img = new LinkedList<Image>();
-        img.add(new Image("home/pisatel"));
+        //img.add(is.find("d162d837-f0a7-42aa-a7fc-9d1e93b0dfd0"));
+        img.add(new Image("hui"));
+
+        img.set(0, is.create(img.get(0)));
 
         article = new Article("New book", "Very interesting book!", "New",
                 au, null, img);
+
         article = service.create(article);
 
         List<Article> arts = service.getAll();
@@ -46,9 +52,10 @@ public class Program {
             for (Image i : a.getImages()) {
                 System.out.println(i.getPath());
             }
+            //service.delete(a.getId());
         }
 
-        //service.delete(article);
+        //service.delete(article.getId());
 
 
 

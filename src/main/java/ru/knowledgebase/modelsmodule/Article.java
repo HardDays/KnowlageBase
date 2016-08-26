@@ -2,10 +2,13 @@ package ru.knowledgebase.modelsmodule;
 
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.collection.internal.PersistentList;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,7 +47,7 @@ public class Article {
     @Cascade({CascadeType.ALL})
     private List<Article> children;
 
-    @OneToMany(mappedBy="article")
+    @OneToMany(fetch = FetchType.EAGER)
     @Cascade({CascadeType.ALL})
     List<Image> images;
 
@@ -79,8 +82,17 @@ public class Article {
         return author;
     }
 
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @Transactional
     public List<Image> getImages() {
         return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
     public int getId() {

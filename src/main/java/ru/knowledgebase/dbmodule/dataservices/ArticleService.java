@@ -23,20 +23,20 @@ public class ArticleService {
     }
 
     @Transactional
-    public Article findById(int articleId) throws Exception {
+    public Article findById(int articleId){
         return articleRepository.findOne(articleId);
     }
 
     @Transactional
-    public Article update(Article article) throws Exception{
+    public Article update(Article article) {
         Article oldActicle = articleRepository.findOne(article.getId());
         oldActicle.copy(article);
         return articleRepository.save(oldActicle);
     }
 
     @Transactional
-    public void delete(Article article) {
-        articleRepository.delete(article.getId());
+    public void delete(Integer id) {
+        articleRepository.delete(id);
     }
 
     @Transactional

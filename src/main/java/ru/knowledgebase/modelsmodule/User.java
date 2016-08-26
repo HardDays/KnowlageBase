@@ -20,8 +20,8 @@ public class User {
             generator="user_id_seq")
     private int id;
 
-    @OneToMany(mappedBy="author")
-    @Cascade({CascadeType.ALL})
+    @OneToMany(mappedBy = "author")
+    @Cascade({CascadeType.SAVE_UPDATE})
     private List<Article> article;
 
     @Column

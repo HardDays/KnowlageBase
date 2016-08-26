@@ -27,9 +27,6 @@ public class Image {
         this.path = path;
     }
 
-    @ManyToOne
-    private Article article;
-
 
     //BEGIN SG METHODS
 

@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.Image;
 import ru.knowledgebase.modelsmodule.User;
@@ -25,6 +26,7 @@ public class ArticleServiceTest {
     static final ArticleService as = (ArticleService) context.getBean("articleService");;
     static final UserService us = (UserService) context.getBean("userService");
 
+    @Transactional
     @Test
     public void create() throws Exception {
 
@@ -40,9 +42,10 @@ public class ArticleServiceTest {
         article = as.create(article);
         boolean res = as.exists(article.getId());
         assertTrue(res);
-        as.delete(article);
+        as.delete(article.getId());
     }
 
+    @Transactional
     @Test
     public void findById() throws Exception {
         User au = new User("Anon");
@@ -53,6 +56,7 @@ public class ArticleServiceTest {
         assertTrue(as.exists(article.getId()));
     }
 
+    @Transactional
     @Test
     public void update() throws Exception {
         User au = new User("Anon");
@@ -64,8 +68,10 @@ public class ArticleServiceTest {
         article.setTitle(newTitle);
         as.update(article);
         assertTrue(as.findById(article.getId()).getTitle().equals(newTitle));
+        as.delete(article.getId());
     }
 
+    @Transactional
     @Test
     public void delete() throws Exception {
         User au = new User("Anon");
@@ -74,10 +80,11 @@ public class ArticleServiceTest {
                 au, null, null);
         as.create(article);
         article = as.findByTitle(article.getTitle()).get(0);
-        as.delete(article);
+        as.delete(article.getId());
         assertTrue(as.findById(article.getId()) == null);
     }
 
+    @Transactional
     @Test
     public void hasNoChanges() throws Exception {
         User au = new User("Anon");
@@ -92,6 +99,8 @@ public class ArticleServiceTest {
 
         assertTrue(newArticle.getParentArticle().equals(article));
 
+        as.delete(article.getId());
+        as.delete(newArticle.getId());
 
 
     }
