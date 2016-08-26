@@ -1,5 +1,7 @@
 package ru.knowledgebase.usermodule;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import ru.knowledgebase.dbmodule.DataCollector;
@@ -36,7 +38,6 @@ public class GlobalRoleControllerTest {
     private DataCollector collector = new DataCollector();
     private LdapController ldapController = LdapController.getInstance();
 
-    @Before
     public void prepareUser() throws Exception{
         User user = collector.findUser(login1);
         if (user == null) {
@@ -46,7 +47,15 @@ public class GlobalRoleControllerTest {
             collector.addUser(user);
         }
         if (!ldapController.isUserExists(login1))
-            ldapController.createUser(login1, password1, "User");
+            ldapController.createUser(login1, password1);
+    }
+
+    public void afterUser() throws Exception{
+        User user = collector.findUser(login1);
+        if (user != null)
+            collector.deleteUser(user);
+        if (ldapController.isUserExists(login1))
+            ldapController.deleteUser(login1);
     }
 
     @Before
@@ -71,6 +80,7 @@ public class GlobalRoleControllerTest {
 
     @Before
     public void prepareRoles() throws Exception{
+        afterUser();
         GlobalRole role = collector.findGlobalRole(role1Name);
         if (role != null){
             collector.deleteGlobalRole(role);
@@ -79,6 +89,12 @@ public class GlobalRoleControllerTest {
         if (role != null){
             collector.deleteGlobalRole(role);
         }
+        if (ldapController.isRoleExists(role1Name)) {
+            ldapController.deleteRole(role1Name);
+        }
+        if (ldapController.isRoleExists(role2Name))
+            ldapController.deleteRole(role2Name);
+        prepareUser();
     }
 
     @Before
@@ -94,24 +110,24 @@ public class GlobalRoleControllerTest {
     @Test
     public void create1() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         assertTrue(collector.findGlobalRole(role1Name) != null);
     }
 
     @Test(expected = RoleAlreadyExistsException.class)
     public void create2() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
+        GlobalRoleController.getInstance().create(role);
     }
 
     @Test
     public void update1() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         role = collector.findGlobalRole(role1Name);
         role.setName(role2Name);
-        GlobalRoleController.update(role);
+        GlobalRoleController.getInstance().update(role);
         assertTrue(collector.findGlobalRole(role1Name) == null);
         assertTrue(collector.findGlobalRole(role2Name) != null);
     }
@@ -119,122 +135,127 @@ public class GlobalRoleControllerTest {
     @Test
     public void delete1() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.delete(role);
+        GlobalRoleController.getInstance().delete(role);
         assertTrue(collector.findGlobalRole(role1Name) == null);
     }
 
     @Test
     public void delete2() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.delete(role.getId());
+        GlobalRoleController.getInstance().delete(role.getId());
         assertTrue(collector.findGlobalRole(role1Name) == null);
     }
 
     @Test
     public void delete3() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
         UserGlobalRole userGlobalRole = new UserGlobalRole(user, role);
-        GlobalRoleController.assignUserRole(userGlobalRole);
-        collector.deleteGlobalRole(role);
+        GlobalRoleController.getInstance().assignUserRole(userGlobalRole);
+        GlobalRoleController.getInstance().delete(role);
         assertTrue(collector.findUser(login1) != null);
         assertTrue(collector.findGlobalRole(role1Name) == null);
+    }
+
+    @Test(expected = RoleNotFoundException.class)
+    public void delete4() throws Exception{
+        GlobalRoleController.getInstance().delete(10000);
     }
 
     @Test
     public void findUserRole1() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.assignUserRole(user, role);
-        assertTrue(GlobalRoleController.findUserRole(user).getName().equals(role1Name));
+        GlobalRoleController.getInstance().assignUserRole(user, role);
+        assertTrue(GlobalRoleController.getInstance().findUserRole(user).getName().equals(role1Name));
     }
 
     @Test
     public void findUserRole2() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.assignUserRole(user, role);
-        assertTrue(GlobalRoleController.findUserRole(user.getId()).getName().equals(role1Name));
+        GlobalRoleController.getInstance().assignUserRole(user, role);
+        assertTrue(GlobalRoleController.getInstance().findUserRole(user.getId()).getName().equals(role1Name));
     }
 
     @Test(expected = UserNotFoundException.class)
     public void findUserRole3() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.assignUserRole(user, role);
-        assertTrue(GlobalRoleController.findUserRole(10000).getName().equals(role1Name));
+        GlobalRoleController.getInstance().assignUserRole(user, role);
+        assertTrue(GlobalRoleController.getInstance().findUserRole(10000).getName().equals(role1Name));
     }
 
     @Test
     public void assignUserRole1() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.assignUserRole(user, role);
+        GlobalRoleController.getInstance().assignUserRole(user, role);
         assertTrue(collector.findUserGlobalRole(user) != null);
     }
 
     @Test
     public void assignUserRole2() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.assignUserRole(user.getId(), role.getId());
+        GlobalRoleController.getInstance().assignUserRole(user.getId(), role.getId());
         assertTrue(collector.findUserGlobalRole(user) != null);
     }
 
     @Test
     public void assignUserRole3() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.assignUserRole(new UserGlobalRole(user, role));
+        GlobalRoleController.getInstance().assignUserRole(new UserGlobalRole(user, role));
         assertTrue(collector.findUserGlobalRole(user) != null);
     }
 
     @Test(expected = UserNotFoundException.class)
     public void assignUserRole4() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.assignUserRole(10000, role.getId());
+        GlobalRoleController.getInstance().assignUserRole(10000, role.getId());
         assertTrue(collector.findUserGlobalRole(user) != null);
     }
 
     @Test(expected = RoleNotFoundException.class)
     public void assignUserRole6() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
-        GlobalRoleController.assignUserRole(user.getId(), 10000);
+        GlobalRoleController.getInstance().assignUserRole(user.getId(), 10000);
         assertTrue(collector.findUserGlobalRole(user) != null);
     }
 
     @Test
     public void deleteUserRole1() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
         collector.addUserGlobalRole(new UserGlobalRole(user, role));
-        GlobalRoleController.deleteUserRole(user, role);
+        GlobalRoleController.getInstance().deleteUserRole(user, role);
         assertTrue(collector.findUser(login1) != null);
         assertTrue(collector.findGlobalRole(role1Name) != null);
     }
@@ -242,11 +263,11 @@ public class GlobalRoleControllerTest {
     @Test
     public void deleteUserRole2() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
         collector.addUserGlobalRole(new UserGlobalRole(user, role));
-        GlobalRoleController.deleteUserRole(user.getId(), role.getId());
+        GlobalRoleController.getInstance().deleteUserRole(user.getId(), role.getId());
         assertTrue(collector.findUser(login1) != null);
         assertTrue(collector.findGlobalRole(role1Name) != null);
     }
@@ -254,21 +275,21 @@ public class GlobalRoleControllerTest {
     @Test(expected = UserNotFoundException.class)
     public void deleteUserRole3() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
         collector.addUserGlobalRole(new UserGlobalRole(user, role));
-        GlobalRoleController.deleteUserRole(10000, role.getId());
+        GlobalRoleController.getInstance().deleteUserRole(10000, role.getId());
     }
 
     @Test(expected = RoleNotFoundException.class)
     public void deleteUserRole5() throws Exception{
         GlobalRole role = new GlobalRole(role1Name);
-        GlobalRoleController.create(role);
+        GlobalRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         role = collector.findGlobalRole(role1Name);
         collector.addUserGlobalRole(new UserGlobalRole(user, role));
-        GlobalRoleController.deleteUserRole(user.getId(), 10000);
+        GlobalRoleController.getInstance().deleteUserRole(user.getId(), 10000);
     }
 
 

@@ -46,7 +46,7 @@ public class ArticleRoleControllerTest {
         }
 
         if (!ldapController.isUserExists(login1))
-            ldapController.createUser(login1, password1, "User");
+            ldapController.createUser(login1, password1);
     }
 
     @Before
@@ -94,24 +94,24 @@ public class ArticleRoleControllerTest {
     @Test
     public void create1() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         assertTrue(collector.findArticleRole(role1Name) != null);
     }
 
     @Test(expected = RoleAlreadyExistsException.class)
     public void create2() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
+        ArticleRoleController.getInstance().create(role);
     }
 
     @Test
     public void update1() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         role = collector.findArticleRole(role1Name);
         role.setName(role2Name);
-        ArticleRoleController.update(role);
+        ArticleRoleController.getInstance().update(role);
         assertTrue(collector.findArticleRole(role1Name) == null);
         assertTrue(collector.findArticleRole(role2Name) != null);
     }
@@ -119,155 +119,183 @@ public class ArticleRoleControllerTest {
     @Test
     public void delete1() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.delete(role);
+        ArticleRoleController.getInstance().delete(role);
         assertTrue(collector.findArticleRole(role1Name) == null);
     }
 
     @Test
     public void delete2() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.delete(role.getId());
+        ArticleRoleController.getInstance().delete(role.getId());
         assertTrue(collector.findArticleRole(role1Name) == null);
     }
 
     @Test
     public void delete3() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
         UserArticleRole userArticleRole = new UserArticleRole(user, article, role);
-        ArticleRoleController.assignUserRole(userArticleRole);
+        ArticleRoleController.getInstance().assignUserRole(userArticleRole);
         collector.deleteArticleRole(role);
         assertTrue(collector.findUser(login1) != null);
         assertTrue(collector.findArticle(articleId) != null);
         assertTrue(collector.findArticleRole(role1Name) == null);
     }
 
+    @Test(expected = RoleNotFoundException.class)
+    public void delete4() throws Exception{
+        ArticleRoleController.getInstance().delete(10000);
+    }
+
     @Test
     public void findUserRole1() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(user, article, role);
-        assertTrue(ArticleRoleController.findUserRole(user, article).getName().equals(role1Name));
+        ArticleRoleController.getInstance().assignUserRole(user, article, role);
+        assertTrue(ArticleRoleController.getInstance().findUserRole(user, article).getName().equals(role1Name));
     }
 
     @Test
     public void findUserRole2() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(user, article, role);
-        assertTrue(ArticleRoleController.findUserRole(user.getId(), article.getId()).getName().equals(role1Name));
+        ArticleRoleController.getInstance().assignUserRole(user, article, role);
+        assertTrue(ArticleRoleController.getInstance().findUserRole(user.getId(), article.getId()).getName().equals(role1Name));
     }
 
     @Test(expected = UserNotFoundException.class)
     public void findUserRole3() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(user, article, role);
-        assertTrue(ArticleRoleController.findUserRole(10000, article.getId()).getName().equals(role1Name));
+        ArticleRoleController.getInstance().assignUserRole(user, article, role);
+        assertTrue(ArticleRoleController.getInstance().findUserRole(10000, article.getId()).getName().equals(role1Name));
     }
 
     @Test(expected = ArticleNotFoundException.class)
     public void findUserRole4() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(user, article, role);
-        assertTrue(ArticleRoleController.findUserRole(user.getId(), 10000).getName().equals(role1Name));
+        ArticleRoleController.getInstance().assignUserRole(user, article, role);
+        assertTrue(ArticleRoleController.getInstance().findUserRole(user.getId(), 10000).getName().equals(role1Name));
     }
 
     @Test
     public void assignUserRole1() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(user, article, role);
+        ArticleRoleController.getInstance().assignUserRole(user, article, role);
         assertTrue(collector.findUserArticleRole(user, article) != null);
     }
 
     @Test
     public void assignUserRole2() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(user.getId(), article.getId(), role.getId());
+        ArticleRoleController.getInstance().assignUserRole(user.getId(), article.getId(), role.getId());
         assertTrue(collector.findUserArticleRole(user, article) != null);
     }
 
     @Test
     public void assignUserRole3() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(new UserArticleRole(user, article, role));
+        ArticleRoleController.getInstance().assignUserRole(new UserArticleRole(user, article, role));
         assertTrue(collector.findUserArticleRole(user, article) != null);
     }
 
     @Test(expected = UserNotFoundException.class)
     public void assignUserRole4() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(10000, article.getId(), role.getId());
+        ArticleRoleController.getInstance().assignUserRole(10000, article.getId(), role.getId());
         assertTrue(collector.findUserArticleRole(user, article) != null);
     }
 
     @Test(expected = ArticleNotFoundException.class)
     public void assignUserRole5() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(user.getId(), 10000, role.getId());
+        ArticleRoleController.getInstance().assignUserRole(user.getId(), 10000, role.getId());
         assertTrue(collector.findUserArticleRole(user, article) != null);
     }
 
     @Test(expected = RoleNotFoundException.class)
     public void assignUserRole6() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
-        ArticleRoleController.assignUserRole(user.getId(), article.getId(), 10000);
+        ArticleRoleController.getInstance().assignUserRole(user.getId(), article.getId(), 10000);
         assertTrue(collector.findUserArticleRole(user, article) != null);
+    }
+
+    @Test
+    public void assignUserRole7() throws Exception{
+        ArticleRole role = new ArticleRole(role1Name);
+        ArticleRole role2 = new ArticleRole(role2Name);
+        ArticleRoleController.getInstance().create(role);
+        ArticleRoleController.getInstance().create(role2);
+        User user = collector.findUser(login1);
+        Article article = collector.findArticle(articleId);
+        role = collector.findArticleRole(role1Name);
+        role2 = collector.findArticleRole(role2Name);
+        ArticleRoleController.getInstance().assignUserRole(user, article, role);
+        ArticleRoleController.getInstance().assignUserRole(user, article, role2);
+        assertTrue(collector.findUserArticleRole(user, article).getArticleRole().getName().equals(role2Name));
+    }
+
+    @Test
+    public void assignDefaultUserRole1() throws Exception{
+        User user = collector.findUser(login1);
+        ArticleRoleController.getInstance().assignDefaultUserRole(user);
+        Article article = collector.findArticle(articleId);
+        assertTrue(collector.findUserArticleRole(user, article).getArticleRole().getId() == 1);
     }
 
     @Test
     public void deleteUserRole1() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
         collector.addUserArticleRole(new UserArticleRole(user, article, role));
-        ArticleRoleController.deleteUserRole(user, article, role);
+        ArticleRoleController.getInstance().deleteUserRole(user, article, role);
         assertTrue(collector.findUser(login1) != null);
         assertTrue(collector.findArticle(articleId) != null);
         assertTrue(collector.findArticleRole(role1Name) != null);
@@ -276,12 +304,12 @@ public class ArticleRoleControllerTest {
     @Test
     public void deleteUserRole2() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
         collector.addUserArticleRole(new UserArticleRole(user, article, role));
-        ArticleRoleController.deleteUserRole(user.getId(), article.getId(), role.getId());
+        ArticleRoleController.getInstance().deleteUserRole(user.getId(), article.getId(), role.getId());
         assertTrue(collector.findUser(login1) != null);
         assertTrue(collector.findArticle(articleId) != null);
         assertTrue(collector.findArticleRole(role1Name) != null);
@@ -290,34 +318,34 @@ public class ArticleRoleControllerTest {
     @Test(expected = UserNotFoundException.class)
     public void deleteUserRole3() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
         collector.addUserArticleRole(new UserArticleRole(user, article, role));
-        ArticleRoleController.deleteUserRole(10000, article.getId(), role.getId());
+        ArticleRoleController.getInstance().deleteUserRole(10000, article.getId(), role.getId());
     }
 
     @Test(expected = ArticleNotFoundException.class)
     public void deleteUserRole4() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
         collector.addUserArticleRole(new UserArticleRole(user, article, role));
-        ArticleRoleController.deleteUserRole(user.getId(), 10000, role.getId());
+        ArticleRoleController.getInstance().deleteUserRole(user.getId(), 10000, role.getId());
     }
 
     @Test(expected = RoleNotFoundException.class)
     public void deleteUserRole5() throws Exception{
         ArticleRole role = new ArticleRole(role1Name);
-        ArticleRoleController.create(role);
+        ArticleRoleController.getInstance().create(role);
         User user = collector.findUser(login1);
         Article article = collector.findArticle(articleId);
         role = collector.findArticleRole(role1Name);
         collector.addUserArticleRole(new UserArticleRole(user, article, role));
-        ArticleRoleController.deleteUserRole(user.getId(), article.getId(), 10000);
+        ArticleRoleController.getInstance().deleteUserRole(user.getId(), article.getId(), 10000);
     }
 
 

@@ -43,75 +43,70 @@ public class LdapControllerTest{
 
     @Test
     public void register1() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         assertTrue(ldapController.isUserExists(login1));
     }
 
     @Test(expected = UserAlreadyExistsException.class)
     public void register2() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
-        ldapController.createUser(login1, password1, roleName);
-    }
-
-    @Test(expected = RoleNotFoundException.class)
-    public void register3() throws Exception{
-        ldapController.createUser(login1, password1, roleName + "0");
+        ldapController.createUser(login1, password1);
+        ldapController.createUser(login1, password1);
     }
 
     @Test
     public void authorize1() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         ldapController.authorize(login1, password1);
     }
 
     @Test(expected = UserNotFoundException.class)
     public void authorize2() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         ldapController.authorize(login2, password2);
     }
 
     @Test(expected = WrongPasswordException.class)
     public void authorize3() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         ldapController.authorize(login1, password2);
     }
 
     @Test
     public void changePass1() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         ldapController.changePassword(login1, password2);
         ldapController.authorize(login1, password2);
     }
 
     @Test(expected = UserNotFoundException.class)
     public void changePass2() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         ldapController.changePassword(login2, password2);
     }
 
     @Test
     public void changeLogin1() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         ldapController.changeLogin(login1, login2);
         ldapController.authorize(login2, password1);
    }
 
     @Test(expected = UserNotFoundException.class)
     public void changeLogin2() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         ldapController.changeLogin(login2, login1);
     }
 
     @Test
     public void delete1() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         ldapController.deleteUser(login1);
         assertTrue(!ldapController.isUserExists(login1));
     }
 
     @Test(expected = UserNotFoundException.class)
     public void delete2() throws Exception{
-        ldapController.createUser(login1, password1, roleName);
+        ldapController.createUser(login1, password1);
         ldapController.deleteUser(login2);
     }
 

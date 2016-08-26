@@ -23,19 +23,34 @@ import java.sql.Date;
  */
 public class UserController {
 
-    private static int defaultGlobalRoleId = 1;
-    private static int defaultArticleRoleId = 1;
-    private static int defaultRootArticleId = 1;
+    private DataCollector collector = new DataCollector();
+    private LdapController ldapController = LdapController.getInstance();
 
-    private static DataCollector collector = new DataCollector();
-    private static LdapController ldapController = LdapController.getInstance();
+    private static volatile UserController instance;
+
+    /**
+     * Get instance of a class
+     * @return instance of a class
+     */
+    public static UserController getInstance() {
+        UserController localInstance = instance;
+        if (localInstance == null) {
+            synchronized (LdapController.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new UserController();
+                }
+            }
+        }
+        return localInstance;
+    }
 
     /**
      * Update token for authorized user
      * @param user user object
      * @return return updated token
      */
-    private static Token updateToken(User user) throws Exception{
+    private Token updateToken(User user) throws Exception{
         Date date = new Date(new java.util.Date().getTime());
         //token = user login + current date
         String tokenStr = DigestUtils.md5Hex(user.getLogin() + date.toString());
@@ -56,7 +71,7 @@ public class UserController {
      * @param password user password
      * @return return user token
      */
-    public static Token authorize(String login, String password) throws Exception{
+    public Token authorize(String login, String password) throws Exception{
         User user = null;
         //MD5 of password
         password = DigestUtils.md5Hex(password);
@@ -74,7 +89,7 @@ public class UserController {
      * @param password user password
      * @return return user token
      */
-    public static Token authorizeLdap(String login, String password) throws Exception{
+    public Token authorizeLdap(String login, String password) throws Exception{
         ldapController.authorize(login, DigestUtils.md5Hex(password));
         return authorize(login, password);
     }
@@ -82,29 +97,26 @@ public class UserController {
      * Register new user in database and LDAP
      * @param user formed user object
      */
-    public static void register(User user) throws Exception{
-        Article article = collector.findArticle(defaultRootArticleId);
-        ArticleRole articleRole = collector.findArticleRole(defaultArticleRoleId);
-        GlobalRole globalRole = collector.findGlobalRole(defaultGlobalRoleId);
-
-        if (article == null || articleRole == null || globalRole == null){
-            throw new AssignDefaultRoleException();
-        }
+    public void register(User user) throws Exception{
+        ldapController.createUser(user.getLogin(), user.getPassword());
         try {
-            User resUser = collector.addUser(user);
-            GlobalRoleController.assignUserRole(resUser, globalRole);
-            ArticleRoleController.assignUserRole(resUser, article, articleRole);
+           collector.addUser(user);
         }catch(org.springframework.dao.DataIntegrityViolationException e){
+            //rollback LDAP
+            ldapController.deleteUser(user.getLogin());
             throw new UserAlreadyExistsException();
+        }catch(Exception e){
+            //rollback LDAP
+            ldapController.deleteUser(user.getLogin());
+            throw e;
         }
-       ldapController.createUser(user.getLogin(), user.getPassword(), globalRole.getName());
     }
     /**
      * Register new user in database and LDAP
      * @param login user login
      * @param password user password
      */
-    public static void register(String login, String password) throws Exception{
+    public void register(String login, String password) throws Exception{
         if (login.length() == 0 || password.length() == 0){
             throw new WrongUserDataException();
         }
@@ -115,17 +127,17 @@ public class UserController {
      * Delete user from database and LDAP
      * @param user user object (important: id should be specified)
      */
-    public static void delete(User user) throws Exception{
+    public void delete(User user) throws Exception{
         if (user == null)
             throw new UserNotFoundException();
         collector.deleteUser(user);
-       ldapController.deleteUser(user.getLogin());
+        ldapController.deleteUser(user.getLogin());
     }
     /**
      * Delete user from database and LDAP
      * @param id user id
      */
-    public static void delete(int id) throws Exception{
+    public void delete(int id) throws Exception{
         User user = collector.findUser(id);
         delete(user);
     }
@@ -133,7 +145,7 @@ public class UserController {
      * Delete userfrom database and LDAP
      * @param login user login
      */
-    public static void delete(String login) throws Exception{
+    public void delete(String login) throws Exception{
         User user = collector.findUser(login);
         delete(user);
     }
@@ -142,7 +154,7 @@ public class UserController {
      * @param user user object (important: id should be specified)
      * @param newPassword new password
      */
-    private static void changePassword(User user, String newPassword) throws Exception {
+    private void changePassword(User user, String newPassword) throws Exception {
         if (newPassword.length() == 0)
             throw new WrongUserDataException();
         newPassword = DigestUtils.md5Hex(newPassword);
@@ -157,7 +169,7 @@ public class UserController {
      * @param id user id
      * @param newPassword new password
      */
-    public static void changePassword(int id, String newPassword) throws Exception{
+    public void changePassword(int id, String newPassword) throws Exception{
         User user = collector.findUser(id);
         changePassword(user, newPassword);
     }
@@ -166,7 +178,7 @@ public class UserController {
      * @param login user login
      * @param newPassword new password
      */
-    public static void changePassword(String login, String newPassword) throws Exception{
+    public void changePassword(String login, String newPassword) throws Exception{
         User user = collector.findUser(login);
         changePassword(user, newPassword);
     }
@@ -175,7 +187,7 @@ public class UserController {
      * @param user user object (important: id should be specified)
      * @param newLogin new login
      */
-    public static void changeLogin(User user, String newLogin) throws Exception{
+    public void changeLogin(User user, String newLogin) throws Exception{
         if (newLogin.length() == 0)
             throw new WrongUserDataException();
         if (user == null)
@@ -185,14 +197,14 @@ public class UserController {
         String oldLogin = user.getLogin();
         user.setLogin(newLogin);
         collector.updateUser(user);
-       ldapController.changeLogin(oldLogin, newLogin);
+        ldapController.changeLogin(oldLogin, newLogin);
     }
     /**
      * Change user login in database and LDAP
      * @param login user login
      * @param newLogin new login
      */
-    public static void changeLogin(String login, String newLogin) throws Exception{
+    public void changeLogin(String login, String newLogin) throws Exception{
         User user = collector.findUser(login);
         changeLogin(user, newLogin);
     }
@@ -201,32 +213,9 @@ public class UserController {
      * @param id user id
      * @param newLogin new login
      */
-    public static void changeLogin(int id, String newLogin) throws Exception{
+    public void changeLogin(int id, String newLogin) throws Exception{
         User user = collector.findUser(id);
         changeLogin(user, newLogin);
     }
 
-    public static int getDefaultGlobalRoleId() {
-        return defaultGlobalRoleId;
-    }
-
-    public static void setDefaultGlobalRoleId(int defaultGlobalRoleId) {
-        UserController.defaultGlobalRoleId = defaultGlobalRoleId;
-    }
-
-    public static int getDefaultArticleRoleId() {
-        return defaultArticleRoleId;
-    }
-
-    public static void setDefaultArticleRoleId(int defaultArticleRoleId) {
-        UserController.defaultArticleRoleId = defaultArticleRoleId;
-    }
-
-    public static int getDefaultRootArticleId() {
-        return defaultRootArticleId;
-    }
-
-    public static void setDefaultRootArticleId(int defaultRootArticleId) {
-        UserController.defaultRootArticleId = defaultRootArticleId;
-    }
 }

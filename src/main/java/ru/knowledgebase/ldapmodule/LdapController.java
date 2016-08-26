@@ -19,8 +19,6 @@ import java.util.regex.Pattern;
 
 public class LdapController {
 
-    private static volatile LdapController instance;
-
     //params for LDAP
     private String ldapURI = "ldap://localhost";
     private String contextFactory = "com.sun.jndi.ldap.LdapCtxFactory";
@@ -28,6 +26,8 @@ public class LdapController {
     private String adminPass = "12345";
     private String domain = "dc=db,dc=test";
     private String defaultRole = "User";
+
+    private static volatile LdapController instance;
 
     /**
      * Get instance of a class
@@ -168,13 +168,12 @@ public class LdapController {
      * Create new user
      * @param login user id
      * @param password user password
-     * @param role category of user
      */
-    public void createUser(String login, String password, String role) throws Exception{
+    public void createUser(String login, String password) throws Exception{
         if ((password.length() == 0) || (login.length() == 0)){
             throw new WrongUserDataException();
         }
-        String userDomain = "uid=" + login + ",ou=" + role + "," + domain;
+        String userDomain = "uid=" + login + ",ou=" + defaultRole + "," + domain;
         //make attributes
         Attribute loginAttr = new BasicAttribute("uid", login);
         Attribute passAttr = new BasicAttribute("userPassword", password);
@@ -329,10 +328,9 @@ public class LdapController {
      */
     public void deleteRole(String role) throws Exception {
         //find domain
-        String domain = findUserDomain(role);
+        String domain = findRoleDomain(role);
         if (domain == null)
             throw new RoleNotFoundException();
-
         DirContext ctx = null;
         try {
             //authorize as admin

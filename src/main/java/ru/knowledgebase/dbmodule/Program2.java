@@ -57,7 +57,7 @@ public class Program2 {
             r.setCanAddMistakes(true);
             r.setCanViewMistakes(true);
 
-           // UserController.register("tt5", "tt");
+            //UserController.register("asddsa", "tt");
            // UserController.register("tt6", "tt");
     //        LdapController.getInstance().deleteRole("User");
       //      System.out.println(LdapController.getInstance().isRoleExists("User"));
