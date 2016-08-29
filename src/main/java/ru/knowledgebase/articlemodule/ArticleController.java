@@ -1,13 +1,14 @@
 package ru.knowledgebase.articlemodule;
 
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.imagemodule.ImageController;
+import ru.knowledgebase.exceptionmodule.articleexceptions.*;
+import ru.knowledgebase.exceptionmodule.imageexceptions.ImageNotFoundException;
 import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.Image;
 import ru.knowledgebase.modelsmodule.User;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Exchanger;
 
 /**
  * Created by root on 16.08.16.
@@ -15,10 +16,43 @@ import java.util.List;
 public class ArticleController {
 
     private DataCollector dataCollector = new DataCollector();
-    private ImageController imageController = new ImageController();
 
+
+    private final int BASE_ARTICLE = -1;
 
     //BEGIN CRUD METHODS
+
+    /**
+     * Add base (without parent) article
+     * @param title
+     * @param body
+     * @param authorId
+     * @param imagesId
+     * @return
+     * @throws Exception
+     */
+    public Article addBaseArticle(String title, String body,
+                                  int authorId,
+                                  List<String> imagesId) throws Exception {
+        Article article = getFullArticleObject(title, body, authorId,
+                -1, imagesId);
+
+        Article resultArticle = null;
+        try {
+            resultArticle = dataCollector.addArticle(article);
+        }
+        catch (Exception ex) {
+            //TODO: throw new DBException();
+            throw new Exception();
+        }
+        if (resultArticle == null) {
+            throw new ArticleAddException();
+        }
+
+        return resultArticle;
+    }
+
+
     /**
      *
      * @param title - article title
@@ -29,20 +63,37 @@ public class ArticleController {
      */
     public Article addArticle(String title, String body,
                            int authorId, int parentArticle,
-                           List<String> imagesId) {
+                           List<String> imagesId) throws Exception{
 
         Article article = getFullArticleObject(title, body, authorId,
                                                parentArticle, imagesId);
 
-        return dataCollector.addArticle(article);
+        Article resultArticle = null;
+        try {
+            resultArticle = dataCollector.addArticle(article);
+        }
+        catch (Exception ex) {
+            //TODO: throw new DBException();
+            throw new Exception();
+        }
+        if (resultArticle == null) {
+            throw new ArticleAddException();
+        }
+
+        return resultArticle;
     }
 
     /**
      * Delete article by id
      * @param id
      */
-    public void deleteArticle(Integer id) {
-        dataCollector.deleteArticle(id);
+    public void deleteArticle(Integer id) throws Exception{
+        try {
+            dataCollector.deleteArticle(id);
+        }
+        catch (Exception ex) {
+           throw new ArticleDeleteException();
+        }
     }
 
     /**
@@ -50,8 +101,19 @@ public class ArticleController {
      * @param id
      * @return article object
      */
-    public Article getArticle(Integer id) {
-        return dataCollector.findArticle(id);
+    public Article getArticle(Integer id) throws Exception{
+        Article article = null;
+        try {
+            article = dataCollector.findArticle(id);
+        }
+        catch (Exception ex) {
+            //TODO: throw new DBException();
+            throw new Exception();
+        }
+        if (article == null) {
+            throw new ArticleNotFoundException();
+        }
+        return article;
     }
 
     /**
@@ -66,12 +128,19 @@ public class ArticleController {
      */
     public Article updateArticle(Integer id, String title, String body,
                                  int authorId, int parentArticle,
-                                 List<String> imagesId) {
-        Article article = getFullArticleObject(title, body, authorId,
-                                                parentArticle, imagesId);
+                                 List<String> imagesId) throws Exception {
+        Article article = null;
+            article = getFullArticleObject(title, body, authorId,
+                    parentArticle, imagesId);
 
-        article.setId(id);
-        return dataCollector.updateArticle(article);
+            article.setId(id);
+        try {
+            article = dataCollector.updateArticle(article);
+        }
+        catch (Exception ex) {
+            throw new ArticleUpdateException();
+        }
+        return article;
     }
 
     public Article updateArticle(Article article) {
@@ -93,16 +162,37 @@ public class ArticleController {
      * */
     private Article getFullArticleObject(String title, String body,
                                          int authorId, int parentArticle,
-                                         List<String> imagesId)
+                                         List<String> imagesId) throws Exception
     {
         Article article = new Article();
 
         String clearBody = ArticleProcessor.getPureBody(body);
-        Article parent = dataCollector.findArticle(parentArticle);
-        List<Image> images = imageController.getImages(imagesId);
 
-        //TODO: change to userController
-        User author = dataCollector.findUser(authorId);
+        Article parent;
+        List<Image> images;
+        User author;
+
+        try {
+            parent = dataCollector.findArticle(parentArticle);
+            images = dataCollector.getImages(imagesId);
+            author = dataCollector.findUser(authorId);
+        }
+        catch (Exception ex) {
+            //TODO: throw new DBException()
+            throw new Exception();
+        }
+
+        if (parent == null && parentArticle != BASE_ARTICLE) {
+            throw new ParentArticleNotFoundException();
+        }
+        if (imagesId.size() != images.size()) {
+            throw new ImageNotFoundException();
+        }
+        if (author == null) {
+            //TODO: throw new UserNotFoundException()
+            throw new Exception();
+        }
+
 
         article.setBody(body);
         article.setTitle(title);

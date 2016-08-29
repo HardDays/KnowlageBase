@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
 import ru.knowledgebase.imagemodule.ImageController;
 import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.Image;
@@ -39,22 +40,23 @@ public class ArticleControllerTest {
     private static Article updateArticle;
 
     @BeforeClass
-    public static void init() {
+    public static void init() throws Exception{
         Image img = new Image("home/path");
         img = ic.addImage(img);
         imgs.add(img.getId());
 
         u = new User("TestUser");
         u = dc.addUser(u);
+        author = u.getId();
 
-        base = ac.addArticle("1", "2", u.getId(), 0, new LinkedList<String>());
+        base = ac.addBaseArticle("1", "2", u.getId(), new LinkedList<String>());
 
         parentArticle = base.getId();
         updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, new LinkedList<String>());
     }
 
     @AfterClass
-    public static void clear() {
+    public static void clear() throws Exception{
         ac.deleteArticle(base.getId());
         dc.deleteUser(u.getId());
     }
@@ -70,15 +72,15 @@ public class ArticleControllerTest {
     }
 
     @Transactional
-    @Test
+    @Test(expected = ArticleNotFoundException.class)
     public void deleteArticle() throws Exception {
         Article a = ac.addArticle(title, body, author, parentArticle, new ArrayList<String>());
         ac.deleteArticle(a.getId());
-        assertTrue(ac.getArticle(a.getId()) == null);
+        ac.getArticle(a.getId());
     }
 
     @Transactional
-    @Test
+    @Test(expected = ArticleNotFoundException.class)
     public void deleteBaseArticle() throws Exception {
         Article a = ac.addArticle(title, body, u.getId(), parentArticle, new ArrayList<String>());
         Article b = ac.addArticle(title, body, u.getId(), a.getId(), new ArrayList<String>());
@@ -88,7 +90,6 @@ public class ArticleControllerTest {
         ac.deleteArticle(a.getId());
 
         Article child = ac.getArticle(b.getId());
-        assertTrue(child == null);
     }
 
     @Transactional
