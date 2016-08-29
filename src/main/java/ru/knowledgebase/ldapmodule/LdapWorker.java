@@ -17,29 +17,29 @@ import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LdapController {
+public class LdapWorker {
 
     //params for LDAP
     private String ldapURI = "ldap://localhost";
     private String contextFactory = "com.sun.jndi.ldap.LdapCtxFactory";
     private String adminName = "admin";
     private String adminPass = "d2434fg4hjS2340_113";
-    private String domain = "knowledge.base";
+    private String domain = "dc=knowledge,dc=base";
     private String defaultRole = "User";
 
-    private static volatile LdapController instance;
+    private static volatile LdapWorker instance;
 
     /**
      * Get instance of a class
      * @return instance of a class
     */
-    public static LdapController getInstance() {
-        LdapController localInstance = instance;
+    public static LdapWorker getInstance() {
+        LdapWorker localInstance = instance;
         if (localInstance == null) {
-            synchronized (LdapController.class) {
+            synchronized (LdapWorker.class) {
                 localInstance = instance;
                 if (localInstance == null) {
-                    instance = localInstance = new LdapController();
+                    instance = localInstance = new LdapWorker();
                 }
             }
         }
@@ -115,7 +115,11 @@ public class LdapController {
      * @return domain string
      */
     private String findUserDomain(String login) throws Exception {
-        return findDomain("(uid=" + login + ")");
+        try {
+            return findDomain("(uid=" + login + ")");
+        }catch (Exception e){
+            throw new LdapException();
+        }
     }
     /**
      * Check is user exits
@@ -131,7 +135,11 @@ public class LdapController {
      * @return domain string
      */
     private String findRoleDomain(String role) throws Exception {
-        return findDomain("(ou=" + role + ")");
+        try {
+            return findDomain("(ou=" + role + ")");
+        } catch (Exception e){
+            throw new LdapException();
+        }
     }
     /**
      * Check is role exists
@@ -232,14 +240,12 @@ public class LdapController {
      * @param password new user password
      */
     public void changePassword(String login, String password) throws Exception{
-        if (password.length() == 0){
+        if (password.length() == 0)
             throw new WrongUserDataException();
-        }
         //form user domain
         String domain = findUserDomain(login);
         if (domain == null)
             throw new UserNotFoundException();
-
         DirContext ctx = null;
         try {
             //authorize as admin
@@ -262,9 +268,8 @@ public class LdapController {
      * @param role role name
      */
     public void changeRole(String login, String role) throws Exception {
-        if (role.length() == 0) {
+        if (role.length() == 0)
             throw new WrongUserDataException();
-        }
         //form user domain
         String domain = findUserDomain(login);
         if (domain == null)

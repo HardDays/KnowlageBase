@@ -4,7 +4,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.ldapmodule.LdapController;
+import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
@@ -32,7 +32,7 @@ public class UserControllerTest {
     private final int roleId = 1;
     private final String roleName = "User";
     private DataCollector collector = new DataCollector();
-    private LdapController ldapController = LdapController.getInstance();
+    private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     @Before
     public void prepareArticle() throws Exception{
@@ -53,11 +53,11 @@ public class UserControllerTest {
         if (user != null)
             collector.deleteUser(user);
 
-        if (ldapController.isUserExists(login1))
-            ldapController.deleteUser(login1);
+        if (ldapWorker.isUserExists(login1))
+            ldapWorker.deleteUser(login1);
 
-        if (ldapController.isUserExists(login2))
-            ldapController.deleteUser(login2);
+        if (ldapWorker.isUserExists(login2))
+            ldapWorker.deleteUser(login2);
     }
 
     @Before

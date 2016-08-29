@@ -3,15 +3,11 @@ package ru.knowledgebase.dbmodule;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.knowledgebase.convertermodule.ArticleConverter;
-import ru.knowledgebase.ldapmodule.LdapController;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.dbmodule.dataservices.ArticleService;
 import ru.knowledgebase.modelsmodule.Article;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
-import ru.knowledgebase.usermodule.UserController;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,8 +55,8 @@ public class Program2 {
 
             //UserController.register("asddsa", "tt");
            // UserController.register("tt6", "tt");
-    //        LdapController.getInstance().deleteRole("User");
-      //      System.out.println(LdapController.getInstance().isRoleExists("User"));
+    //        LdapWorker.getInstance().deleteRole("User");
+      //      System.out.println(LdapWorker.getInstance().isRoleExists("User"));
             //   UserController.changeLogin("tt", "tt4");
 
            // ArticleRoleController.createRole(r);
@@ -70,7 +66,7 @@ public class Program2 {
 
           //
             // UserEditController.changePassword("testrole7", "11111");
-           // LdapController.getInstance().createRole("testrolesss.");
+           // LdapWorker.getInstance().createRole("testrolesss.");
 
 
         //    service.create(a);

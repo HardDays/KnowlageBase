@@ -3,6 +3,7 @@ package ru.knowledgebase.usermodule;
 import org.junit.*;
 import ru.knowledgebase.articlemodule.ArticleNotFoundException;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
@@ -12,7 +13,6 @@ import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
-import ru.knowledgebase.ldapmodule.LdapController;
 
 import static org.junit.Assert.assertTrue;
 /**
@@ -33,7 +33,7 @@ public class ArticleRoleControllerTest {
     private final String roleName = "User";
 
     private DataCollector collector = new DataCollector();
-    private LdapController ldapController = LdapController.getInstance();
+    private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     @Before
     public void prepareUser() throws Exception{
@@ -45,8 +45,8 @@ public class ArticleRoleControllerTest {
             collector.addUser(user);
         }
 
-        if (!ldapController.isUserExists(login1))
-            ldapController.createUser(login1, password1);
+        if (!ldapWorker.isUserExists(login1))
+            ldapWorker.createUser(login1, password1);
     }
 
     @Before
