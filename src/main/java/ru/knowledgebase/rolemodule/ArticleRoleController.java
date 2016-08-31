@@ -122,7 +122,7 @@ public class ArticleRoleController {
         return findUserRole(user, article);
     }
     /**
-     * Create default user role for root article
+     * Assign default user role for root article
      * @param user user object
      */
     public void assignDefaultUserRole(User user) throws Exception{
@@ -137,6 +137,21 @@ public class ArticleRoleController {
         if (article == null || articleRole == null)
             throw new AssignDefaultRoleException();
         assignUserRole(user, article, articleRole);
+    }
+    /**
+     * Assign default user role for root article
+     * @param userId user id
+     */
+    public void assignDefaultUserRole(int userId) throws Exception{
+        User user = null;
+        try {
+            collector.findUser(userId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        if (user == null)
+            throw new UserNotFoundException();
+        assignDefaultUserRole(user);
     }
     /**
      * Create user role for specified article

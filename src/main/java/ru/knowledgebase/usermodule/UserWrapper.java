@@ -19,8 +19,11 @@ public class UserWrapper {
     public void register(int adminId, String adminToken, String login, String password) throws Exception {
         boolean okToken = userController.checkUserToken(adminId, adminToken);
         boolean hasRights = globalRoleController.findGlobalRole(adminId).isCanAddUser();
-        if (okToken && hasRights)
-            userController.register(login, password);
+        if (okToken && hasRights) {
+            int userId = userController.register(login, password);
+            globalRoleController.assignDefaultUserRole(userId);
+            articleRoleController.assignDefaultUserRole(userId);
+        }
     }
 
     public void changePassword(int adminId, String adminToken, int userId, String newPassword) throws Exception {

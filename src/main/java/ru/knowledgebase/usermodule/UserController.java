@@ -100,10 +100,10 @@ public class UserController {
      * Register new user in database and LDAP
      * @param user formed user object
      */
-    public void register(User user) throws Exception{
+    public int register(User user) throws Exception{
         ldapWorker.createUser(user.getLogin(), user.getPassword());
         try {
-           collector.addUser(user);
+            return collector.addUser(user).getId();
         }catch(org.springframework.dao.DataIntegrityViolationException e){
             //rollback LDAP
             ldapWorker.deleteUser(user.getLogin());
@@ -119,12 +119,12 @@ public class UserController {
      * @param login user login
      * @param password user password
      */
-    public void register(String login, String password) throws Exception{
+    public int register(String login, String password) throws Exception{
         if (login.length() == 0 || password.length() == 0){
             throw new WrongUserDataException();
         }
         password = DigestUtils.md5Hex(password);
-        register(new User(login, password));
+        return register(new User(login, password));
     }
     /**
      * Delete user from database and LDAP
@@ -141,7 +141,6 @@ public class UserController {
             ldapWorker.createUser(user.getLogin(), user.getPassword());
             throw new DataBaseException();
         }
-
     }
     /**
      * Delete user from database and LDAP
