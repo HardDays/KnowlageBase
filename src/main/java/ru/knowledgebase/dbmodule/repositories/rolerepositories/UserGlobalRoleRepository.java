@@ -2,7 +2,6 @@ package ru.knowledgebase.dbmodule.repositories.rolerepositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import ru.knowledgebase.modelsmodule.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 

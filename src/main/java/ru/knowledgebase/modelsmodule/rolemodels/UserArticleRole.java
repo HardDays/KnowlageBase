@@ -1,10 +1,9 @@
 package ru.knowledgebase.modelsmodule.rolemodels;
 
-import ru.knowledgebase.modelsmodule.Article;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by root on 17.08.16.

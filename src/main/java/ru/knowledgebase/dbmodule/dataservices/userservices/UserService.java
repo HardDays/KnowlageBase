@@ -47,4 +47,9 @@ public class UserService {
     public void delete(User user) throws Exception{
         userRepository.delete(user);
     }
+
+    @Transactional
+    public void delete(int id) throws Exception{
+        userRepository.delete(id);
+    }
 }

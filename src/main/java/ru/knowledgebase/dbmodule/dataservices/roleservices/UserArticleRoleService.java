@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.repositories.rolerepositories.UserArticleRoleRepository;
-import ru.knowledgebase.modelsmodule.Article;
-import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 

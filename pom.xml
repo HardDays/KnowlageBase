@@ -81,11 +81,11 @@
     </dependency>
 
     <!--Other Libs-->
-      <dependency>
-          <groupId>fr.opensagres.xdocreport</groupId>
-          <artifactId>org.apache.poi.xwpf.converter.xhtml</artifactId>
-          <version>1.0.5</version>
-      </dependency>
+    <dependency>
+      <groupId>fr.opensagres.xdocreport</groupId>
+      <artifactId>org.apache.poi.xwpf.converter.xhtml</artifactId>
+      <version>1.0.5</version>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -93,19 +93,14 @@
       <version>3.9</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.apache.directory.api/apache-ldap-api -->
+
+
     <dependency>
-      <groupId>org.apache.directory.api</groupId>
-      <artifactId>apache-ldap-api</artifactId>
-      <version>1.0.0-M32</version>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>15.0</version>
     </dependency>
 
-
-      <dependency>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
-          <version>15.0</version>
-      </dependency>
 
     <dependency>
       <groupId>junit</groupId>
@@ -130,6 +125,7 @@
           <version>4.12</version>
           <scope>test</scope>
       </dependency>
+
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-jpa</artifactId>
@@ -141,6 +137,14 @@
       <artifactId>commons-codec</artifactId>
       <version>1.9</version>
     </dependency>
+
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>7.0</version>
+      <scope>provided</scope>
+    </dependency>
+
 
 
   </dependencies>

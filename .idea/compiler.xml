@@ -26,9 +26,8 @@
         <module name="knowledge-base" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="knowladge-base" target="1.5" />
-      <module name="knowledge-base" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="knowledge-base" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

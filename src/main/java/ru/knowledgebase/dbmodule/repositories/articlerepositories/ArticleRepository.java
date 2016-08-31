@@ -1,0 +1,18 @@
+package ru.knowledgebase.dbmodule.repositories.articlerepositories;
+
+/**
+ * Created by root on 17.08.16.
+ */
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
+
+import java.util.List;
+
+public interface ArticleRepository extends CrudRepository<Article, Integer> {
+    @Query("from Article")
+    public List<Article> getAll();
+
+    @Query("from Article where title = ?1")
+    public List<Article> findByTitle(String title);
+}

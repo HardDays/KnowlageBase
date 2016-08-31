@@ -23,6 +23,8 @@ public class GlobalRoleController {
 
     private static volatile GlobalRoleController instance;
 
+    private GlobalRole globalRole;
+
     /**
      * Get instance of a class
      * @return instance of a class
@@ -147,21 +149,6 @@ public class GlobalRoleController {
         assignUserRole(user, globalRole);
     }
     /**
-     * Assign default global role for specified user
-     * @param userId user id
-     */
-    public void assignDefaultUserRole(int userId) throws Exception{
-        User user = null;
-        try {
-            collector.findUser(userId);
-        }catch (Exception e){
-            throw new DataBaseException();
-        }
-        if (user == null)
-            throw new UserNotFoundException();
-        assignDefaultUserRole(user);
-    }
-    /**
      * Assign global role for specified user
      * @param user user object (important: id should be specified)
      * @param globalRole global role object (important: id should be specified)
@@ -203,6 +190,8 @@ public class GlobalRoleController {
         }catch (Exception e){
             throw new DataBaseException();
         }
+        if (globalRole == null)
+            throw new DataBaseException();
         return globalRole;
     }
     /**
@@ -267,4 +256,19 @@ public class GlobalRoleController {
         this.defaultGlobalRoleId = defaultGlobalRoleId;
     }
 
+    public boolean canAddUser(int userId) throws Exception{
+        return findUserRole(userId).isCanAddUser();
+    }
+
+    public boolean canEditUser(int userId) throws Exception{
+        return findUserRole(userId).isCanEditUser();
+    }
+
+    public boolean canDeleteUser(int userId) throws Exception{
+        return findUserRole(userId).isCanDeleteUser();
+    }
+
+    public boolean canEditUserRoles(int userId) throws Exception{
+        return findUserRole(userId).isCanEditUserRoles();
+    }
 }

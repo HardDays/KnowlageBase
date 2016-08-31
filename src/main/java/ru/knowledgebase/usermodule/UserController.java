@@ -45,7 +45,7 @@ public class UserController {
      * @param user user object
      * @return return updated token
      */
-    private Token updateToken(User user) throws Exception{
+    private String updateToken(User user) throws Exception{
         Date date = new Date(new java.util.Date().getTime());
         //token = user login + current date
         String tokenStr = DigestUtils.md5Hex(user.getLogin() + date.toString());
@@ -62,7 +62,7 @@ public class UserController {
         }catch (Exception e){
             throw new DataBaseException();
         }
-        return token;
+        return token.getToken();
     }
     /**
      * Authorize user in database
@@ -70,7 +70,7 @@ public class UserController {
      * @param password user password
      * @return return user token
      */
-    public Token authorize(String login, String password) throws Exception{
+    public String authorize(String login, String password) throws Exception{
         User user = null;
         //MD5 of password
         password = DigestUtils.md5Hex(password);
@@ -92,7 +92,7 @@ public class UserController {
      * @param password user password
      * @return return user token
      */
-    public Token authorizeLdap(String login, String password) throws Exception{
+    public String authorizeLdap(String login, String password) throws Exception{
         ldapWorker.authorize(login, DigestUtils.md5Hex(password));
         return authorize(login, password);
     }
@@ -100,10 +100,10 @@ public class UserController {
      * Register new user in database and LDAP
      * @param user formed user object
      */
-    public int register(User user) throws Exception{
+    public void register(User user) throws Exception{
         ldapWorker.createUser(user.getLogin(), user.getPassword());
         try {
-            return collector.addUser(user).getId();
+           collector.addUser(user);
         }catch(org.springframework.dao.DataIntegrityViolationException e){
             //rollback LDAP
             ldapWorker.deleteUser(user.getLogin());
@@ -119,12 +119,12 @@ public class UserController {
      * @param login user login
      * @param password user password
      */
-    public int register(String login, String password) throws Exception{
+    public void register(String login, String password) throws Exception{
         if (login.length() == 0 || password.length() == 0){
             throw new WrongUserDataException();
         }
         password = DigestUtils.md5Hex(password);
-        return register(new User(login, password));
+        register(new User(login, password));
     }
     /**
      * Delete user from database and LDAP
@@ -141,6 +141,7 @@ public class UserController {
             ldapWorker.createUser(user.getLogin(), user.getPassword());
             throw new DataBaseException();
         }
+
     }
     /**
      * Delete user from database and LDAP

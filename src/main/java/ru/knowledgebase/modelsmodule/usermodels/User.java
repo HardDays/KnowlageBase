@@ -1,10 +1,13 @@
 package ru.knowledgebase.modelsmodule.usermodels;
 
-import ru.knowledgebase.modelsmodule.Article;
+import org.hibernate.annotations.*;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import java.util.List;
 
 /**
@@ -18,8 +21,11 @@ public class User {
             allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator="user_id_seq")
-    @Column(name = "id")
     private int id;
+
+    @OneToMany(mappedBy = "author")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    private List<Article> article;
 
     @Column(name = "login", unique = true, nullable = false)
     private String login;
@@ -45,25 +51,13 @@ public class User {
         this.id = id;
     }
 
-    public User(String str) {
-        login = str;
-        password = str;
-    }
-
-    public User(String login, String password) {
+    public User(String login, String pass) {
         this.login = login;
-        this.password = password;
+        this.password = pass;
     }
 
-    public User(int id){
-        this.id = id;
-    }
+    public User(){}
 
-    public User(){
-    }
-
-    @Basic
-    @Column(name = "login")
     public String getLogin() {
         return login;
     }
@@ -72,14 +66,44 @@ public class User {
         this.login = login;
     }
 
-    @Basic
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Article> getArticle() {
+        return article;
+    }
+
+    public void setArticle(List<Article> article) {
+        this.article = article;
+    }
+
+    public Token getToken() {
+        return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    public List<UserGlobalRole> getUserGlobalRoles() {
+        return userGlobalRoles;
+    }
+
+    public void setUserGlobalRoles(List<UserGlobalRole> userGlobalRoles) {
+        this.userGlobalRoles = userGlobalRoles;
+    }
+
+    public List<UserArticleRole> getUserArticleRoles() {
+        return userArticleRoles;
+    }
+
+    public void setUserArticleRoles(List<UserArticleRole> userArticleRoles) {
+        this.userArticleRoles = userArticleRoles;
     }
 
     @Override
@@ -94,12 +118,6 @@ public class User {
         if (password != null ? !password.equals(users.password) : users.password != null) return false;
 
         return true;
-    }
-
-    public void copy(User second){
-        this.id = second.id;
-        this.login = second.login;
-        this.password = second.password;
     }
 
     @Override
