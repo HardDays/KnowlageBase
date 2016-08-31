@@ -2,7 +2,9 @@ package ru.knowledgebase.articlemodule;
 
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.*;
+import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.imageexceptions.ImageNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.usermodels.User;
@@ -112,12 +114,7 @@ public class ArticleController {
         }
     }
 
-    /**
-     * Find article by id
-     * @param id
-     * @return article object
-     */
-    public Article getArticle(Integer id) throws Exception{
+    public Article getArticleObject(Integer id) throws Exception{
         Article article = null;
         try {
             article = dataCollector.findArticle(id);
@@ -130,6 +127,25 @@ public class ArticleController {
             throw new ArticleNotFoundException();
         }
         return article;
+    }
+
+    /**
+     * Find article by id
+     * @param id
+     * @return article object
+     */
+    public String getArticle(Integer id) throws Exception{
+        Article article = null;
+        try {
+            article = dataCollector.findArticle(id);
+        }
+        catch (Exception ex) {
+            throw new DataBaseException();
+        }
+        if (article == null) {
+            throw new ArticleNotFoundException();
+        }
+        return article.getBody();
     }
 
     /**
@@ -194,8 +210,7 @@ public class ArticleController {
             author = dataCollector.findUser(authorId);
         }
         catch (Exception ex) {
-            //TODO: throw new DBException()
-            throw new Exception();
+            throw new DataBaseException();
         }
 
         if (parent == null && parentArticle != BASE_ARTICLE) {
@@ -205,8 +220,7 @@ public class ArticleController {
             throw new ImageNotFoundException();
         }
         if (author == null) {
-            //TODO: throw new UserNotFoundException()
-            throw new Exception();
+            throw new UserNotFoundException();
         }
 
 

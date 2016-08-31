@@ -23,6 +23,8 @@ public class GlobalRoleController {
 
     private static volatile GlobalRoleController instance;
 
+    private GlobalRole globalRole;
+
     /**
      * Get instance of a class
      * @return instance of a class
@@ -39,7 +41,7 @@ public class GlobalRoleController {
         }
         return localInstance;
     }
-    
+
     /**
      * Create new global role
      * @param globalRole global role formed object
@@ -188,6 +190,8 @@ public class GlobalRoleController {
         }catch (Exception e){
             throw new DataBaseException();
         }
+        if (globalRole == null)
+            throw new DataBaseException();
         return globalRole;
     }
     /**
@@ -252,4 +256,19 @@ public class GlobalRoleController {
         this.defaultGlobalRoleId = defaultGlobalRoleId;
     }
 
+    public boolean canAddUser(int userId) throws Exception{
+        return findUserRole(userId).isCanAddUser();
+    }
+
+    public boolean canEditUser(int userId) throws Exception{
+        return findUserRole(userId).isCanEditUser();
+    }
+
+    public boolean canDeleteUser(int userId) throws Exception{
+        return findUserRole(userId).isCanDeleteUser();
+    }
+
+    public boolean canEditUserRoles(int userId) throws Exception{
+        return findUserRole(userId).isCanEditUserRoles();
+    }
 }

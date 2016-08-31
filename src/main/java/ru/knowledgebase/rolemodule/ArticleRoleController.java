@@ -102,7 +102,21 @@ public class ArticleRoleController {
             throw new UserNotFoundException();
         if (article == null)
             throw new ArticleNotFoundException();
-        return collector.findUserArticleRole(user, article).getArticleRole();
+        UserArticleRole role = null;
+        //go through article tree to root
+        try {
+            role = collector.findUserArticleRole(user, article);
+            while (role == null && article.getParentArticle() != null) {
+                article = article.getParentArticle();
+                role = collector.findUserArticleRole(user, article);
+            }
+        }catch (Exception e){
+            throw  new DataBaseException();
+        }
+        ArticleRole articleRole = role.getArticleRole();
+        if (articleRole == null)
+            throw new DataBaseException();
+        return articleRole;
     }
     /**
      * Find user role for article
@@ -182,6 +196,7 @@ public class ArticleRoleController {
             article = collector.findArticle(articleId);
             articleRole = collector.findArticleRole(articleRoleId);
         }catch (Exception e){
+            //e.printStackTrace();
             throw new DataBaseException();
         }
         assignUserRole(user, article, articleRole);
@@ -221,7 +236,17 @@ public class ArticleRoleController {
      * @param articleRoleId article role id
      */
     public void deleteUserRole(int userId, int articleId, int articleRoleId) throws Exception {
-
+        User user = null;
+        Article article = null;
+        ArticleRole articleRole = null;
+        try {
+            user = collector.findUser(userId);
+            article = collector.findArticle(articleId);
+            articleRole = collector.findArticleRole(articleRoleId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        deleteUserRole(user, article, articleRole);
     }
 
     public int getDefaultArticleRoleId() {
@@ -240,6 +265,43 @@ public class ArticleRoleController {
         this.defaultRootArticleId = defaultRootArticleId;
     }
 
-    public void canAddArticle(int authorId, int parentArticle) {
+    public boolean canAddArticles(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanAddArticles();
+    }
+
+    public boolean canEditArticle(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanEditArticle();
+    }
+
+    public boolean canDeleteArticle(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanDeleteArticle();
+    }
+
+    public boolean canViewArticle(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanViewArticle();
+    }
+
+    public boolean canAddNews(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanAddNews();
+    }
+
+    public boolean canOnOffNotifications(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanOnOffNotifications();
+    }
+
+    public boolean canGetReports(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetReports();
+    }
+
+    public boolean canViewMistakes(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanViewMistakes();
+    }
+
+    public boolean canAddMistakes(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanAddMistakes();
+    }
+
+    public boolean canSearch(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanSearch();
     }
 }

@@ -64,7 +64,7 @@ public class ArticleControllerTest {
     public void addArticle() throws Exception {
         parentArticle = base.getId();
         createTest = ac.addArticle(title, body, u.getId(), parentArticle, imgs);
-        createTest = ac.getArticle(createTest.getId());
+        createTest = ac.getArticleObject(createTest.getId());
         printObject(createTest);
         //ac.deleteArticle(createTest.getId());
     }
@@ -87,7 +87,7 @@ public class ArticleControllerTest {
 
         ac.deleteArticle(a.getId());
 
-        Article child = ac.getArticle(b.getId());
+        Article child = ac.getArticleObject(b.getId());
     }
 
     @Transactional
@@ -99,7 +99,7 @@ public class ArticleControllerTest {
         updateArticle = ac.updateArticle(updateArticle.getId(), updateArticle.getTitle(), updateArticle.getBody(),
                 updateArticle.getAuthor().getId(), updateArticle.getParentArticle().getId(), new ArrayList<String>());
 
-        updateArticle = ac.getArticle(updateArticle.getId());
+        updateArticle = ac.getArticleObject(updateArticle.getId());
         assertTrue(updateArticle.getTitle().equals(newString));
 
         updateArticle.setBody(newString);
