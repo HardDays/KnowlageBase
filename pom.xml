@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>ru.knowladgebase</groupId>
-  <artifactId>knowladge-base</artifactId>
+  <groupId>ru.knowledgebase</groupId>
+  <artifactId>knowledge-base</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>knowladge-base Maven Webapp</name>
+  <name>knowledge-base Maven Webapp</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -82,6 +82,20 @@
 
     <!--Other Libs-->
     <dependency>
+      <groupId>fr.opensagres.xdocreport</groupId>
+      <artifactId>org.apache.poi.xwpf.converter.xhtml</artifactId>
+      <version>1.0.5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-scratchpad</artifactId>
+      <version>3.9</version>
+    </dependency>
+
+
+
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>15.0</version>
@@ -112,9 +126,30 @@
           <scope>test</scope>
       </dependency>
 
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-jpa</artifactId>
+      <version>1.0.2.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.9</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>7.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+
   </dependencies>
   <build>
-    <finalName>knowladge-base</finalName>
+    <finalName>knowledge-base</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
@@ -122,7 +157,7 @@
         <version>2.2</version>
         <configuration>
           <server>TomcatServer</server>
-          <path>/knowladge-base</path>
+          <path>/knowledge-base</path>
         </configuration>
       </plugin>
     </plugins>
