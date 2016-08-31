@@ -1,19 +1,17 @@
 package ru.knowledgebase.articlemodule;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
 import ru.knowledgebase.imagemodule.ImageController;
-import ru.knowledgebase.modelsmodule.Article;
-import ru.knowledgebase.modelsmodule.Image;
-import ru.knowledgebase.modelsmodule.User;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.imagemodels.Image;
+import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class ArticleControllerTest {
         img = ic.addImage(img);
         imgs.add(img.getId());
 
-        u = new User("TestUser");
+        u = new User("TestUser", "123");
         u = dc.addUser(u);
         author = u.getId();
 

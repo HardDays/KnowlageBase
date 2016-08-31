@@ -3,12 +3,11 @@ package ru.knowledgebase.articlemodule;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.*;
 import ru.knowledgebase.exceptionmodule.imageexceptions.ImageNotFoundException;
-import ru.knowledgebase.modelsmodule.Article;
-import ru.knowledgebase.modelsmodule.Image;
-import ru.knowledgebase.modelsmodule.User;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.imagemodels.Image;
+import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import java.util.List;
-import java.util.concurrent.Exchanger;
 
 /**
  * Created by root on 16.08.16.
@@ -16,9 +15,26 @@ import java.util.concurrent.Exchanger;
 public class ArticleController {
 
     private DataCollector dataCollector = new DataCollector();
-
-
     private final int BASE_ARTICLE = -1;
+
+    private static ArticleController instance;
+
+    /**
+     * Controller as thread-safe singeleton
+     * @return
+     */
+    public static ArticleController getInstance() {
+        ArticleController localInstance = instance;
+        if (localInstance == null) {
+            synchronized (ArticleController.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new ArticleController();
+                }
+            }
+        }
+        return localInstance;
+    }
 
     //BEGIN CRUD METHODS
 

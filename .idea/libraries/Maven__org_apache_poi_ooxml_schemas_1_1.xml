@@ -1,6 +1,8 @@
 <component name="libraryTable">
   <library name="Maven: org.apache.poi:ooxml-schemas:1.1">
-    <CLASSES />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/poi/ooxml-schemas/1.1/ooxml-schemas-1.1.jar!/" />
+    </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/poi/ooxml-schemas/1.1/ooxml-schemas-1.1-javadoc.jar!/" />
     </JAVADOC>

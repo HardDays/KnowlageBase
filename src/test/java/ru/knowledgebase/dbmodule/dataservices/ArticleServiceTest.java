@@ -1,19 +1,17 @@
 package ru.knowledgebase.dbmodule.dataservices;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.modelsmodule.Article;
-import ru.knowledgebase.modelsmodule.Image;
-import ru.knowledgebase.modelsmodule.User;
+import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
+import ru.knowledgebase.dbmodule.dataservices.userservices.UserService;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.imagemodels.Image;
+import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -31,7 +29,7 @@ public class ArticleServiceTest {
     public void create() throws Exception {
 
 
-        User au = new User("Anon");
+        User au = new User("Anon", "1223");
         au = us.create(au);
 
         List<Image> img = new LinkedList<Image>();
@@ -48,7 +46,7 @@ public class ArticleServiceTest {
     @Transactional
     @Test
     public void findById() throws Exception {
-        User au = new User("Anon");
+        User au = new User("Anon", "123");
         au = us.create(au);
         Article article = new Article("New book", "Very interestinf book!", "New",
                 au, null, null);
@@ -59,7 +57,7 @@ public class ArticleServiceTest {
     @Transactional
     @Test
     public void update() throws Exception {
-        User au = new User("Anon");
+        User au = new User("Anon", "123");
         au = us.create(au);
         Article article = new Article("New book", "Very interestinf book!", "New",
                 au, null, null);
@@ -74,7 +72,7 @@ public class ArticleServiceTest {
     @Transactional
     @Test
     public void delete() throws Exception {
-        User au = new User("Anon");
+        User au = new User("Anon", "123");
         au = us.create(au);
         Article article = new Article("New book", "Very interestinf book!", "New",
                 au, null, null);
@@ -87,7 +85,7 @@ public class ArticleServiceTest {
     @Transactional
     @Test
     public void hasNoChanges() throws Exception {
-        User au = new User("Anon");
+        User au = new User("Anon", "123");
         au = us.create(au);
         Article article = new Article("New book", "Very interestinf book!", "New",
                 au, null, null);

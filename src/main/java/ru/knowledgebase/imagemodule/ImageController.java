@@ -1,7 +1,8 @@
 package ru.knowledgebase.imagemodule;
 
+import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.modelsmodule.Image;
+import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +13,25 @@ import java.util.List;
 public class ImageController {
 
     private DataCollector dataCollector = new DataCollector();
+
+    private static ImageController instance;
+
+    /**
+     * Controller as thread-safe singeleton
+     * @return
+     */
+    public static ImageController getInstance() {
+        ImageController localInstance = instance;
+        if (localInstance == null) {
+            synchronized (ImageController.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new ImageController();
+                }
+            }
+        }
+        return localInstance;
+    }
 
     /**
      * Get image objects from DB by list of id

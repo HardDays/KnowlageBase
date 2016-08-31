@@ -2,7 +2,7 @@ package ru.knowledgebase.imagemodule;
 
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.modelsmodule.Image;
+import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
 import java.util.Arrays;
 import java.util.List;

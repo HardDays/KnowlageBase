@@ -1,6 +1,8 @@
 <component name="libraryTable">
   <library name="Maven: org.apache.poi:poi-ooxml:3.10-FINAL">
-    <CLASSES />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/poi/poi-ooxml/3.10-FINAL/poi-ooxml-3.10-FINAL.jar!/" />
+    </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/poi/poi-ooxml/3.10-FINAL/poi-ooxml-3.10-FINAL-javadoc.jar!/" />
     </JAVADOC>
