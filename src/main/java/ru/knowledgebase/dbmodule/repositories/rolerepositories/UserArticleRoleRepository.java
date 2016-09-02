@@ -14,4 +14,7 @@ import java.util.List;
 public interface UserArticleRoleRepository extends CrudRepository<UserArticleRole, Integer> {
     @Query("select r from UserArticleRole r where  r.user =?1 and r.article = ?2")
     public List<UserArticleRole> find(User user, Article article) throws Exception;
+
+    @Query("select r.user from UserArticleRole r where r.article = ?1 and r.articleRole.canViewMistakes = true")
+    public List <User> findMistakeViewers(Article article);
 }

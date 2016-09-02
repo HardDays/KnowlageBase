@@ -51,7 +51,7 @@ public class ArticleController {
                                   int authorId,
                                   List<String> imagesId) throws Exception {
         Article article = getFullArticleObject(title, body, authorId,
-                -1, imagesId);
+                -1, true, imagesId);
 
         Article resultArticle = null;
         try {
@@ -78,11 +78,11 @@ public class ArticleController {
      * @param imagesId - list of images id
      */
     public Article addArticle(String title, String body,
-                           int authorId, int parentArticle,
+                           int authorId, int parentArticle, boolean isSection,
                            List<String> imagesId) throws Exception{
 
         Article article = getFullArticleObject(title, body, authorId,
-                                               parentArticle, imagesId);
+                                               parentArticle, isSection, imagesId);
 
         Article resultArticle = null;
         try {
@@ -143,11 +143,11 @@ public class ArticleController {
      * @return
      */
     public Article updateArticle(Integer id, String title, String body,
-                                 int authorId, int parentArticle,
+                                 int authorId, int parentArticle, boolean isSection,
                                  List<String> imagesId) throws Exception {
         Article article = null;
             article = getFullArticleObject(title, body, authorId,
-                    parentArticle, imagesId);
+                    parentArticle, isSection, imagesId);
 
             article.setId(id);
         try {
@@ -178,6 +178,7 @@ public class ArticleController {
      * */
     private Article getFullArticleObject(String title, String body,
                                          int authorId, int parentArticle,
+                                         boolean isSection,
                                          List<String> imagesId) throws Exception
     {
         Article article = new Article();
@@ -216,6 +217,7 @@ public class ArticleController {
         article.setParentArticle(parent);
         article.setImages(images);
         article.setAuthor(author);
+        article.setIsSection(isSection);
 
         return article;
     }

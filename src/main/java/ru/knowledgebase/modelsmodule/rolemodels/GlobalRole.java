@@ -32,7 +32,7 @@ public class GlobalRole {
     private boolean canDeleteUser;
 
     @Column
-    private boolean canEditUserRoles;
+    private boolean canEditUserRole;
 
     public GlobalRole(){
 
@@ -82,12 +82,12 @@ public class GlobalRole {
         this.canDeleteUser = canDeleteUser;
     }
 
-    public boolean isCanEditUserRoles() {
-        return canEditUserRoles;
+    public boolean isCanEditUserRole() {
+        return canEditUserRole;
     }
 
-    public void setCanEditUserRoles(boolean canEditUserRoles) {
-        this.canEditUserRoles = canEditUserRoles;
+    public void setCanEditUserRole(boolean canEditUserRoles) {
+        this.canEditUserRole = canEditUserRoles;
     }
 
     public GlobalRole(String name){

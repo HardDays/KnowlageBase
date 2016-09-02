@@ -50,7 +50,7 @@ public class ArticleControllerTest {
         base = ac.addBaseArticle("1", "2", u.getId(), new LinkedList<String>());
 
         parentArticle = base.getId();
-        updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, new LinkedList<String>());
+        updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, false, new LinkedList<String>());
     }
 
     @AfterClass
@@ -63,7 +63,7 @@ public class ArticleControllerTest {
     @Test
     public void addArticle() throws Exception {
         parentArticle = base.getId();
-        createTest = ac.addArticle(title, body, u.getId(), parentArticle, imgs);
+        createTest = ac.addArticle(title, body, u.getId(), parentArticle, false, imgs);
         createTest = ac.getArticle(createTest.getId());
         printObject(createTest);
         //ac.deleteArticle(createTest.getId());
@@ -72,7 +72,7 @@ public class ArticleControllerTest {
     @Transactional
     @Test(expected = ArticleNotFoundException.class)
     public void deleteArticle() throws Exception {
-        Article a = ac.addArticle(title, body, author, parentArticle, new ArrayList<String>());
+        Article a = ac.addArticle(title, body, author, parentArticle, false, new ArrayList<String>());
         ac.deleteArticle(a.getId());
         ac.getArticle(a.getId());
     }
@@ -80,8 +80,8 @@ public class ArticleControllerTest {
     @Transactional
     @Test(expected = ArticleNotFoundException.class)
     public void deleteBaseArticle() throws Exception {
-        Article a = ac.addArticle(title, body, u.getId(), parentArticle, new ArrayList<String>());
-        Article b = ac.addArticle(title, body, u.getId(), a.getId(), new ArrayList<String>());
+        Article a = ac.addArticle(title, body, u.getId(), parentArticle, false, new ArrayList<String>());
+        Article b = ac.addArticle(title, body, u.getId(), a.getId(), false, new ArrayList<String>());
         printObject(a);
         printObject(b);
 
@@ -96,8 +96,8 @@ public class ArticleControllerTest {
         String newString = "new string";
 
         updateArticle.setTitle(newString);
-        updateArticle = ac.updateArticle(updateArticle.getId(), updateArticle.getTitle(), updateArticle.getBody(),
-                updateArticle.getAuthor().getId(), updateArticle.getParentArticle().getId(), new ArrayList<String>());
+        updateArticle = ac.updateArticle(updateArticle.getId(), updateArticle.getTitle(),  updateArticle.getBody(),
+                updateArticle.getAuthor().getId(), updateArticle.getParentArticle().getId(), false, new ArrayList<String>());
 
         updateArticle = ac.getArticle(updateArticle.getId());
         assertTrue(updateArticle.getTitle().equals(newString));

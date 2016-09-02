@@ -1,6 +1,7 @@
 package ru.knowledgebase.modelsmodule.articlemodels;
 
 import org.springframework.transaction.annotation.Transactional;
+import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
@@ -38,6 +39,9 @@ public class Article {
     @Column
     private String clearBody;
 
+    @Column
+    private boolean isSection;
+
     //*
     @ManyToOne
     private Article parentArticle;
@@ -52,6 +56,10 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
     private List<UserArticleRole> userArticleRole;
 
+    @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
+    private List<Comment> comments;
+
+
     //BEGIN CONSTRUCTORS
     public Article(){}
 
@@ -60,16 +68,16 @@ public class Article {
     }
 
     public Article(String title, String body, String clearBody,
-                   User author, Article parentArticle, List<Image> images) {
+                   User author, Article parentArticle, boolean isSection, List<Image> images) {
         this.title         = title;
         this.body          = body;
         this.clearBody     = clearBody;
         this.author        = author;
         this.parentArticle = parentArticle;
+        this.isSection = isSection;
         if (images != null) {
             this.images = images;
-        }
-        else {
+        } else {
             this.images = new LinkedList<Image>();
         }
     }
@@ -136,6 +144,14 @@ public class Article {
         this.parentArticle = parentArticle;
     }
 
+    public boolean isSection() {
+        return isSection;
+    }
+
+    public void setIsSection(boolean hasAdmin) {
+        this.isSection = hasAdmin;
+    }
+
     //END SG METHODS
 
 
@@ -150,6 +166,7 @@ public class Article {
         this.body          = article.body;
         this.parentArticle = article.parentArticle;
         this.images        = article.images;
+        this.isSection = article.isSection;
     }
 
     @Override

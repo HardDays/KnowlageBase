@@ -47,4 +47,9 @@ public class TokenService {
     public void delete(Token token) throws Exception{
         tokenRepository.delete(token);
     }
+
+    @Transactional
+    public void delete(int id) throws Exception{
+        tokenRepository.delete(id);
+    }
 }

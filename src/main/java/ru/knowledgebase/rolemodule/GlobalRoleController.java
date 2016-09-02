@@ -23,8 +23,6 @@ public class GlobalRoleController {
 
     private static volatile GlobalRoleController instance;
 
-    private GlobalRole globalRole;
-
     /**
      * Get instance of a class
      * @return instance of a class
@@ -149,6 +147,23 @@ public class GlobalRoleController {
         assignUserRole(user, globalRole);
     }
     /**
+     * Assign default global role for specified user
+     * @param userId user id
+     */
+    public void assignDefaultUserRole(int userId) throws Exception{
+        GlobalRole globalRole = null;
+        User user = null;
+        try {
+            globalRole = collector.findGlobalRole(defaultGlobalRoleId);
+            user = collector.findUser(userId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        if (globalRole == null || user == null)
+            throw new AssignDefaultRoleException();
+        assignUserRole(user, globalRole);
+    }
+    /**
      * Assign global role for specified user
      * @param user user object (important: id should be specified)
      * @param globalRole global role object (important: id should be specified)
@@ -268,7 +283,7 @@ public class GlobalRoleController {
         return findUserRole(userId).isCanDeleteUser();
     }
 
-    public boolean canEditUserRoles(int userId) throws Exception{
-        return findUserRole(userId).isCanEditUserRoles();
+    public boolean canEditUserRole(int userId) throws Exception{
+        return findUserRole(userId).isCanEditUserRole();
     }
 }

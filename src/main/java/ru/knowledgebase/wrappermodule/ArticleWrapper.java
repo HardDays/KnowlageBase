@@ -1,7 +1,6 @@
 package ru.knowledgebase.wrappermodule;
 
 import ru.knowledgebase.articlemodule.ArticleController;
-import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.responsemodule.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
@@ -19,18 +18,18 @@ public class ArticleWrapper {
 
     //BEGIN PRIVATE METHODS
     public Response addArticle(String title, String body,
-                               int authorId, int parentArticle,
+                               int authorId, int parentArticle, boolean isSection,
                                List<String> imagesId) {
         Response response = null;
         try {
             articleRoleController.canAddArticle(authorId, parentArticle);
-            articleController.addArticle(title, body, authorId, parentArticle, imagesId);
+            articleController.addArticle(title, body, authorId, parentArticle, isSection, imagesId);
         }
         catch (Exception ex) {
-            response = ResponseBuilder.getResponse(ex);
+            response = ResponseBuilder.buildResponse(ex);
         }
         if (response == null) {
-            response = ResponseBuilder.getArtilceCreatedResponse();
+            response = ResponseBuilder.buildArtilceCreatedResponse();
         }
         return response;
     }

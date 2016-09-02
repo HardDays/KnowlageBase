@@ -34,7 +34,17 @@ public class UserArticleRoleService {
     }
 
     @Transactional
+    public List <User> findMistakeViewers(Article article) throws Exception{
+        return userArticleRoleRepository.findMistakeViewers(article);
+    }
+
+    @Transactional
     public void delete(UserArticleRole role) throws Exception{
         userArticleRoleRepository.delete(role);
+    }
+
+    @Transactional
+    public void delete(int id) throws Exception{
+        userArticleRoleRepository.delete(id);
     }
 }

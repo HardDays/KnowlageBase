@@ -24,7 +24,7 @@ public class ArticleRole {
     private String name;
 
     @Column
-    private boolean canAddArticles;
+    private boolean canAddArticle;
 
     @Column
     private boolean canEditArticle;
@@ -82,12 +82,12 @@ public class ArticleRole {
     }
 
 
-    public boolean isCanAddArticles() {
-        return canAddArticles;
+    public boolean isCanAddArticle() {
+        return canAddArticle;
     }
 
-    public void setCanAddArticles(boolean canAddArticles) {
-        this.canAddArticles = canAddArticles;
+    public void setCanAddArticle(boolean canAddArticles) {
+        this.canAddArticle = canAddArticles;
     }
 
     public boolean isCanEditArticle() {
