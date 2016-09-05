@@ -283,7 +283,12 @@ public class GlobalRoleController {
         return findUserRole(userId).isCanDeleteUser();
     }
 
+    public boolean canViewUser(int userId) throws Exception{
+        return findUserRole(userId).isCanViewUser();
+    }
+
     public boolean canEditUserRole(int userId) throws Exception{
         return findUserRole(userId).isCanEditUserRole();
     }
+
 }

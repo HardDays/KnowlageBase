@@ -13,6 +13,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 import java.io.*;
 import java.math.BigInteger;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
@@ -31,6 +32,11 @@ import org.apache.poi.hwpf.converter.WordToHtmlConverter;
 import org.apache.poi.hwpf.usermodel.Picture;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import ru.knowledgebase.articlemodule.ArticleController;
+import ru.knowledgebase.exceptionmodule.converterexceptions.ConvertException;
+import ru.knowledgebase.imagemodule.ImageController;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
 
 /**
@@ -39,6 +45,11 @@ import org.w3c.dom.Element;
 public class ArticleConverter {
 
     private static volatile ArticleConverter instance;
+    private ArticleController articleController = ArticleController.getInstance();
+    private ImageController imageController = ImageController.getInstance();
+
+    private String imagePath = "/home/vova/Project BZ/trash/image_folder/";
+    private String imageFolder = "/word/media";
 
     public static ArticleConverter getInstance() {
         ArticleConverter localInstance = instance;
@@ -53,8 +64,8 @@ public class ArticleConverter {
         return localInstance;
     }
 
-
-    public class InlineImageWordToHtmlConverter extends WordToHtmlConverter {
+    //kind of magic, need to get images
+    private class InlineImageWordToHtmlConverter extends WordToHtmlConverter {
 
         public InlineImageWordToHtmlConverter(Document document) {
             super(document);
@@ -74,7 +85,8 @@ public class ArticleConverter {
 
     }
 
-    public void convertDoc(InputStream input, String outputFile) throws Exception{
+    public void convertDoc(InputStream input, String title, int authorId, int parentArticle, boolean isSection) throws Exception{
+        String body = null;
         try {
             HWPFDocumentCore wordDocument = WordToHtmlUtils.loadDoc(input);
                 WordToHtmlConverter wordToHtmlConverter = new InlineImageWordToHtmlConverter(
@@ -90,24 +102,22 @@ public class ArticleConverter {
             transformer.setOutputProperty(OutputKeys.METHOD, "html");
             transformer.transform(new DOMSource( wordToHtmlConverter.getDocument()), new StreamResult( stringWriter ) );
 
-            String html = stringWriter.toString();
-
-            FileOutputStream fos=new FileOutputStream(new File(outputFile));
-            DataOutputStream dos;
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos,"UTF-8"));
-            out.write(html);
-            out.close();
+            body = stringWriter.toString();
         }
         catch (Throwable e) {
-            e.printStackTrace();
+            throw new ConvertException();
         }
+        articleController.addArticle(title, body, authorId, parentArticle, isSection, new LinkedList<>());
+
     }
 
-    public void convert(InputStream input, String outputFile) throws Exception{
+    public void convertDocx(InputStream input, String title, int authorId, int parentArticle, boolean isSection) throws Exception{
+        String body = null;
+        String curPath = imagePath + title;
+        List <String> images = new LinkedList<String>();
         try {
             XWPFDocument document = new XWPFDocument(input);
-            File outFile = new File(outputFile);
-            outFile.getParentFile().mkdirs();
+
             List<XWPFTable> tables = document.getTables();
             //add borders to tables
             for(XWPFTable t : tables){
@@ -136,17 +146,27 @@ public class ArticleConverter {
                 tblpro.setTblBorders(borders);
                 t.getCTTbl().setTblPr(tblpro);
             }
-            //output
-            OutputStream out = new FileOutputStream(outFile);
-            XHTMLOptions options = XHTMLOptions.create().URIResolver(new FileURIResolver(new File("/home/vova/Project BZ/trash/docx/target")));
-            options.setExtractor(new FileImageExtractor(new File("/home/vova/Project BZ/trash/docx/target")));
+            //create folder for images
+            File outFolder = new File(curPath);
+            outFolder.getParentFile().mkdirs();
+            //out images and body
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            XHTMLOptions options = XHTMLOptions.create();//.URIResolver(new FileURIResolver(new File("/home/vova/Project BZ/trash/docx/target")));
+            options.setExtractor(new FileImageExtractor(new File(curPath)));
+            XHTMLConverter.getInstance().convert(document, out, options);
+            outFolder = new File(curPath + imageFolder);
+            //upload images to db
+            for (File file : outFolder.listFiles()) {
+                if (file.isFile()) {
+                    Image image = imageController.addImage(new Image(file.getAbsolutePath()));
+                    images.add(image.getId());
+                }
+            }
 
-            XHTMLConverter.getInstance().convert(document,out,options);
+            body = new String(out.toByteArray(), "UTF-8");
+        } catch (Exception e) {
+            throw new ConvertException();
         }
-        catch (Throwable e) {
-            e.printStackTrace();
-            throw new Exception();
-        }
-
+        articleController.addArticle(title, body, authorId, parentArticle, isSection, images);
     }
 }

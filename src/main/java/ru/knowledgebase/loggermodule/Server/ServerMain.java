@@ -1,5 +1,6 @@
 package ru.knowledgebase.loggermodule.Server;
 
+import ru.knowledgebase.loggermodule.Client.DataToLogProvider;
 import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
 import ru.knowledgebase.loggermodule.LogRecord.LogRecordFactory;
 
@@ -12,6 +13,9 @@ import java.util.Random;
 public class ServerMain {
 
     public static void main(String[] args) {
+
+        DataToLogProvider log = DataToLogProvider.getInstance();
+        log.startProvider();
         DataProvider dataProvider = DataProvider.getInstance();
 
         while (true){

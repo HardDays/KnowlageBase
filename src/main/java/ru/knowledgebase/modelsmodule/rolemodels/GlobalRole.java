@@ -29,6 +29,9 @@ public class GlobalRole {
     private boolean canEditUser;
 
     @Column
+    private boolean canViewUser;
+
+    @Column
     private boolean canDeleteUser;
 
     @Column
@@ -92,6 +95,14 @@ public class GlobalRole {
 
     public GlobalRole(String name){
         this.name = name;
+    }
+
+    public boolean isCanViewUser() {
+        return canViewUser;
+    }
+
+    public void setCanViewUser(boolean canViewUser) {
+        this.canViewUser = canViewUser;
     }
 
 }

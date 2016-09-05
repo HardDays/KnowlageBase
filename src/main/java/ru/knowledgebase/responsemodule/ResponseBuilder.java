@@ -4,6 +4,7 @@ import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
+import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import java.util.List;
 
@@ -77,6 +78,11 @@ public class ResponseBuilder {
     }
 
     public static Response buildWrongTokenResponse(){
+        Response res = new Response();
+        return res;
+    }
+
+    public static Response buildUserInfoResponse(User user){
         Response res = new Response();
         return res;
     }

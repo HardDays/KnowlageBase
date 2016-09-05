@@ -90,6 +90,7 @@ public class ArticleController {
         }
         catch (Exception ex) {
             //TODO: throw new DBException();
+            ex.printStackTrace();
             throw new Exception();
         }
         if (resultArticle == null) {

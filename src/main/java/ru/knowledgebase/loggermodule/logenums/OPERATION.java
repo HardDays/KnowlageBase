@@ -8,5 +8,5 @@ public enum OPERATION {
     UPDATE,
     DELETE,
     SEARCH_REQUEST,
-    SEARCH_RESULT;
+    SEARCH_RESULT
 }

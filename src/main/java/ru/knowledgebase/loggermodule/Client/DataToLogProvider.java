@@ -17,7 +17,7 @@ import java.util.Queue;
 public class DataToLogProvider {
     private static DataToLogProvider ourInstance = new DataToLogProvider();
 
-    private final int port = 666;
+    private final int port = 2048;
     private final String server = "localhost";
 
     private Queue<String> buffer = new LinkedList<>();

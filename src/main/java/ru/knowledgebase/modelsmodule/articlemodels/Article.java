@@ -30,13 +30,13 @@ public class Article {
     @Column(length = 256)
     private String title;
 
-    @Column
+    @Column(length = 100000000)
     private String body;
 
     @ManyToOne
     private User author;
 
-    @Column
+    @Column(length = 100000000)
     private String clearBody;
 
     @Column

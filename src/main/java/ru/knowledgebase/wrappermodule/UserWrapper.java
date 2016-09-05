@@ -45,6 +45,18 @@ public class UserWrapper {
         }
     }
 
+    public Response update(int userId, String token, String newLogin, String newPassword) {
+        try {
+            boolean okToken = userController.checkUserToken(userId, token);
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+            userController.update(userId, newLogin, newPassword);
+            return ResponseBuilder.buildUserChangedResponse();
+        }catch (Exception e){
+            return ResponseBuilder.buildResponse(e);
+        }
+    }
+
     public Response update(int adminId, String adminToken, int userId, String newLogin, String newPassword) {
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
@@ -168,5 +180,30 @@ public class UserWrapper {
         }
     }
 
+    public Response getUserInfo(int adminId, String token, int userId){
+        try{
+            boolean okToken = userController.checkUserToken(adminId, token);
+            boolean hasRights = globalRoleController.canViewUser(adminId);
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+            if (!hasRights)
+                return ResponseBuilder.buildNoAccessResponse();
+            User user = userController.find(userId);
+            return ResponseBuilder.buildUserInfoResponse(user);
+        }catch (Exception e){
+            return ResponseBuilder.buildResponse(e);
+        }
+    }
 
+    public Response getUserInfo(int userId, String token){
+        try{
+            boolean okToken = userController.checkUserToken(userId, token);
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+            User user = userController.find(userId);
+            return ResponseBuilder.buildUserInfoResponse(user);
+        }catch (Exception e){
+            return ResponseBuilder.buildResponse(e);
+        }
+    }
 }

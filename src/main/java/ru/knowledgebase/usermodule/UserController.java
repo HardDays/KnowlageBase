@@ -145,6 +145,22 @@ public class UserController {
 
     }
     /**
+     * Find user object
+     * @param id user id
+     * @return user object
+     */
+    public User find(int id) throws Exception {
+        User user = null;
+        try {
+            collector.findUser(id);
+        } catch (Exception e) {
+            throw new DataBaseException();
+        }
+        if (user == null)
+            throw new UserNotFoundException();
+        return user;
+    }
+    /**
      * Delete user from database and LDAP
      * @param id user id
      */

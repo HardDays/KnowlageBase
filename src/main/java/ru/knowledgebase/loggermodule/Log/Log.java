@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class Log {
     private static Log ourInstance = new Log();
 
-    private File file = new File("Log.txt");
+    private File file = new File("/home/vova/Project BZ/KnowledgeBase/LogTest/log.txt");
     private FileWriter writer;
     private BufferedWriter bufferedWriter;
     private FileReader reader;

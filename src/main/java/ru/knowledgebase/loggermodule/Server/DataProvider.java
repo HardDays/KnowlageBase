@@ -15,7 +15,7 @@ import java.util.Queue;
  * Created by Мария on 15.08.2016.
  */
 public class DataProvider {
-    private static final int port = 666;
+    private static final int port = 2048;
     private static DataInputStream in;
     private static PrintWriter out;
     private static DataProvider instance = new DataProvider();
