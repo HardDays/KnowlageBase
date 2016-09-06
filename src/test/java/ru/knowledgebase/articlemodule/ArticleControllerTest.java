@@ -110,11 +110,15 @@ public class ArticleControllerTest {
     }
 
     private void printObject(Article a) {
-            System.out.println("============");
-            System.out.println(a.getTitle());
-            System.out.println(a.getAuthor().getLogin());
-            for (Image i : a.getImages()) {
-                System.out.println(i.getPath());
+        System.out.println("============");
+        System.out.println(a.getTitle());
+        System.out.println(a.getAuthor().getLogin());
+        for (Image i : a.getImages()) {
+            System.out.println(i.getPath());
+        }
+        if (a.getChildren() != null)
+        for (Article b : a.getChildren()) {
+            System.out.println(b.getTitle());
         }
     }
 

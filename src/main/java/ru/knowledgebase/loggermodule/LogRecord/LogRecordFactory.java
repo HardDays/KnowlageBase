@@ -1,6 +1,6 @@
 package ru.knowledgebase.loggermodule.LogRecord;
 
-import ru.knowledgebase.loggermodule.logenums.OPERATION;
+import ru.knowledgebase.loggermodule.enums.OPERATION;
 
 import java.sql.Timestamp;
 
@@ -25,6 +25,13 @@ public class LogRecordFactory {
         return new CRUDRecord(OPERATION.DELETE, time, userID, articleID);
     }
 
+    /**
+     * Generates an object of corresponding to the input array of record's fields {@code recordParameters}
+     * descender of {@code ALogRecord}.
+     * @param recordParameters
+     * @return {@code ALogRecord} object if input parameters correspond to any log record class and {@code null}
+     * if input parameters are wrong.
+     */
     public ALogRecord generateRecord(String[] recordParameters) {
         try{
             OPERATION operation = OPERATION.valueOf(recordParameters[0]);

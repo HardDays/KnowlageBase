@@ -43,17 +43,18 @@ public class Article {
     private Article parentArticle;
     //*/
 
-    @OneToMany(mappedBy="parentArticle", cascade = {CascadeType.ALL})
-    private List<Article> children;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="parentArticle", cascade = {CascadeType.ALL})
+    private List<Article> children = new LinkedList<Article>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    List<Image> images;
+    private List<Image> images;
 
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
     private List<UserArticleRole> userArticleRole;
 
     //BEGIN CONSTRUCTORS
-    public Article(){}
+    public Article(){
+    }
 
     public Article(int id) {
         this.id = id;
@@ -136,6 +137,13 @@ public class Article {
         this.parentArticle = parentArticle;
     }
 
+    public void addChild(Article article) {
+        children.add(article);
+    }
+
+    public List<Article> getChildren() {
+        return children;
+    }
     //END SG METHODS
 
 

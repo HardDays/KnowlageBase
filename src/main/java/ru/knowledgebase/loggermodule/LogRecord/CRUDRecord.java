@@ -1,11 +1,16 @@
 package ru.knowledgebase.loggermodule.LogRecord;
 
-import ru.knowledgebase.loggermodule.logenums.OPERATION;
+import ru.knowledgebase.loggermodule.enums.OPERATION;
 
 import java.sql.Timestamp;
 
 /**
  * Created by Мария on 21.08.2016.
+ */
+
+/**
+ * Class {@code CRUDRecord} represents a record which contains information about CRUD operations
+ * made in the system.
  */
 public class CRUDRecord extends ALogRecord {
     private final int articleID;

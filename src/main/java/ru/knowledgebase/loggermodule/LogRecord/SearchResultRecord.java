@@ -1,11 +1,15 @@
 package ru.knowledgebase.loggermodule.LogRecord;
 
-import ru.knowledgebase.loggermodule.logenums.OPERATION;
+import ru.knowledgebase.loggermodule.enums.OPERATION;
 
 import java.sql.Timestamp;
 
 /**
  * Created by Мария on 21.08.2016.
+ */
+/**
+ * Class {@code SearchResultRecord} represents a record which contains information about search results
+ * chosen by user.
  */
 public class SearchResultRecord extends ALogRecord {
     private int articleID;

@@ -9,6 +9,7 @@ import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class ArticleController {
     private static ArticleController instance;
 
     /**
-     * Controller as thread-safe singeleton
+     * Controller as thread-safe singleton
      * @return
      */
     public static ArticleController getInstance() {
@@ -60,8 +61,7 @@ public class ArticleController {
             resultArticle = dataCollector.addArticle(article);
         }
         catch (Exception ex) {
-            //TODO: throw new DBException();
-            throw new Exception();
+            throw new DataBaseException();
         }
         if (resultArticle == null) {
             throw new ArticleAddException();
@@ -91,13 +91,13 @@ public class ArticleController {
             resultArticle = dataCollector.addArticle(article);
         }
         catch (Exception ex) {
-            //TODO: throw new DBException();
-            throw new Exception();
+            throw new DataBaseException();
         }
         if (resultArticle == null) {
             throw new ArticleAddException();
         }
 
+        resultArticle.addChild(resultArticle);
         return resultArticle;
     }
 
@@ -120,8 +120,7 @@ public class ArticleController {
             article = dataCollector.findArticle(id);
         }
         catch (Exception ex) {
-            //TODO: throw new DBException();
-            throw new Exception();
+            throw new DataBaseException();
         }
         if (article == null) {
             throw new ArticleNotFoundException();
