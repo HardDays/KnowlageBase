@@ -24,4 +24,8 @@ public class CRUDRecord extends ALogRecord {
         record.append(articleID);
 		return record.toString();
     }
+
+    public int getArticleID() {
+        return articleID;
+    }
 }

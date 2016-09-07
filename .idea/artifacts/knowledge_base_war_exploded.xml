@@ -65,6 +65,15 @@
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.8" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.9" />
+          <element id="library" level="project" name="Maven: javax.json:javax.json-api:1.0-b06" />
+          <element id="library" level="project" name="Maven: ru.stachek66.nlp:mystem-scala:0.1.4" />
+          <element id="library" level="project" name="Maven: org.json:json:20140107" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.1.3" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.1.3" />
+          <element id="library" level="project" name="Maven: org.scala-lang:scala-library:2.11.4" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-compress:1.2" />
+          <element id="library" level="project" name="Maven: com.typesafe:config:1.2.1" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -23,4 +23,8 @@ public class SearchResultRecord extends ALogRecord {
         record.append(Integer.toString(articleID));
         return record.toString();
     }
+
+    public int getArticleID() {
+        return articleID;
+    }
 }

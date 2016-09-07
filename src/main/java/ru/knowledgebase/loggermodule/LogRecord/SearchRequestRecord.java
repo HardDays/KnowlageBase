@@ -20,4 +20,8 @@ public class SearchRequestRecord extends ALogRecord {
         record.append(searchRequest);
         return record.toString();
     }
+
+    public String getSearchRequest() {
+        return searchRequest;
+    }
 }

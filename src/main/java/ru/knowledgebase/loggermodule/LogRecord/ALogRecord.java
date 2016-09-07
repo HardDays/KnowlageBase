@@ -22,4 +22,16 @@ public abstract class ALogRecord {
 		record_base.append(addRecordDelimiter(Integer.toString(userID)));
 		return record_base;
 	}
+
+	public OPERATION getOperationType() {
+		return operationType;
+	}
+
+	public Timestamp getTime() {
+		return time;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
 }
