@@ -55,7 +55,7 @@ public class Main {
         words.add("  продажа   ");
         words.add("  продать   ");
 
-        String req = words.get(rand.nextInt(words.size()));
+        /*
         log.add(new SearchRequestRecord( new Timestamp(System.currentTimeMillis()), 1, "Банк"));
         log.add(new SearchResultRecord( new Timestamp(System.currentTimeMillis()), 1, 2));
         log.add(new SearchResultRecord( new Timestamp(System.currentTimeMillis()), 1, 3));
@@ -69,8 +69,45 @@ public class Main {
         log.add(new SearchResultRecord( new Timestamp(System.currentTimeMillis()), 1, 9));
         log.add(new SearchRequestRecord( new Timestamp(System.currentTimeMillis()), 3, "альфа банк!!1"));
         log.add(new SearchResultRecord( new Timestamp(System.currentTimeMillis()), 3, 2));
+        */
 
 
+        log.add(new SearchResultRecord( new Timestamp(System.currentTimeMillis()), 1, 2));
+        try{
+            Thread.sleep(1000);
+        }catch (Exception e){
+
+        }
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        System.out.println(time);
+        log.add(new SearchResultRecord(time, 1, 3));
+        try{
+            Thread.sleep(10000);
+        }catch (Exception e){
+
+        }
+        time = new Timestamp(System.currentTimeMillis());
+        System.out.println(time);
+        log.add(new SearchResultRecord(time, 1, 3));
+        try{
+            Thread.sleep(3000);
+        }catch (Exception e){
+
+        }
+        time = new Timestamp(System.currentTimeMillis());
+        System.out.println(time);
+
+        log.add(new SearchResultRecord(time, 1, 3));
+        try{
+            Thread.sleep(5000);
+        }catch (Exception e){
+
+        }
+        time = new Timestamp(System.currentTimeMillis());
+        System.out.println(time);
+
+        log.add(new SearchResultRecord(time, 1, 3));
+        an.getAverageRequestTime(log);
 
 
         /*
@@ -80,10 +117,11 @@ public class Main {
             log.add(new SearchRequestRecord( new Timestamp(System.currentTimeMillis()), 1, req));
         }*/
 
+        /*
         List<OperationFrequency> res = an.getRequestFrequency(log);
         for (OperationFrequency f : res){
             System.out.println(f.getOperation() + " " + f.getCount() + " " + f.getFrequency());
-        }
+        }*/
         /*
         HashMap<String, List<ArticleRank>> rs = an.getRelevantArticles(log);
         for (Map.Entry<String, List<ArticleRank>> e : rs.entrySet()){
@@ -92,7 +130,8 @@ public class Main {
                 System.out.println("id: " + r.getId() + " count: " + r.getRank());
             }
         }
-        System.out.println("finished");
         */
+        System.out.println("finished");
+
     }
 }
