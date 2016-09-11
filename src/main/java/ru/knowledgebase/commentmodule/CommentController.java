@@ -36,7 +36,10 @@ public class CommentController {
         }
         return localInstance;
     }
-
+    /**
+     * Add new comment object to database
+     * @param comment comment
+     */
     public void add(Comment comment) throws Exception{
         try{
             collector.addComment(comment);
@@ -44,7 +47,13 @@ public class CommentController {
             throw new DataBaseException();
         }
     }
-
+    /**
+     * Add new comment to database
+     * @param userId id of user
+     * @param articleId id of article
+     * @param comment comment of user
+     * @param articleText text with mistake
+     */
     public void add(int userId, int articleId, String comment, String articleText) throws Exception{
         User user = null;
         Article article = null;
@@ -73,7 +82,11 @@ public class CommentController {
         }
         add(new Comment(user, admin, article, comment, articleText));
     }
-
+    /**
+     * Find list of comments sended to admin
+     * @param adminId id of admin
+     * @return list of comments
+     */
     public List<Comment> findByAdmin(int adminId) throws Exception{
         User admin = null;
         try {
@@ -85,7 +98,12 @@ public class CommentController {
             throw new UserNotFoundException();
         return collector.findCommentsByAdmin(admin);
     }
-
+    /**
+     * Check can admin delete comment
+     * @param adminId id of admin
+     * @param commentId id of comment
+     * @return true or false
+     */
     public boolean canDeleteComment(int adminId, int commentId) throws Exception{
         Comment comment = null;
         try {
@@ -97,7 +115,10 @@ public class CommentController {
             throw new CommentNotFoundException();
         return comment.getAdmin().getId() == adminId;
     }
-
+    /**
+     * Delete comment object from database
+     * @param comment comment object
+     */
     public void delete(Comment comment) throws Exception{
         if (comment == null)
             throw new CommentNotFoundException();
@@ -107,7 +128,10 @@ public class CommentController {
             throw new DataBaseException();
         }
     }
-
+    /**
+     * Delete comment from database
+     * @param id id of comment
+     */
     public void delete(int id) throws Exception{
         Comment comment = null;
         try{

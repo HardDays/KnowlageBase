@@ -326,4 +326,8 @@ public class ArticleRoleController {
     public boolean canSearch(int userId, int articleId) throws Exception {
         return findUserRole(userId, articleId).isCanSearch();
     }
+
+    public boolean canGetNotifications(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetNotifications();
+    }
 }

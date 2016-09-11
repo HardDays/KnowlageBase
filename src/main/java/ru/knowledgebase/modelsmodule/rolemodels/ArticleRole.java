@@ -42,6 +42,9 @@ public class ArticleRole {
     private boolean canOnOffNotifications;
 
     @Column
+    private boolean canGetNotifications;
+
+    @Column
     private boolean canGetReports;
 
     @Column
@@ -160,5 +163,13 @@ public class ArticleRole {
 
     public void setCanSearch(boolean canSearch) {
         this.canSearch = canSearch;
+    }
+
+    public boolean isCanGetNotifications() {
+        return canGetNotifications;
+    }
+
+    public void setCanGetNotifications(boolean canGetNotifications) {
+        this.canGetNotifications = canGetNotifications;
     }
 }

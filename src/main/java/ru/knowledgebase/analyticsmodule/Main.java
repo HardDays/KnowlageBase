@@ -2,12 +2,15 @@ package ru.knowledgebase.analyticsmodule;
 
 import ru.knowledgebase.analyticsmodule.rank.ArticleRank;
 import ru.knowledgebase.analyticsmodule.rank.OperationFrequency;
+import ru.knowledgebase.convertermodule.ArticleConverter;
 import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
 import ru.knowledgebase.loggermodule.LogRecord.CRUDRecord;
 import ru.knowledgebase.loggermodule.LogRecord.SearchRequestRecord;
 import ru.knowledgebase.loggermodule.LogRecord.SearchResultRecord;
 import ru.knowledgebase.loggermodule.logenums.OPERATION;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -17,7 +20,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String [] a) throws Exception{
-        Analyser an = new Analyser();
+   //     Analyser an = new Analyser();
         List<ALogRecord> log = new LinkedList<ALogRecord>();
         Random rand = new Random();
         for (int i = 0; i < 150; i++) {
@@ -70,7 +73,7 @@ public class Main {
         log.add(new SearchRequestRecord( new Timestamp(System.currentTimeMillis()), 3, "альфа банк!!1"));
         log.add(new SearchResultRecord( new Timestamp(System.currentTimeMillis()), 3, 2));
         */
-
+        /*
 
         log.add(new SearchResultRecord( new Timestamp(System.currentTimeMillis()), 1, 2));
         try{
@@ -108,7 +111,9 @@ public class Main {
 
         log.add(new SearchResultRecord(time, 1, 3));
         an.getAverageRequestTime(log);
-
+        */
+        FileInputStream is = new FileInputStream(new File("/home/vova/Project BZ/documents/1.05.2015_ФЛ_Продажа_автоплатеж Билайн-Альфабанк_Тренер.docx"));
+        ArticleConverter.getInstance().convertDocx1(is);
 
         /*
         for (int i = 0; i < 10; i++){

@@ -4,10 +4,12 @@ import ru.knowledgebase.analyticsmodule.rank.ArticleRank;
 import ru.knowledgebase.analyticsmodule.rank.OperationFrequency;
 import ru.knowledgebase.analyticsmodule.rank.RequestRank;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
 import ru.knowledgebase.loggermodule.LogRecord.SearchRequestRecord;
 import ru.knowledgebase.loggermodule.LogRecord.SearchResultRecord;
 import ru.knowledgebase.loggermodule.logenums.OPERATION;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -20,6 +22,25 @@ public class Analyser {
     private DataCollector dataCollector = new DataCollector();
     private RequestParser requestParser = new RequestParser();
 
+    private static volatile Analyser instance;
+
+    public static Analyser getInstance() {
+        Analyser localInstance = instance;
+        if (localInstance == null) {
+            synchronized (Analyser.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new Analyser();
+                }
+            }
+        }
+        return localInstance;
+    }
+    /**
+     * Find popular articles in log
+     * @param log list with log records
+     * @return list of articles and rank ordered by rank
+     */
     public List<ArticleRank> getPopularArticles(List <ALogRecord> log){
         //id статьи и количество переходов на нее
         Map <Integer, Integer> articles = new HashMap <Integer, Integer>();
@@ -43,7 +64,11 @@ public class Analyser {
         Collections.sort(result, (ArticleRank rec1, ArticleRank rec2) -> rec2.getRank().compareTo(rec1.getRank()));
         return result;
     }
-
+    /**
+     * Find relevant articles for requests
+     * @param log list with log records
+     * @return hashmap with request key and list of articles with rank ordered by rank
+     */
     public HashMap<String, List<ArticleRank>> getRelevantArticles(List <ALogRecord> log) throws Exception{
         //сортируем лог по дате
         Collections.sort(log, (ALogRecord rec1, ALogRecord rec2) -> rec1.getTime().compareTo(rec2.getTime()));
@@ -99,7 +124,11 @@ public class Analyser {
         }
         return sorted;
     }
-
+    /**
+     * Find popular requests
+     * @param log list with log records
+     * @return list of requests and ranks ordered by rank
+     */
     public List<RequestRank> getPopularRequests(List <ALogRecord> log) throws Exception{
         //храним количество встречаний каждого ключевого слова в запросе
         Map<String, Integer> keywords = new HashMap<String, Integer>();
@@ -124,33 +153,40 @@ public class Analyser {
         Collections.sort(result, (RequestRank rec1, RequestRank rec2) -> rec2.getRank().compareTo(rec1.getRank()));
         return result;
     }
-
-    public List <OperationFrequency> getOperationFrequency(List <ALogRecord> log){
+    /**
+     * Calculate frequency for each operation
+     * @param log list with log records
+     * @return hashmap of operation and it's frequency and count
+     */
+    public HashMap<OPERATION, OperationFrequency> getOperationFrequency(List <ALogRecord> log){
         //сортируем лог по возрастанию времени
         Collections.sort(log, (ALogRecord rec1, ALogRecord rec2) -> rec1.getTime().compareTo(rec2.getTime()));
         //храним операцию и ее количество
-        HashMap<OPERATION, Integer> operations = new HashMap<OPERATION, Integer>();
+        HashMap<OPERATION, OperationFrequency> operations = new HashMap<>();
         //общее число операций
         int totalCount = 0;
         for (ALogRecord rec : log){
             OPERATION operation = rec.getOperationType();
             if (operations.containsKey(operation)) {
-                operations.put(operation, operations.get(operation) + 1);
+                operations.get(operation).setCount(operations.get(operation).getCount() + 1);
             } else {
-                operations.put(operation, 1);
+                operations.put(operation, new OperationFrequency(1, 0));
             }
             totalCount += 1;
         }
         //формируем результат
-        List <OperationFrequency> result = new LinkedList<>();
-        for (Map.Entry<OPERATION, Integer> op : operations.entrySet()){
-            int count = op.getValue();
+        for (Map.Entry<OPERATION, OperationFrequency> op : operations.entrySet()){
+            int count = op.getValue().getCount();
             //считаем процент от общего числа операций
-            result.add(new OperationFrequency(op.getKey(), count, 100 * count / totalCount));
+            op.getValue().setFrequency(100 * count / totalCount);
         }
-        return result;
+        return operations;
     }
-
+    /**
+     * Calculate average time between each type of operations
+     * @param log list with log records
+     * @return hashmap of operation and it's average time in milliseconds
+     */
     public HashMap<OPERATION, Long> getAverageOperationTime(List <ALogRecord> log){
         //предыдущее время для запроса
         HashMap<OPERATION, Long> previous = new HashMap<>();
@@ -189,7 +225,13 @@ public class Analyser {
         }
         return time;
     }
-
+    /**
+     * Filter log records by time period
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return filtered list of log records
+     */
     private List<ALogRecord> filterTime(List <ALogRecord> log, Timestamp from, Timestamp to){
         List <ALogRecord> newLog = new LinkedList<>();
         for (ALogRecord rec : log){
@@ -200,53 +242,123 @@ public class Analyser {
         }
         return newLog;
     }
-
+    /**
+     * Filter log records sections
+     * @param log list with log records
+     * @param parentId id of parent article
+     * @return filtered list of log records
+     */
     private List<ALogRecord> filterParent(List <ALogRecord> log, int parentId) throws Exception{
         List <ALogRecord> newLog = new LinkedList<>();
         for (ALogRecord rec : log){
             if (rec.getOperationType() == OPERATION.SEARCH_RESULT){
                 SearchResultRecord res = (SearchResultRecord)rec;
-                int curParentId = dataCollector.findArticle(res.getArticleID()).getParentArticle().getId();
-                if (parentId == curParentId){
-                    newLog.add(rec);
+                try {
+                    //find parent article
+                    Article temp = dataCollector.findArticle(res.getArticleID());
+                    while(temp != null){
+                        if (temp.getId() == parentId)
+                            break;
+                        temp = temp.getParentArticle();
+                    }
+                    if (temp != null) {
+                        if (temp.getId() == parentId)
+                            newLog.add(rec);
+                    }
+                }catch (Exception e){
+                    throw new DataBaseException();
                 }
             }
         }
         return newLog;
     }
-
+    /**
+     * Find popular articles in log in time period
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return list of articles and rank ordered by rank
+     */
     public List<ArticleRank> getPopularArticles(List <ALogRecord> log, Timestamp from, Timestamp to) throws Exception{
         return getPopularArticles(filterTime(log, from, to));
     }
-
+    /**
+     * Find popular articles in log in time period in section
+     * @param log list with log records
+     * @param parentId id of parent article
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return list of articles and rank ordered by rank
+     */
     public List<ArticleRank> getPopularArticles(List <ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception{
         return getPopularArticles(filterParent(filterTime(log, from, to), parentId));
     }
-
+    /**
+     * Find popular articles in log in section
+     * @param log list with log records
+     * @param parentId id of parent article
+     * @return list of articles and rank ordered by rank
+     */
     public List<ArticleRank> getPopularArticles(List <ALogRecord> log, int parentId) throws Exception{
         return getPopularArticles(filterParent(log, parentId));
     }
-
+    /**
+     * Find relevant articles for requests in time period
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return hashmap with request key and list of articles with rank ordered by rank
+     */
     public HashMap<String, List<ArticleRank>> getRelevantArticles(List <ALogRecord> log, Timestamp from, Timestamp to) throws Exception{
         return getRelevantArticles(filterTime(log, from, to));
     }
-
+    /**
+     * Find relevant articles for requests in time period in section
+     * @param log list with log records
+     * @param parentId id of parent article
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return hashmap with request key and list of articles with rank ordered by rank
+     */
     public HashMap<String, List<ArticleRank>> getRelevantArticles(List <ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception{
         return getRelevantArticles(filterParent(filterTime(log, from, to), parentId));
     }
-
+    /**
+     * Find relevant articles for requests in time period in section
+     * @param log list with log records
+     * @param parentId id of parent article
+     * @return hashmap with request key and list of articles with rank ordered by rank
+     */
     public HashMap<String, List<ArticleRank>> getRelevantArticles(List <ALogRecord> log, int parentId) throws Exception{
         return getRelevantArticles(filterParent(log, parentId));
     }
-
+    /**
+     * Find popular requests in time period
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return list of requests and ranks ordered by rank
+     */
     public List<RequestRank> getPopularRequests(List <ALogRecord> log, Timestamp from, Timestamp to) throws Exception{
         return getPopularRequests(filterTime(log, from, to));
     }
-
-    public List<OperationFrequency> getOperationFrequency(List <ALogRecord> log, Timestamp from, Timestamp to) throws Exception{
+    /**
+     * Calculate frequency for each operation in time period
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return hashmap of operation and it's frequency and count
+     */
+    public HashMap<OPERATION, OperationFrequency> getOperationFrequency(List <ALogRecord> log, Timestamp from, Timestamp to) throws Exception{
         return getOperationFrequency(filterTime(log, from, to));
     }
-
+    /**
+     * Calculate average time between each type of operations in time period
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return hashmap of operation and it's average time in milliseconds
+     */
     public HashMap<OPERATION, Long> getAverageOperationTime(List <ALogRecord> log, Timestamp from, Timestamp to) throws Exception{
         return getAverageOperationTime(filterTime(log, from, to));
     }

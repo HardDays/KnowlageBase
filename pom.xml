@@ -153,12 +153,41 @@
     </dependency>
 
 
+    <dependency>
+      <groupId>fr.opensagres.xdocreport</groupId>
+      <artifactId>org.apache.poi.xwpf.converter.pdf</artifactId>
+      <version>1.0.5</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom -->
+    <dependency>
+      <groupId>net.sf.cssbox</groupId>
+      <artifactId>pdf2dom</artifactId>
+      <version>1.6</version>
+    </dependency>
+
   <!--- NLP -->
     <dependency>
       <groupId>ru.stachek66.nlp</groupId>
       <artifactId>mystem-scala</artifactId>
       <version>0.1.4</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.docx4j/docx4j -->
+    <dependency>
+      <groupId>org.docx4j</groupId>
+      <artifactId>docx4j</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.artofsolving/jodconverter -->
+    <dependency>
+      <groupId>com.github.livesense</groupId>
+      <artifactId>jodconverter-core</artifactId>
+      <version>1.0.5</version>
+    </dependency>
+
+
 
   </dependencies>
   <build>

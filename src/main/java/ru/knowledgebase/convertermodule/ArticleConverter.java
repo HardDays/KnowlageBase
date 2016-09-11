@@ -1,13 +1,22 @@
 package ru.knowledgebase.convertermodule;
 
+import org.apache.pdfbox.cos.COSDocument;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.text.PDFTextStripperByArea;
+import org.apache.poi.POITextExtractor;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.HWPFDocumentCore;
 import org.apache.poi.hwpf.converter.WordToHtmlConverter;
 import org.apache.poi.hwpf.converter.WordToHtmlUtils;
 import org.apache.poi.xwpf.converter.core.FileImageExtractor;
 import org.apache.poi.xwpf.converter.core.FileURIResolver;
+import org.apache.poi.xwpf.converter.pdf.PdfConverter;
+import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.converter.xhtml.XHTMLConverter;
 import org.apache.poi.xwpf.converter.xhtml.XHTMLOptions;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 
@@ -16,6 +25,14 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.artofsolving.jodconverter.OfficeDocumentConverter;
+import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
+import org.artofsolving.jodconverter.office.OfficeManager;
+import org.docx4j.Docx4J;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.fit.pdfdom.PDFDomTree;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,12 +61,13 @@ import ru.knowledgebase.modelsmodule.imagemodels.Image;
  */
 public class ArticleConverter {
 
-    private static volatile ArticleConverter instance;
-    private ArticleController articleController = ArticleController.getInstance();
-    private ImageController imageController = ImageController.getInstance();
+    private ArticleController articleController = null;// ArticleController.getInstance();
+    private ImageController imageController = null;//ImageController.getInstance();
 
     private String imagePath = "/home/vova/Project BZ/trash/image_folder/";
     private String imageFolder = "/word/media";
+
+    private static volatile ArticleConverter instance;
 
     public static ArticleConverter getInstance() {
         ArticleConverter localInstance = instance;
@@ -111,6 +129,26 @@ public class ArticleConverter {
 
     }
 
+
+    ///home/vova/Project BZ/documnets/1.05.2015_ФЛ_Продажа_автоплатеж Билайн-Альфабанк_Тренер.pdf
+    public void convertDocx1(InputStream input) throws Exception{
+        OfficeManager officeManager = new DefaultOfficeManagerConfiguration()
+                //2 ports indicate 2 working processes to do the conversion.
+                .setPortNumbers(8100, 8101)
+                //restart openoffice working process after every 30 conversions to prevent memory leak of the working process. (unsolved issue of openoffice)
+                .setMaxTasksPerProcess(30)
+                //untouched tasks in the queue that over 1200000ms will be discarded.(get a officeManager not found exception)
+                .setTaskQueueTimeout(1200000)
+                //if one task processing time over 20000ms, it will throw an exception.
+                .setTaskExecutionTimeout(20000)
+                .buildOfficeManager();
+
+        officeManager.start();
+        OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
+        converter.convert(new File("/home/vova/Project BZ/documents/1.05.2015_ФЛ_Продажа_автоплатеж Билайн-Альфабанк_Тренер.docx"), new File("/home/vova/Project BZ/ttt2.pdf"));
+        officeManager.stop();
+    }
+
     public void convertDocx(InputStream input, String title, int authorId, int parentArticle, boolean isSection) throws Exception{
         String body = null;
         String curPath = imagePath + title;
@@ -162,7 +200,6 @@ public class ArticleConverter {
                     images.add(image.getId());
                 }
             }
-
             body = new String(out.toByteArray(), "UTF-8");
         } catch (Exception e) {
             throw new ConvertException();
