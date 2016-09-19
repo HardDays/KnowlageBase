@@ -10,6 +10,7 @@ import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.xml.crypto.Data;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -46,15 +47,14 @@ public class ArticleController {
      * @param title
      * @param body
      * @param authorId
-     * @param imagesId
      * @return
      * @throws Exception
      */
     public Article addBaseArticle(String title, String body,
                                   int authorId,
-                                  List<String> imagesId) throws Exception {
+                                  Timestamp lifeTime) throws Exception {
         Article article = getFullArticleObject(title, body, authorId,
-                -1, imagesId);
+                -1, lifeTime, true);
 
         Article resultArticle = null;
         try {
@@ -77,14 +77,13 @@ public class ArticleController {
      * @param body - article body with tags
      * @param authorId - author id
      * @param parentArticle - parent article id
-     * @param imagesId - list of images id
      */
     public Article addArticle(String title, String body,
                            int authorId, int parentArticle,
-                           List<String> imagesId) throws Exception{
+                           Timestamp lifeTime, boolean isSection) throws Exception{
 
         Article article = getFullArticleObject(title, body, authorId,
-                                               parentArticle, imagesId);
+                                               parentArticle, lifeTime, isSection);
 
         Article resultArticle = null;
         try {
@@ -97,7 +96,6 @@ public class ArticleController {
             throw new ArticleAddException();
         }
 
-        resultArticle.addChild(resultArticle);
         return resultArticle;
     }
 
@@ -114,7 +112,12 @@ public class ArticleController {
         }
     }
 
-    public Article getArticleObject(Integer id) throws Exception{
+    /**
+     * Find article by id
+     * @param id
+     * @return article object
+     */
+    public Article getArticle(Integer id) throws Exception {
         Article article = null;
         try {
             article = dataCollector.findArticle(id);
@@ -129,40 +132,20 @@ public class ArticleController {
     }
 
     /**
-     * Find article by id
-     * @param id
-     * @return article object
-     */
-    public String getArticle(Integer id) throws Exception{
-        Article article = null;
-        try {
-            article = dataCollector.findArticle(id);
-        }
-        catch (Exception ex) {
-            throw new DataBaseException();
-        }
-        if (article == null) {
-            throw new ArticleNotFoundException();
-        }
-        return article.getBody();
-    }
-
-    /**
      * Update article. Search for old article, change fields and save
      * @param id
      * @param title
      * @param body
      * @param authorId
      * @param parentArticle
-     * @param imagesId
      * @return
      */
     public Article updateArticle(Integer id, String title, String body,
                                  int authorId, int parentArticle,
-                                 List<String> imagesId) throws Exception {
+                                 Timestamp lifeTime, boolean isSection) throws Exception {
         Article article = null;
             article = getFullArticleObject(title, body, authorId,
-                    parentArticle, imagesId);
+                    parentArticle, lifeTime, isSection);
 
             article.setId(id);
         try {
@@ -174,8 +157,36 @@ public class ArticleController {
         return article;
     }
 
-    public Article updateArticle(Article article) {
-        return dataCollector.updateArticle(article);
+    public Article updateArticle(Article article) throws Exception {
+        Article upArticle = null;
+        try {
+            upArticle = dataCollector.updateArticle(article);
+        }
+        catch (Exception ex) {
+            throw new ArticleUpdateException();
+        }
+        return upArticle;
+    }
+
+    /**
+     * Returns all first-level children of current article
+     * @param articleId
+     * @return List of articles
+     * @throws Exception
+     */
+    public List<Article> getArticleChildren(int articleId) throws Exception {
+        List<Article> artilces = null;
+        try {
+            artilces = dataCollector.getChildren(articleId);
+        }
+        catch (Exception ex) {
+            throw new ArticleHasNoChildrenException();
+        }
+        return artilces;
+    }
+
+    public List<Article> findArticleByTitle(String title) throws Exception{
+        return this.dataCollector.findArticleByTitle(title);
     }
 
     //END CRUD METHODS
@@ -188,12 +199,11 @@ public class ArticleController {
      * @param body
      * @param authorId
      * @param parentArticle
-     * @param imagesId
      * @return
      * */
     private Article getFullArticleObject(String title, String body,
                                          int authorId, int parentArticle,
-                                         List<String> imagesId) throws Exception
+                                         Timestamp lifeTime, boolean isSection) throws Exception
     {
         Article article = new Article();
 
@@ -205,7 +215,6 @@ public class ArticleController {
 
         try {
             parent = dataCollector.findArticle(parentArticle);
-            images = dataCollector.getImages(imagesId);
             author = dataCollector.findUser(authorId);
         }
         catch (Exception ex) {
@@ -215,9 +224,6 @@ public class ArticleController {
         if (parent == null && parentArticle != BASE_ARTICLE) {
             throw new ParentArticleNotFoundException();
         }
-        if (imagesId.size() != images.size()) {
-            throw new ImageNotFoundException();
-        }
         if (author == null) {
             throw new UserNotFoundException();
         }
@@ -226,11 +232,12 @@ public class ArticleController {
         article.setBody(body);
         article.setTitle(title);
         article.setClearBody(clearBody);
-        article.setParentArticle(parent);
-        article.setImages(images);
+        article.setParentArticle(parentArticle);
         article.setAuthor(author);
+        article.setLifeTime(lifeTime);
+        article.setSection(isSection);
 
         return article;
     }
-    //END PRIVATE MATHODS
+    //END PRIVATE METHODS
 }

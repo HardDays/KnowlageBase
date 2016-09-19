@@ -106,8 +106,8 @@ public class ArticleRoleController {
         //go through article tree to root
         try {
             role = collector.findUserArticleRole(user, article);
-            while (role == null && article.getParentArticle() != null) {
-                article = article.getParentArticle();
+            while (role == null && collector.getParentArticle(article) != null) {
+                article = collector.getParentArticle(article);
                 role = collector.findUserArticleRole(user, article);
             }
         }catch (Exception e){

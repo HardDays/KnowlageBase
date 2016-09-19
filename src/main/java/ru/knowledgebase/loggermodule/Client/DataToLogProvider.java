@@ -24,7 +24,7 @@ public class DataToLogProvider {
     private final int port = 666;
     private final String server = "localhost";
 
-    private Queue<String> buffer = new LinkedList<>();
+    private Queue<String> buffer = new LinkedList<String>();
 
     public static DataToLogProvider getInstance() {
         return ourInstance;

@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,19 +39,18 @@ public class Article {
     @Column
     private String clearBody;
 
-    //*
-    @ManyToOne
-    private Article parentArticle;
-    //*/
+    @Column
+    private boolean isSection;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy="parentArticle", cascade = {CascadeType.ALL})
-    private List<Article> children = new LinkedList<Article>();
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    private List<Image> images;
+    private int parentId;
 
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
     private List<UserArticleRole> userArticleRole;
+
+    /**
+     * Date when article should be moved to Archive.
+     */
+    private Timestamp lifeTime;
 
     //BEGIN CONSTRUCTORS
     public Article(){
@@ -61,18 +61,14 @@ public class Article {
     }
 
     public Article(String title, String body, String clearBody,
-                   User author, Article parentArticle, List<Image> images) {
+                   User author, int parentId, Timestamp lifeTime, boolean isSection) {
         this.title         = title;
         this.body          = body;
         this.clearBody     = clearBody;
         this.author        = author;
-        this.parentArticle = parentArticle;
-        if (images != null) {
-            this.images = images;
-        }
-        else {
-            this.images = new LinkedList<Image>();
-        }
+        this.parentId      = parentId;
+        this.lifeTime      = lifeTime;
+        this.isSection     = isSection;
     }
 
     //END CONSTRUCTORS
@@ -80,21 +76,21 @@ public class Article {
 
     //BEGIN SG METHODS
 
+
+    public boolean isSection() {
+        return isSection;
+    }
+
+    public void setSection(boolean section) {
+        isSection = section;
+    }
+
     public User getAuthor() {
         return author;
     }
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    @Transactional
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
     }
 
     public int getId() {
@@ -129,20 +125,21 @@ public class Article {
         this.clearBody = clearBody;
     }
 
-    public Article getParentArticle() {
-        return parentArticle;
+    public int getParentArticle() {
+        return parentId;
     }
 
-    public void setParentArticle(Article parentArticle) {
-        this.parentArticle = parentArticle;
+    public void setParentArticle(int parentId) {
+        this.parentId = parentId;
     }
 
-    public void addChild(Article article) {
-        children.add(article);
+
+    public Timestamp getLifeTime() {
+        return lifeTime;
     }
 
-    public List<Article> getChildren() {
-        return children;
+    public void setLifeTime(Timestamp lifeTime) {
+        this.lifeTime = lifeTime;
     }
     //END SG METHODS
 
@@ -156,8 +153,9 @@ public class Article {
         this.title         = article.title;
         this.clearBody     = article.clearBody;
         this.body          = article.body;
-        this.parentArticle = article.parentArticle;
-        this.images        = article.images;
+        this.parentId      = article.parentId;
+        this.lifeTime      = article.lifeTime;
+        this.isSection     = article.isSection;
     }
 
     @Override
@@ -169,12 +167,11 @@ public class Article {
         res &= this.author.equals(comp.author);
         res &= this.id == comp.id;
         res &= this.title.equals(comp.title);
+        res &= this.lifeTime == comp.lifeTime;
         res &= this.clearBody.equals(comp.clearBody);
         res &= this.body.equals(comp.body);
-        if (this.images == comp.images && comp.images != null)
-            res &= this.images.equals(comp.images);
-        if (this.parentArticle == comp.parentArticle && comp.parentArticle != null)
-            res &= this.parentArticle.getId() == comp.parentArticle.getId();
+        res &= this.parentId == comp.parentId;
+        res &= this.isSection == comp.isSection;
         return res;
     }
 

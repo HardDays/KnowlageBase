@@ -11,6 +11,7 @@ import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +29,6 @@ public class ArticleControllerTest {
     private static String body = "Body";
     private static Integer author = 1;
     private static Integer parentArticle = 1;
-    private static List<String> imgs = new LinkedList<String>();
     private static ArticleController ac = new ArticleController();
 
     private static User u;
@@ -39,18 +39,18 @@ public class ArticleControllerTest {
 
     @BeforeClass
     public static void init() throws Exception{
+
         Image img = new Image("home/path");
         img = ic.addImage(img);
-        imgs.add(img.getId());
 
         u = new User("TestUser", "123");
         u = dc.addUser(u);
         author = u.getId();
 
-        base = ac.addBaseArticle("1", "2", u.getId(), new LinkedList<String>());
+        base = ac.addBaseArticle("1", "2", u.getId(), new Timestamp(5));
 
         parentArticle = base.getId();
-        updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, new LinkedList<String>());
+        updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), true);
     }
 
     @AfterClass
@@ -63,31 +63,54 @@ public class ArticleControllerTest {
     @Test
     public void addArticle() throws Exception {
         parentArticle = base.getId();
-        createTest = ac.addArticle(title, body, u.getId(), parentArticle, imgs);
-        createTest = ac.getArticleObject(createTest.getId());
+        createTest = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), false);
+        createTest = ac.getArticle(createTest.getId());
         printObject(createTest);
         //ac.deleteArticle(createTest.getId());
     }
 
     @Transactional
-    @Test(expected = ArticleNotFoundException.class)
+    @Test
     public void deleteArticle() throws Exception {
-        Article a = ac.addArticle(title, body, author, parentArticle, new ArrayList<String>());
+        Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), false);
         ac.deleteArticle(a.getId());
-        ac.getArticle(a.getId());
+        try {
+            ac.getArticle(a.getId());
+        }
+        catch (Exception ex) {
+            assertTrue(true);
+            return;
+        }
+        assertTrue(false);
+        return;
     }
 
     @Transactional
-    @Test(expected = ArticleNotFoundException.class)
+    @Test
+    public void childrenArticle() throws Exception {
+        Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), false);
+        assertTrue(ac.getArticleChildren(base.getId()).size() == 2);
+    }
+
+    @Transactional
+    @Test
     public void deleteBaseArticle() throws Exception {
-        Article a = ac.addArticle(title, body, u.getId(), parentArticle, new ArrayList<String>());
-        Article b = ac.addArticle(title, body, u.getId(), a.getId(), new ArrayList<String>());
+        Article a = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), false);
+        Article b = ac.addArticle(title, body, u.getId(), a.getId(), new Timestamp(5), false);
         printObject(a);
         printObject(b);
 
         ac.deleteArticle(a.getId());
 
-        Article child = ac.getArticleObject(b.getId());
+        try {
+            Article child = ac.getArticle(b.getId());
+        }
+        catch (Exception ex) {
+            assertTrue(true);
+            return;
+        }
+        assertTrue(false);
+        return;
     }
 
     @Transactional
@@ -97,9 +120,9 @@ public class ArticleControllerTest {
 
         updateArticle.setTitle(newString);
         updateArticle = ac.updateArticle(updateArticle.getId(), updateArticle.getTitle(), updateArticle.getBody(),
-                updateArticle.getAuthor().getId(), updateArticle.getParentArticle().getId(), new ArrayList<String>());
+                updateArticle.getAuthor().getId(), updateArticle.getParentArticle(), new Timestamp(5), false);
 
-        updateArticle = ac.getArticleObject(updateArticle.getId());
+        updateArticle = ac.getArticle(updateArticle.getId());
         assertTrue(updateArticle.getTitle().equals(newString));
 
         updateArticle.setBody(newString);
@@ -113,13 +136,6 @@ public class ArticleControllerTest {
         System.out.println("============");
         System.out.println(a.getTitle());
         System.out.println(a.getAuthor().getLogin());
-        for (Image i : a.getImages()) {
-            System.out.println(i.getPath());
-        }
-        if (a.getChildren() != null)
-        for (Article b : a.getChildren()) {
-            System.out.println(b.getTitle());
-        }
     }
 
 }

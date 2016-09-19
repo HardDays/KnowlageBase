@@ -2,12 +2,14 @@ package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.knowledgebase.dbmodule.dataservices.archiveservice.ArchiveArticleService;
 import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
 import ru.knowledgebase.dbmodule.dataservices.imageservice.ImageService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.ArticleRoleService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.GlobalRoleService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.UserArticleRoleService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.UserGlobalRoleService;
+import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
@@ -35,6 +37,7 @@ public class DataCollector {
     private GlobalRoleService globalRoleService;
     private UserArticleRoleService userArticleRoleService;
     private UserGlobalRoleService userGlobalRoleService;
+    private ArchiveArticleService archiveArticleService;
 
     public DataCollector() {
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
@@ -46,25 +49,63 @@ public class DataCollector {
         globalRoleService = (GlobalRoleService) context.getBean("globalRoleService");
         userArticleRoleService = (UserArticleRoleService) context.getBean("userArticleRoleService");
         userGlobalRoleService = (UserGlobalRoleService) context.getBean("userGlobalRoleService");
+        archiveArticleService = (ArchiveArticleService) context.getBean("archiveArticleService");
     }
 
     //BEGIN ARTICLE CRUD METHODS
 
-    public Article findArticle(int articleId) {
+    public Article findArticle(int articleId) throws Exception {
         return articleService.findById(articleId);
     }
 
-    public Article addArticle(Article article) {
+    public Article addArticle(Article article) throws Exception {
         return articleService.create(article);
     }
 
-    public void deleteArticle(Integer id) {
+    public void deleteArticle(Integer id) throws Exception {
         articleService.delete(id);
     }
 
-    public Article updateArticle(Article article) {
+    public void deleteAllArticles(List<Integer> ids) {
+        articleService.deleteAll(ids);
+    }
+
+
+    public Article updateArticle(Article article) throws Exception {
         return articleService.update(article);
     }
+
+    public List<Article> getChildren(int articleId) throws Exception {
+        return articleService.getChildren(articleId);
+    }
+
+    public Article getParentArticle(Article article) throws Exception {
+        return findArticle(article.getParentArticle());
+    }
+
+    public List<Integer> getArticleHierarchyTree(int article) throws Exception {
+        return articleService.getArticleHierarchyTree(article);
+    }
+
+    public Article getSectionByArticle(Article article) throws Exception {
+        while (!article.isSection()) {
+            article = getParentArticle(article);
+        }
+        return article;
+    }
+
+    public Article getSectionByArticleId(Integer id) throws Exception {
+        Article article = findArticle(id);
+        while (!article.isSection()) {
+            article = getParentArticle(article);
+        }
+        return article;
+    }
+
+    public List<Article> findArticleByTitle(String title) {
+        return articleService.findByTitle(title);
+    }
+
     //END ARTICLE CRUD METHODS
 
     //BEGIN USER CRUD METHODS
@@ -221,7 +262,7 @@ public class DataCollector {
      * @param imagesId
      * @return list of images
      */
-    public List<Image> getImages(List<String> imagesId) {
+    public List<Image> getImages(List<String> imagesId) throws Exception {
         List<Image> images = new LinkedList<Image>();
         for (String id : imagesId) {
             Image img = findImage(id);
@@ -232,4 +273,23 @@ public class DataCollector {
         return images;
     }
     //END IMAGE CRUD METHODS
+
+    //BEGIN ARCHIVE CRUD METHODS
+    public void addAllToArchive(List<ArchiveArticle> archArticles) throws Exception {
+        archiveArticleService.createAll(archArticles);
+    }
+
+    public void deleteArchiveArticle(int id) {
+        archiveArticleService.delete(id);
+    }
+
+    public List<ArchiveArticle> getSectionArchive(int sectionId) {
+        return archiveArticleService.getSectionArchive(sectionId);
+    }
+
+    public ArchiveArticle getArchiveArticle(int archiveArticleId) {
+        return archiveArticleService.findById(archiveArticleId);
+    }
+
+    //END ARCHIVE CRUD METHODS
 }

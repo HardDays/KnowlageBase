@@ -1,5 +1,7 @@
 package ru.knowledgebase.responsemodule;
 
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
+
 /**
  * Created by root on 31.08.16.
  */
@@ -60,7 +62,7 @@ public class ResponseBuilder {
         return new Response();
     }
 
-    public static Response buildArticleContentResponse(String body) {
+    public static Response buildArticleContentResponse(Article article) {
         return new Response();
     }
 
