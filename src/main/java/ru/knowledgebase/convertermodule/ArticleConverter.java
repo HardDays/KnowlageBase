@@ -66,6 +66,9 @@ public class ArticleConverter {
 
     private String imagePath = "/home/vova/Project BZ/trash/image_folder/";
     private String imageFolder = "/word/media";
+    private String pdfPath = "/home/vova/Project BZ/trash/pdfs/";
+
+    private OfficeManager officeManager;
 
     private static volatile ArticleConverter instance;
 
@@ -129,10 +132,8 @@ public class ArticleConverter {
 
     }
 
-
-    ///home/vova/Project BZ/documnets/1.05.2015_ФЛ_Продажа_автоплатеж Билайн-Альфабанк_Тренер.pdf
-    public void convertDocx1(InputStream input) throws Exception{
-        OfficeManager officeManager = new DefaultOfficeManagerConfiguration()
+    public void start() throws Exception{
+        officeManager = new DefaultOfficeManagerConfiguration()
                 //2 ports indicate 2 working processes to do the conversion.
                 .setPortNumbers(8100, 8101)
                 //restart openoffice working process after every 30 conversions to prevent memory leak of the working process. (unsolved issue of openoffice)
@@ -144,8 +145,20 @@ public class ArticleConverter {
                 .buildOfficeManager();
 
         officeManager.start();
-        OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
-        converter.convert(new File("/home/vova/Project BZ/documents/1.05.2015_ФЛ_Продажа_автоплатеж Билайн-Альфабанк_Тренер.docx"), new File("/home/vova/Project BZ/ttt2.pdf"));
+    }
+
+    public void convert(File from) throws Exception{
+        try {
+            OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
+            converter.convert(from, new File(pdfPath + from.getName() + ".pdf"));
+        }catch (Exception e){
+            officeManager.stop();
+            e.printStackTrace();
+            throw new ConvertException();
+        }
+    }
+
+    public void stop() throws Exception{
         officeManager.stop();
     }
 

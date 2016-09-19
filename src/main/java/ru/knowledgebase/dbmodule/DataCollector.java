@@ -178,6 +178,10 @@ public class DataCollector {
         return userArticleRoleService.findMistakeViewers(article);
     }
 
+    public List <UserArticleRole> findUserArticleRoleByArticle(int articleId){
+        return userArticleRoleService.findByArticle(articleId);
+    }
+
     //END USERARTICLEROLE METHODS
 
 

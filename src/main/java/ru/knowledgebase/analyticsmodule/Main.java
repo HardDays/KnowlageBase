@@ -112,8 +112,9 @@ public class Main {
         log.add(new SearchResultRecord(time, 1, 3));
         an.getAverageRequestTime(log);
         */
-        FileInputStream is = new FileInputStream(new File("/home/vova/Project BZ/documents/1.05.2015_ФЛ_Продажа_автоплатеж Билайн-Альфабанк_Тренер.docx"));
-        ArticleConverter.getInstance().convertDocx1(is);
+        ArticleConverter.getInstance().start();
+        ArticleConverter.getInstance().convert(new File("/home/vova/Project BZ/documents/2.6 How do I report restricted or prohibited products_2,6 Как мне заявить о запрещенных или ограниченных товарах_проверено/2.6 How do I report restricted or prohibited products_2,6 Как мне заявить о запрещенных или ограниченных товарах_проверено.html"));
+        ArticleConverter.getInstance().stop();
 
         /*
         for (int i = 0; i < 10; i++){

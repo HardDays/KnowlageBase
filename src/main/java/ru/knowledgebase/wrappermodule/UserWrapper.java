@@ -2,6 +2,7 @@ package ru.knowledgebase.wrappermodule;
 
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.responsemodule.Response;
@@ -9,6 +10,8 @@ import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.rolemodule.GlobalRoleController;
 import ru.knowledgebase.usermodule.UserController;
+
+import java.util.List;
 
 /**
  * Created by vova on 29.08.16.
@@ -202,6 +205,45 @@ public class UserWrapper {
                 return ResponseBuilder.buildWrongTokenResponse();
             User user = userController.find(userId);
             return ResponseBuilder.buildUserInfoResponse(user);
+        }catch (Exception e){
+            return ResponseBuilder.buildResponse(e);
+        }
+    }
+
+    public Response findUser(int adminId, String adminToken, String userLogin){
+        try{
+            boolean okToken = userController.checkUserToken(adminId, adminToken);
+            boolean hasRights = globalRoleController.canViewUser(adminId);
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+            if (!hasRights)
+                return ResponseBuilder.buildNoAccessResponse();
+            User user = userController.find(userLogin);
+            return ResponseBuilder.buildUserInfoResponse(user);
+        }catch (Exception e){
+            return ResponseBuilder.buildResponse(e);
+        }
+    }
+
+    public Response getUserList(int adminId, String adminToken){
+        try{
+            boolean okToken = userController.checkUserToken(adminId, adminToken);
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+            List<User> users = userController.getAll();
+            return ResponseBuilder.buildUserListResponse(users);
+        }catch (Exception e){
+            return ResponseBuilder.buildResponse(e);
+        }
+    }
+
+    public Response getSectionUsers(int adminId, String adminToken, int sectionId){
+        try{
+            boolean okToken = userController.checkUserToken(adminId, adminToken);
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+            List<UserArticleRole> users = userController.getSectionUsers(sectionId);
+            return ResponseBuilder.buildSectionUserListResponse(users);
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
         }

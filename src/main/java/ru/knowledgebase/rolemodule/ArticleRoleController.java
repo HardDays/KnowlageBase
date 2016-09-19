@@ -12,6 +12,8 @@ import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsExceptio
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 
+import java.util.List;
+
 /**
  * Created by vova on 20.08.16.
  */
@@ -40,7 +42,19 @@ public class ArticleRoleController {
         }
         return localInstance;
     }
-
+    /**
+     * Return all available section roles
+     * @return list of roles
+     */
+    public List<ArticleRole> getAll() throws Exception{
+        List <ArticleRole> roles = null;
+        try{
+            roles = collector.getArticleRoles();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        return roles;
+    }
     /**
      * Create new article role
      * @param articleRole article role formed object

@@ -11,6 +11,8 @@ import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsExceptio
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 
+import java.util.List;
+
 /**
  * Created by vova on 20.08.16.
  */
@@ -39,7 +41,19 @@ public class GlobalRoleController {
         }
         return localInstance;
     }
-    
+    /**
+     * Return all available global roles
+     * @return list of roles
+     */
+    public List<GlobalRole> getAll() throws Exception{
+        List <GlobalRole> roles = null;
+        try{
+            roles = collector.getGlobalRoles();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        return roles;
+    }
     /**
      * Create new global role
      * @param globalRole global role formed object

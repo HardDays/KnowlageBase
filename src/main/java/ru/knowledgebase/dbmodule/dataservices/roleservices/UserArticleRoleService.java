@@ -43,6 +43,10 @@ public class UserArticleRoleService {
         userArticleRoleRepository.delete(role);
     }
 
+    public List<UserArticleRole> findByArticle(int articleId){
+       return userArticleRoleRepository.findByArticle(articleId);
+    }
+
     @Transactional
     public void delete(int id) throws Exception{
         userArticleRoleRepository.delete(id);

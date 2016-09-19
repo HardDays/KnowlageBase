@@ -3,6 +3,7 @@ package ru.knowledgebase.responsemodule;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
@@ -83,6 +84,26 @@ public class ResponseBuilder {
     }
 
     public static Response buildUserInfoResponse(User user){
+        Response res = new Response();
+        return res;
+    }
+
+    public static Response buildUserListResponse(List <User> users){
+        Response res = new Response();
+        return res;
+    }
+
+    public static Response buildSectionUserListResponse(List <UserArticleRole> users){
+        Response res = new Response();
+        return res;
+    }
+
+    public static Response buildGlobalRoleListResponse(List <GlobalRole> roles){
+        Response res = new Response();
+        return res;
+    }
+
+    public static Response buildSectionRoleListResponse(List <ArticleRole> roles){
         Response res = new Response();
         return res;
     }

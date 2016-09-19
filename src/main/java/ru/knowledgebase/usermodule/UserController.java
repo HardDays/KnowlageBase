@@ -3,6 +3,8 @@ package ru.knowledgebase.usermodule;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.ldapmodule.LdapWorker;
+import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserAlreadyExistsException;
@@ -13,6 +15,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by vova on 17.08.16.
@@ -146,6 +150,22 @@ public class UserController {
     }
     /**
      * Find user object
+     * @param login user login
+     * @return user object
+     */
+    public User find(String login) throws Exception {
+        User user = null;
+        try {
+            collector.findUser(login);
+        } catch (Exception e) {
+            throw new DataBaseException();
+        }
+        if (user == null)
+            throw new UserNotFoundException();
+        return user;
+    }
+    /**
+     * Find user object
      * @param id user id
      * @return user object
      */
@@ -254,5 +274,32 @@ public class UserController {
         boolean notInspired = getDatePart(tokenDate) >=  getDatePart(curDate);
         return tokenObj.getToken().equals(token) && notInspired;
     }
+    /**
+     * Return list of all users
+     * @return list with user objects
+     */
+    public List<User> getAll() throws Exception{
+        List <User> users = null;
+        try{
+           users = collector.getAllUsers();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        return users;
+    }
+    /**
+     * Return list of all users
+     * @return list with user objects
+     */
+    public List <UserArticleRole> getSectionUsers(int sectionId) throws Exception{
+        List <UserArticleRole> roles = null;
+        try{
+            roles = collector.findUserArticleRoleByArticle(sectionId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        return roles;
+    }
+
 
 }
