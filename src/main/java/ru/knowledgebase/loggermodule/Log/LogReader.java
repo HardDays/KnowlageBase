@@ -29,7 +29,7 @@ public class LogReader {
      * @return a list of records from log
      */
     public LinkedList<ALogRecord> getRecordsFromLog(){
-        logRecords = new LinkedList<>();
+        logRecords = new LinkedList<ALogRecord>();
 
         LogRecordFactory logRecordFactory = new LogRecordFactory();
         LinkedList<String> listOfStringRecords = new LinkedList<>(log.getAllRecordsFromLog());

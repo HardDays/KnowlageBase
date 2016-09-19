@@ -26,7 +26,7 @@ public class LogWriter {
 
     private Log log = Log.getInstance();
 
-    Queue<String> buffer = new LinkedList<>();
+    Queue<String> buffer = new LinkedList<String>();
 
     /**
      * Takes a list of records {@code inputBuffer} and puts them into {@code buffer}. If

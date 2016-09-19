@@ -10,9 +10,9 @@ import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
  * Class {@code Logger} provides interface for working with log.
  */
 public class Logger {
-    Logger ourInstance = new Logger();
+    private static Logger ourInstance = new Logger();
     private Logger(){}
-    public Logger getInstance(){
+    public static Logger getInstance(){
         return ourInstance;
     }
 

@@ -116,10 +116,6 @@ public class ArticleControllerTest {
         for (Image i : a.getImages()) {
             System.out.println(i.getPath());
         }
-        if (a.getChildren() != null)
-        for (Article b : a.getChildren()) {
-            System.out.println(b.getTitle());
-        }
     }
 
 }

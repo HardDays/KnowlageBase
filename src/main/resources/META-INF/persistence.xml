@@ -4,10 +4,30 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
-    <persistence-unit name="NewPersistenceUnit">
+    <persistence-unit name="NewPersistenceUnit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!-- Hibernate-search-->
+            <!-- use a file system based index -->
+            <property name="hibernate.search.Rules.directory_provider"
+                      value="ram"/>
+            <!-- directory where the indexes will be stored -->
+            <property name="hibernate.search.default.indexBase"
+                      value="./lucene/indexes"/>
+            <property name="hibernate.search.worker.batch_size" value="100" />
+            <property name="hibernate.search.default.locking_strategy" value="simple" />
+            <property name="hibernate.search.error_handler" value="log" />
+
+            <!--&lt;!&ndash;Configuration of the appropriate event listeners&ndash;&gt;-->
+            <!--<property name="hibernate.ejb.event.post-insert"-->
+                      <!--value="org.hibernate.search.event.FullTextIndexEventListener"/>-->
+            <!--<property name="hibernate.ejb.event.post-update"-->
+                      <!--value="org.hibernate.search.event.FullTextIndexEventListener"/>-->
+            <!--<property name="hibernate.ejb.event.post-delete"-->
+                      <!--value="org.hibernate.search.event.FullTextIndexEventListener"/>-->
+            <!--&lt;!&ndash; End hibernate-search&ndash;&gt;-->
+
         </properties>
     </persistence-unit>
 </persistence>

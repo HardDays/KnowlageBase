@@ -1,7 +1,7 @@
 package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.knowledgebase.configmodule.Config;
 import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
 import ru.knowledgebase.dbmodule.dataservices.imageservice.ImageService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.ArticleRoleService;
@@ -22,6 +22,7 @@ import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
+import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 
 /**
  * Created by root on 16.08.16.
@@ -35,9 +36,10 @@ public class DataCollector {
     private GlobalRoleService globalRoleService;
     private UserArticleRoleService userArticleRoleService;
     private UserGlobalRoleService userGlobalRoleService;
+    private SearchService searchService;
 
     public DataCollector() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
+        ApplicationContext context = Config.getContext();
         articleService = (ArticleService) context.getBean("articleService");
         tokenService = (TokenService) context.getBean("tokenService");
         userService = (UserService) context.getBean("userService");
@@ -46,6 +48,7 @@ public class DataCollector {
         globalRoleService = (GlobalRoleService) context.getBean("globalRoleService");
         userArticleRoleService = (UserArticleRoleService) context.getBean("userArticleRoleService");
         userGlobalRoleService = (UserGlobalRoleService) context.getBean("userGlobalRoleService");
+        searchService = SearchService.getInstance();
     }
 
     //BEGIN ARTICLE CRUD METHODS
@@ -231,5 +234,16 @@ public class DataCollector {
         }
         return images;
     }
+
     //END IMAGE CRUD METHODS
+
+    //BEGIN SERCH METHODS
+    public List<Article> searchByTitle(String searchRequest) {
+        return searchService.searchByTitle(searchRequest);
+    }
+
+    public List<Article> searchByBody(String searchRequest) {
+        return searchService.searchByBody(searchRequest);
+    }
+    //END   SERCH METHODS
 }

@@ -2,7 +2,7 @@ package ru.knowledgebase.dbmodule.dataservices.imageservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.knowledgebase.dbmodule.repositories.articlerepositories.ImageRepository;
+import ru.knowledgebase.dbmodule.repositories.rolerepositories.ImageRepository;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
 /**

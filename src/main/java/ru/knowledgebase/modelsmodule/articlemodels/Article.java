@@ -1,5 +1,12 @@
 package ru.knowledgebase.modelsmodule.articlemodels;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Parameter;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
@@ -16,6 +23,45 @@ import java.util.List;
  * Created by root on 10.08.16.
  */
 @Entity
+@Indexed
+//@AnalyzerDefs({
+//        @AnalyzerDef(name = "en",
+//                tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+//                filters = {
+//                        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+//                        @TokenFilterDef(factory = StopFilterFactory.class),
+//                        @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+//                            @Parameter(name = "language", value = "English")
+//                        })
+//                }),
+//        @AnalyzerDef(name = "ru",
+//                tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+//                filters = {
+//                        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+//                        @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+//                                @Parameter(name = "language", value = "Russian")
+//                        })
+//                })
+//})
+@AnalyzerDef(name = "customanalyzer",
+        tokenizer =
+                @TokenizerDef(factory = StandardTokenizerFactory.class),
+        filters = {
+                @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                @TokenFilterDef(factory = StopFilterFactory.class),
+//                @TokenFilterDef(factory = SynonymFilterFactory.class, params = {
+//                        @Parameter(name = "language", value = "Russian")
+//                }),
+//                @TokenFilterDef(factory = SynonymFilterFactory.class, params = {
+//                        @Parameter(name = "language", value = "English")
+//                }),
+                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+                        @Parameter(name = "language", value = "Russian")
+                }),
+                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+                        @Parameter(name = "language", value = "English")
+                })
+        })
 public class Article {
 
     @Id
@@ -26,16 +72,22 @@ public class Article {
             generator="article_id_seq")
     private int id;
 
-    @Column(length = 256)
+    @Field
+    @Analyzer(definition = "customanalyzer")
+//    @AnalyzerDiscriminator(impl = LanguageDiscriminator.class)
+    @Column(length = 10000)
     private String title;
 
-    @Column
+    @Column(length=10000000)
     private String body;
 
     @ManyToOne
     private User author;
 
-    @Column
+    @Field
+    @Analyzer(definition = "customanalyzer")
+//    @AnalyzerDiscriminator(impl = LanguageDiscriminator.class)
+    @Column(length=10000000)
     private String clearBody;
 
     //*
@@ -43,7 +95,7 @@ public class Article {
     private Article parentArticle;
     //*/
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy="parentArticle", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy="parentArticle", cascade = {CascadeType.ALL})
     private List<Article> children = new LinkedList<Article>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})

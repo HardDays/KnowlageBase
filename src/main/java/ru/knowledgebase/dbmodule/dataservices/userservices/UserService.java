@@ -38,17 +38,15 @@ public class UserService {
         return userRepository.findOne(id);
     }
 
-    @Transactional
+
     public void update(User user) throws Exception{
         userRepository.save(user);
     }
 
-    @Transactional
     public void delete(User user) throws Exception{
         userRepository.delete(user);
     }
 
-    @Transactional
     public void delete(int id) throws Exception{
         userRepository.delete(id);
     }

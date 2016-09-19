@@ -6,13 +6,15 @@
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <!--@Transaction annotation support -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <context:component-scan base-package="ru.knowledgebase.modelsmodule" />
     <context:component-scan base-package="ru.knowledgebase.dbmodule.dataservices" />
+
     <jpa:repositories base-package="ru.knowledgebase.dbmodule.repositories" />
 
     <!--Activates various annotations to be detected in bean classes: Spring's @Required and @Autowired and so on-->
@@ -23,9 +25,9 @@
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/test"/>
-        <property name="username" value="pisatel"/>
-        <property name="password" value="root"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/postgres"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="11"/>
     </bean>
 
     <bean id="jpaVendorAdapter"
@@ -37,6 +39,7 @@
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
 
     <!-- EntityManagerFactory -->
+
     <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           id="entityManagerFactory">
         <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml"/>
@@ -44,6 +47,9 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
         <property name="jpaDialect" ref="jpaDialect"/>
+        <property name="loadTimeWeaver">
+            <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+        </property>
     </bean>
 
     <bean id="transactionManager"
@@ -52,6 +58,5 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaDialect" ref="jpaDialect"/>
     </bean>
-
 
 </beans>
