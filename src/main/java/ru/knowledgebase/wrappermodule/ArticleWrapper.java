@@ -31,12 +31,11 @@ public class ArticleWrapper {
      * @param body
      * @param authorId
      * @param parentArticle
-     * @param imagesId - list of image ids
      * @return response for web-service
      */
     public Response addArticle(String token, String title, String body,
                                int authorId, int parentArticle,
-                               List<String> imagesId, Timestamp lifeTime, boolean isSection) {
+                               Timestamp lifeTime, boolean isSection) {
         try {
             boolean okToken = userController.checkUserToken(authorId, token);
             if (okToken != true) {

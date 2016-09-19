@@ -17,7 +17,7 @@ public class ImageWrapper {
     private UserController  userController  = UserController.getInstance();
 
     /**
-     * Add image to hadr drive and add record with path to DB.
+     * Add image to hard drive and add record with path to DB.
      * Create response for web-server
      * @param token
      * @param userId
