@@ -10,11 +10,10 @@ import ru.stachek66.nlp.mystem.model.Info;
 import scala.Option;
 import scala.collection.JavaConversions;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.io.FileReader;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +23,8 @@ import java.util.regex.Pattern;
 public class RequestParser {
 
     private MyStem mystemAnalyzer = new Factory("-iw --format json").newMyStem("3.0", Option.<File>empty()).get();
+    private String synonymPath = "/home/vova/Project BZ/syn.txt";
+    private HashMap<String, String> synonyms = new HashMap<>();
 
     private static volatile RequestParser instance;
 
@@ -38,6 +39,23 @@ public class RequestParser {
             }
         }
         return localInstance;
+    }
+
+    public void init(){
+        File file = new File(synonymPath);
+        RequestParser parser = RequestParser.getInstance();
+        HashMap <String, Integer> keys = new HashMap<>();
+        int i = 0;
+        try  {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String [] spl = line.split(":");
+                synonyms.put(spl[0], spl[1]);
+            }
+        }catch (Exception e){
+
+        }
     }
 
     private final Set<String> types = new HashSet<String>() {{
@@ -81,8 +99,14 @@ public class RequestParser {
                 while (matcher.find()) {
                     type = matcher.group();
                 }
-                if (types.contains(type))
+
+                if (types.contains(type)){
+                //    if (synonyms.containsKey(base)){
+               //         base = synonyms.get(base);
+                //    }
                     keywords.add(base);
+                }
+
             }
             return keywords;
         } catch (Exception e) {

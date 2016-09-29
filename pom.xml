@@ -13,7 +13,17 @@
     <org.springframework.version>4.0.5.RELEASE</org.springframework.version>
     <org.hibernate.version>4.3.11.Final</org.hibernate.version>
   </properties>
+  <repositories>
 
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>bintray-akuznetsov-russianmorphology</id>
+      <name>bintray</name>
+      <url>http://dl.bintray.com/akuznetsov/russianmorphology</url>
+    </repository>
+  </repositories>
   <dependencies>
 
     <!--PostgreSQL-->
@@ -171,6 +181,18 @@
       <groupId>ru.stachek66.nlp</groupId>
       <artifactId>mystem-scala</artifactId>
       <version>0.1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene.morphology</groupId>
+      <artifactId>russian</artifactId>
+      <version>1.1</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.apache.lucene.morphology</groupId>
+      <artifactId>english</artifactId>
+      <version>1.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.docx4j/docx4j -->

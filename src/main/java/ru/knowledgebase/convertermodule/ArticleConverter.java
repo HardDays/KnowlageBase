@@ -68,6 +68,11 @@ public class ArticleConverter {
     private String imageFolder = "/word/media";
     private String pdfPath = "/home/vova/Project BZ/trash/pdfs/";
 
+    private int port = 8100;
+    private int maxTasks = 30;
+    private int queueTime = 1200000;
+    private int execTime = 200000;
+
     private OfficeManager officeManager;
 
     private static volatile ArticleConverter instance;
@@ -131,22 +136,32 @@ public class ArticleConverter {
         articleController.addArticle(title, body, authorId, parentArticle, isSection, new LinkedList<>());
 
     }
-
+    /**
+     * Start service
+     */
     public void start() throws Exception{
-        officeManager = new DefaultOfficeManagerConfiguration()
-                //2 ports indicate 2 working processes to do the conversion.
-                .setPortNumbers(8100, 8101)
-                //restart openoffice working process after every 30 conversions to prevent memory leak of the working process. (unsolved issue of openoffice)
-                .setMaxTasksPerProcess(30)
-                //untouched tasks in the queue that over 1200000ms will be discarded.(get a officeManager not found exception)
-                .setTaskQueueTimeout(1200000)
-                //if one task processing time over 20000ms, it will throw an exception.
-                .setTaskExecutionTimeout(20000)
-                .buildOfficeManager();
+        try {
+            officeManager = new DefaultOfficeManagerConfiguration()
+                    //2 ports indicate 2 working processes to do the conversion.
+                    .setPortNumbers(port)
+                    //restart openoffice working process after every 30 conversions to prevent memory leak of the working process. (unsolved issue of openoffice)
+                    .setMaxTasksPerProcess(maxTasks)
+                    //untouched tasks in the queue that over 1200000ms will be discarded.(get a officeManager not found exception)
+                    .setTaskQueueTimeout(queueTime)
+                    //if one task processing time over 20000ms, it will throw an exception.
+                    .setTaskExecutionTimeout(execTime)
+                    .buildOfficeManager();
 
-        officeManager.start();
+            officeManager.start();
+        }catch (Exception e){
+            throw new ConvertException();
+        }
     }
 
+    /**
+     * Converts file to PDF
+     * @param from file to convert
+     */
     public void convert(File from) throws Exception{
         try {
             OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
@@ -157,9 +172,15 @@ public class ArticleConverter {
             throw new ConvertException();
         }
     }
-
+    /**
+     * Stop service
+     */
     public void stop() throws Exception{
-        officeManager.stop();
+        try {
+            officeManager.stop();
+        }catch (Exception e){
+            throw new ConvertException();
+        }
     }
 
     public void convertDocx(InputStream input, String title, int authorId, int parentArticle, boolean isSection) throws Exception{

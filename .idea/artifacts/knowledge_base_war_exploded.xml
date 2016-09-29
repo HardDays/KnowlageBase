@@ -106,6 +106,11 @@
           <element id="library" level="project" name="Maven: org.scala-lang:scala-library:2.11.4" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-compress:1.2" />
           <element id="library" level="project" name="Maven: com.typesafe:config:1.2.1" />
+          <element id="library" level="project" name="Maven: org.apache.lucene.morphology:russian:1.1" />
+          <element id="library" level="project" name="Maven: org.apache.lucene.morphology:morph:1.1" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:5.1.0" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-analyzers-common:5.1.0" />
+          <element id="library" level="project" name="Maven: org.apache.lucene.morphology:english:1.1" />
           <element id="library" level="project" name="Maven: org.docx4j:docx4j:3.3.1" />
           <element id="library" level="project" name="Maven: org.plutext:jaxb-svg11:1.0.2" />
           <element id="library" level="project" name="Maven: net.engio:mbassador:1.2.4.2" />

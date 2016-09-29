@@ -1,5 +1,7 @@
 package ru.knowledgebase.analyticsmodule;
 
+import org.apache.lucene.analysis.synonym.SynonymFilter;
+import org.apache.lucene.morphology.LuceneMorphology;
 import ru.knowledgebase.analyticsmodule.rank.ArticleRank;
 import ru.knowledgebase.analyticsmodule.rank.OperationFrequency;
 import ru.knowledgebase.convertermodule.ArticleConverter;
@@ -9,11 +11,10 @@ import ru.knowledgebase.loggermodule.LogRecord.SearchRequestRecord;
 import ru.knowledgebase.loggermodule.LogRecord.SearchResultRecord;
 import ru.knowledgebase.loggermodule.logenums.OPERATION;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
-
+import org.apache.lucene.morphology.russian.*;
 /**
  * Created by vova on 06.09.16.
  */
@@ -112,10 +113,71 @@ public class Main {
         log.add(new SearchResultRecord(time, 1, 3));
         an.getAverageRequestTime(log);
         */
-        ArticleConverter.getInstance().start();
-        ArticleConverter.getInstance().convert(new File("/home/vova/Project BZ/documents/2.6 How do I report restricted or prohibited products_2,6 Как мне заявить о запрещенных или ограниченных товарах_проверено/2.6 How do I report restricted or prohibited products_2,6 Как мне заявить о запрещенных или ограниченных товарах_проверено.html"));
-        ArticleConverter.getInstance().stop();
+        RequestParser parser = RequestParser.getInstance();
+        parser.init();
+        for (String s : parser.getRequestKeywords("банковский карты продажа купля поиск дом квартира номер карточки")){
+            System.out.println(s);
+        }
 
+        /*
+        File file = new File("/home/vova/Project BZ/lemmautf.num");
+        RequestParser parser = RequestParser.getInstance();
+        HashMap <String, Integer> keys = new HashMap<>();
+        int i = 0;
+        try  {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                for (String key : parser.getRequestKeywords(line)){
+                    keys.put(key, i);
+                    i++;
+                }
+            }
+        }catch (Exception e){
+
+        }
+        System.out.println("started");
+        file = new File("/home/vova/Project BZ/synmasterutf.txt");
+      //  List <String> keys = new LinkedList<>();
+        HashMap<String, String> map = new HashMap<>();
+        try  {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            i = 0;
+            while ((line = br.readLine()) != null) {
+                int mmin = 1000000000;
+                String to = "";
+                List <String> keyw = parser.getRequestKeywords(line);
+                for (String k : keyw){
+                    String key = k.trim();
+                    if (k.contains(" "))
+                        continue;
+                    if (!keys.containsKey(key))
+                        continue;
+                    if (mmin > keys.get(key)) {
+                        to = key;
+                        mmin = keys.get(key);
+                    }
+                }
+                if (!to.equals("")) {
+                    for (String key : keyw){
+                        map.put(key, to);
+                    }
+                }
+                i++;
+                if (i % 1000 == 0){
+                    System.out.println(i);
+                }
+            }
+
+        }catch (Exception e){
+
+        }
+        PrintWriter writer = new PrintWriter("/home/vova/Project BZ/syn.txt", "UTF-8");
+        for (Map.Entry<String, String> entry : map.entrySet()){
+            writer.println(entry.getKey() + ":" + entry.getValue());
+        }
+        writer.close();*/
         /*
         for (int i = 0; i < 10; i++){
             String req = words.get(rand.nextInt(words.size()));

@@ -20,6 +20,12 @@ public class RoleWrapper {
     private GlobalRoleController globalRoleController = GlobalRoleController.getInstance();
     private UserController userController = UserController.getInstance();
 
+    /**
+     * Get list of all section roles
+     * @param adminId id of admin
+     * @param adminToken token of admin
+     * @return Response object
+     */
     public Response getSectionRoles(int adminId, String adminToken){
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
@@ -34,7 +40,12 @@ public class RoleWrapper {
             return ResponseBuilder.buildResponse(e);
         }
     }
-
+    /**
+     * Get list of all global roles
+     * @param adminId id of admin
+     * @param adminToken token of admin
+     * @return Response object
+     */
     public Response getGlobalRoles(int adminId, String adminToken){
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
