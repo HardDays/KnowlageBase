@@ -197,6 +197,7 @@ public class ArticleController {
         }
         catch (Exception ex) {
             //TODO: throw new DBException()
+          //  ex.printStackTrace();
             throw new Exception();
         }
 
@@ -208,6 +209,7 @@ public class ArticleController {
         }
         if (author == null) {
             //TODO: throw new UserNotFoundException()
+
             throw new Exception();
         }
 

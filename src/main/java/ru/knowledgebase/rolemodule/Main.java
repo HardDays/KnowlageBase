@@ -40,8 +40,10 @@ public class Main {
        // ArticleConverter.getInstance().convertDoc(in, "testdddfffe", 1, 1, true);
        // UserWrapper w = new UserWrapper();
        // w.authorize("dssdsd", "asas");
-      //  UserController.getInstance().register("ttttt", "fffff");
+       // UserController.getInstance().register("ttttt", "fffff");
         //UserController.getInstance().authorize("ttttt", "fffff");
+        ArticleController c = ArticleController.getInstance();
+        c.addBaseArticle("sd", "ds", 1, new LinkedList <String>());
     }
 
 

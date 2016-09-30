@@ -111,6 +111,18 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" name="Maven: javax.json:javax.json-api:1.0-b06" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish:javax.json:1.0.4" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-search-orm:5.3.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-search-engine:5.3.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-facet:4.10.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-queries:4.10.4" level="project" />
+    <orderEntry type="library" name="Maven: org.infinispan:infinispan-directory-provider:7.2.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.infinispan:infinispan-lucene-directory:7.2.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-search-engine:tests:5.2.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.infinispan:infinispan-core:7.2.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.infinispan:infinispan-commons:7.2.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jgroups:jgroups:3.6.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.1_spec:1.0.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.marshalling:jboss-marshalling-osgi:1.4.10.Final" level="project" />
     <orderEntry type="library" name="Maven: fr.opensagres.xdocreport:org.apache.poi.xwpf.converter.pdf:1.0.5" level="project" />
     <orderEntry type="library" name="Maven: fr.opensagres.xdocreport:fr.opensagres.xdocreport.itext.extension:1.0.5" level="project" />
     <orderEntry type="library" name="Maven: com.lowagie:itext:2.1.7" level="project" />
@@ -153,8 +165,6 @@
     <orderEntry type="library" name="Maven: com.typesafe:config:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene.morphology:russian:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene.morphology:morph:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:5.1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-analyzers-common:5.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene.morphology:english:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.docx4j:docx4j:3.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.plutext:jaxb-svg11:1.0.2" level="project" />
@@ -181,5 +191,7 @@
     <orderEntry type="library" name="Maven: org.openoffice:jurt:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.openoffice:ridl:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.openoffice:unoil:3.2.1" level="project" />
+    <orderEntry type="library" name="org.apache.lucene:lucene-analyzers-common:4.10.4" level="project" />
+    <orderEntry type="library" name="org.apache.lucene:lucene-core:4.10.4" level="project" />
   </component>
 </module>

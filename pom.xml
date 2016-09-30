@@ -171,6 +171,20 @@
       <version>1.0.4</version>
     </dependency>
 
+    <!--Hibernate search-->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search-orm</artifactId>
+      <version>5.3.0.Final</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.infinispan/infinispan-directory-provider -->
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-directory-provider</artifactId>
+      <version>7.2.5.Final</version>
+    </dependency>
+
     <dependency>
       <groupId>fr.opensagres.xdocreport</groupId>
       <artifactId>org.apache.poi.xwpf.converter.pdf</artifactId>

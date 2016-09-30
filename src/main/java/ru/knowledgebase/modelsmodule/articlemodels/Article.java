@@ -1,5 +1,12 @@
 package ru.knowledgebase.modelsmodule.articlemodels;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Parameter;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
@@ -17,6 +24,26 @@ import java.util.List;
  * Created by root on 10.08.16.
  */
 @Entity
+@Indexed
+@AnalyzerDef(name = "customanalyzer",
+        tokenizer =
+        @TokenizerDef(factory = StandardTokenizerFactory.class),
+        filters = {
+                @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                @TokenFilterDef(factory = StopFilterFactory.class),
+//                @TokenFilterDef(factory = SynonymFilterFactory.class, params = {
+//                        @Parameter(name = "language", value = "Russian")
+//                }),
+//                @TokenFilterDef(factory = SynonymFilterFactory.class, params = {
+//                        @Parameter(name = "language", value = "English")
+//                }),
+                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+                        @Parameter(name = "language", value = "Russian")
+                }),
+                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+                        @Parameter(name = "language", value = "English")
+                })
+        })
 public class Article {
 
     @Id
@@ -27,16 +54,20 @@ public class Article {
             generator="article_id_seq")
     private int id;
 
+    @Field
+    @Analyzer(definition = "customanalyzer")
     @Column(length = 256)
     private String title;
 
-    @Column(length = 100000000)
+    @Column(length = 100000)
     private String body;
 
     @ManyToOne
     private User author;
 
-    @Column(length = 100000000)
+    @Field
+    @Analyzer(definition = "customanalyzer")
+    @Column(length = 100000)
     private String clearBody;
 
     @Column

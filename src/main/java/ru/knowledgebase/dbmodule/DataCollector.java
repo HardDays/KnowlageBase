@@ -6,6 +6,7 @@ import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
 import ru.knowledgebase.dbmodule.dataservices.commentservice.CommentService;
 import ru.knowledgebase.dbmodule.dataservices.imageservice.ImageService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.*;
+import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
@@ -38,6 +39,7 @@ public class DataCollector {
     private UserGlobalRoleService userGlobalRoleService;
     private CommentService commentService;
     private SectionRoleService sectionRoleService = SectionRoleService.getInstance();
+    private SearchService searchService;
 
     public DataCollector() {
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
@@ -50,6 +52,7 @@ public class DataCollector {
         userArticleRoleService = (UserArticleRoleService) context.getBean("userArticleRoleService");
         userGlobalRoleService = (UserGlobalRoleService) context.getBean("userGlobalRoleService");
         commentService = (CommentService) context.getBean("commentService");
+        searchService = SearchService.getInstance();
 
         try {
             for (UserArticleRole role : userArticleRoleService.getAll()) {
@@ -303,5 +306,15 @@ public class DataCollector {
         commentService.delete(comment);
     }
     //END COMMENT CRUD METHODS
+
+    //BEGIN SERCH METHODS
+    public List<Article> searchByTitle(String searchRequest) {
+        return searchService.searchByTitle(searchRequest);
+    }
+
+    public List<Article> searchByBody(String searchRequest) {
+        return searchService.searchByBody(searchRequest);
+    }
+    //END   SERCH METHODS
 
 }
