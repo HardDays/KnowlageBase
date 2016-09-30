@@ -21,10 +21,18 @@ public class UserService {
 
     @GET
     @Path("/authorize")
-    public Response methodImCalling(@QueryParam(value = "login") String login,
-                                    @QueryParam(value = "password") String password) {
-
+    public Response authorize(@QueryParam(value = "login") String login,
+                              @QueryParam(value = "password") String password) {
         return userWrapper.authorize(login, password);
-       // return Response.ok().entity(login + password).build();
+    }
+
+    @GET
+    @Path("/register")
+    public Response register(@QueryParam(value = "admin_id") int adminId,
+                             @QueryParam(value = "admin_token") String adminToken,
+                             @QueryParam(value = "login") String login,
+                             @QueryParam(value = "password")String password){
+        return userWrapper.register(adminId, adminToken, login, password);
     }
 }
+

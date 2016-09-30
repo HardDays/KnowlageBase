@@ -1,20 +1,13 @@
 package ru.knowledgebase.analyticsmodule;
 
-import org.apache.lucene.analysis.synonym.SynonymFilter;
-import org.apache.lucene.morphology.LuceneMorphology;
-import ru.knowledgebase.analyticsmodule.rank.ArticleRank;
-import ru.knowledgebase.analyticsmodule.rank.OperationFrequency;
-import ru.knowledgebase.convertermodule.ArticleConverter;
+
 import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
-import ru.knowledgebase.loggermodule.LogRecord.CRUDRecord;
-import ru.knowledgebase.loggermodule.LogRecord.SearchRequestRecord;
-import ru.knowledgebase.loggermodule.LogRecord.SearchResultRecord;
-import ru.knowledgebase.loggermodule.logenums.OPERATION;
+
 
 import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
-import org.apache.lucene.morphology.russian.*;
+
 /**
  * Created by vova on 06.09.16.
  */

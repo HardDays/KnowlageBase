@@ -43,7 +43,7 @@ public class Main {
        // UserController.getInstance().register("ttttt", "fffff");
         //UserController.getInstance().authorize("ttttt", "fffff");
         ArticleController c = ArticleController.getInstance();
-        c.addBaseArticle("sd", "ds", 1, new LinkedList <String>());
+      //  c.addBaseArticle("sd", "ds", 1, new LinkedList <String>());
     }
 
 

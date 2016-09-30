@@ -204,18 +204,7 @@
       <artifactId>mystem-scala</artifactId>
       <version>0.1.4</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.lucene.morphology</groupId>
-      <artifactId>russian</artifactId>
-      <version>1.1</version>
-    </dependency>
 
-
-    <dependency>
-      <groupId>org.apache.lucene.morphology</groupId>
-      <artifactId>english</artifactId>
-      <version>1.1</version>
-    </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.docx4j/docx4j -->
     <dependency>
