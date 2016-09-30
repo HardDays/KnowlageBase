@@ -1,6 +1,7 @@
 package ru.knowledgebase.wrappermodule;
 
 import ru.knowledgebase.exceptionmodule.searchexceptions.SearchException;
+import ru.knowledgebase.exceptionmodule.searchexceptions.WrongSearchParametersException;
 import ru.knowledgebase.loggermodule.LogRecord.LogRecordFactory;
 import ru.knowledgebase.loggermodule.Server.Logger;
 import ru.knowledgebase.responsemodule.Response;
@@ -23,12 +24,10 @@ public class SearchWrapper {
      */
     public Response searchByTitle(int userID, String searchRequest){
         writeToLog(userID, searchRequest);
-        if(isWrongRequestFormat(searchRequest))
-            return ResponseBuilder.buildWrongSearchRequestResponse();
         try{
-            return ResponseBuilder.buildSearchResultResponse(searchController.searchByTitle(searchRequest));
+            return ResponseBuilder.buildSearchResultResponse(searchController.searchByTitle(userID, searchRequest));
         }catch (Exception ex) {
-            return ResponseBuilder.buildWrongSearchRequestResponse();
+            return ResponseBuilder.buildResponse(ex);
         }
     }
 
@@ -41,10 +40,8 @@ public class SearchWrapper {
      */
     public Response searchByBody(int userID, String searchRequest){
         writeToLog(userID, searchRequest);
-        if(isWrongRequestFormat(searchRequest))
-            return ResponseBuilder.buildWrongSearchRequestResponse();
         try{
-            return ResponseBuilder.buildSearchResultResponse(searchController.searchByBody(searchRequest));
+            return ResponseBuilder.buildSearchResultResponse(searchController.searchByBody(userID, searchRequest));
         }catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
@@ -61,16 +58,5 @@ public class SearchWrapper {
                         userID,
                         searchRequest
                 ));
-    }
-
-    /**
-     * Checks if search request is not empty and contains smth other than punctuation symbols
-     * @param searchRequest
-     * @return {@code true} if format of request is wrong, {@code false} vise versa.
-     */
-    private boolean isWrongRequestFormat(String searchRequest) {
-        if ((searchRequest.replaceAll("[^a-zA-Z ]", "").isEmpty()))
-            return true;
-        return false;
     }
 }
