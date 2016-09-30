@@ -10,6 +10,10 @@ import javax.persistence.EntityManagerFactory;
 /**
  * Created by Мария on 19.09.2016.
  */
+
+/**
+ * If something was added to DB without indexing, IndexBuilder would index that data
+ */
 public class IndexBuilder {
     public void buildIndices(){
         EntityManagerFactory entityManagerFactory = (EntityManagerFactory) (Config.getContext()).getBean("entityManagerFactory");

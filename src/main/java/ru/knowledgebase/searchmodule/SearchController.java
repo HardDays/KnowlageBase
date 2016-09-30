@@ -1,10 +1,9 @@
 package ru.knowledgebase.searchmodule;
 
-import org.hibernate.search.exception.EmptyQueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
+import ru.knowledgebase.exceptionmodule.searchexceptions.SearchException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 
 import java.util.List;
@@ -38,26 +37,32 @@ public class SearchController {
         return localInstance;
     }
 
-    //TODO:should return what found
-    public List<Article> searchByTitle(String searchRequest)throws Exception {
+
+    /**
+     * Searches in articles titles for appearances of words of a given string {@code searchRequest}
+     * @param searchRequest
+     * @return List of {@code Article} having words from search request in title
+     * @throws SearchException
+     */
+    public List<Article> searchByTitle(String searchRequest) throws Exception {
         try{
             return dataCollector.searchByTitle(searchRequest);
         }catch (Exception ex){
-            //TODO: spacial exception
-            System.out.println("Exeption" + ex.getStackTrace());
+            throw new SearchException();
         }
-        return null;
     }
 
-    public List<Article> searchByBody(String searchRequest) {
+    /**
+     * Searches in articles bodies for appearances of words of a given string {@code searchRequest}
+     * @param searchRequest
+     * @return List of {@code Article} having words from search request in body
+     * @throws SearchException
+     */
+    public List<Article> searchByBody(String searchRequest) throws Exception {
         try{
             return dataCollector.searchByBody(searchRequest);
-        }catch (EmptyQueryException ex){
-            //TODO: spacial exception
-            System.out.println("Exeption" + ex.getStackTrace());
         }catch (Exception ex){
-
+            throw new SearchException();
         }
-        return null;
     }
 }

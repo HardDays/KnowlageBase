@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class SearchRequestRecord extends ALogRecord {
     private String searchRequest;
 
-    public SearchRequestRecord(Timestamp time, int userID, String searchRequest) {
+    public SearchRequestRecord(int userID, String searchRequest) {
         this.operationType = OPERATION.SEARCH_REQUEST;
         this.time = time;
         this.userID = userID;
