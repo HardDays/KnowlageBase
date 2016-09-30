@@ -19,19 +19,19 @@ import java.util.List;
 public class UserService {
     private UserWrapper userWrapper = new UserWrapper();
 
-    @GET
+    @POST
     @Path("/authorize")
-    public Response authorize(@QueryParam(value = "login") String login,
-                              @QueryParam(value = "password") String password) {
+    public Response authorize(@FormParam(value = "login") String login,
+                              @FormParam(value = "password") String password) {
         return userWrapper.authorize(login, password);
     }
 
-    @GET
+    @POST
     @Path("/register")
-    public Response register(@QueryParam(value = "admin_id") int adminId,
-                             @QueryParam(value = "admin_token") String adminToken,
-                             @QueryParam(value = "login") String login,
-                             @QueryParam(value = "password")String password){
+    public Response register(@FormParam(value = "admin_id") int adminId,
+                             @FormParam(value = "admin_token") String adminToken,
+                             @FormParam(value = "login") String login,
+                             @FormParam(value = "password")String password){
         return userWrapper.register(adminId, adminToken, login, password);
     }
 }

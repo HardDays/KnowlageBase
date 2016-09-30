@@ -43,8 +43,8 @@ public class ResponseBuilder {
     }
 
     public static Response buildRegisteredResponse() {
-       
-         return Response.status(400).build(); 
+        System.out.println("fddffddffd");
+        return Response.ok().build();
     }
 
     public static Response buildUserChangedResponse(){
