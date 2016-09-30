@@ -20,4 +20,8 @@ public interface UserArticleRoleRepository extends CrudRepository<UserArticleRol
 
     @Query("select r from UserArticleRole r where r.article.id = ?1")
     public List<UserArticleRole> findByArticle(int articleId);
+
+    @Query("from UserArticleRole")
+    public List<UserArticleRole> getAll() throws Exception;
+
 }

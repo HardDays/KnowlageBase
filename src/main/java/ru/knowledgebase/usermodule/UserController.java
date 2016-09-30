@@ -16,6 +16,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -299,6 +300,14 @@ public class UserController {
             throw new DataBaseException();
         }
         return roles;
+    }
+
+    public HashSet<Integer> getUserSections(int userId) throws Exception{
+        try {
+            return collector.getUserSections(userId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
     }
 
 

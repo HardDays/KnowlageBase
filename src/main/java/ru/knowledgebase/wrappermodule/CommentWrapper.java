@@ -2,11 +2,11 @@ package ru.knowledgebase.wrappermodule;
 
 import ru.knowledgebase.commentmodule.CommentController;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
-import ru.knowledgebase.responsemodule.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.usermodule.UserController;
 
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**

@@ -14,7 +14,6 @@
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:4.3.11.Final" />
           <element id="library" level="project" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.Final" />
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
-          <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.1-GA" />
           <element id="library" level="project" name="Maven: antlr:antlr:2.7.7" />
@@ -41,6 +40,7 @@
           <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi-scratchpad:3.9" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi:3.9" />
+          <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.4.01" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:15.0" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.containers:jersey-container-servlet:2.10.1" />
           <element id="library" level="project" name="Maven: org.glassfish.jersey.containers:jersey-container-servlet-core:2.10.1" />
@@ -66,6 +66,7 @@
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.8" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.9" />
           <element id="library" level="project" name="Maven: javax.json:javax.json-api:1.0-b06" />
+          <element id="library" level="project" name="Maven: org.glassfish:javax.json:1.0.4" />
           <element id="library" level="project" name="Maven: fr.opensagres.xdocreport:org.apache.poi.xwpf.converter.pdf:1.0.5" />
           <element id="library" level="project" name="Maven: fr.opensagres.xdocreport:fr.opensagres.xdocreport.itext.extension:1.0.5" />
           <element id="library" level="project" name="Maven: com.lowagie:itext:2.1.7" />

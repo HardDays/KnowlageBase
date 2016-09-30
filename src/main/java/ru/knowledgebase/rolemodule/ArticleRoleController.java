@@ -232,7 +232,6 @@ public class ArticleRoleController {
             article = collector.findArticle(articleId);
             articleRole = collector.findArticleRole(articleRoleId);
         }catch (Exception e){
-            //e.printStackTrace();
             throw new DataBaseException();
         }
         assignUserRole(user, article, articleRole);

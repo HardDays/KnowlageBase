@@ -5,14 +5,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
 import ru.knowledgebase.dbmodule.dataservices.commentservice.CommentService;
 import ru.knowledgebase.dbmodule.dataservices.imageservice.ImageService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.ArticleRoleService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.GlobalRoleService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.UserArticleRoleService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.UserGlobalRoleService;
+import ru.knowledgebase.dbmodule.dataservices.roleservices.*;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,6 +37,7 @@ public class DataCollector {
     private UserArticleRoleService userArticleRoleService;
     private UserGlobalRoleService userGlobalRoleService;
     private CommentService commentService;
+    private SectionRoleService sectionRoleService = SectionRoleService.getInstance();
 
     public DataCollector() {
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
@@ -50,6 +50,14 @@ public class DataCollector {
         userArticleRoleService = (UserArticleRoleService) context.getBean("userArticleRoleService");
         userGlobalRoleService = (UserGlobalRoleService) context.getBean("userGlobalRoleService");
         commentService = (CommentService) context.getBean("commentService");
+
+        try {
+            for (UserArticleRole role : userArticleRoleService.getAll()) {
+                sectionRoleService.add(role.getUser().getId(), role.getArticle().getId());
+            }
+        }catch (Exception e){
+
+        }
     }
 
     //BEGIN ARTICLE CRUD METHODS
@@ -160,6 +168,11 @@ public class DataCollector {
 
     public void addUserArticleRole(UserArticleRole role) throws Exception{
         userArticleRoleService.create(role);
+        sectionRoleService.add(role.getUser().getId(), role.getArticle().getId());
+    }
+
+    public HashSet<Integer> getUserSections(int userId) throws Exception{
+       return sectionRoleService.getSections(userId);
     }
 
     public void deleteUserArticleRole(UserArticleRole role) throws Exception{

@@ -5,12 +5,12 @@ import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
-import ru.knowledgebase.responsemodule.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.rolemodule.GlobalRoleController;
 import ru.knowledgebase.usermodule.UserController;
 
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**

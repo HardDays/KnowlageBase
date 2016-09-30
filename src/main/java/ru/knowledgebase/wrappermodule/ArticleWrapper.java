@@ -1,10 +1,10 @@
 package ru.knowledgebase.wrappermodule;
 
 import ru.knowledgebase.articlemodule.ArticleController;
-import ru.knowledgebase.responsemodule.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
 
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**

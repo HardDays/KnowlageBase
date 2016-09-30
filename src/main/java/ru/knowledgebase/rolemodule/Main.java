@@ -36,11 +36,12 @@ public class Main {
         //ArticleRoleController.getInstance().assignUserRole(2, 2, 1);
      //   DataToLogProvider log = DataToLogProvider.getInstance();
       //  log.startProvider();
-        InputStream in = new FileInputStream(new File("/home/vova/Project BZ/trash/docx/e.doc"));
-        ArticleConverter.getInstance().convertDoc(in, "testdddfffe", 1, 1, true);
-
-
-
+       // InputStream in = new FileInputStream(new File("/home/vova/Project BZ/trash/docx/e.doc"));
+       // ArticleConverter.getInstance().convertDoc(in, "testdddfffe", 1, 1, true);
+       // UserWrapper w = new UserWrapper();
+       // w.authorize("dssdsd", "asas");
+      //  UserController.getInstance().register("ttttt", "fffff");
+        //UserController.getInstance().authorize("ttttt", "fffff");
     }
 
 
