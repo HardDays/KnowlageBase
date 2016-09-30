@@ -8,6 +8,7 @@ import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Parameter;
 import org.springframework.transaction.annotation.Transactional;
+import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
@@ -24,28 +25,9 @@ import java.util.List;
  */
 @Entity
 @Indexed
-//@AnalyzerDefs({
-//        @AnalyzerDef(name = "en",
-//                tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-//                filters = {
-//                        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-//                        @TokenFilterDef(factory = StopFilterFactory.class),
-//                        @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
-//                            @Parameter(name = "language", value = "English")
-//                        })
-//                }),
-//        @AnalyzerDef(name = "ru",
-//                tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-//                filters = {
-//                        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-//                        @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
-//                                @Parameter(name = "language", value = "Russian")
-//                        })
-//                })
-//})
 @AnalyzerDef(name = "customanalyzer",
         tokenizer =
-                @TokenizerDef(factory = StandardTokenizerFactory.class),
+        @TokenizerDef(factory = StandardTokenizerFactory.class),
         filters = {
                 @TokenFilterDef(factory = LowerCaseFilterFactory.class),
                 @TokenFilterDef(factory = StopFilterFactory.class),
@@ -74,11 +56,10 @@ public class Article {
 
     @Field
     @Analyzer(definition = "customanalyzer")
-//    @AnalyzerDiscriminator(impl = LanguageDiscriminator.class)
-    @Column(length = 10000)
+    @Column(length = 256)
     private String title;
 
-    @Column(length=10000000)
+    @Column(length = 100000)
     private String body;
 
     @ManyToOne
@@ -86,9 +67,11 @@ public class Article {
 
     @Field
     @Analyzer(definition = "customanalyzer")
-//    @AnalyzerDiscriminator(impl = LanguageDiscriminator.class)
-    @Column(length=10000000)
+    @Column(length = 100000)
     private String clearBody;
+
+    @Column
+    private boolean isSection;
 
     //*
     @ManyToOne
@@ -96,33 +79,36 @@ public class Article {
     //*/
 
     @OneToMany(mappedBy="parentArticle", cascade = {CascadeType.ALL})
-    private List<Article> children = new LinkedList<Article>();
+    private List<Article> children;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    private List<Image> images;
+    List<Image> images;
 
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
     private List<UserArticleRole> userArticleRole;
 
+    @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
+    private List<Comment> comments;
+
+
     //BEGIN CONSTRUCTORS
-    public Article(){
-    }
+    public Article(){}
 
     public Article(int id) {
         this.id = id;
     }
 
     public Article(String title, String body, String clearBody,
-                   User author, Article parentArticle, List<Image> images) {
+                   User author, Article parentArticle, boolean isSection, List<Image> images) {
         this.title         = title;
         this.body          = body;
         this.clearBody     = clearBody;
         this.author        = author;
         this.parentArticle = parentArticle;
+        this.isSection = isSection;
         if (images != null) {
             this.images = images;
-        }
-        else {
+        } else {
             this.images = new LinkedList<Image>();
         }
     }
@@ -189,13 +175,14 @@ public class Article {
         this.parentArticle = parentArticle;
     }
 
-    public void addChild(Article article) {
-        children.add(article);
+    public boolean isSection() {
+        return isSection;
     }
 
-    public List<Article> getChildren() {
-        return children;
+    public void setIsSection(boolean hasAdmin) {
+        this.isSection = hasAdmin;
     }
+
     //END SG METHODS
 
 
@@ -210,6 +197,7 @@ public class Article {
         this.body          = article.body;
         this.parentArticle = article.parentArticle;
         this.images        = article.images;
+        this.isSection = article.isSection;
     }
 
     @Override

@@ -1,16 +1,13 @@
 package ru.knowledgebase.loggermodule.LogRecord;
 
-import ru.knowledgebase.loggermodule.enums.OPERATION;
+import ru.knowledgebase.loggermodule.logenums.OPERATION;
 
 import java.sql.Timestamp;
-/**
- * Class {@code SearchRequestRecord} represents a record which contains information about search operations
- * made in the system.
- */
+
 public class SearchRequestRecord extends ALogRecord {
     private String searchRequest;
 
-    public SearchRequestRecord(int userID, String searchRequest) {
+    public SearchRequestRecord(Timestamp time, int userID, String searchRequest) {
         this.operationType = OPERATION.SEARCH_REQUEST;
         this.time = time;
         this.userID = userID;
@@ -22,5 +19,9 @@ public class SearchRequestRecord extends ALogRecord {
         StringBuilder record = getRecordBase();
         record.append(searchRequest);
         return record.toString();
+    }
+
+    public String getSearchRequest() {
+        return searchRequest;
     }
 }

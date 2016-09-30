@@ -1,78 +1,134 @@
 package ru.knowledgebase.responsemodule;
 
-import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.WrongPasswordException;
+import ru.knowledgebase.modelsmodule.commentmodels.Comment;
+import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+import ru.knowledgebase.modelsmodule.usermodels.Token;
+import ru.knowledgebase.modelsmodule.usermodels.User;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import java.util.List;
+
+
 
 /**
  * Created by root on 31.08.16.
  */
 public class ResponseBuilder {
-    public static Response getResponse() {
-        return new Response();
+
+    public static Response buildResponse(Exception ex){
+        if (ex instanceof WrongPasswordException){
+            return Response.status(401).build();
+        }else if (ex instanceof UserNotFoundException){
+            return Response.status(401).build();
+        }else{
+            ex.printStackTrace();
+            return Response.status(400).build();
+        }
     }
 
-    public static Response buildResponse(Exception ex) {
-        return new Response();
-    }
+    public static Response buildAuthorizedResponse(Token token) {
+        JsonObject json = Json.createObjectBuilder()
+                        .add("token", token.getToken())
+                        .build();
+        return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
 
-    public static Response buildAuthorizedResponse(String token) {
-        Response res = new Response();
-        res.setBody(token);
-        return res;
     }
 
     public static Response buildRegisteredResponse() {
-        Response res = new Response();
-        return res;
+        System.out.println("fddffddffd");
+        return Response.ok().build();
     }
 
     public static Response buildUserChangedResponse(){
-        Response res = new Response();
-        return res;
+       
+         return Response.status(400).build(); 
     }
 
     public static Response buildUserDeletedResponse(){
-        Response res = new Response();
-        return res;
+       
+         return Response.status(400).build(); 
     }
 
     public static Response buildUserRoleChangedResponse(){
-        Response res = new Response();
-        return res;
+       
+         return Response.status(400).build(); 
+    }
+
+
+    public static Response buildGlobalPermissionsResponse(GlobalRole role){
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildSectionPermissionsResponse(ArticleRole role){
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildRoleNotAssigned(){
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildCommentAddedResponse(){
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildCommentListResponse(List<Comment> comments){
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildCommentDeleted(){
+       
+         return Response.status(400).build(); 
     }
 
     public static Response buildWrongTokenResponse(){
-        Response res = new Response();
-        return res;
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildUserInfoResponse(User user){
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildUserListResponse(List <User> users){
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildSectionUserListResponse(List <UserArticleRole> users){
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildGlobalRoleListResponse(List <GlobalRole> roles){
+       
+         return Response.status(400).build(); 
+    }
+
+    public static Response buildSectionRoleListResponse(List <ArticleRole> roles){
+       
+         return Response.status(400).build(); 
     }
 
     public static Response buildNoAccessResponse(){
-        Response res = new Response();
-        return res;
+       
+         return Response.status(400).build(); 
     }
 
-    public static Response buildArticleCreatedResponse() {
-        return new Response();
+    public static Response buildArtilceCreatedResponse() {
+        return Response.status(400).build();
     }
-
-    public static Response buildArticleUpdatedResponse() {
-        return new Response();
-    }
-
-    public static Response buildArticleDeletedResponse() {
-        return new Response();
-    }
-
-    public static Response buildArticleContentResponse(String body) {
-        return new Response();
-    }
-
-    public static Response buildImageCreatedResponse(String path) {
-        return new Response();
-    }
-
-    public static Response buildSearchResultResponse(List<Article> articles) { return new Response(); }
-
-    public static Response buildWrongSearchRequestResponse() { return new Response(); }
 }

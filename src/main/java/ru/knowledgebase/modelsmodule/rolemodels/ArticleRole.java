@@ -24,7 +24,7 @@ public class ArticleRole {
     private String name;
 
     @Column
-    private boolean canAddArticles;
+    private boolean canAddArticle;
 
     @Column
     private boolean canEditArticle;
@@ -40,6 +40,9 @@ public class ArticleRole {
 
     @Column
     private boolean canOnOffNotifications;
+
+    @Column
+    private boolean canGetNotifications;
 
     @Column
     private boolean canGetReports;
@@ -82,12 +85,12 @@ public class ArticleRole {
     }
 
 
-    public boolean isCanAddArticles() {
-        return canAddArticles;
+    public boolean isCanAddArticle() {
+        return canAddArticle;
     }
 
-    public void setCanAddArticles(boolean canAddArticles) {
-        this.canAddArticles = canAddArticles;
+    public void setCanAddArticle(boolean canAddArticles) {
+        this.canAddArticle = canAddArticles;
     }
 
     public boolean isCanEditArticle() {
@@ -160,5 +163,13 @@ public class ArticleRole {
 
     public void setCanSearch(boolean canSearch) {
         this.canSearch = canSearch;
+    }
+
+    public boolean isCanGetNotifications() {
+        return canGetNotifications;
+    }
+
+    public void setCanGetNotifications(boolean canGetNotifications) {
+        this.canGetNotifications = canGetNotifications;
     }
 }

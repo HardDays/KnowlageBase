@@ -1,6 +1,6 @@
 package ru.knowledgebase.loggermodule.Log;
 
-import ru.knowledgebase.loggermodule.Constants.CONSTANTS;
+import ru.knowledgebase.loggermodule.logenums.CONSTANTS;
 
 import java.io.*;
 import java.util.Arrays;
@@ -13,13 +13,10 @@ import java.util.stream.Stream;
  * Created by Мария on 21.08.2016.
  */
 
-/**
- * Works with log file: {@code logFile}.
- */
 public class Log {
     private static Log ourInstance = new Log();
 
-    private File logFile = new File("Log.txt");
+    private File file = new File("/home/vova/Project BZ/KnowledgeBase/LogTest/log.txt");
     private FileWriter writer;
     private BufferedWriter bufferedWriter;
     private FileReader reader;
@@ -27,60 +24,53 @@ public class Log {
 
     public static Log getInstance(){return ourInstance;}
 
-    /**
-     * Deletes all records from {@code logFile}.
-     */
     public void clearLog(){
         try {
-            writer = new FileWriter(logFile);
+            writer = new FileWriter(file);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Writes all elements from input {@code buffer} to the {@code logFile}.
-     * @param buffer
-     */
-    public void writeBufferToLog(Queue<String> buffer) {
+    public void prepareToWrite(){
         try {
-            writer = new FileWriter(logFile, true);
-            bufferedWriter = new BufferedWriter(writer, CONSTANTS.WRITER_BUFFER_SIZE);
+            writer = new FileWriter(file, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bufferedWriter = new BufferedWriter(writer, CONSTANTS.WRITER_BUFFER_SIZE);
+    }
 
+    public void writeBufferToLog(Queue<String> buffer) {
+        prepareToWrite();
+        try {
             while(!buffer.isEmpty())
-                bufferedWriter.append(addRecordSeparator(buffer.poll()));
-            bufferedWriter.flush();
+            bufferedWriter.append(addRecordSeparator(buffer.poll()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stopWriting();
+    }
 
+    public void stopWriting(){
+        try {
+            bufferedWriter.flush();
             bufferedWriter.close();
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-    /**
-     * Adda spacial symbol {@code RECORD_SEPARATOR} to record to separate it from other records.
-     * @param record
-     * @return record with {@code RECORD_SEPARATOR} in the end.
-     */
     private static String addRecordSeparator(String record) {
         return record + CONSTANTS.RECORD_SEPARATOR;
     }
 
-    /**
-     * Reads all records from {@code logFile}.
-     * @return a list of all records.
-     */
     public List<String> getAllRecordsFromLog(){
-        LinkedList<String> stringRecords = new LinkedList<>();
-        try {
-            reader = new FileReader(logFile);
-            bufferedReader = new BufferedReader(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        LinkedList<String> stringRecords = new LinkedList<String>();
+        prepareToRead();
         Stream<String> lines = bufferedReader.lines();
         lines.forEach(line -> addToListOfRecords(splitLine(line), stringRecords));
 
@@ -93,20 +83,19 @@ public class Log {
         return stringRecords;
     }
 
-    /**
-     * Splits input line {@code line} around matches of {@code RECORD_SEPARATOR}.
-     * @param line
-     * @return an array of records
-     */
+    private void prepareToRead() {
+        try {
+            reader = new FileReader(file);
+            bufferedReader = new BufferedReader(reader);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String[] splitLine(String line) {
         return line.split(CONSTANTS.RECORD_SEPARATOR);
     }
 
-    /**
-     * Adds all records from input array {@code arrayOfRecords} to the list records {@code records}.
-     * @param arrayOfRecords
-     * @param records
-     */
     private void addToListOfRecords(String[] arrayOfRecords, LinkedList<String> records) {
         records.addAll(Arrays.asList(arrayOfRecords));
     }

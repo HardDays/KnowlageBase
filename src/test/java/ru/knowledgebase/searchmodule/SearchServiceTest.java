@@ -60,7 +60,7 @@ public class SearchServiceTest {
 
     private static void createArticles() throws Exception {
         for (String title : titles) {
-            addArticle = ac.addArticle(title, body, u.getId(), parentArticle, new LinkedList<String>());
+            addArticle = ac.addArticle(title, body, u.getId(), parentArticle, false,new LinkedList<String>());
         }
     }
 

@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ru.knowledgebase</groupId>
   <artifactId>knowledge-base</artifactId>
@@ -13,7 +13,17 @@
     <org.springframework.version>4.0.5.RELEASE</org.springframework.version>
     <org.hibernate.version>4.3.11.Final</org.hibernate.version>
   </properties>
+  <repositories>
 
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>bintray-akuznetsov-russianmorphology</id>
+      <name>bintray</name>
+      <url>http://dl.bintray.com/akuznetsov/russianmorphology</url>
+    </repository>
+  </repositories>
   <dependencies>
 
     <!--PostgreSQL-->
@@ -22,6 +32,7 @@
       <artifactId>postgresql</artifactId>
       <version>9.1-901.jdbc4</version>
     </dependency>
+
 
     <!--Hibernate-->
     <dependency>
@@ -38,25 +49,6 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
       <version>${org.hibernate.version}</version>
-    </dependency>
-      <dependency>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate-search-orm</artifactId>
-          <version>5.3.0.Final</version>
-      </dependency>
-
-    <!--Hibernate search-->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-search-orm</artifactId>
-      <version>5.3.0.Final</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.infinispan/infinispan-directory-provider -->
-    <dependency>
-      <groupId>org.infinispan</groupId>
-      <artifactId>infinispan-directory-provider</artifactId>
-      <version>7.2.5.Final</version>
     </dependency>
 
     <!--Spring Framework-->
@@ -112,6 +104,12 @@
     </dependency>
 
     <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <version>1.4.01</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>15.0</version>
@@ -123,7 +121,6 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet</artifactId>
@@ -135,12 +132,11 @@
       <artifactId>jersey-media-multipart</artifactId>
       <version>${jersey.version}</version>
     </dependency>
-
     <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.12</version>
-        <scope>test</scope>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -162,8 +158,58 @@
       <scope>provided</scope>
     </dependency>
 
-  </dependencies>
+    <!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
+    <dependency>
+      <groupId>javax.json</groupId>
+      <artifactId>javax.json-api</artifactId>
+      <version>1.0-b06</version>
+    </dependency>
 
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.json</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+
+    <!--Hibernate search-->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search-orm</artifactId>
+      <version>5.3.0.Final</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.infinispan/infinispan-directory-provider -->
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-directory-provider</artifactId>
+      <version>7.2.5.Final</version>
+    </dependency>
+
+    <!--- NLP -->
+    <dependency>
+      <groupId>ru.stachek66.nlp</groupId>
+      <artifactId>mystem-scala</artifactId>
+      <version>0.1.4</version>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/org.docx4j/docx4j -->
+    <dependency>
+      <groupId>org.docx4j</groupId>
+      <artifactId>docx4j</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.artofsolving/jodconverter -->
+    <dependency>
+      <groupId>com.github.livesense</groupId>
+      <artifactId>jodconverter-core</artifactId>
+      <version>1.0.5</version>
+    </dependency>
+
+
+
+  </dependencies>
   <build>
     <finalName>knowledge-base</finalName>
     <plugins>

@@ -2,14 +2,11 @@ package ru.knowledgebase.articlemodule;
 
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.*;
-import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.imageexceptions.ImageNotFoundException;
-import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 /**
@@ -23,7 +20,7 @@ public class ArticleController {
     private static ArticleController instance;
 
     /**
-     * Controller as thread-safe singleton
+     * Controller as thread-safe singeleton
      * @return
      */
     public static ArticleController getInstance() {
@@ -54,14 +51,15 @@ public class ArticleController {
                                   int authorId,
                                   List<String> imagesId) throws Exception {
         Article article = getFullArticleObject(title, body, authorId,
-                -1, imagesId);
+                -1, true, imagesId);
 
         Article resultArticle = null;
         try {
             resultArticle = dataCollector.addArticle(article);
         }
         catch (Exception ex) {
-            throw new DataBaseException();
+            //TODO: throw new DBException();
+            throw new Exception();
         }
         if (resultArticle == null) {
             throw new ArticleAddException();
@@ -80,24 +78,25 @@ public class ArticleController {
      * @param imagesId - list of images id
      */
     public Article addArticle(String title, String body,
-                           int authorId, int parentArticle,
+                           int authorId, int parentArticle, boolean isSection,
                            List<String> imagesId) throws Exception{
 
         Article article = getFullArticleObject(title, body, authorId,
-                                               parentArticle, imagesId);
+                                               parentArticle, isSection, imagesId);
 
         Article resultArticle = null;
         try {
             resultArticle = dataCollector.addArticle(article);
         }
         catch (Exception ex) {
-            throw new DataBaseException();
+            //TODO: throw new DBException();
+            ex.printStackTrace();
+            throw new Exception();
         }
         if (resultArticle == null) {
             throw new ArticleAddException();
         }
 
-        resultArticle.addChild(resultArticle);
         return resultArticle;
     }
 
@@ -114,37 +113,24 @@ public class ArticleController {
         }
     }
 
-    public Article getArticleObject(Integer id) throws Exception{
-        Article article = null;
-        try {
-            article = dataCollector.findArticle(id);
-        }
-        catch (Exception ex) {
-            throw new DataBaseException();
-        }
-        if (article == null) {
-            throw new ArticleNotFoundException();
-        }
-        return article;
-    }
-
     /**
      * Find article by id
      * @param id
      * @return article object
      */
-    public String getArticle(Integer id) throws Exception{
+    public Article getArticle(Integer id) throws Exception{
         Article article = null;
         try {
             article = dataCollector.findArticle(id);
         }
         catch (Exception ex) {
-            throw new DataBaseException();
+            //TODO: throw new DBException();
+            throw new Exception();
         }
         if (article == null) {
             throw new ArticleNotFoundException();
         }
-        return article.getBody();
+        return article;
     }
 
     /**
@@ -158,11 +144,11 @@ public class ArticleController {
      * @return
      */
     public Article updateArticle(Integer id, String title, String body,
-                                 int authorId, int parentArticle,
+                                 int authorId, int parentArticle, boolean isSection,
                                  List<String> imagesId) throws Exception {
         Article article = null;
             article = getFullArticleObject(title, body, authorId,
-                    parentArticle, imagesId);
+                    parentArticle, isSection, imagesId);
 
             article.setId(id);
         try {
@@ -193,6 +179,7 @@ public class ArticleController {
      * */
     private Article getFullArticleObject(String title, String body,
                                          int authorId, int parentArticle,
+                                         boolean isSection,
                                          List<String> imagesId) throws Exception
     {
         Article article = new Article();
@@ -209,7 +196,9 @@ public class ArticleController {
             author = dataCollector.findUser(authorId);
         }
         catch (Exception ex) {
-            throw new DataBaseException();
+            //TODO: throw new DBException()
+          //  ex.printStackTrace();
+            throw new Exception();
         }
 
         if (parent == null && parentArticle != BASE_ARTICLE) {
@@ -219,7 +208,9 @@ public class ArticleController {
             throw new ImageNotFoundException();
         }
         if (author == null) {
-            throw new UserNotFoundException();
+            //TODO: throw new UserNotFoundException()
+
+            throw new Exception();
         }
 
 
@@ -229,6 +220,7 @@ public class ArticleController {
         article.setParentArticle(parent);
         article.setImages(images);
         article.setAuthor(author);
+        article.setIsSection(isSection);
 
         return article;
     }

@@ -12,6 +12,8 @@ import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsExceptio
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 
+import java.util.List;
+
 /**
  * Created by vova on 20.08.16.
  */
@@ -40,7 +42,19 @@ public class ArticleRoleController {
         }
         return localInstance;
     }
-
+    /**
+     * Return all available section roles
+     * @return list of roles
+     */
+    public List<ArticleRole> getAll() throws Exception{
+        List <ArticleRole> roles = null;
+        try{
+            roles = collector.getArticleRoles();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        return roles;
+    }
     /**
      * Create new article role
      * @param articleRole article role formed object
@@ -153,6 +167,25 @@ public class ArticleRoleController {
         assignUserRole(user, article, articleRole);
     }
     /**
+     * Create default user role for root article
+     * @param userId user id
+     */
+    public void assignDefaultUserRole(int userId) throws Exception{
+        Article article = null;
+        ArticleRole articleRole = null;
+        User user = null;
+        try {
+            article = collector.findArticle(defaultRootArticleId);
+            articleRole = collector.findArticleRole(defaultArticleRoleId);
+            user = collector.findUser(userId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        if (article == null || articleRole == null || user == null)
+            throw new AssignDefaultRoleException();
+        assignUserRole(user, article, articleRole);
+    }
+    /**
      * Create user role for specified article
      * @param role formed object
      */
@@ -161,6 +194,9 @@ public class ArticleRoleController {
             UserArticleRole existRole = collector.findUserArticleRole(role.getUser(),role.getArticle());
             if (existRole != null)
                 role.setId(existRole.getId());
+         //   Article article = role.getArticle();
+         //   article.setIsSection(true);
+         //   collector.updateArticle(article);
             collector.addUserArticleRole(role);
         }catch (Exception e){
             throw new DataBaseException();
@@ -196,7 +232,6 @@ public class ArticleRoleController {
             article = collector.findArticle(articleId);
             articleRole = collector.findArticleRole(articleRoleId);
         }catch (Exception e){
-            //e.printStackTrace();
             throw new DataBaseException();
         }
         assignUserRole(user, article, articleRole);
@@ -265,8 +300,8 @@ public class ArticleRoleController {
         this.defaultRootArticleId = defaultRootArticleId;
     }
 
-    public boolean canAddArticles(int userId, int articleId) throws Exception {
-        return findUserRole(userId, articleId).isCanAddArticles();
+    public boolean canAddArticle(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanAddArticle();
     }
 
     public boolean canEditArticle(int userId, int articleId) throws Exception {
@@ -303,5 +338,9 @@ public class ArticleRoleController {
 
     public boolean canSearch(int userId, int articleId) throws Exception {
         return findUserRole(userId, articleId).isCanSearch();
+    }
+
+    public boolean canGetNotifications(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetNotifications();
     }
 }

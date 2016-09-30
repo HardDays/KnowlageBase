@@ -11,6 +11,8 @@ import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsExceptio
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 
+import java.util.List;
+
 /**
  * Created by vova on 20.08.16.
  */
@@ -22,8 +24,6 @@ public class GlobalRoleController {
     private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     private static volatile GlobalRoleController instance;
-
-    private GlobalRole globalRole;
 
     /**
      * Get instance of a class
@@ -41,7 +41,19 @@ public class GlobalRoleController {
         }
         return localInstance;
     }
-
+    /**
+     * Return all available global roles
+     * @return list of roles
+     */
+    public List<GlobalRole> getAll() throws Exception{
+        List <GlobalRole> roles = null;
+        try{
+            roles = collector.getGlobalRoles();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        return roles;
+    }
     /**
      * Create new global role
      * @param globalRole global role formed object
@@ -145,6 +157,23 @@ public class GlobalRoleController {
             throw new DataBaseException();
         }
         if (globalRole == null)
+            throw new AssignDefaultRoleException();
+        assignUserRole(user, globalRole);
+    }
+    /**
+     * Assign default global role for specified user
+     * @param userId user id
+     */
+    public void assignDefaultUserRole(int userId) throws Exception{
+        GlobalRole globalRole = null;
+        User user = null;
+        try {
+            globalRole = collector.findGlobalRole(defaultGlobalRoleId);
+            user = collector.findUser(userId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        if (globalRole == null || user == null)
             throw new AssignDefaultRoleException();
         assignUserRole(user, globalRole);
     }
@@ -268,7 +297,12 @@ public class GlobalRoleController {
         return findUserRole(userId).isCanDeleteUser();
     }
 
-    public boolean canEditUserRoles(int userId) throws Exception{
-        return findUserRole(userId).isCanEditUserRoles();
+    public boolean canViewUser(int userId) throws Exception{
+        return findUserRole(userId).isCanViewUser();
     }
+
+    public boolean canEditUserRole(int userId) throws Exception{
+        return findUserRole(userId).isCanEditUserRole();
+    }
+
 }

@@ -1,6 +1,6 @@
 package ru.knowledgebase.loggermodule.Log;
 
-import ru.knowledgebase.loggermodule.Constants.CONSTANTS;
+import ru.knowledgebase.loggermodule.logenums.CONSTANTS;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,11 +8,6 @@ import java.util.Queue;
 
 /**
  * Created by Мария on 22.08.2016.
- */
-/**
- * Class {@code LogWriter} works with {@code Log}. It takes input records and puts them
- * into it's internal queue {@code buffer} and when {@code buffer} becomes large enough,
- * it writes a list of records to {@code Log}.
  */
 public class LogWriter {
     private static LogWriter ourInstance = new LogWriter();
@@ -28,16 +23,15 @@ public class LogWriter {
 
     Queue<String> buffer = new LinkedList<String>();
 
-    /**
-     * Takes a list of records {@code inputBuffer} and puts them into {@code buffer}. If
-     * the {@code buffer} becomes bigger then {@code MIN_BUFFER_SIZE}, it writes a list
-     * of records to {@code Log}.
-     * @param inputBuffer
-     */
     public void writeToLog(List<String> inputBuffer) {
         buffer.addAll(inputBuffer);
-        if(buffer.size() >= CONSTANTS.MIN_BUFFER_SIZE){
+        if(buffer.size() > CONSTANTS.MIN_BUFFER_SIZE){
             log.writeBufferToLog(buffer);
         }
+    }
+
+    public void writeToLog(String input) {
+        buffer.add(input);
+        log.writeBufferToLog(buffer);
     }
 }

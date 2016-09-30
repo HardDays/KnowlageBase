@@ -6,10 +6,10 @@ package ru.knowledgebase.dbmodule.repositories.userrepositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import java.util.List;
+
 
 public interface UserRepository extends CrudRepository<User, Integer> {
 

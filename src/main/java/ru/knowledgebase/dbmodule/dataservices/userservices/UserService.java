@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.repositories.userrepositories.UserRepository;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,15 +39,17 @@ public class UserService {
         return userRepository.findOne(id);
     }
 
-
+    @Transactional
     public void update(User user) throws Exception{
         userRepository.save(user);
     }
 
+    @Transactional
     public void delete(User user) throws Exception{
         userRepository.delete(user);
     }
 
+    @Transactional
     public void delete(int id) throws Exception{
         userRepository.delete(id);
     }

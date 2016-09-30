@@ -2,6 +2,7 @@ package ru.knowledgebase.modelsmodule.usermodels;
 
 import org.hibernate.annotations.*;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
 
@@ -23,10 +24,6 @@ public class User {
             generator="user_id_seq")
     private int id;
 
-    @OneToMany(mappedBy = "author")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-    private List<Article> article;
-
     @Column(name = "login", unique = true, nullable = false)
     private String login;
 
@@ -41,6 +38,16 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<UserArticleRole> userArticleRoles;
+
+    @OneToMany(mappedBy = "commentator", cascade = {CascadeType.REMOVE})
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "admin", cascade = {CascadeType.REMOVE})
+    private List<Comment> adminComments;
+
+    @OneToMany(mappedBy = "author")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    private List<Article> article;
 
 
     public int getId() {

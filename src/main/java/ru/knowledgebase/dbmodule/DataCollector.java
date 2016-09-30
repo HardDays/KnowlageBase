@@ -1,16 +1,18 @@
 package ru.knowledgebase.dbmodule;
 
 import org.springframework.context.ApplicationContext;
-import ru.knowledgebase.configmodule.Config;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
+import ru.knowledgebase.dbmodule.dataservices.commentservice.CommentService;
 import ru.knowledgebase.dbmodule.dataservices.imageservice.ImageService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.ArticleRoleService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.GlobalRoleService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.UserArticleRoleService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.UserGlobalRoleService;
+import ru.knowledgebase.dbmodule.dataservices.roleservices.*;
+import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +24,6 @@ import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
-import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 
 /**
  * Created by root on 16.08.16.
@@ -36,10 +37,12 @@ public class DataCollector {
     private GlobalRoleService globalRoleService;
     private UserArticleRoleService userArticleRoleService;
     private UserGlobalRoleService userGlobalRoleService;
+    private CommentService commentService;
+    private SectionRoleService sectionRoleService = SectionRoleService.getInstance();
     private SearchService searchService;
 
     public DataCollector() {
-        ApplicationContext context = Config.getContext();
+        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
         articleService = (ArticleService) context.getBean("articleService");
         tokenService = (TokenService) context.getBean("tokenService");
         userService = (UserService) context.getBean("userService");
@@ -48,7 +51,16 @@ public class DataCollector {
         globalRoleService = (GlobalRoleService) context.getBean("globalRoleService");
         userArticleRoleService = (UserArticleRoleService) context.getBean("userArticleRoleService");
         userGlobalRoleService = (UserGlobalRoleService) context.getBean("userGlobalRoleService");
+        commentService = (CommentService) context.getBean("commentService");
         searchService = SearchService.getInstance();
+
+        try {
+            for (UserArticleRole role : userArticleRoleService.getAll()) {
+                sectionRoleService.add(role.getUser().getId(), role.getArticle().getId());
+            }
+        }catch (Exception e){
+
+        }
     }
 
     //BEGIN ARTICLE CRUD METHODS
@@ -114,6 +126,10 @@ public class DataCollector {
         tokenService.delete(token);
     }
 
+    public void deleteToken(int id) throws Exception{
+        tokenService.delete(id);
+    }
+
     public Token getUserToken(User user) throws Exception{
         return tokenService.getUserToken(user);
     }
@@ -131,6 +147,10 @@ public class DataCollector {
 
     public void deleteArticleRole(ArticleRole role) throws Exception {
         articleRoleService.delete(role);
+    }
+
+    public void deleteArticleRole(int id) throws Exception {
+        articleRoleService.delete(id);
     }
 
     public List<ArticleRole> getArticleRoles() throws Exception{
@@ -151,14 +171,31 @@ public class DataCollector {
 
     public void addUserArticleRole(UserArticleRole role) throws Exception{
         userArticleRoleService.create(role);
+        sectionRoleService.add(role.getUser().getId(), role.getArticle().getId());
+    }
+
+    public HashSet<Integer> getUserSections(int userId) throws Exception{
+       return sectionRoleService.getSections(userId);
     }
 
     public void deleteUserArticleRole(UserArticleRole role) throws Exception{
         userArticleRoleService.delete(role);
     }
 
+    public void deleteUserArticleRole(int id) throws Exception{
+        userArticleRoleService.delete(id);
+    }
+
     public UserArticleRole findUserArticleRole(User user, Article article) throws Exception{
         return userArticleRoleService.find(user, article);
+    }
+
+    public List <User> findMistakeViewers(Article article) throws Exception{
+        return userArticleRoleService.findMistakeViewers(article);
+    }
+
+    public List <UserArticleRole> findUserArticleRoleByArticle(int articleId){
+        return userArticleRoleService.findByArticle(articleId);
     }
 
     //END USERARTICLEROLE METHODS
@@ -175,6 +212,10 @@ public class DataCollector {
 
     public void deleteGlobalRole(GlobalRole globalRole) throws Exception{
         globalRoleService.delete(globalRole);
+    }
+
+    public void deleteGlobalRole(int id) throws Exception{
+        globalRoleService.delete(id);
     }
 
     public GlobalRole findGlobalRole(String name) throws Exception{
@@ -201,8 +242,12 @@ public class DataCollector {
 
     public void deleteUserGlobalRole(UserGlobalRole role) throws Exception{
         userGlobalRoleService.delete(role);
-
     }
+
+    public void deleteUserGlobalRole(int id) throws Exception{
+        userGlobalRoleService.delete(id);
+    }
+
     //END USERGLOBALROLE METHODS
 
     //BEGIN IMAGE CRUD METHODS
@@ -234,8 +279,33 @@ public class DataCollector {
         }
         return images;
     }
-
     //END IMAGE CRUD METHODS
+
+    //BEGIN COMMENT CRUD METHODS
+    public void addComment(Comment comment) throws Exception{
+        commentService.create(comment);
+    }
+
+    public void updateComment(Comment comment) throws Exception{
+        commentService.update(comment);
+    }
+
+    public Comment findComment(int id) throws Exception{
+        return commentService.find(id);
+    }
+
+    public void deleteComment(int id) throws Exception{
+        commentService.delete(id);
+    }
+
+    public List<Comment> findCommentsByAdmin(User admin) throws Exception{
+        return commentService.findByAdmin(admin);
+    }
+
+    public void deleteComment(Comment comment) throws Exception{
+        commentService.delete(comment);
+    }
+    //END COMMENT CRUD METHODS
 
     //BEGIN SERCH METHODS
     public List<Article> searchByTitle(String searchRequest) {
@@ -246,4 +316,5 @@ public class DataCollector {
         return searchService.searchByBody(searchRequest);
     }
     //END   SERCH METHODS
+
 }

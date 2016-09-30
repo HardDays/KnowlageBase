@@ -7,7 +7,7 @@
     <persistence-unit name="NewPersistenceUnit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
             <!-- Hibernate-search-->
             <!-- use a file system based index -->
             <property name="hibernate.search.Rules.directory_provider"
@@ -21,11 +21,11 @@
 
             <!--&lt;!&ndash;Configuration of the appropriate event listeners&ndash;&gt;-->
             <!--<property name="hibernate.ejb.event.post-insert"-->
-                      <!--value="org.hibernate.search.event.FullTextIndexEventListener"/>-->
+            <!--value="org.hibernate.search.event.FullTextIndexEventListener"/>-->
             <!--<property name="hibernate.ejb.event.post-update"-->
-                      <!--value="org.hibernate.search.event.FullTextIndexEventListener"/>-->
+            <!--value="org.hibernate.search.event.FullTextIndexEventListener"/>-->
             <!--<property name="hibernate.ejb.event.post-delete"-->
-                      <!--value="org.hibernate.search.event.FullTextIndexEventListener"/>-->
+            <!--value="org.hibernate.search.event.FullTextIndexEventListener"/>-->
             <!--&lt;!&ndash; End hibernate-search&ndash;&gt;-->
 
         </properties>

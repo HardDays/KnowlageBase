@@ -26,7 +26,6 @@ public class AddService {
     @GET
     @Path("/article/{param}")
     public Response addNewArticleG(@PathParam("param") String smg) {
-
         return Response.status(200).entity(smg).build();
     }
 
