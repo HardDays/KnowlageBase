@@ -129,7 +129,7 @@ public class ArticleRoleController {
         }
         ArticleRole articleRole = role.getArticleRole();
         if (articleRole == null)
-            throw new DataBaseException();
+            throw new RoleNotFoundException();
         return articleRole;
     }
     /**

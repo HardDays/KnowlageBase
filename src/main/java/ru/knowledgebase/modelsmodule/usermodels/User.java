@@ -9,6 +9,7 @@ import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -29,6 +30,33 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "middle_name")
+    private String middleName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "phone_1")
+    private String phone1;
+
+    @Column(name = "phone_2")
+    private String phone2;
+
+    @Column(name = "office")
+    private String office;
+
+    @Column(name = "recruitment_date")
+    private Timestamp recruitmentDate;
+
+    @Column(name = "dismissal_date")
+    private Timestamp dismissalDate;
 
     @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private Token token;
@@ -111,6 +139,78 @@ public class User {
 
     public void setUserArticleRoles(List<UserArticleRole> userArticleRoles) {
         this.userArticleRoles = userArticleRoles;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone1() {
+        return phone1;
+    }
+
+    public void setPhone1(String phone1) {
+        this.phone1 = phone1;
+    }
+
+    public String getPhone2() {
+        return phone2;
+    }
+
+    public void setPhone2(String phone2) {
+        this.phone2 = phone2;
+    }
+
+    public String getOffice() {
+        return office;
+    }
+
+    public void setOffice(String office) {
+        this.office = office;
+    }
+
+    public Timestamp getRecruitmentDate() {
+        return recruitmentDate;
+    }
+
+    public void setRecruitmentDate(Timestamp recruitmentDate) {
+        this.recruitmentDate = recruitmentDate;
+    }
+
+    public Timestamp getDismissalDate() {
+        return dismissalDate;
+    }
+
+    public void setDismissalDate(Timestamp dismissalDate) {
+        this.dismissalDate = dismissalDate;
     }
 
     @Override

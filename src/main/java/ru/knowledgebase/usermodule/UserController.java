@@ -157,7 +157,7 @@ public class UserController {
     public User find(String login) throws Exception {
         User user = null;
         try {
-            collector.findUser(login);
+            user = collector.findUser(login);
         } catch (Exception e) {
             throw new DataBaseException();
         }

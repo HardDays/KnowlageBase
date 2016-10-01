@@ -1,16 +1,13 @@
-package ru.knowledgebase.dbmodule.dataservices.roleservices;
-
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+package ru.knowledgebase.dbmodule.storages;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * Created by vova on 30.09.16.
  */
-public class SectionRoleService {
-    private static volatile SectionRoleService instance;
+public class SectionRoleStorage {
+    private static volatile SectionRoleStorage instance;
 
     private HashMap<Integer, HashSet <Integer>> userSections = new HashMap<>();
 
@@ -19,13 +16,13 @@ public class SectionRoleService {
      * Get instance of a class
      * @return instance of a class
      */
-    public static SectionRoleService getInstance() {
-        SectionRoleService localInstance = instance;
+    public static SectionRoleStorage getInstance() {
+        SectionRoleStorage localInstance = instance;
         if (localInstance == null) {
-            synchronized (SectionRoleService.class) {
+            synchronized (SectionRoleStorage.class) {
                 localInstance = instance;
                 if (localInstance == null) {
-                    instance = localInstance = new SectionRoleService();
+                    instance = localInstance = new SectionRoleStorage();
                 }
             }
         }

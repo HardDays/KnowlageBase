@@ -160,6 +160,7 @@
     <orderEntry type="library" name="Maven: xstream:xstream:1.1.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: xpp3:xpp3:1.1.3.4-RC8" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.9.2" level="project" />
     <orderEntry type="library" name="Maven: ru.stachek66.nlp:mystem-scala:0.1.4" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20140107" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.1.3" level="project" />

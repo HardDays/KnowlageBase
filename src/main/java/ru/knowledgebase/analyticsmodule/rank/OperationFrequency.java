@@ -1,6 +1,5 @@
 package ru.knowledgebase.analyticsmodule.rank;
 
-import ru.knowledgebase.loggermodule.logenums.OPERATION;
 
 /**
  * Created by vova on 07.09.16.

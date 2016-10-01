@@ -3,15 +3,7 @@ package ru.knowledgebase.rolemodule;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.commentmodule.CommentController;
 import ru.knowledgebase.convertermodule.ArticleConverter;
-import ru.knowledgebase.loggermodule.Client.DataToLogProvider;
-import ru.knowledgebase.loggermodule.Log.LogWriter;
-import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
-import ru.knowledgebase.loggermodule.LogRecord.CRUDRecord;
-import ru.knowledgebase.loggermodule.LogRecord.LogRecordFactory;
-import ru.knowledgebase.loggermodule.Logger;
-import ru.knowledgebase.loggermodule.Server.DataProvider;
-import ru.knowledgebase.loggermodule.logenums.OPERATION;
-import ru.knowledgebase.modelsmodule.imagemodels.Image;
+
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.usermodule.UserController;
@@ -42,7 +34,7 @@ public class Main {
        // w.authorize("dssdsd", "asas");
        // UserController.getInstance().register("ttttt", "fffff");
         //UserController.getInstance().authorize("ttttt", "fffff");
-        ArticleController c = ArticleController.getInstance();
+        //ArticleController c = ArticleController.getInstance();
       //  c.addBaseArticle("sd", "ds", 1, new LinkedList <String>());
     }
 

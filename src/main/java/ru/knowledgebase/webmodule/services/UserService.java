@@ -58,9 +58,65 @@ public class UserService {
     public Response assignGlobalRole(@FormParam(value = "admin_id") int adminId,
                                       @FormParam(value = "admin_token") String adminToken,
                                       @FormParam(value = "user_id") int userId,
-                                      @FormParam(value = "section_id") int sectionId,
                                       @FormParam(value = "role_id") int roleId){
-        return userWrapper.assignSectionRole(adminId, adminToken, userId, sectionId, roleId);
+        return userWrapper.assignGlobalRole(adminId, adminToken, userId, roleId);
     }
+
+    @POST
+    @Path("/get_section_permissions")
+    public Response getSectionPermissions(@FormParam(value = "admin_id") int adminId,
+                                     @FormParam(value = "admin_token") String adminToken,
+                                     @FormParam(value = "user_id") int userId,
+                                     @FormParam(value = "section_id") int sectionId){
+        return userWrapper.getSectionPermissions(adminId, adminToken, userId, sectionId);
+    }
+
+    @POST
+    @Path("/get_my_section_permissions")
+    public Response getSectionPermissions(@FormParam(value = "user_id") int userId,
+                                          @FormParam(value = "user_token") String userToken,
+                                          @FormParam(value = "section_id") int sectionId){
+        return userWrapper.getSectionPermissions(userId, userToken, sectionId);
+    }
+
+    @POST
+    @Path("/get_global_permissions")
+    public Response getGlobalPermissions(@FormParam(value = "admin_id") int adminId,
+                                          @FormParam(value = "admin_token") String adminToken,
+                                          @FormParam(value = "user_id") int userId){
+        return userWrapper.getGlobalPermissions(adminId, adminToken, userId);
+    }
+
+    @POST
+    @Path("/get_my_global_permissions")
+    public Response getGlobalPermissions(@FormParam(value = "user_id") int userId,
+                                         @FormParam(value = "user_token") String userToken){
+        return userWrapper.getGlobalPermissions(userId, userToken);
+    }
+
+    @POST
+    @Path("/find")
+    public Response find(@FormParam(value = "admin_id") int adminId,
+                         @FormParam(value = "admin_token") String adminToken,
+                         @FormParam(value = "user_login") String userLogin){
+        return userWrapper.findUser(adminId, adminToken, userLogin);
+    }
+
+    @POST
+    @Path("/get_list")
+    public Response getList(@FormParam(value = "admin_id") int adminId,
+                         @FormParam(value = "admin_token") String adminToken){
+        return userWrapper.getUserList(adminId, adminToken);
+    }
+
+    @POST
+    @Path("/get_section_users")
+    public Response getSecionUsers(@FormParam(value = "admin_id") int adminId,
+                            @FormParam(value = "admin_token") String adminToken,
+                            @FormParam(value = "section_id") int sectionId){
+        return userWrapper.getSectionUsers(adminId, adminToken, sectionId);
+    }
+
+    //TODO: get_user_sections
 }
 

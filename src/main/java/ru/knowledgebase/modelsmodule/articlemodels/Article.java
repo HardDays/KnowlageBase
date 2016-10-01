@@ -59,7 +59,7 @@ public class Article {
     @Column(length = 256)
     private String title;
 
-    @Column(length = 100000)
+    @Column(length = 1200000)
     private String body;
 
     @ManyToOne
@@ -67,7 +67,7 @@ public class Article {
 
     @Field
     @Analyzer(definition = "customanalyzer")
-    @Column(length = 100000)
+    @Column(length = 1200000)
     private String clearBody;
 
     @Column

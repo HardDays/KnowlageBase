@@ -1,5 +1,6 @@
 package ru.knowledgebase.articlemodule;
 
+import org.jsoup.Jsoup;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.*;
 import ru.knowledgebase.exceptionmodule.imageexceptions.ImageNotFoundException;
@@ -83,7 +84,8 @@ public class ArticleController {
 
         Article article = getFullArticleObject(title, body, authorId,
                                                parentArticle, isSection, imagesId);
-
+        String clearBody = Jsoup.parse(body).text();
+        article.setClearBody(clearBody);
         Article resultArticle = null;
         try {
             resultArticle = dataCollector.addArticle(article);

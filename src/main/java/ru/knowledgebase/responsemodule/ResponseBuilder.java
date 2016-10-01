@@ -9,8 +9,7 @@ import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
-import javax.json.Json;
-import javax.json.JsonObject;
+import javax.json.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -30,6 +29,7 @@ public class ResponseBuilder {
         }else if (ex instanceof UserNotFoundException){
             code = 401;
         }
+        ex.printStackTrace();
         return Response.status(code).entity(ex.getClass().getName()).build();
     }
 
@@ -59,15 +59,21 @@ public class ResponseBuilder {
 
 
     public static Response buildGlobalPermissionsResponse(GlobalRole role){
-        return Response.ok().build();
+        JsonObject json = Json.createObjectBuilder()
+                .add("role", role.getName())
+                .build();
+        return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildSectionPermissionsResponse(ArticleRole role){
-        return Response.ok().build();
+        JsonObject json = Json.createObjectBuilder()
+                .add("role", role.getName())
+                .build();
+        return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildRoleNotAssigned(){
-        return Response.ok().build();
+        return Response.status(400).entity("RoleNotAssigned").build();
     }
 
     public static Response buildCommentAddedResponse(){
@@ -86,16 +92,33 @@ public class ResponseBuilder {
         return Response.status(401).build();
     }
 
+    private static JsonObjectBuilder buildUserInfo(User user){
+        return Json.createObjectBuilder()
+                .add("login", user.getLogin());
+
+    }
+
     public static Response buildUserInfoResponse(User user){
-        return Response.ok().build();
+        return Response.ok(buildUserInfo(user).build().toString(),
+                            MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildUserListResponse(List <User> users){
-        return Response.ok().build();
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (User user : users){
+            jarr.add(buildUserInfo(user));
+        }
+        return Response.ok(jarr.build().toString(),
+                            MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildSectionUserListResponse(List <UserArticleRole> users){
-        return Response.ok().build();
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (UserArticleRole user : users){
+            jarr.add(buildUserInfo(user.getUser()));
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildGlobalRoleListResponse(List <GlobalRole> roles){
@@ -107,7 +130,7 @@ public class ResponseBuilder {
     }
 
     public static Response buildNoAccessResponse(){
-        return Response.ok().build();
+        return Response.status(403).entity("No permissions!").build();
     }
 
     public static Response buildArtilceCreatedResponse() {

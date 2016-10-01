@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.jsoup.Jsoup;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -103,8 +104,8 @@ public class ArticleConverter {
         catch (Throwable e) {
             throw new ConvertException();
         }
-        articleController.addArticle(title, body, authorId, parentArticle, isSection, new LinkedList<>());
 
+        articleController.addArticle(title, body, authorId, parentArticle, isSection, new LinkedList<>());
     }
 
     public void convertDocx(InputStream input, String title, int authorId, int parentArticle, boolean isSection) throws Exception{
@@ -162,6 +163,7 @@ public class ArticleConverter {
         } catch (Exception e) {
             throw new ConvertException();
         }
+
         articleController.addArticle(title, body, authorId, parentArticle, isSection, images);
     }
 }

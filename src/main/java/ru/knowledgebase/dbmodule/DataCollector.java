@@ -7,11 +7,11 @@ import ru.knowledgebase.dbmodule.dataservices.commentservice.CommentService;
 import ru.knowledgebase.dbmodule.dataservices.imageservice.ImageService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.*;
 import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
+import ru.knowledgebase.dbmodule.storages.SectionRoleStorage;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class DataCollector {
     private UserArticleRoleService userArticleRoleService;
     private UserGlobalRoleService userGlobalRoleService;
     private CommentService commentService;
-    private SectionRoleService sectionRoleService = SectionRoleService.getInstance();
+    private SectionRoleStorage sectionRoleStorage = SectionRoleStorage.getInstance();
     private SearchService searchService;
 
     public DataCollector() {
@@ -56,7 +56,7 @@ public class DataCollector {
 
         try {
             for (UserArticleRole role : userArticleRoleService.getAll()) {
-                sectionRoleService.add(role.getUser().getId(), role.getArticle().getId());
+                sectionRoleStorage.add(role.getUser().getId(), role.getArticle().getId());
             }
         }catch (Exception e){
 
@@ -171,11 +171,11 @@ public class DataCollector {
 
     public void addUserArticleRole(UserArticleRole role) throws Exception{
         userArticleRoleService.create(role);
-        sectionRoleService.add(role.getUser().getId(), role.getArticle().getId());
+        sectionRoleStorage.add(role.getUser().getId(), role.getArticle().getId());
     }
 
     public HashSet<Integer> getUserSections(int userId) throws Exception{
-       return sectionRoleService.getSections(userId);
+       return sectionRoleStorage.getSections(userId);
     }
 
     public void deleteUserArticleRole(UserArticleRole role) throws Exception{
