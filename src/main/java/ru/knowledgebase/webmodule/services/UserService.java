@@ -34,5 +34,14 @@ public class UserService {
                              @FormParam(value = "password")String password){
         return userWrapper.register(adminId, adminToken, login, password);
     }
+
+    @POST
+    @Path("/delete")
+    public Response delete(@FormParam(value = "admin_id") int adminId,
+                             @FormParam(value = "admin_token") String adminToken,
+                             @FormParam(value = "user_id") int userId){
+       return userWrapper.delete(adminId, adminToken, userId);
+       // return Response.ok().build();
+    }
 }
 

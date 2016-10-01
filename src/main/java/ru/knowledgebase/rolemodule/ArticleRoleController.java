@@ -325,7 +325,7 @@ public class ArticleRoleController {
     }
 
     public boolean canGetReports(int userId, int articleId) throws Exception {
-        return findUserRole(userId, articleId).isCanGetReports();
+        return findUserRole(userId, articleId).isCanGetSystemActionsReports();
     }
 
     public boolean canViewMistakes(int userId, int articleId) throws Exception {
@@ -343,4 +343,32 @@ public class ArticleRoleController {
     public boolean canGetNotifications(int userId, int articleId) throws Exception {
         return findUserRole(userId, articleId).isCanGetNotifications();
     }
+
+    public boolean canGetSearchOperationsReports(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetSearchOperationsReports();
+    }
+
+    public boolean canGetEmployeesActionsReports(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetEmployeesActionsReports();
+    }
+
+    public boolean canGetSystemActionsReports(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetSystemActionsReports();
+    }
+
+    /** Indicates if user has an access to all those sections
+    @param userID @param sections
+    @return */
+    public boolean hasAccessToSections(int userID, List<Integer> sections) throws Exception{
+        try {
+            boolean res = true;
+            for (Integer sectionId : sections) {
+                res = res && findUserRole(userID, sectionId).isCanViewArticle();
+            }
+            return res;
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+    }
+
 }

@@ -22,7 +22,6 @@ public class OperationFrequency {
         this.count = count;
     }
 
-
     public double getFrequency() {
         return frequency;
     }

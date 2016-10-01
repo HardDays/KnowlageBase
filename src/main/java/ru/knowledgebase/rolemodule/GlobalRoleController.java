@@ -152,7 +152,7 @@ public class GlobalRoleController {
     public void assignDefaultUserRole(User user) throws Exception{
         GlobalRole globalRole = null;
         try {
-            collector.findGlobalRole(defaultGlobalRoleId);
+            globalRole = collector.findGlobalRole(defaultGlobalRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }

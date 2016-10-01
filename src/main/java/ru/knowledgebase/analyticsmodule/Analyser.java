@@ -1,11 +1,13 @@
 package ru.knowledgebase.analyticsmodule;
 
+import ru.knowledgebase.analyticsmodule.Reports.EmployeesActionsReport;
 import ru.knowledgebase.analyticsmodule.rank.ArticleRank;
 import ru.knowledgebase.analyticsmodule.rank.OperationFrequency;
 import ru.knowledgebase.analyticsmodule.rank.RequestRank;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
+import ru.knowledgebase.loggermodule.LogRecord.CRUDRecord;
 import ru.knowledgebase.loggermodule.LogRecord.SearchRequestRecord;
 import ru.knowledgebase.loggermodule.LogRecord.SearchResultRecord;
 import ru.knowledgebase.loggermodule.logenums.OPERATION;
@@ -226,6 +228,34 @@ public class Analyser {
         return time;
     }
     /**
+     * Get uploaded articles
+     * @param log list with log records
+     * @return set of articles id
+     */
+    public HashSet<Integer> getUploadedArticles(List <ALogRecord> log){
+        HashSet <Integer> res = new HashSet<>();
+        for (ALogRecord rec : log){
+            if (rec.getOperationType() == OPERATION.CREATE){
+                res.add(((CRUDRecord)rec).getArticleID());
+            }
+        }
+        return res;
+    }
+    /**
+     * Get number of usage of search function
+     * @param log list with log records
+     * @return int
+     */
+    public Integer getSearchUsage(List <ALogRecord> log){
+        Integer count = 0;
+        for (ALogRecord rec : log){
+            if (rec.getOperationType() == OPERATION.SEARCH_RESULT){
+                count += 1;
+            }
+        }
+        return count;
+    }
+    /**
      * Filter log records by time period
      * @param log list with log records
      * @param from lower bound of time period
@@ -242,8 +272,34 @@ public class Analyser {
         }
         return newLog;
     }
+
+    private Integer getArticleId(ALogRecord rec){
+        if (rec.getOperationType() == OPERATION.SEARCH_RESULT){
+            return ((SearchResultRecord)rec).getArticleID();
+        }else if (rec.getOperationType() == OPERATION.CREATE ||
+               rec.getOperationType() == OPERATION.UPDATE ||
+               rec.getOperationType() == OPERATION.DELETE){
+            return ((CRUDRecord)rec).getArticleID();
+        }
+        return -1;
+    }
     /**
-     * Filter log records sections
+     * Filter log records by user
+     * @param log list with log records
+     * @param userId id of user
+     * @return filtered list of log records
+     */
+    private List<ALogRecord> filterUser(List <ALogRecord> log, int userId){
+        List <ALogRecord> newLog = new LinkedList<>();
+        for (ALogRecord rec : log) {
+            if (rec.getUserID() == userId){
+                newLog.add(rec);
+            }
+        }
+        return newLog;
+    }
+    /**
+     * Filter log records by sections
      * @param log list with log records
      * @param parentId id of parent article
      * @return filtered list of log records
@@ -251,11 +307,11 @@ public class Analyser {
     private List<ALogRecord> filterParent(List <ALogRecord> log, int parentId) throws Exception{
         List <ALogRecord> newLog = new LinkedList<>();
         for (ALogRecord rec : log){
-            if (rec.getOperationType() == OPERATION.SEARCH_RESULT){
-                SearchResultRecord res = (SearchResultRecord)rec;
+            Integer id = getArticleId(rec);
+            if (id != -1){
                 try {
                     //find parent article
-                    Article temp = dataCollector.findArticle(res.getArticleID());
+                    Article temp = dataCollector.findArticle(id);
                     while(temp != null){
                         if (temp.getId() == parentId)
                             break;
@@ -361,5 +417,85 @@ public class Analyser {
      */
     public HashMap<OPERATION, Long> getAverageOperationTime(List <ALogRecord> log, Timestamp from, Timestamp to) throws Exception{
         return getAverageOperationTime(filterTime(log, from, to));
+    }
+    /**
+     * Get uploaded articles
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return set with article ids
+     */
+    public HashSet<Integer> getUploadedArticles(List<ALogRecord> log, Timestamp from, Timestamp to) throws Exception {
+        return getUploadedArticles(filterTime(log, from, to));
+    }
+    /**
+     * Get uploaded articles
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @param parentId id of parent article
+     * @return set with article ids
+     */
+    public HashSet<Integer> getUploadedArticles(List<ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception {
+        return getUploadedArticles(filterParent(filterTime(log, from, to), parentId));
+    }
+    /**
+     * Get uploaded articles
+     * @param log list with log records
+     * @param parentId id of parent article
+     * @return set with article ids
+     */
+    public HashSet<Integer> getUploadedArticles(List<ALogRecord> log, int parentId) throws Exception {
+        return getUploadedArticles(filterParent(log, parentId));
+    }
+    /**
+     * Get number of usage of search function
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @param parentId id of parent article
+     * @return int
+     */
+    public Integer getSearchUsage(List <ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception{
+        return getSearchUsage(filterParent(filterTime(log, from, to), parentId));
+    }
+    /**
+     * Get number of usage of search function
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return int
+     */
+    public Integer getSearchUsage(List <ALogRecord> log, Timestamp from, Timestamp to) throws Exception{
+        return getSearchUsage(filterTime(log, from, to));
+    }
+    /**
+     * Get number of usage of search function
+     * @param log list with log records
+     * @param parentId id of parent article
+     * @return int
+     */
+    public Integer getSearchUsage(List <ALogRecord> log, int parentId) throws Exception{
+        return getSearchUsage(filterParent(log, parentId));
+    }
+    /**
+     * Get number of article views by user
+     * @param log list with log records
+     * @param userId id of user
+     * @return int
+     */
+    public List<ArticleRank> getUserViews(List <ALogRecord> log, int userId){
+        return getPopularArticles(filterUser(log, userId));}
+
+    /**
+     * Get number of article views by user
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @param userId id of user
+     * @return int
+     */
+    public List<ArticleRank> getUserViews(List <ALogRecord> log, int userId, Timestamp from, Timestamp to){
+        return getPopularArticles(filterTime(filterUser(log, userId), from, to));
     }
 }

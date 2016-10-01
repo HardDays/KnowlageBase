@@ -24,14 +24,13 @@ import java.util.List;
 public class ResponseBuilder {
 
     public static Response buildResponse(Exception ex){
+        int code = 400;
         if (ex instanceof WrongPasswordException){
-            return Response.status(401).build();
+            code = 401;
         }else if (ex instanceof UserNotFoundException){
-            return Response.status(401).build();
-        }else{
-            ex.printStackTrace();
-            return Response.status(400).build();
+            code = 401;
         }
+        return Response.status(code).entity(ex.getClass().getName()).build();
     }
 
     public static Response buildAuthorizedResponse(Token token) {
@@ -43,34 +42,28 @@ public class ResponseBuilder {
     }
 
     public static Response buildRegisteredResponse() {
-        System.out.println("fddffddffd");
         return Response.ok().build();
     }
 
     public static Response buildUserChangedResponse(){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildUserDeletedResponse(){
-       
-         return Response.status(400).build(); 
+         return Response.ok().build();
     }
 
     public static Response buildUserRoleChangedResponse(){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
 
     public static Response buildGlobalPermissionsResponse(GlobalRole role){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildSectionPermissionsResponse(ArticleRole role){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildRoleNotAssigned(){

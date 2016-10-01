@@ -121,6 +121,7 @@ public class UserWrapper {
             userController.delete(userId);
             return ResponseBuilder.buildUserDeletedResponse();
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseBuilder.buildResponse(e);
         }
     }
