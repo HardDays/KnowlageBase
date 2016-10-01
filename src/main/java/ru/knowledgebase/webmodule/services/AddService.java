@@ -35,7 +35,7 @@ public class AddService {
     public Response uploadFile(
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail) {
-        String fileLocation = "/home/pisatel/Documents/Work/Testing/Jersey/uploads/" + fileDetail.getFileName();
+        String fileLocation = "/home/pisatel/Documents/Work/Testing/Jersey/uploads/images" + fileDetail.getFileName();
         //saving file
         try {
             File yourFile = new File(fileLocation);

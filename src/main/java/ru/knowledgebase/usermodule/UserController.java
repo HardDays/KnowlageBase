@@ -188,7 +188,7 @@ public class UserController {
     public void delete(int id) throws Exception{
         User user = null;
         try {
-            collector.findUser(id);
+            user = collector.findUser(id);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -282,7 +282,7 @@ public class UserController {
     public List<User> getAll() throws Exception{
         List <User> users = null;
         try{
-           users = collector.getAllUsers();
+            users = collector.getAllUsers();
         }catch (Exception e){
             throw new DataBaseException();
         }

@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Config {
     private String logPath;
     private static ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
-
+    private static String reportPath = "./uploads/reports";
 
     public String getLogPath() {
         return logPath;
@@ -22,5 +22,9 @@ public class Config {
     
     public static ApplicationContext getContext() {
         return context;
+    }
+
+    public static String getReportPath() {
+        return reportPath;
     }
 }

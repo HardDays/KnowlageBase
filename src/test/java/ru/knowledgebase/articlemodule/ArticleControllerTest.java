@@ -113,6 +113,7 @@ public class ArticleControllerTest {
             System.out.println("============");
             System.out.println(a.getTitle());
             System.out.println(a.getAuthor().getLogin());
+            System.out.println(a.getParentArticle().getId());
             for (Image i : a.getImages()) {
                 System.out.println(i.getPath());
         }

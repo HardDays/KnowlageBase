@@ -11,24 +11,36 @@ import java.util.List;
 import java.util.Queue;
 
 
-
 /**
  * Created by Мария on 15.08.2016.
+ */
+
+/**
+ * A service that collects records about actions in the system and writes them to {@code Log}.
  */
 public class DataToLogProvider {
     private static DataToLogProvider ourInstance = new DataToLogProvider();
 
-    private final int port = 2048;
+    private final int port = 666;
     private final String server = "localhost";
 
-    private Queue<String> buffer = new LinkedList<>();
+    private Queue<String> buffer = new LinkedList<String>();
 
     public static DataToLogProvider getInstance() {
         return ourInstance;
     }
 
 
+    /**
+     * Starts two threads:
+     * Reader thread (reads records from {@code socket} and puts them into queue{@code buffer})
+     * Writer thread (takes records from {@code buffer} and sends to {@code LogWriter} to
+     * be written to {@code Log}).
+     */
     public void startProvider() {
+        /**
+         * Reader thread
+         */
         new  Thread(() -> {
             try {
                 InetAddress ipAddress = InetAddress.getByName(server);
@@ -49,13 +61,18 @@ public class DataToLogProvider {
             }
         }).start();
 
-        //W THREAD
+        /**
+         * Writer thread
+         */
         new Thread(() -> {
             LogWriter logWriter = LogWriter.getInstance();
 
             while (true){
                 synchronized (buffer){
-                    logWriter.writeToLog((List<String>) buffer);
+                    if(!buffer.isEmpty()){
+                        logWriter.writeToLog((List<String>) buffer);
+                        buffer.clear();
+                    }
                 }
             }
         }).start();

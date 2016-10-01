@@ -165,6 +165,17 @@ public class DataCollector {
         return articleRoleService.find(id);
     }
 
+    public Article getParentArticle(Article article) throws Exception {
+        return article.getParentArticle();
+    }
+
+    public Integer getSectionIdByArticleId(int articleId) throws Exception {
+        Article article = findArticle(articleId);
+        while (!article.isSection()) {
+            article = getParentArticle(article);
+        }
+        return article.getId();
+    }
     //END ARTICLEROLE METHODS
 
     //BEGIN USERARTICLEROLE METHODS

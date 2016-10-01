@@ -1,6 +1,6 @@
 package ru.knowledgebase.analyticsmodule.rank;
 
-import ru.knowledgebase.loggermodule.logenums.OPERATION;
+import ru.knowledgebase.loggermodule.enums.OPERATION;
 
 /**
  * Created by vova on 07.09.16.
@@ -21,7 +21,6 @@ public class OperationFrequency {
     public void setCount(int count) {
         this.count = count;
     }
-
 
     public double getFrequency() {
         return frequency;

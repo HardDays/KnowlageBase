@@ -152,7 +152,7 @@ public class GlobalRoleController {
     public void assignDefaultUserRole(User user) throws Exception{
         GlobalRole globalRole = null;
         try {
-            collector.findGlobalRole(defaultGlobalRoleId);
+            globalRole = collector.findGlobalRole(defaultGlobalRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -282,6 +282,7 @@ public class GlobalRoleController {
     }
 
     public void setDefaultGlobalRoleId(int defaultGlobalRoleId) {
+
         this.defaultGlobalRoleId = defaultGlobalRoleId;
     }
 
@@ -304,5 +305,4 @@ public class GlobalRoleController {
     public boolean canEditUserRole(int userId) throws Exception{
         return findUserRole(userId).isCanEditUserRole();
     }
-
 }
