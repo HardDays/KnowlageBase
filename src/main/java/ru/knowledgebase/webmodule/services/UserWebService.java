@@ -8,6 +8,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 
 @Path("/users")
-public class UserService {
+public class UserWebService {
     private UserWrapper userWrapper = new UserWrapper();
 
     @POST
@@ -31,8 +32,20 @@ public class UserService {
     public Response register(@FormParam(value = "admin_id") int adminId,
                              @FormParam(value = "admin_token") String adminToken,
                              @FormParam(value = "login") String login,
-                             @FormParam(value = "password")String password){
-        return userWrapper.register(adminId, adminToken, login, password);
+                             @FormParam(value = "password")String password,
+                            @FormParam(value = "email")String email,
+                            @FormParam(value = "first_name")String firstName,
+                            @FormParam(value = "middle_name")String middleName,
+                            @FormParam(value = "last_name")String lastName,
+                            @FormParam(value = "office")String office,
+                            @FormParam(value = "phone1")String phone1,
+                            @FormParam(value = "phone2")String phone2,
+                            @FormParam(value = "recruitment_date")Timestamp recruitmentDate,
+                            @FormParam(value = "dismissal_date")Timestamp dismissalDate){
+        return userWrapper.register(adminId, adminToken, login, password, email,
+                firstName, middleName, lastName,
+                office, phone1, phone2,
+                recruitmentDate, dismissalDate);
     }
 
     @POST

@@ -86,9 +86,22 @@ public class User {
         this.id = id;
     }
 
-    public User(String login, String pass) {
+    public User(String login, String password, String email,
+                String firstName, String middleName, String lastName,
+                String office, String phone1, String phone2,
+                Timestamp recruitmentDate, Timestamp dismissalDate) {
         this.login = login;
-        this.password = pass;
+        this.password = password;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.office = office;
+        this.phone1 = phone1;
+        this.phone2 = phone2;
+        this.recruitmentDate = recruitmentDate;
+        this.dismissalDate = dismissalDate;
     }
 
     public User(){}

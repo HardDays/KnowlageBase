@@ -36,16 +36,19 @@ public class Main {
         //UserController.getInstance().authorize("ttttt", "fffff");
         //ArticleController c = ArticleController.getInstance();
       //  c.addBaseArticle("sd", "ds", 1, new LinkedList <String>());
+       // createTest();
     }
 
 
     public static void createTest() throws Exception{
-        UserController.getInstance().register("test27", "test25");
-        UserController.getInstance().register("test28", "test26");
-        ArticleRole role = new ArticleRole();
-        role.setName("SectionAdmin");
-        role.setCanViewMistakes(true);
-        ArticleRoleController.getInstance().create(role);
+        //UserController.getInstance().register("1user", "1pass", "t1@m",
+    //                                            "vov", "vas", "fam", "off", "222", "333", null, null);
+    //    UserController.getInstance().register("2user", "2pass", "t1@m",
+       //         "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+      //  ArticleRole role = new ArticleRole();
+      //  role.setName("SectionAdmin");
+      //  role.setCanViewMistakes(true);
+      //  ArticleRoleController.getInstance().create(role);
         ArticleController.getInstance().addBaseArticle("1", "1", 1, new LinkedList<String>());
         ArticleController.getInstance().addArticle("2", "2", 1, 1,false, new LinkedList<String>());
         ArticleController.getInstance().addArticle("3", "3", 1, 2, true, new LinkedList<String>());

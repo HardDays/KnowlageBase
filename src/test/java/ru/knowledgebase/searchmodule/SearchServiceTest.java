@@ -44,7 +44,8 @@ public class SearchServiceTest {
     @BeforeClass
     public static void init() throws Exception {
 
-        u = new User("TestUser2", "8555");
+        u = new User("TestUser2", "8555", "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         u = dc.addUser(u);
         author = u.getId();
         base = ac.addBaseArticle("Base title", "Base body", u.getId(), new LinkedList<String>());

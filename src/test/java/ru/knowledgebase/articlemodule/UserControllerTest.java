@@ -82,37 +82,44 @@ public class UserControllerTest {
 
     @Test
     public void register1() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         User user = collector.findUser(login1);
         assertTrue(user != null);
     }
 
     @Test(expected = UserAlreadyExistsException.class)
     public void register2() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
     }
 
     @Test(expected = WrongUserDataException.class)
     public void register3() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register("", password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register("", password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
     }
 
     @Test(expected = WrongUserDataException.class)
     public void register4() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, "");
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, "", "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
     }
 
     @Test
     public void authorize1() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         Token token = ru.knowledgebase.usermodule.UserController.getInstance().authorize(login1, password1);
         assertTrue(token != null);
     }
 
     @Test
     public void authorize2() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         Token token = ru.knowledgebase.usermodule.UserController.getInstance().authorize(login1, password1);
         assertTrue(token != null);
         token = ru.knowledgebase.usermodule.UserController.getInstance().authorize(login1, password1);
@@ -121,36 +128,42 @@ public class UserControllerTest {
 
     @Test
     public void authorize3() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         ru.knowledgebase.usermodule.UserController.getInstance().authorizeLdap(login1, password1);
     }
 
     @Test(expected = UserNotFoundException.class)
     public void authorize4() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         ru.knowledgebase.usermodule.UserController.getInstance().authorize(login2, password1);
     }
     @Test(expected = UserNotFoundException.class)
     public void authorize5() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         ru.knowledgebase.usermodule.UserController.getInstance().authorizeLdap(login2, password1);
     }
 
     @Test(expected = WrongPasswordException.class)
     public void authorize6() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         ru.knowledgebase.usermodule.UserController.getInstance().authorize(login1, password2);
     }
 
     @Test(expected = WrongPasswordException.class)
     public void authorize7() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         ru.knowledgebase.usermodule.UserController.getInstance().authorizeLdap(login1, password2);
     }
 
     @Test
     public void changePassword1() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         User user = collector.findUser(login1);
         ru.knowledgebase.usermodule.UserController.getInstance().update(user.getId(), login1, password2);
         ru.knowledgebase.usermodule.UserController.getInstance().authorizeLdap(login1, password2);
@@ -159,14 +172,16 @@ public class UserControllerTest {
 
     @Test(expected = WrongUserDataException.class)
     public void changePassword2() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         User user = collector.findUser(login1);
         ru.knowledgebase.usermodule.UserController.getInstance().update(user.getId(), login1, "");
     }
 
     @Test
     public void changeLogin1() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         User user = collector.findUser(login1);
         ru.knowledgebase.usermodule.UserController.getInstance().update(user.getId(), login2, password1);
         ru.knowledgebase.usermodule.UserController.getInstance().authorizeLdap(login2, password1);
@@ -174,22 +189,26 @@ public class UserControllerTest {
 
     @Test(expected = WrongUserDataException.class)
     public void changeLogin2() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         User user = collector.findUser(login1);
         ru.knowledgebase.usermodule.UserController.getInstance().update(user.getId(), login1, "");
     }
 
     @Test(expected = UserAlreadyExistsException.class)
     public void changeLogin3() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login2, password2);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login2, password2, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         User user = collector.findUser(login1);
         ru.knowledgebase.usermodule.UserController.getInstance().update(user.getId(), login1, login2);
     }
 
     @Test
     public void delete1() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         ru.knowledgebase.usermodule.UserController.getInstance().delete(login1);
         User user = collector.findUser(login1);
         assertTrue(user == null);
@@ -206,7 +225,8 @@ public class UserControllerTest {
 
     @Test
     public void delete2() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         User user = collector.findUser(login1);
         ru.knowledgebase.usermodule.UserController.getInstance().delete(user);
         user = collector.findUser(login1);
@@ -224,7 +244,8 @@ public class UserControllerTest {
 
     @Test
     public void delete3() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         User user = collector.findUser(login1);
         ru.knowledgebase.usermodule.UserController.getInstance().delete(user.getId());
         user = collector.findUser(login1);
@@ -242,7 +263,8 @@ public class UserControllerTest {
 
     @Test(expected = UserNotFoundException.class)
     public void delete4() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1);
+        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         ru.knowledgebase.usermodule.UserController.getInstance().delete(login2);
     }
 }

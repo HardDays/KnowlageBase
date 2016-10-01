@@ -11,6 +11,7 @@ import ru.knowledgebase.rolemodule.GlobalRoleController;
 import ru.knowledgebase.usermodule.UserController;
 
 import javax.ws.rs.core.Response;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -44,7 +45,10 @@ public class UserWrapper {
      * @param password user password
      * @return Response object
      */
-    public Response register(int adminId, String adminToken, String login, String password) {
+    public Response register(int adminId, String adminToken, String login, String password, String email,
+                             String firstName, String middleName, String lastName,
+                             String office, String phone1, String phone2,
+                             Timestamp recruitmentDate, Timestamp dismissalDate) {
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
             boolean hasRights = globalRoleController.canAddUser(adminId);
@@ -52,7 +56,10 @@ public class UserWrapper {
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            User user = userController.register(login, password);
+            User user = userController.register(login, password, email,
+                                                firstName, middleName, lastName,
+                                                office, phone1, phone2,
+                                                recruitmentDate, dismissalDate);
             globalRoleController.assignDefaultUserRole(user);
             articleRoleController.assignDefaultUserRole(user);
             return ResponseBuilder.buildRegisteredResponse();

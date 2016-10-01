@@ -60,14 +60,32 @@ public class ResponseBuilder {
 
     public static Response buildGlobalPermissionsResponse(GlobalRole role){
         JsonObject json = Json.createObjectBuilder()
-                .add("role", role.getName())
+                .add("name", role.getName())
+                .add("can_add_user", role.isCanAddUser())
+                .add("can_delete_user", role.isCanDeleteUser())
+                .add("can_edit_user", role.isCanEditUser())
+                .add("can_edit_user_role", role.isCanEditUserRole())
+                .add("can_view_user", role.isCanViewUser())
                 .build();
         return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildSectionPermissionsResponse(ArticleRole role){
         JsonObject json = Json.createObjectBuilder()
-                .add("role", role.getName())
+                .add("name", role.getName())
+                .add("can_add_article", role.isCanAddArticle())
+                .add("can_add_mistakes", role.isCanAddMistakes())
+                .add("can_add_news", role.isCanAddNews())
+                .add("can_delete_article", role.isCanDeleteArticle())
+                .add("can_edit_article", role.isCanEditArticle())
+                .add("can_get_employees_actions_reports", role.isCanGetEmployeesActionsReports())
+                .add("can_get_notifications", role.isCanGetNotifications())
+                .add("can_get_search_operations_reports", role.isCanGetSearchOperationsReports())
+                .add("can_get_system_actions_reports", role.isCanGetSystemActionsReports())
+                .add("can_off_on_notifications", role.isCanOnOffNotifications())
+                .add("can_search", role.isCanSearch())
+                .add("can_view_articles", role.isCanViewArticle())
+                .add("can_view_mistakes", role.isCanViewMistakes())
                 .build();
         return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -81,7 +99,19 @@ public class ResponseBuilder {
     }
 
     public static Response buildCommentListResponse(List<Comment> comments){
-        return Response.ok().build();
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (Comment comment : comments){
+            jarr.add(Json.createObjectBuilder()
+                    .add("id", comment.getId())
+                    .add("article_id", comment.getArticle().getId())
+                    .add("commentator_id", comment.getCommentator().getId())
+                    .add("comment", comment.getComment())
+                    .add("article_text", comment.getArticleText())
+                    .build()
+                    );
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildCommentDeleted(){
@@ -92,9 +122,26 @@ public class ResponseBuilder {
         return Response.status(401).build();
     }
 
+    private static String checkNull(Object object){
+        if (object == null){
+            return "";
+        }
+        return object.toString();
+    }
+
     private static JsonObjectBuilder buildUserInfo(User user){
         return Json.createObjectBuilder()
-                .add("login", user.getLogin());
+                .add("id", user.getId())
+                .add("login", checkNull(user.getLogin()))
+                .add("email", checkNull(user.getEmail()))
+                .add("first_name", checkNull(user.getFirstName()))
+                .add("middle_name", checkNull(user.getMiddleName()))
+                .add("last_name", checkNull(user.getLastName()))
+                .add("office", checkNull(user.getOffice()))
+                .add("phone1", checkNull(user.getPhone1()))
+                .add("phone2", checkNull(user.getPhone2()))
+                .add("recruitment_date", checkNull(user.getRecruitmentDate()))
+                .add("dismissal_date", checkNull(user.getDismissalDate()));
 
     }
 

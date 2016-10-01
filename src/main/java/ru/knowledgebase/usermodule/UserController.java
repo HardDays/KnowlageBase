@@ -14,6 +14,7 @@ import ru.knowledgebase.exceptionmodule.userexceptions.WrongUserDataException;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -125,12 +126,19 @@ public class UserController {
      * @param login user login
      * @param password user password
      */
-    public User register(String login, String password) throws Exception{
-        if (login.length() == 0 || password.length() == 0){
+    public User register(String login, String password, String email,
+                         String firstName, String middleName, String lastName,
+                         String office, String phone1, String phone2,
+                         Timestamp recruitmentDate, Timestamp dismissalDate) throws Exception{
+        if (login.length() == 0 || password.length() == 0
+                || firstName.length() == 0 || lastName.length() == 0){
             throw new WrongUserDataException();
         }
         password = DigestUtils.md5Hex(password);
-        return register(new User(login, password));
+        return register(new User(login, password, email,
+                                firstName, middleName, lastName,
+                                office, phone1, phone2,
+                                recruitmentDate, dismissalDate));
     }
     /**
      * Delete user from database and LDAP

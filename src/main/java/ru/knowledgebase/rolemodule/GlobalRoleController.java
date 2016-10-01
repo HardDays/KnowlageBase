@@ -143,7 +143,7 @@ public class GlobalRoleController {
         }catch (Exception e){
             throw new DataBaseException();
         }
-        ldapWorker.changeRole(role.getUser().getLogin(), role.getGlobalRole().getName());
+       // ldapWorker.changeRole(role.getUser().getLogin(), role.getGlobalRole().getName());
     }
     /**
      * Assign default global role for specified user
