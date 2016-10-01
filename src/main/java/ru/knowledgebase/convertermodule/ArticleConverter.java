@@ -1,22 +1,12 @@
 package ru.knowledgebase.convertermodule;
 
-import org.apache.pdfbox.cos.COSDocument;
-import org.apache.pdfbox.pdfparser.PDFParser;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.pdfbox.text.PDFTextStripperByArea;
-import org.apache.poi.POITextExtractor;
-import org.apache.poi.hwpf.HWPFDocument;
+
 import org.apache.poi.hwpf.HWPFDocumentCore;
 import org.apache.poi.hwpf.converter.WordToHtmlConverter;
 import org.apache.poi.hwpf.converter.WordToHtmlUtils;
 import org.apache.poi.xwpf.converter.core.FileImageExtractor;
-import org.apache.poi.xwpf.converter.core.FileURIResolver;
-import org.apache.poi.xwpf.converter.pdf.PdfConverter;
-import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.converter.xhtml.XHTMLConverter;
 import org.apache.poi.xwpf.converter.xhtml.XHTMLOptions;
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 
@@ -25,14 +15,6 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.artofsolving.jodconverter.OfficeDocumentConverter;
-import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
-import org.artofsolving.jodconverter.office.OfficeManager;
-import org.docx4j.Docx4J;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.fit.pdfdom.PDFDomTree;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -40,19 +22,15 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.sax.SAXTransformerFactory;
-import javax.xml.transform.sax.TransformerHandler;
+
 import javax.xml.transform.stream.StreamResult;
 import java.util.Base64;
-
-import org.apache.poi.hwpf.converter.WordToHtmlConverter;
 import org.apache.poi.hwpf.usermodel.Picture;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.exceptionmodule.converterexceptions.ConvertException;
 import ru.knowledgebase.imagemodule.ImageController;
-import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
 
@@ -61,19 +39,11 @@ import ru.knowledgebase.modelsmodule.imagemodels.Image;
  */
 public class ArticleConverter {
 
-    private ArticleController articleController = null;// ArticleController.getInstance();
-    private ImageController imageController = null;//ImageController.getInstance();
+    private ArticleController articleController = ArticleController.getInstance();
+    private ImageController imageController = ImageController.getInstance();
 
     private String imagePath = "/home/vova/Project BZ/trash/image_folder/";
     private String imageFolder = "/word/media";
-    private String pdfPath = "/home/vova/Project BZ/trash/pdfs/";
-
-    private int port = 8100;
-    private int maxTasks = 30;
-    private int queueTime = 1200000;
-    private int execTime = 200000;
-
-    private OfficeManager officeManager;
 
     private static volatile ArticleConverter instance;
 
@@ -104,7 +74,7 @@ public class ArticleConverter {
             Element imgNode = currentBlock.getOwnerDocument().createElement("img");
             StringBuilder sb = new StringBuilder();
             sb.append(Base64.getMimeEncoder().encodeToString(picture.getRawContent()));
-            sb.insert(0, "data:"+picture.getMimeType()+";base64,");
+            sb.insert(0, "data:" + picture.getMimeType() + ";base64,");
             imgNode.setAttribute("src", sb.toString());
             currentBlock.appendChild(imgNode);
         }
@@ -135,52 +105,6 @@ public class ArticleConverter {
         }
         articleController.addArticle(title, body, authorId, parentArticle, isSection, new LinkedList<>());
 
-    }
-    /**
-     * Start service
-     */
-    public void start() throws Exception{
-        try {
-            officeManager = new DefaultOfficeManagerConfiguration()
-                    //2 ports indicate 2 working processes to do the conversion.
-                    .setPortNumbers(port)
-                    //restart openoffice working process after every 30 conversions to prevent memory leak of the working process. (unsolved issue of openoffice)
-                    .setMaxTasksPerProcess(maxTasks)
-                    //untouched tasks in the queue that over 1200000ms will be discarded.(get a officeManager not found exception)
-                    .setTaskQueueTimeout(queueTime)
-                    //if one task processing time over 20000ms, it will throw an exception.
-                    .setTaskExecutionTimeout(execTime)
-                    .buildOfficeManager();
-
-            officeManager.start();
-        }catch (Exception e){
-            throw new ConvertException();
-        }
-    }
-
-    /**
-     * Converts file to PDF
-     * @param from file to convert
-     */
-    public void convert(File from) throws Exception{
-        try {
-            OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
-            converter.convert(from, new File(pdfPath + from.getName() + ".pdf"));
-        }catch (Exception e){
-            officeManager.stop();
-            e.printStackTrace();
-            throw new ConvertException();
-        }
-    }
-    /**
-     * Stop service
-     */
-    public void stop() throws Exception{
-        try {
-            officeManager.stop();
-        }catch (Exception e){
-            throw new ConvertException();
-        }
     }
 
     public void convertDocx(InputStream input, String title, int authorId, int parentArticle, boolean isSection) throws Exception{

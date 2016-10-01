@@ -67,61 +67,50 @@ public class ResponseBuilder {
     }
 
     public static Response buildRoleNotAssigned(){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildCommentAddedResponse(){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildCommentListResponse(List<Comment> comments){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildCommentDeleted(){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildWrongTokenResponse(){
-       
-         return Response.status(400).build(); 
+        return Response.status(401).build();
     }
 
     public static Response buildUserInfoResponse(User user){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildUserListResponse(List <User> users){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildSectionUserListResponse(List <UserArticleRole> users){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildGlobalRoleListResponse(List <GlobalRole> roles){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildSectionRoleListResponse(List <ArticleRole> roles){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildNoAccessResponse(){
-       
-         return Response.status(400).build(); 
+        return Response.ok().build();
     }
 
     public static Response buildArtilceCreatedResponse() {
-        return Response.status(400).build();
+        return Response.ok().build();
     }
 }

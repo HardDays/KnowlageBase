@@ -41,7 +41,26 @@ public class UserService {
                              @FormParam(value = "admin_token") String adminToken,
                              @FormParam(value = "user_id") int userId){
        return userWrapper.delete(adminId, adminToken, userId);
-       // return Response.ok().build();
+    }
+
+    @POST
+    @Path("/assign_section_role")
+    public Response assignSecitonRole(@FormParam(value = "admin_id") int adminId,
+                           @FormParam(value = "admin_token") String adminToken,
+                           @FormParam(value = "user_id") int userId,
+                           @FormParam(value = "section_id") int sectionId,
+                          @FormParam(value = "role_id") int roleId){
+        return userWrapper.assignSectionRole(adminId, adminToken, userId, sectionId, roleId);
+    }
+
+    @POST
+    @Path("/assign_global_role")
+    public Response assignGlobalRole(@FormParam(value = "admin_id") int adminId,
+                                      @FormParam(value = "admin_token") String adminToken,
+                                      @FormParam(value = "user_id") int userId,
+                                      @FormParam(value = "section_id") int sectionId,
+                                      @FormParam(value = "role_id") int roleId){
+        return userWrapper.assignSectionRole(adminId, adminToken, userId, sectionId, roleId);
     }
 }
 

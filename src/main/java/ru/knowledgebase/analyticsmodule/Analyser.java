@@ -1,6 +1,5 @@
 package ru.knowledgebase.analyticsmodule;
 
-import ru.knowledgebase.analyticsmodule.Reports.EmployeesActionsReport;
 import ru.knowledgebase.analyticsmodule.rank.ArticleRank;
 import ru.knowledgebase.analyticsmodule.rank.OperationFrequency;
 import ru.knowledgebase.analyticsmodule.rank.RequestRank;
@@ -10,7 +9,7 @@ import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
 import ru.knowledgebase.loggermodule.LogRecord.CRUDRecord;
 import ru.knowledgebase.loggermodule.LogRecord.SearchRequestRecord;
 import ru.knowledgebase.loggermodule.LogRecord.SearchResultRecord;
-import ru.knowledgebase.loggermodule.logenums.OPERATION;
+import ru.knowledgebase.loggermodule.enums.OPERATION;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 
 import java.sql.Timestamp;
