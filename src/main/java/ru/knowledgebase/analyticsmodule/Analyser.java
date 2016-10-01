@@ -256,6 +256,25 @@ public class Analyser {
         return count;
     }
     /**
+     * Get user requests
+     * @param log list with log records
+     * @return hashmap with users and requests
+     */
+    public HashMap<Integer, LinkedList<String>> getUserRequests(List <ALogRecord> log){
+        HashMap<Integer, LinkedList<String>> res = new HashMap<Integer, LinkedList<String>>();
+        for (ALogRecord rec : log){
+            if (rec.getOperationType() == OPERATION.SEARCH_REQUEST){
+                Integer id = rec.getUserID();
+                if (!res.containsKey(id)) {
+                    res.put(id, new LinkedList<String>());
+                }
+                LinkedList <String> list = res.get(id);
+                list.add(((SearchRequestRecord)rec).getSearchRequest());
+            }
+        }
+        return res;
+    }
+    /**
      * Filter log records by time period
      * @param log list with log records
      * @param from lower bound of time period
@@ -498,4 +517,35 @@ public class Analyser {
     public List<ArticleRank> getUserViews(List <ALogRecord> log, int userId, Timestamp from, Timestamp to){
         return getPopularArticles(filterTime(filterUser(log, userId), from, to));
     }
+    /**
+     * Get user requests
+     * @param log list with log records
+     * @param parentId id of parent article
+     * @return hashmap with users and requests
+     */
+    public HashMap<Integer, LinkedList<String>> getUserRequests(List <ALogRecord> log, int parentId) throws Exception{
+        return getUserRequests(filterParent(log, parentId));
+    }
+    /**
+     * Get user requests
+     * @param log list with log records
+     * @param parentId id of parent article
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return hashmap with users and requests
+     */
+    public HashMap<Integer, LinkedList<String>> getUserRequests(List <ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception{
+        return getUserRequests(filterTime(filterParent(log, parentId), from, to));
+    }
+    /**
+     * Get user requests
+     * @param log list with log records
+     * @param from lower bound of time period
+     * @param to higher bound of time period
+     * @return hashmap with users and requests
+     */
+    public HashMap<Integer, LinkedList<String>> getUserRequests(List <ALogRecord> log, Timestamp from, Timestamp to) throws Exception{
+        return getUserRequests(filterTime(log, from, to));
+    }
+
 }
