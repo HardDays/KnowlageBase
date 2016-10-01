@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class ArchiveArticleControllerTest {
 
-    private static DataCollector dc = new DataCollector();
+    private static DataCollector dc = DataCollector.getInstance();
     private static String title = "Title";
     private static String body = "Body";
     private static Integer author = 1;
@@ -40,10 +40,10 @@ public class ArchiveArticleControllerTest {
         u = dc.addUser(u);
         author = u.getId();
 
-        base = ac.addBaseArticle("1", "2", u.getId(), new Timestamp(5));
+        base = ac.addBaseArticle("1", "2", u.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5));
 
         parentArticle = base.getId();
-        updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), false);
+        updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
     }
 
     @AfterClass
@@ -55,8 +55,8 @@ public class ArchiveArticleControllerTest {
 
     @Test
     public void moveToArchive() throws Exception {
-        Article uArticle1 = ac.addArticle(title, body, u.getId(), updateArticle.getId(), new Timestamp(5), false);
-        Article uArticle2 = ac.addArticle(title, body, u.getId(), updateArticle.getId(), new Timestamp(5), false);
+        Article uArticle1 = ac.addArticle(title, body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
+        Article uArticle2 = ac.addArticle(title, body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
 
         archiveArticleController.moveToArchive(updateArticle);
 
@@ -67,7 +67,7 @@ public class ArchiveArticleControllerTest {
 
     @Test
     public void movingListTest() throws Exception {
-        Article newArticle1 = ac.addArticle("TimeListTest", body, u.getId(), base.getId(), new Timestamp(5), false);
+        Article newArticle1 = ac.addArticle("TimeListTest", body, u.getId(), base.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
 
         archiveArticleController.addArchivationTime(newArticle1);
         archiveArticleController.archiveNext();

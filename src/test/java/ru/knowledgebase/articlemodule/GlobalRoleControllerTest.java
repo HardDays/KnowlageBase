@@ -33,7 +33,7 @@ public class GlobalRoleControllerTest {
     private final int roleId = 1;
     private final String roleName = "User";
 
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
     private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     public void prepareUser() throws Exception{

@@ -5,7 +5,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.dbmodule.storages.SectionStorage;
 import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
+import ru.knowledgebase.exceptionmodule.sectionexceptions.ArticleCanNotBeSectionException;
 import ru.knowledgebase.imagemodule.ImageController;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
@@ -23,13 +25,14 @@ import static org.junit.Assert.*;
  */
 public class ArticleControllerTest {
 
-    private static ImageController ic = new ImageController();
-    private static DataCollector dc = new DataCollector();
+    private static ImageController ic = ImageController.getInstance();
+    private static DataCollector dc = DataCollector.getInstance();
     private static String title = "Title";
     private static String body = "Body";
     private static Integer author = 1;
     private static Integer parentArticle = 1;
-    private static ArticleController ac = new ArticleController();
+    private static ArticleController ac = ArticleController.getInstance();
+    private static SectionController sc = SectionController.getInstance();
 
     private static User u;
     private static Article base;
@@ -37,33 +40,37 @@ public class ArticleControllerTest {
     private static Article createTest;
     private static Article updateArticle;
 
+    private static Image img;
+
     @BeforeClass
+    @Transactional
     public static void init() throws Exception{
 
-        Image img = new Image("home/path");
+        img = new Image("home/path");
         img = ic.addImage(img);
 
         u = new User("TestUser", "123");
         u = dc.addUser(u);
         author = u.getId();
 
-        base = ac.addBaseArticle("1", "2", u.getId(), new Timestamp(5));
+        base = ac.addBaseArticle("1", "2", u.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5));
 
         parentArticle = base.getId();
-        updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), true);
+        updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
     }
 
     @AfterClass
     public static void clear() throws Exception{
         ac.deleteArticle(base.getId());
         dc.deleteUser(u.getId());
+        ic.deleteImage(img.getId());
     }
 
     @Transactional
     @Test
     public void addArticle() throws Exception {
         parentArticle = base.getId();
-        createTest = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), false);
+        createTest = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
         createTest = ac.getArticle(createTest.getId());
         printObject(createTest);
         //ac.deleteArticle(createTest.getId());
@@ -72,7 +79,7 @@ public class ArticleControllerTest {
     @Transactional
     @Test
     public void deleteArticle() throws Exception {
-        Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), false);
+        Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
         ac.deleteArticle(a.getId());
         try {
             ac.getArticle(a.getId());
@@ -88,15 +95,15 @@ public class ArticleControllerTest {
     @Transactional
     @Test
     public void childrenArticle() throws Exception {
-        Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), false);
+        Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
         assertTrue(ac.getArticleChildren(base.getId()).size() == 2);
     }
 
     @Transactional
     @Test
     public void deleteBaseArticle() throws Exception {
-        Article a = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), false);
-        Article b = ac.addArticle(title, body, u.getId(), a.getId(), new Timestamp(5), false);
+        Article a = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
+        Article b = ac.addArticle(title, body, u.getId(), a.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
         printObject(a);
         printObject(b);
 
@@ -120,16 +127,55 @@ public class ArticleControllerTest {
 
         updateArticle.setTitle(newString);
         updateArticle = ac.updateArticle(updateArticle.getId(), updateArticle.getTitle(), updateArticle.getBody(),
-                updateArticle.getAuthor().getId(), updateArticle.getParentArticle(), new Timestamp(5), false);
+                updateArticle.getAuthor().getId(), updateArticle.getParentArticle(), new Timestamp(5), new Timestamp(5), new Timestamp(5));
 
         updateArticle = ac.getArticle(updateArticle.getId());
         assertTrue(updateArticle.getTitle().equals(newString));
 
         updateArticle.setBody(newString);
+        int id1 = updateArticle.getId();
         updateArticle = ac.updateArticle(updateArticle);
+        int id2 = updateArticle.getId();
         assertTrue(updateArticle.getBody().equals(newString));
 
         //ac.deleteArticle(updateArticle.getId());
+    }
+
+    @Transactional
+    @Test(expected = ArticleCanNotBeSectionException.class)
+    public void sectionOrganization() throws Exception{
+        Article newArticle1 = ac.addArticle(title, body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
+        Article newArticle2 = ac.addArticle(title, body, u.getId(), newArticle1.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+    }
+
+    @Transactional
+    @Test
+    public void getNextLevelSections() throws Exception {
+        Article newArticle1 = ac.addArticle("A1", body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        Article newArticle2 = ac.addArticle("A2", body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        Article newArticle3 = ac.addArticle("A3", body, u.getId(), newArticle2.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        List<Article> arts = sc.getNextLevelSections(updateArticle.getId());
+        for (Article a : arts) {
+            printObject(a);
+        }
+        assertTrue(arts.size() == 2);
+        ac.deleteArticle(newArticle1.getId());
+        ac.deleteArticle(newArticle2.getId());
+    }
+
+    @Transactional
+    @Test
+    public void getSectionTree() throws Exception {
+        Article newArticle1 = ac.addArticle("A1", body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        Article newArticle2 = ac.addArticle("A2", body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        Article newArticle3 = ac.addArticle("A3", body, u.getId(), newArticle2.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        List<Article> arts = sc.getSectionTree(updateArticle.getId());
+        for (Article a : arts) {
+            printObject(a);
+        }
+        assertTrue(arts.size() == 4);
+        ac.deleteArticle(newArticle1.getId());
+        ac.deleteArticle(newArticle2.getId());
     }
 
     private void printObject(Article a) {

@@ -20,7 +20,7 @@ public class ArticleRoleController {
     private int defaultArticleRoleId = 1;
     private int defaultRootArticleId = 1;
 
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
 
     private static volatile ArticleRoleController instance;
 

@@ -14,12 +14,7 @@ import static org.junit.Assert.*;
  */
 public class ImageControllerTest {
 
-    private static ImageController ic = new ImageController();
-
-    @Test
-    public void getImages() throws Exception {
-
-    }
+    private static ImageController ic = ImageController.getInstance();
 
     @Transactional
     @Test
@@ -29,6 +24,26 @@ public class ImageControllerTest {
         img = ic.addImage(img);
         List<Image> imgs = ic.getImages(Arrays.asList(img.getId()));
         assertTrue(imgs.size() == 1 && imgs.get(0).getPath().equals(path));
+
+        ic.deleteImage(img.getId());
+    }
+
+    @Transactional
+    @Test
+    public void getAllImages() throws Exception{
+        String path1 = "path/newpath";
+        Image img1 = new Image(path1);
+        img1 = ic.addImage(img1);
+
+        String path2 = "path/newpath2";
+        Image img2 = new Image(path2);
+        img2 = ic.addImage(img2);
+
+        List<Image> images = ic.getAllImages();
+        assertTrue(images.size() == 2);
+
+        ic.deleteImage(img1.getId());
+        ic.deleteImage(img2.getId());
     }
 
 }

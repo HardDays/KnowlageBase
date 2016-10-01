@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ImageController {
 
-    private DataCollector dataCollector = new DataCollector();
+    private DataCollector dataCollector = DataCollector.getInstance();
 
     private static ImageController instance;
 
@@ -72,13 +72,14 @@ public class ImageController {
     }
 
     public Image addImage(Image image) throws Exception{
+        Image img = null;
         try {
-            Image img = dataCollector.addImage(image);
+            img = dataCollector.addImage(image);
         }
         catch (Exception ex) {
             throw new DataBaseException();
         }
-        return image;
+        return img;
     }
 
     public String addImage(InputStream uploadedInputStream, String filename) throws Exception{
@@ -99,5 +100,16 @@ public class ImageController {
         catch (Exception ex) {
             throw new DataBaseException();
         }
+    }
+
+    public List<Image> getAllImages() throws Exception{
+        List<Image> images = new LinkedList<>();
+        try {
+            images = dataCollector.addAllImages();
+        }
+        catch (Exception ex) {
+            throw new DataBaseException();
+        }
+        return images;
     }
 }

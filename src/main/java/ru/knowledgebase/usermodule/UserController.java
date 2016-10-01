@@ -18,7 +18,7 @@ import java.sql.Date;
  */
 public class UserController {
 
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
     private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     private static volatile UserController instance;

@@ -4,6 +4,8 @@ import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.*;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.imageexceptions.ImageNotFoundException;
+import ru.knowledgebase.exceptionmodule.sectionexceptions.ArticleCanNotBeSectionException;
+import ru.knowledgebase.exceptionmodule.sectionexceptions.NoSectionsException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
@@ -18,7 +20,7 @@ import java.util.List;
  */
 public class ArticleController {
 
-    private DataCollector dataCollector = new DataCollector();
+    private DataCollector dataCollector = DataCollector.getInstance();
     private final int BASE_ARTICLE = -1;
 
     private static ArticleController instance;
@@ -51,10 +53,10 @@ public class ArticleController {
      * @throws Exception
      */
     public Article addBaseArticle(String title, String body,
-                                  int authorId,
+                                  int authorId, Timestamp createdTime, Timestamp updatedTime,
                                   Timestamp lifeTime) throws Exception {
         Article article = getFullArticleObject(title, body, authorId,
-                -1, lifeTime, true);
+                -1, createdTime, updatedTime, lifeTime, true);
 
         Article resultArticle = null;
         try {
@@ -79,11 +81,17 @@ public class ArticleController {
      * @param parentArticle - parent article id
      */
     public Article addArticle(String title, String body,
-                           int authorId, int parentArticle,
+                           int authorId, int parentArticle, Timestamp createdTime, Timestamp updatedTime,
                            Timestamp lifeTime, boolean isSection) throws Exception{
 
         Article article = getFullArticleObject(title, body, authorId,
-                                               parentArticle, lifeTime, isSection);
+                                               parentArticle, createdTime, updatedTime, lifeTime, isSection);
+
+        if (isSection == true) {
+            if (!this.checkIfSectionIsWellOrganized(parentArticle)) {
+                throw new ArticleCanNotBeSectionException();
+            }
+        }
 
         Article resultArticle = null;
         try {
@@ -141,13 +149,28 @@ public class ArticleController {
      * @return
      */
     public Article updateArticle(Integer id, String title, String body,
-                                 int authorId, int parentArticle,
-                                 Timestamp lifeTime, boolean isSection) throws Exception {
-        Article article = null;
-            article = getFullArticleObject(title, body, authorId,
-                    parentArticle, lifeTime, isSection);
+                                 int authorId, int parentArticle, Timestamp createdTime, Timestamp updatedTime,
+                                 Timestamp lifeTime) throws Exception {
+        Article originArticle = null;
+        try {
+            originArticle = dataCollector.findArticle(id);
+        }
+        catch (Exception ex) {
+            throw new DataBaseException();
+        }
 
-            article.setId(id);
+        Article article = null;
+        article = getFullArticleObject(title, body, authorId,
+                parentArticle, createdTime, updatedTime, lifeTime, originArticle.isSection());
+
+        article.setId(id);
+
+        if (originArticle.isSection() == true) {
+            if (!this.checkIfSectionIsWellOrganized(parentArticle)) {
+                throw new ArticleCanNotBeSectionException();
+            }
+        }
+
         try {
             article = dataCollector.updateArticle(article);
         }
@@ -189,6 +212,23 @@ public class ArticleController {
         return this.dataCollector.findArticleByTitle(title);
     }
 
+    /**
+     * Returns all first-level children of current article
+     * @param articleId
+     * @return List of articles id
+     * @throws Exception
+     */
+    public List<Integer> getArticleChildrenIds(int articleId) throws Exception {
+        List<Integer> artilces = null;
+        try {
+            artilces = dataCollector.getChildrenIds(articleId);
+        }
+        catch (Exception ex) {
+            throw new ArticleHasNoChildrenException();
+        }
+        return artilces;
+    }
+
     //END CRUD METHODS
 
     //BEGIN PRIVATE METHODS
@@ -202,7 +242,7 @@ public class ArticleController {
      * @return
      * */
     private Article getFullArticleObject(String title, String body,
-                                         int authorId, int parentArticle,
+                                         int authorId, int parentArticle, Timestamp createdTime, Timestamp updatedTime,
                                          Timestamp lifeTime, boolean isSection) throws Exception
     {
         Article article = new Article();
@@ -229,6 +269,7 @@ public class ArticleController {
         }
 
 
+
         article.setBody(body);
         article.setTitle(title);
         article.setClearBody(clearBody);
@@ -236,8 +277,59 @@ public class ArticleController {
         article.setAuthor(author);
         article.setLifeTime(lifeTime);
         article.setSection(isSection);
+        article.setCreatedTime(createdTime);
+        article.setUpdatedTime(updatedTime);
+
+        article.setSectionId(getArticleSection(parentArticle));
 
         return article;
+    }
+
+    /**
+     * Calc section by next logic:
+     * 1) If it is base article, section id will be BASE_ARTICLE id
+     * 2) If this article if node under section
+     * article - it will have section = parent id (nearest section)
+     * 3) Otherwise section will be the same as parent section
+     * @param parentId
+     * @return
+     * @throws Exception
+     */
+    private int getArticleSection(int parentId) throws Exception {
+        if (parentId == BASE_ARTICLE) {
+            return BASE_ARTICLE;
+        }
+        else {
+            try {
+                Article parent = dataCollector.findArticle(parentId);
+                if (parent.isSection()){
+                    return parent.getId();
+                }
+                else {
+                    return parent.getSectionId();
+                }
+            }
+            catch (Exception ex) {
+                throw new DataBaseException();
+            }
+        }
+    }
+
+    private boolean checkIfSectionIsWellOrganized(int parentArticle) throws Exception{
+        //Section not not be created if parent article is not a section!
+        //***
+        Article parent = null;
+        try {
+            parent = dataCollector.findArticle(parentArticle);
+        } catch (Exception ex) {
+            throw new DataBaseException();
+        }
+
+        if (parent.isSection()) {
+            return true;
+        }
+        return false;
+        //***
     }
     //END PRIVATE METHODS
 }

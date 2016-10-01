@@ -2,11 +2,14 @@ package ru.knowledgebase.wrappermodule;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import ru.knowledgebase.imagemodule.ImageController;
+import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.responsemodule.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.usermodule.UserController;
 
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by root on 31.08.16.
@@ -61,6 +64,26 @@ public class ImageWrapper {
             return ResponseBuilder.buildResponse(ex);
         }
         return ResponseBuilder.buildImageCreatedResponse(path);
+    }
+
+    /**
+     * @param token
+     * @param userId
+     * @return response with (ImageName, ImagePath)
+     */
+    public Response getAllImages(String token, int userId) {
+        List<Image> images = new LinkedList<>();
+        try {
+            boolean okToken = userController.checkUserToken(userId, token);
+            if (okToken != true) {
+                return ResponseBuilder.buildWrongTokenResponse();
+            }
+            images = imageController.getAllImages();
+        }
+        catch (Exception ex) {
+            return ResponseBuilder.buildResponse(ex);
+        }
+        return ResponseBuilder.buildGetAllImagesResponse(images);
     }
 
 }

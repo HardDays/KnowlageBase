@@ -1,6 +1,9 @@
 package ru.knowledgebase.responsemodule;
 
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.imagemodels.Image;
+
+import java.util.List;
 
 /**
  * Created by root on 31.08.16.
@@ -67,6 +70,18 @@ public class ResponseBuilder {
     }
 
     public static Response buildImageCreatedResponse(String path) {
+        return new Response();
+    }
+
+    public static Response buildArticleChildrenResponse(List<Integer> articles) {
+        return new Response();
+    }
+
+    public static Response buildSectionsResponse(List<Article> sections) {
+        return new Response();
+    }
+
+    public static Response buildGetAllImagesResponse(List<Image> images) {
         return new Response();
     }
 }

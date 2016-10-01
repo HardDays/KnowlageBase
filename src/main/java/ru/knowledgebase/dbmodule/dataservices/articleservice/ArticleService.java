@@ -143,10 +143,7 @@ public class ArticleService {
         return tree;
     }
 
-    @Transactional
-    public void deleteAll(List<Integer> ids) {
-        for (Integer id : ids) {
-            articleRepository.delete(id);
-        }
+    public Article getBaseArticle() {
+        return articleRepository.getBaseArticle();
     }
 }

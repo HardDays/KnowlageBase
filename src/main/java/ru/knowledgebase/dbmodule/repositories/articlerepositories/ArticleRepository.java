@@ -16,4 +16,6 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
     @Query("from Article where title = ?1")
     public List<Article> findByTitle(String title);
 
+    @Query("from Article where parentId=-1")
+    public Article getBaseArticle();
 }

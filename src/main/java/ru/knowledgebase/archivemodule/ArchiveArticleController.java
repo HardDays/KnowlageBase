@@ -20,7 +20,7 @@ import java.util.List;
  * Created by root on 17.09.16.
  */
 public class ArchiveArticleController {
-    private DataCollector dataCollector = new DataCollector();
+    private DataCollector dataCollector = DataCollector.getInstance();
 
     private List<ArchTimeNode> times = new LinkedList<>();
 

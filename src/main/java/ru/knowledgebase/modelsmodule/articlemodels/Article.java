@@ -52,6 +52,12 @@ public class Article {
      */
     private Timestamp lifeTime;
 
+    private Timestamp createdTime;
+
+    private Timestamp updatedTime;
+
+    private int sectionId;
+
     //BEGIN CONSTRUCTORS
     public Article(){
     }
@@ -61,7 +67,8 @@ public class Article {
     }
 
     public Article(String title, String body, String clearBody,
-                   User author, int parentId, Timestamp lifeTime, boolean isSection) {
+                   User author, int parentId, Timestamp createdDate,
+                   Timestamp updatedTime, Timestamp lifeTime, boolean isSection) {
         this.title         = title;
         this.body          = body;
         this.clearBody     = clearBody;
@@ -69,6 +76,9 @@ public class Article {
         this.parentId      = parentId;
         this.lifeTime      = lifeTime;
         this.isSection     = isSection;
+        this.createdTime   = createdDate;
+        this.updatedTime   = updatedTime;
+
     }
 
     //END CONSTRUCTORS
@@ -76,6 +86,21 @@ public class Article {
 
     //BEGIN SG METHODS
 
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdDate) {
+        this.createdTime = createdDate;
+    }
+
+    public Timestamp getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Timestamp updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 
     public boolean isSection() {
         return isSection;
@@ -133,6 +158,13 @@ public class Article {
         this.parentId = parentId;
     }
 
+    public void setSectionId(int sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public int getSectionId() {
+        return this.sectionId;
+    }
 
     public Timestamp getLifeTime() {
         return lifeTime;
@@ -174,6 +206,7 @@ public class Article {
         res &= this.isSection == comp.isSection;
         return res;
     }
+
 
     //END SUPPORT METHODS
 
