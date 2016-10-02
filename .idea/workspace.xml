@@ -7,7 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f2b045f-781f-48e8-acd1-2cab79605ba8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/RequestRank.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/RequestRank.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportBuilder.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportBuilder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportController.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportController.java" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -39,16 +41,16 @@
       <file leaf-file-name="ReportBuilder.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3036">
-              <caret line="140" column="24" selection-start-line="140" selection-start-column="24" selection-end-line="140" selection-end-column="24" />
+            <state relative-caret-position="176">
+              <caret line="22" column="90" selection-start-line="17" selection-start-column="5" selection-end-line="22" selection-end-column="90" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3214#3215#0" expanded="true" />
-                <element signature="e#3276#3277#0" expanded="true" />
-                <element signature="e#5831#5832#0" expanded="true" />
-                <element signature="e#5864#5865#0" expanded="true" />
-                <element signature="e#5915#5916#0" expanded="true" />
-                <element signature="e#5970#5971#0" expanded="true" />
+                <element signature="e#7052#7053#0" expanded="true" />
+                <element signature="e#7114#7115#0" expanded="true" />
+                <element signature="e#9929#9930#0" expanded="true" />
+                <element signature="e#9962#9963#0" expanded="true" />
+                <element signature="e#10013#10014#0" expanded="true" />
+                <element signature="e#10068#10069#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -71,14 +73,29 @@
       <file leaf-file-name="ReportController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1959">
-              <caret line="117" column="25" selection-start-line="117" selection-start-column="25" selection-end-line="117" selection-end-column="25" />
+            <state relative-caret-position="-107">
+              <caret line="261" column="58" selection-start-line="261" selection-start-column="58" selection-end-line="261" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5589#5590#0" expanded="true" />
-                <element signature="e#5648#5649#0" expanded="true" />
-                <element signature="e#9471#9472#0" expanded="true" />
-                <element signature="e#9531#9532#0" expanded="true" />
+                <element signature="e#3265#3266#0" expanded="true" />
+                <element signature="e#3322#3323#0" expanded="true" />
+                <element signature="e#6616#6617#0" expanded="true" />
+                <element signature="e#6675#6676#0" expanded="true" />
+                <element signature="e#10872#10873#0" expanded="true" />
+                <element signature="e#10932#10933#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Article.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="305">
+              <caret line="237" column="23" selection-start-line="237" selection-start-column="23" selection-end-line="237" selection-end-column="23" />
+              <folding>
+                <element signature="e#6648#6649#0" expanded="true" />
+                <element signature="e#6680#6681#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -222,7 +239,6 @@
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/exceptionmodule/reportexception/unableToCreateReportExeption.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/exceptionmodule/reportexception/UnableToCreateReportExeption.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/Analyser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/loggermodule/Log/UnableToFindLogException.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/exceptionmodule/loggerexceptions/UnableToFindLogException.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/loggermodule/Log/LogWritingException.java" />
@@ -232,8 +248,9 @@
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/loggermodule/Log/LogReader.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ReportWrapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/usermodels/User.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportBuilder.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/RequestRank.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportBuilder.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportController.java" />
       </list>
     </option>
@@ -1523,7 +1540,7 @@
       <workItem from="1475236134764" duration="19558000" />
       <workItem from="1475257542361" duration="1067000" />
       <workItem from="1475258731891" duration="1983000" />
-      <workItem from="1475315764567" duration="56050000" />
+      <workItem from="1475315764567" duration="63221000" />
     </task>
     <task id="LOCAL-00001" summary="New branch">
       <created>1471340635302</created>
@@ -1714,7 +1731,14 @@
       <option name="project" value="LOCAL" />
       <updated>1475407256994</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Added reports for supervisor and search actions reports">
+      <created>1475409291586</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1475409291586</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1750,7 +1774,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="357119000" />
+    <option name="totallyTimeSpent" value="364290000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="1" width="1932" height="1036" extended-state="6" />
@@ -1776,14 +1800,14 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27030033" sideWeight="0.5161458" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27030033" sideWeight="0.5161458" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.516129" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20376176" sideWeight="0.48387095" order="6" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33809" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33704117" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -2212,21 +2236,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="228" column="30" selection-start-line="228" selection-start-column="16" selection-end-line="228" selection-end-column="30" />
-          <folding>
-            <element signature="e#6368#6369#0" expanded="true" />
-            <element signature="e#6402#6403#0" expanded="true" />
-            <element signature="e#6459#6460#0" expanded="true" />
-            <element signature="e#6505#6506#0" expanded="true" />
-            <element signature="e#6546#6547#0" expanded="true" />
-            <element signature="e#6580#6581#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/exceptionmodule/loggerexceptions/LogWritingException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -2325,22 +2334,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3036">
-          <caret line="140" column="24" selection-start-line="140" selection-start-column="24" selection-end-line="140" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3214#3215#0" expanded="true" />
-            <element signature="e#3276#3277#0" expanded="true" />
-            <element signature="e#5831#5832#0" expanded="true" />
-            <element signature="e#5864#5865#0" expanded="true" />
-            <element signature="e#5915#5916#0" expanded="true" />
-            <element signature="e#5970#5971#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ReportWrapper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="792">
@@ -2378,16 +2371,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1959">
-          <caret line="117" column="25" selection-start-line="117" selection-start-column="25" selection-end-line="117" selection-end-column="25" />
+        <state relative-caret-position="305">
+          <caret line="237" column="23" selection-start-line="237" selection-start-column="23" selection-end-line="237" selection-end-column="23" />
+          <folding>
+            <element signature="e#6648#6649#0" expanded="true" />
+            <element signature="e#6680#6681#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="22" column="90" selection-start-line="17" selection-start-column="5" selection-end-line="22" selection-end-column="90" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5589#5590#0" expanded="true" />
-            <element signature="e#5648#5649#0" expanded="true" />
-            <element signature="e#9471#9472#0" expanded="true" />
-            <element signature="e#9531#9532#0" expanded="true" />
+            <element signature="e#7052#7053#0" expanded="true" />
+            <element signature="e#7114#7115#0" expanded="true" />
+            <element signature="e#9929#9930#0" expanded="true" />
+            <element signature="e#9962#9963#0" expanded="true" />
+            <element signature="e#10013#10014#0" expanded="true" />
+            <element signature="e#10068#10069#0" expanded="true" />
+            <marker date="1475416506174" expanded="true" signature="4361:5143" ph="/**...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/reportmodule/ReportController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-107">
+          <caret line="261" column="58" selection-start-line="261" selection-start-column="58" selection-end-line="261" selection-end-column="58" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3265#3266#0" expanded="true" />
+            <element signature="e#3322#3323#0" expanded="true" />
+            <element signature="e#6616#6617#0" expanded="true" />
+            <element signature="e#6675#6676#0" expanded="true" />
+            <element signature="e#10872#10873#0" expanded="true" />
+            <element signature="e#10932#10933#0" expanded="true" />
           </folding>
         </state>
       </provider>

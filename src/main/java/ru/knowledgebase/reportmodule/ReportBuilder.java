@@ -1,5 +1,6 @@
 package ru.knowledgebase.reportmodule;
 
+import ru.knowledgebase.analyticsmodule.rank.RequestRank;
 import ru.knowledgebase.exceptionmodule.reportexception.UnableToCreateReportExeption;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 
@@ -14,55 +15,136 @@ public class ReportBuilder {
     private XLSBuilder xlsBuilder;
 
     /**
-     • Количество раз использования функции поиска
-     • «Часто ищут» в разбивке по разделам 1 уровня
-     • Разбивка поисковых запросов по разделам 1 уровня и пользователям с их запросами
-
-     *
+     * Составляет отчет о поиске в системе за данный период. Создает xlsx файл и размечает поля в соответствии
+     * со структурой отчетв.
+     * В отчете:
+     *   • Количество раз использования функции поиска
+     *   • «Часто ищут» в разбивке по разделам 1 уровня
+     *   • Разбивка поисковых запросов по разделам 1 уровня и пользователям с их запросами
+     * Разметка xlsx:
+     *    Страница 1: Статистика
+     *    |Период|Количество поисковых запросов в системе|
+     *    Страница 2: Частые поисковые запросы по разделам
+     *    |Раздел первого уровня|Поисковой зарос|Количество раз искали|
+     *    Страница 3: Поисковые запросы по поьзователям и разделам
+     *    |Раздел первого уровня|Пользователь|Поисковой зарос|
      * @param userID
      * @param from
      * @param to
-     * @param sections
-     * @return
+     * @param sectionUsersRequests
+     * @param sectionsRequests
+     * @return путь к созданноу отчету
      */
-    public String buildSearchActionsReport(int userID, Timestamp from, Timestamp to,
-                                           List<Integer> sections) {
-        String reportType = "SearchActionsReport";
-        String reportName = getReportName(userID, from, to, reportType);
-        return null;
+    public String buildSearchActionsReport(int userID, Timestamp from, Timestamp to, int numSearchActions,
+                                           Map<String, Map<String, LinkedList<String>>> sectionUsersRequests,
+                                           Map<String, LinkedList<RequestRank>> sectionsRequests)
+                                            throws UnableToCreateReportExeption {
+        String reportType = "Отчео о поиске в системе";
+        String dates = getDate(from, to);
+        String reportName = getReportName(userID, dates, reportType);
+
+        List<Object[]> statisticsRows = new LinkedList<>();
+        statisticsRows.add(createRow("Период", "Количество поисковых запросов в системе"));
+        statisticsRows.add(createRow(dates, String.valueOf(numSearchActions)));
+
+        List<Object[]> popularSearchReqsRows = new LinkedList<>();
+        popularSearchReqsRows.add(createRow(
+                "Раздел первого уровня",
+                "Поисковой зарос",
+                "Количество раз искали"
+        ));
+
+        List<Object[]> frequentlySearchedWithUsersRows = new LinkedList<>();
+        frequentlySearchedWithUsersRows.add(createRow(
+                "Раздел первого уровня",
+                "Пользователь",
+                "Поисковой зарос"
+        ));
+
+        for(String section : sectionsRequests.keySet()){
+            LinkedList<RequestRank> requestRanks = sectionsRequests.get(section);
+            int i = 0;
+            String firstCell = section;
+            for(RequestRank req : requestRanks){
+                if( i != 0){
+                    firstCell = "";
+                }
+                popularSearchReqsRows.add(createRow(
+                        firstCell, req.getRequest(), String.valueOf(req.getRank()))
+                );
+                i++;
+            }
+        }
+
+        for(String section : sectionUsersRequests.keySet()) {
+            Map<String, LinkedList<String>> userReq = sectionUsersRequests.get(section);
+            Set<String> users = userReq.keySet();
+            int i = 0;
+            String firstCell = section;
+            for (String user : users) {
+
+                LinkedList<String> reqs = userReq.get(user);
+                int j = 0;
+                String secondCell = user;
+                for (String req : reqs){
+                    if (i != 0) {
+                        firstCell = "";
+                    }
+                    if (j != 0) {
+                        firstCell = "";
+                    }
+                    frequentlySearchedWithUsersRows.add(createRow(
+                            firstCell, secondCell, req)
+                    );
+                    i++;
+                    j++;
+                }
+            }
+        }
+
+
+        createReport(reportName);
+        createSheet(statisticsRows, "Статистика");
+        createSheet(popularSearchReqsRows, "Частые поисковые запросы по разделам");
+        createSheet(frequentlySearchedWithUsersRows, "Поисковые запросы по поьзователям и разделам");
+        return saveReport();
     }
 
     /**
-     • Дата
-     • ФИО оператора
-     • Название статей, просмотренных оператором
-     • Количество просмотров за день одной и той же статьи
-
-     Sheet 1: Statistics
-     |Dates|
-     Sheet 2: Articles views
-     |Name of user|Name of article|Num of views
-
-     * @param from
-     * @param to
-     * @param usersArticlesNumViews
-     * @return
+     * Составляет отчет о действия подчиненных супервизора за данный период. Создает xlsx файл и размечает поля в соответствии
+     * со структурой отчетв.
+     * В отчете:
+     *    • Период
+     *    • ФИО оператора
+     *    • Название статей, просмотренных оператором
+     *    • Количество просмотров за период одной и той же статьи
+     * Разметка xlsx:
+     *    Страница 1: Статистика
+     *    |Период|
+     *    Страница 2: Просмотренные статьи
+     *    |Имя пользователя|Название статьи|Количество просмотров|
+     * @param from - начальная дата
+     * @param to - конечная дата
+     * @param usersArticlesNumViews - содержит всею пользователей, просмотренные ими статьи и количество
+     * просмотров за данный период
+     * @return Путь к созданному отчету
      */
     public String buildEmployeesActionsReport(int userID, Timestamp from, Timestamp to,
                                               Map<String, Map<String, Integer>> usersArticlesNumViews)
                                                 throws UnableToCreateReportExeption {
-        String reportType = "EmployeesActionsReport";
-        String date = getDate(from, to);
-        String reportName = getReportName(userID, date, reportType);
+        String reportType = "Отчет о действиях подчиненных";
+        String dates = getDate(from, to);
+        String reportName = getReportName(userID, dates, reportType);
 
         List<Object[]> statisticsRows = new LinkedList<>();
-        statisticsRows.add(createRow(date));
+        statisticsRows.add(createRow("Период"));
+        statisticsRows.add(createRow(dates));
 
         List<Object[]> rows = new LinkedList<>();
         rows.add(createRow(
-                "User name",
-                "Articles user viewed during given period",
-                "Number of times article was viewed during given period"
+                "Имя пользователя",
+                "Название статьи",
+                "Количество просмотров"
         ));
         Set<String> users = usersArticlesNumViews.keySet();
         for(String user : users){
@@ -82,8 +164,8 @@ public class ReportBuilder {
         }
 
         createReport(reportName);
-        createSheet(statisticsRows, "Statistics");
-        createSheet(rows, "Articles views");
+        createSheet(statisticsRows, "Статистика");
+        createSheet(rows, "Просмотренные статьи");
         return saveReport();
     }
 
@@ -105,53 +187,51 @@ public class ReportBuilder {
     }
 
     /**
-     • Количество выгруженных элементов (статей)
-     • Разбивка статей в соответствии с разделами 1 уровня и ниже (сортировка)
-     • Название статьи
-     • Дата создания, автор
-     • Дата последнего изменения, автор
-     • Версия
-     • Размер
-
-     Sheet 1: Statistics
-     |Num elements|NUM|
-     Sheet 2: Created articles
-     |Level|Article Name|Date of creation|Author|Date of last change|Size
-
+     * Составляет отчет о действия в системе за данный период. Создает xlsx файл и размечает поля в соответствии
+     * со структурой отчетв.
+     * В отчете:
+     *    • Количество выгруженных элементов (статей)
+     *    • Разбивка статей в соответствии с разделами 1 уровня и ниже (сортировка)
+     *    • Название статьи
+     *    • Дата создания, автор
+     *    • Дата последнего изменения, автор
+     *    • Версия
+     *    • Размер
+     * Разметка xlsx:
+     *    Sheet 1: Статистика
+     *    |Период|Количество созданных статей|
+     *    Sheet 2: Созданные статьи
+     *    |Назваание раздела|Название статьи|Дата создани статьи|Автор|Дата последнего обновления|Размер|
      * @param from
      * @param to
      * @param levelArticle
-     * @return
+     * @return путь к созданному отчету
      */
     public String buildSystemActionsReport(int userID, Timestamp from, Timestamp to,
-                                           Map<Integer, List<Article>> levelArticle)
+                                           Map<String, List<Article>> levelArticle)
                                             throws UnableToCreateReportExeption {
-        String reportType = "SystemActionsReport";
+        String reportType = "Отчет о действиях в системе";
         String dates = getDate(from, to);
         String reportName = getReportName(userID, dates, reportType);
 
         List<Object[]> statisticsRows = new LinkedList<>();
-        statisticsRows.add(createRow(
-                "Number of created articles", String.valueOf(levelArticle.size())
-        ));
-        statisticsRows.add(createRow(
-                "Dates", dates
-        ));
+        statisticsRows.add(createRow("Период", "Количество созданных статей"));
+        statisticsRows.add(createRow(dates, String.valueOf(levelArticle.size())));
 
         List<Object[]> rows = new LinkedList<>();
         rows.add(createRow(
-                "Level",
-                "Article name",
-                "Date of creation",
-                "Author",
-                "Date of last change",
-                "Size"
+                "Название раздела",
+                "Название статьи",
+                "Дата создания",
+                "Автор",
+                "Дата последнего изменения",
+                "Размер"
         ));
-        Set<Integer> levels = levelArticle.keySet();
-        for(Integer level : levels){
+        Set<String> levels = levelArticle.keySet();
+        for(String level : levels){
             List<Article> articles = levelArticle.get(level);
             int i = 0;
-            String firstCell = String.valueOf(level);
+            String firstCell = level;
             for(Article article : articles){
                 if( i != 0){
                     firstCell = "";
@@ -167,8 +247,8 @@ public class ReportBuilder {
         }
 
         createReport(reportName);
-        createSheet(rows, "Statistics");
-        createSheet(rows, "Created articles");
+        createSheet(rows, "Статистика");
+        createSheet(rows, "Созданные стаьи");
         return saveReport();
     }
 
@@ -185,6 +265,4 @@ public class ReportBuilder {
                 rows
         );
     }
-
-
 }

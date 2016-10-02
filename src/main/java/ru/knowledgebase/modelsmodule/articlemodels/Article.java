@@ -95,6 +95,7 @@ public class Article {
 
     private Timestamp updatedTime;
 
+    private Integer sectionID;
     //BEGIN CONSTRUCTORS
     public Article(){}
 
@@ -232,6 +233,10 @@ public class Article {
 
     public Timestamp getUpdatedTime() {
         return updatedTime;
+    }
+
+    public Integer getSectionID() {
+        return sectionID;
     }
 
     //END SUPPORT METHODS
