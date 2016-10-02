@@ -1,5 +1,7 @@
 package ru.knowledgebase.loggermodule.Log;
 
+import ru.knowledgebase.exceptionmodule.loggerexceptions.LogReadingException;
+import ru.knowledgebase.exceptionmodule.loggerexceptions.UnableToFindLogException;
 import ru.knowledgebase.loggermodule.Constants.CONSTANTS;
 import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
 import ru.knowledgebase.loggermodule.LogRecord.LogRecordFactory;
@@ -28,7 +30,7 @@ public class LogReader {
      * {@code ALogRecord} class.
      * @return a list of records from log
      */
-    public LinkedList<ALogRecord> getRecordsFromLog() throws Exception {
+    public LinkedList<ALogRecord> getRecordsFromLog() throws LogReadingException, UnableToFindLogException {
         logRecords = new LinkedList<ALogRecord>();
 
         LogRecordFactory logRecordFactory = new LogRecordFactory();

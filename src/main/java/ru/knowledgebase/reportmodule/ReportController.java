@@ -4,6 +4,10 @@ import ru.knowledgebase.analyticsmodule.Analyser;
 import ru.knowledgebase.analyticsmodule.rank.ArticleRank;
 import ru.knowledgebase.analyticsmodule.rank.RequestRank;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.exceptionmodule.analyticsexceptions.UnableToPerformAnalyticsException;
+import ru.knowledgebase.exceptionmodule.loggerexceptions.LogReadingException;
+import ru.knowledgebase.exceptionmodule.loggerexceptions.UnableToFindLogException;
+import ru.knowledgebase.exceptionmodule.reportexception.UnableToCreateReportExeption;
 import ru.knowledgebase.loggermodule.Log.LogReader;
 import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
@@ -60,8 +64,8 @@ public class ReportController {
      * @return путь к созданному отчету
      * @throws Exception
      */
-    public String getSystemActionsReport(int userID, Timestamp from, Timestamp to,
-                                         List<Integer> sections) throws Exception {
+    public String getSystemActionsReport(int userID, Timestamp from, Timestamp to, List<Integer> sections)
+            throws UnableToCreateReportExeption, UnableToPerformAnalyticsException {
         HashSet<Integer> articlesIDs = getIDsOfArticlesCreatedDuringPeriod(from, to);
         Map<String, List<Article>> sectionArticle = new HashMap<>();
         for( Integer id : articlesIDs){
@@ -89,7 +93,8 @@ public class ReportController {
         return getArticleByID(section).getTitle();
     }
 
-    private HashSet<Integer> getIDsOfArticlesCreatedDuringPeriod(Timestamp from, Timestamp to) {
+    private HashSet<Integer> getIDsOfArticlesCreatedDuringPeriod(Timestamp from, Timestamp to)
+            throws UnableToPerformAnalyticsException {
         HashSet<Integer> articlesIDs = null;
         try {
             articlesIDs = analyser.getUploadedArticles(
@@ -97,7 +102,7 @@ public class ReportController {
                     from,
                     to);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new UnableToPerformAnalyticsException();
         }
         return articlesIDs;
     }
@@ -117,22 +122,19 @@ public class ReportController {
      * @return Путь к созданному отчету
      * @throws Exception
      */
-    public String getEmployeesActionsReport(int userID, Timestamp from, Timestamp to,
-                                            List<Integer> sections) throws Exception {
+    public String getEmployeesActionsReport(int userID, Timestamp from, Timestamp to, List<Integer> sections)
+            throws LogReadingException, UnableToFindLogException, UnableToCreateReportExeption {
 
         List<UserArticleRole> users = getUsersOfEachSection(sections);
-
         return reportBuilder.buildEmployeesActionsReport(
                 userID, from, to,
                 getArticlesEachUserViewedAndNumberOfViews(from, to, users));
-
     }
 
-    private Map<String, Map<String, Integer>> getArticlesEachUserViewedAndNumberOfViews(
-            Timestamp from,
-            Timestamp to,
-            List<UserArticleRole> users)
-            throws Exception {
+    private Map<String, Map<String, Integer>> getArticlesEachUserViewedAndNumberOfViews(Timestamp from, Timestamp to,
+                                                                                        List<UserArticleRole> users)
+            throws LogReadingException, UnableToFindLogException {
+
         Map<String, Map<String, Integer>> usersArticlesNumViews = new HashMap<>();
         for (UserArticleRole userRole: users) {
             usersArticlesNumViews.put(
@@ -148,7 +150,7 @@ public class ReportController {
      * @return
      * @throws Exception
      */
-    private List<UserArticleRole> getUsersOfEachSection(List<Integer> sections) throws Exception {
+    private List<UserArticleRole> getUsersOfEachSection(List<Integer> sections) {
         List <UserArticleRole> users = new LinkedList<>();
         for (Integer section : sections) {
             users.addAll(dataCollector.findUserArticleRoleByArticle(section));
@@ -158,7 +160,8 @@ public class ReportController {
 
     private Map<String, Integer> getArticlesUserViewedWithNumOfViews(UserArticleRole userRole,
                                                                      Timestamp from, Timestamp to)
-                                                                        throws Exception {
+            throws LogReadingException, UnableToFindLogException {
+
         List<ArticleRank> articlesViewed = analyser.getUserViews(
                 getRecordsFromLog(),
                 userRole.getUser().getId(),
@@ -178,10 +181,11 @@ public class ReportController {
 
     /**
      * Достает все записи из лога
-     * @return Список записей в логе
-     * @throws Exception
+     * @return
+     * @throws LogReadingException
+     * @throws UnableToFindLogException
      */
-    private LinkedList<ALogRecord> getRecordsFromLog() throws Exception {
+    private LinkedList<ALogRecord> getRecordsFromLog() throws LogReadingException, UnableToFindLogException {
         if(logRecords == null)
             logRecords = logReader.getRecordsFromLog();
         return logRecords;
@@ -201,15 +205,27 @@ public class ReportController {
      * @throws Exception
      */
     public String getSearchActionsReport(int userID, Timestamp from, Timestamp to, List<Integer> sections)
-            throws Exception {
-        Integer numSearchActions = numTimesSearchWasMade(from, to);
+            throws UnableToCreateReportExeption, UnableToPerformAnalyticsException {
+
+        Integer numSearchActions = null;
+        try {
+            numSearchActions = numTimesSearchWasMade(from, to);
+        } catch (Exception e) {
+            throw new UnableToPerformAnalyticsException();
+        }
 
         //Popular Search requests grouped by first level sections
         //Search requests grouped by first level sections and people who mede them
-        HashMap<Integer, LinkedList<String>> allUsersWithRequestsForPeriod = analyser.getUserRequests(
-                getRecordsFromLog(), from, to);
-        List<RequestRank> popularRequests = analyser.getPopularRequests(getRecordsFromLog(), from, to);
+        HashMap<Integer, LinkedList<String>> allUsersWithRequestsForPeriod = null;
+        List<RequestRank> popularRequests;
         Map<String, LinkedList<RequestRank>> levelPopularRequests = new HashMap<>();
+        try {
+            allUsersWithRequestsForPeriod = analyser.getUserRequests(
+                    getRecordsFromLog(), from, to);
+            popularRequests = analyser.getPopularRequests(getRecordsFromLog(), from, to);
+        } catch (Exception e) {
+            throw new UnableToPerformAnalyticsException();
+        }
 
 
         Map<Integer, LinkedList<Integer>> allFirstLevelSectionsWithSubsections = getListOfSectionsForEachLeavel();
@@ -228,22 +244,26 @@ public class ReportController {
                 List<Integer> sectionsOnLevel = getAllSectionsOnLevel(allFirstLevelSectionsWithSubsections, firstLevelSection);
                 //Checks if those users made search requests during the period and gets those requests
                 Map<String, LinkedList<String>> usersRequests = new HashMap<>();
-                for(UserArticleRole userOfSection : getUsersOfEachSection(sectionsOnLevel)){
-                    Integer userId = userOfSection.getUser().getId();
-                    if(allUsersWithRequestsForPeriod.keySet().contains(userId)){
-                        LinkedList<String> requests = allUsersWithRequestsForPeriod.get(userOfSection.getUser().getId());
-                        usersRequests.put(
-                                getUsersFullName(userOfSection),
-                                requests);
-                        // Checks for popular requests on that level
-                        LinkedList<RequestRank> popularRequestsOnLevel = new LinkedList<>();
-                        for(RequestRank popReq : popularRequests){
-                            if(requests.contains(popReq.getRequest())){
-                                popularRequestsOnLevel.add(popReq);
+                try {
+                    for(UserArticleRole userOfSection : getUsersOfEachSection(sectionsOnLevel)){
+                        Integer userId = userOfSection.getUser().getId();
+                        if(allUsersWithRequestsForPeriod.keySet().contains(userId)){
+                            LinkedList<String> requests = allUsersWithRequestsForPeriod.get(userOfSection.getUser().getId());
+                            usersRequests.put(
+                                    getUsersFullName(userOfSection),
+                                    requests);
+                            // Checks for popular requests on that level
+                            LinkedList<RequestRank> popularRequestsOnLevel = new LinkedList<>();
+                            for(RequestRank popReq : popularRequests){
+                                if(requests.contains(popReq.getRequest())){
+                                    popularRequestsOnLevel.add(popReq);
+                                }
                             }
+                            levelPopularRequests.get(getArticleTitle(firstLevelSection)).addAll(popularRequestsOnLevel);
                         }
-                        levelPopularRequests.get(getArticleTitle(firstLevelSection)).addAll(popularRequestsOnLevel);
                     }
+                } catch (Exception e) {
+                    throw new UnableToPerformAnalyticsException();
                 }
                 levelUsersRequests.put(getArticleTitle(firstLevelSection), usersRequests);
             }
@@ -272,13 +292,22 @@ public class ReportController {
         return sectionsOnLevel;
     }
 
-    private Integer numTimesSearchWasMade(Timestamp from, Timestamp to) throws Exception {
-        Integer numSearchActions = analyser.getSearchUsage(getRecordsFromLog(), from, to);
+    private Integer numTimesSearchWasMade(Timestamp from, Timestamp to) throws UnableToPerformAnalyticsException {
+        Integer numSearchActions = null;
+        try {
+            numSearchActions = analyser.getSearchUsage(getRecordsFromLog(), from, to);
+        } catch (Exception e) {
+            throw new UnableToPerformAnalyticsException();
+        }
         return numSearchActions;
     }
 
+    /**
+     * Возвращает Map с разделами и статьями, которые находятся в этих разделах
+     * @return
+     */
     public Map<Integer,LinkedList<Integer>> getListOfSectionsForEachLeavel() {
-        // TODO: get list of sections by each level
+        //TODO: dataCollector.getSectionHierachy();//        return null;
         return null;
     }
 }

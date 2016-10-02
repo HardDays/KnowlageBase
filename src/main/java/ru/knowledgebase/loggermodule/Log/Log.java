@@ -79,7 +79,8 @@ public class Log {
      * Reads all records from {@code logFile}.
      * @return a list of all records.
      */
-    public List<String> getAllRecordsFromLog() throws Exception {
+    public List<String> getAllRecordsFromLog()
+            throws UnableToFindLogException, LogReadingException {
         LinkedList<String> stringRecords = new LinkedList<>();
         try {
             reader = new FileReader(logFile);
