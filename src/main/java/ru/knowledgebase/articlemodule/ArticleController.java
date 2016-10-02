@@ -13,6 +13,7 @@ import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.xml.crypto.Data;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -197,10 +198,10 @@ public class ArticleController {
      * @return List of articles
      * @throws Exception
      */
-    public List<Article> getArticleChildren(int articleId) throws Exception {
+    public List<Article> getArticleChildren(int articleId, int from, int to) throws Exception {
         List<Article> artilces = null;
         try {
-            artilces = dataCollector.getChildren(articleId);
+            artilces = dataCollector.getChildren(articleId, from, to);
         }
         catch (Exception ex) {
             throw new ArticleHasNoChildrenException();
@@ -227,6 +228,15 @@ public class ArticleController {
             throw new ArticleHasNoChildrenException();
         }
         return artilces;
+    }
+
+    public Article getBaseArticle() throws Exception{
+        try {
+            return dataCollector.getBaseArticle();
+        }
+        catch (Exception ex) {
+            throw new DataBaseException();
+        }
     }
 
     //END CRUD METHODS
@@ -315,14 +325,35 @@ public class ArticleController {
         }
     }
 
+    //Call if we create a section under parent articles
     private boolean checkIfSectionIsWellOrganized(int parentArticle) throws Exception{
         //Section not not be created if parent article is not a section!
         //***
         Article parent = null;
+        List<Integer> children = new LinkedList<Integer>();
         try {
             parent = dataCollector.findArticle(parentArticle);
+            if (parent.isSection()) {
+                children = dataCollector.getChildrenIds(parentArticle);
+            }
         } catch (Exception ex) {
             throw new DataBaseException();
+        }
+
+        for (Integer i : children) {
+            Article a = null;
+            try {
+                a = dataCollector.findArticle(i);
+            }
+            catch (Exception ex) {
+                throw new DataBaseException();
+            }
+            if (a == null) {
+                throw new ArticleNotFoundException();
+            }
+            if (!a.isSection()) {
+                return false;
+            }
         }
 
         if (parent.isSection()) {

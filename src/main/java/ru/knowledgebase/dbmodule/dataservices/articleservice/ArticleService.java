@@ -30,7 +30,6 @@ public class ArticleService {
         return ar;
     }
 
-    @Transactional
     public Article findById(int articleId){
         return articleRepository.findOne(articleId);
     }
@@ -68,19 +67,6 @@ public class ArticleService {
 
     @Transactional
     public List<Article> getAll(){ return articleRepository.getAll(); }
-
-    @Transactional
-    public List<Article> getChildren(int articleId) {
-        List<ArticleConnection> ids = articleConnectionRepository.findByParentId(articleId);
-        List<Article> articles = new LinkedList<>();
-        for (ArticleConnection i : ids) {
-            Article a = articleRepository.findOne(i.getChildId());
-            if(a != null) {
-                articles.add(a);
-            }
-        }
-        return articles;
-    }
 
     /**
      * Get all first-line children for current article

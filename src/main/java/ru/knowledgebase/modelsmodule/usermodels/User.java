@@ -2,6 +2,7 @@ package ru.knowledgebase.modelsmodule.usermodels;
 
 import org.hibernate.annotations.*;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
 
@@ -26,6 +27,10 @@ public class User {
     @OneToMany(mappedBy = "author")
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<Article> article;
+
+    @OneToMany(mappedBy = "author")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    private List<News> news;
 
     @Column(name = "login", unique = true, nullable = false)
     private String login;

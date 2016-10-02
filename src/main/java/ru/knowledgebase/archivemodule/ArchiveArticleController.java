@@ -3,6 +3,7 @@ package ru.knowledgebase.archivemodule;
 import ru.knowledgebase.archivemodule.heplers.ArchTimeNode;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.exceptionmodule.articleexceptions.ArchiveArticleNotFoundException;
 import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleDeleteException;
 import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
@@ -98,6 +99,9 @@ public class ArchiveArticleController {
         catch (Exception ex) {
             throw new DataBaseException();
         }
+        if (archArticle == null) {
+            throw new ArchiveArticleNotFoundException();
+        }
         return archArticle;
     }
     //END CRUD METHODS
@@ -105,7 +109,7 @@ public class ArchiveArticleController {
     //BEGIN MOVING METHODS
 
     /**
-     * We will maintain a data structure in which all times in order
+     * We will maintain a data structure in which all times are ordered
      * O(n)
      * @param art
      */

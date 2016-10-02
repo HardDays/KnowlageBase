@@ -1,8 +1,10 @@
 package ru.knowledgebase.responsemodule;
 
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -73,7 +75,7 @@ public class ResponseBuilder {
         return new Response();
     }
 
-    public static Response buildArticleChildrenResponse(List<Integer> articles) {
+    public static Response buildArticleChildrenResponse(List<Article> articles) {
         return new Response();
     }
 
@@ -83,5 +85,29 @@ public class ResponseBuilder {
 
     public static Response buildGetAllImagesResponse(List<Image> images) {
         return new Response();
+    }
+
+    public static Response buildGetNewsResponse(News news) {
+        return new Response();
+    }
+
+    public static Response buildGetSectionNewsResponse(List<News> news) {
+        return new Response();
+    }
+
+    public static Response buildNewsCreatedResponse() {
+        return new Response();
+    }
+
+    public static Response buildDeleteNewsResponse() {
+        return new Response();
+    }
+
+    public static Response buildNewsUpdatedResponse() {
+        return new Response();
+    }
+
+    public static Response buildSectionHierarchyResponse(HashMap<Integer, HashMap<Article, List<Article>>> sections) {
+        return null;
     }
 }

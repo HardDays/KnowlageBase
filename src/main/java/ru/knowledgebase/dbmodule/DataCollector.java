@@ -1,25 +1,29 @@
 package ru.knowledgebase.dbmodule;
 
+import jdk.internal.util.xml.impl.Pair;
 import jdk.nashorn.internal.runtime.ECMAException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.dataservices.archiveservice.ArchiveArticleService;
 import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
 import ru.knowledgebase.dbmodule.dataservices.imageservice.ImageService;
+import ru.knowledgebase.dbmodule.dataservices.newsservice.NewsService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.ArticleRoleService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.GlobalRoleService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.UserArticleRoleService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.UserGlobalRoleService;
 import ru.knowledgebase.dbmodule.storages.LocalStorage;
+import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Queue;
 
 import ru.knowledgebase.dbmodule.dataservices.userservices.TokenService;
 import ru.knowledgebase.dbmodule.dataservices.userservices.UserService;
@@ -43,6 +47,7 @@ public class DataCollector {
     private UserArticleRoleService userArticleRoleService;
     private UserGlobalRoleService userGlobalRoleService;
     private ArchiveArticleService archiveArticleService;
+    private NewsService newsService;
 
     private final int BASE_ARTICLE = -1;
 
@@ -80,6 +85,7 @@ public class DataCollector {
         userArticleRoleService = (UserArticleRoleService) context.getBean("userArticleRoleService");
         userGlobalRoleService = (UserGlobalRoleService) context.getBean("userGlobalRoleService");
         archiveArticleService = (ArchiveArticleService) context.getBean("archiveArticleService");
+        newsService = (NewsService)context.getBean("newsService");
 
         try {
             initLocalStorage();
@@ -99,6 +105,9 @@ public class DataCollector {
         HashMap<Integer, LinkedList<Integer>> sections = new HashMap<>();
 
         Article base = this.getBaseArticle();
+        if (base == null) {
+            return sections;
+        }
         Queue<Integer> queue = new LinkedList<>();
         queue.add(base.getId());
         while(!queue.isEmpty()) {
@@ -149,6 +158,10 @@ public class DataCollector {
     public void deleteArticle(Integer id) throws Exception {
         Article art = this.findArticle(id);
         if(art.isSection()) {
+            List<Integer> tree = getSectionTreeIds(id);
+            for (Integer i : tree) {
+                deleteAllNewsBySection(i);
+            }
             List<Article> articles = this.getSectionTree(id);
             Integer parentId = art.getParentArticle();
             if (parentId == BASE_ARTICLE) {
@@ -160,7 +173,6 @@ public class DataCollector {
     }
 
     public void deleteAllArticles(List<Integer> ids) throws Exception{
-        //delete if section
         for (Integer i : ids) {
             this.deleteArticle(i);
         }
@@ -172,8 +184,28 @@ public class DataCollector {
         return articleService.update(article);
     }
 
-    public List<Article> getChildren(int articleId) throws Exception {
-        return articleService.getChildren(articleId);
+    /**
+     *
+     * @param articleId
+     * @param from
+     * @param to
+     * @return
+     * @throws Exception
+     */
+    @Transactional
+    public List<Article> getChildren(int articleId, int from, int to) throws Exception {
+        List<Integer> children = articleService.getChildrenIds(articleId);
+        if (to > children.size()) {
+            to = children.size();
+        }
+        if (from < to) {
+            children = children.subList(from, to);
+        }
+        List<Article> articles = new LinkedList<>();
+        for (Integer i : children) {
+            articles.add(findArticle(i));
+        }
+        return articles;
     }
 
     public List<Integer> getChildrenIds(int articleId) throws Exception {
@@ -395,24 +427,6 @@ public class DataCollector {
         return article;
     }
 
-    @Deprecated
-    public Integer getSectionIdByArticleId(int articleId) throws Exception {
-        Article article = findArticle(articleId);
-        while (!article.isSection()) {
-            article = getParentArticle(article);
-        }
-        return article.getId();
-    }
-
-    @Deprecated
-    public Article getSectionByArticleId(Integer id) throws Exception {
-        Article article = findArticle(id);
-        while (!article.isSection()) {
-            article = getParentArticle(article);
-        }
-        return article;
-    }
-
     /**
      * If local storage initializwd, get info from it.
      * Otherwise search for children in DB.
@@ -438,6 +452,12 @@ public class DataCollector {
         }
     }
 
+    /**
+     * Section on the next from current section level
+     * @param section
+     * @return
+     * @throws Exception
+     */
     public List<Article> getNextLevelSections(Integer section) throws Exception {
         List<Integer> sectionsId = this.getNextLevelSectionsIds(section);
         List<Article> sections = new LinkedList<>();
@@ -448,7 +468,12 @@ public class DataCollector {
     }
 
 
-
+    /**
+     * Tree of sections. Root is first
+     * @param section
+     * @return
+     * @throws Exception
+     */
     public List<Integer> getSectionTreeIds(Integer section) throws Exception {
         List<Integer> sectionTree = new LinkedList<>();
         if (this.findArticle(section).isSection()) {
@@ -457,11 +482,14 @@ public class DataCollector {
             queue.add(section);
             while (!queue.isEmpty()) {
                 Integer current = queue.poll();
-                List<Article> children = getChildren(current);
-                for (Article a : children) {
-                    if (a.isSection()) {
-                        queue.add(a.getId());
-                        sectionTree.add(a.getId());
+                List<Integer> children = getChildrenIds(current);
+                for (Integer i : children) {
+                    if (!findArticle(i).isSection()) {
+                        break;
+                    }
+                    else{
+                        queue.add(i);
+                        sectionTree.add(i);
                     }
                 }
             }
@@ -469,7 +497,12 @@ public class DataCollector {
         return sectionTree;
     }
 
-    //FIXME
+    /**
+     * Tree of sections. Root is first
+     * @param section
+     * @return
+     * @throws Exception
+     */
     public List<Article> getSectionTree(Integer section) throws Exception {
         List<Article> sectionTree = new LinkedList<>();
         Queue<Article> queue = new LinkedList<>();
@@ -478,19 +511,87 @@ public class DataCollector {
         queue.add(root);
         while (!queue.isEmpty()) {
             Article current = queue.poll();
-            List<Article> children = getChildren(current.getId());
-            for (Article a : children) {
-                if (a.isSection()) {
-                    queue.add(a);
-                    sectionTree.add(a);
+            List<Integer> children = getChildrenIds(current.getId());
+            for (Integer i : children) {
+                Article art = findArticle(i);
+                if (!art.isSection()) {
+                    break;
+                }
+                else {
+                    queue.add(art);
+                    sectionTree.add(art);
                 }
             }
         }
         return sectionTree;
     }
+
+    public HashMap<Integer, HashMap<Article, List<Article>>> getSectionHierarchy() throws Exception {
+        Article root = getBaseArticle();
+        HashMap<Integer, HashMap<Article, List<Article>>> sectionHierarchy = new HashMap<>();
+        if (root == null) {
+            return sectionHierarchy;
+        }
+
+        //Kostili:(
+        HashMap<Integer, Integer> parentLevels = new HashMap<>();
+
+        Queue<Article> queue = new LinkedList<>();
+        queue.add(root);
+        parentLevels.put(root.getParentArticle(), 0);
+        Article current;
+        List<Article> levelArticles = null;
+        int level = 1;
+        HashMap<Article, List<Article>> levelMap = new HashMap<>();
+
+        levelArticles = getNextLevelSections(root.getId());
+        for (Article a : levelArticles) {
+            List<Article> toQ = getNextLevelSections(a.getId());
+            levelMap.put(a, toQ);
+            parentLevels.put(a.getId(), level);
+            queue.addAll(toQ);
+        }
+
+        while(!queue.isEmpty()) {
+            current = queue.poll();
+            level = parentLevels.get(current.getParentArticle()) + 1;
+            levelArticles = getNextLevelSections(current.getId());
+            levelMap = new HashMap<>();
+            levelMap.put(current, levelArticles);
+            parentLevels.put(current.getId(), level);
+            sectionHierarchy.put(level, levelMap);
+        }
+        return sectionHierarchy;
+    }
+
+
     //END SECTION METHODS
 
-    //BEGIN LOCALSTORAGE METHODS
+    //BEGIN NEWS METHODS
 
-    //END LOCALSTORAGE METHODS
+    public News findNews(int id) throws Exception {
+        return newsService.findNews(id);
+    }
+
+    public void deleteNews(int id) throws Exception {
+        newsService.deleteNews(id);
+    }
+
+    public News addNews(News news) throws Exception {
+        return newsService.addNews(news);
+    }
+
+    public List<News> getNewsBySection(int section) throws Exception{
+        return newsService.getAllNewsBySection(section);
+    }
+
+    public void deleteAllNewsBySection(int section) throws Exception {
+        newsService.deleteAllBySection(section);
+    }
+
+    public News updateNews(News news) throws Exception{
+        return newsService.updateNews(news);
+    }
+
+    //END NEWS METHODS
 }

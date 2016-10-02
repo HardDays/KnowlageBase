@@ -4,6 +4,7 @@ import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.sectionexceptions.NoSectionsException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -84,6 +85,17 @@ public class SectionController {
             else {
                 throw new NoSectionsException();
             }
+        }
+        catch (Exception ex) {
+            throw new NoSectionsException();
+        }
+        return sections;
+    }
+
+    public HashMap<Integer, HashMap<Article, List<Article>>> getSectionHierarchy() throws Exception {
+        HashMap<Integer, HashMap<Article, List<Article>>> sections = null;
+        try {
+            sections = dataCollector.getSectionHierarchy();
         }
         catch (Exception ex) {
             throw new NoSectionsException();

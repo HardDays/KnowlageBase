@@ -70,10 +70,11 @@ public class ArticleControllerTest {
     @Test
     public void addArticle() throws Exception {
         parentArticle = base.getId();
-        createTest = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
+        createTest = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
         createTest = ac.getArticle(createTest.getId());
         printObject(createTest);
-        //ac.deleteArticle(createTest.getId());
+
+        ac.deleteArticle(createTest.getId());
     }
 
     @Transactional
@@ -95,8 +96,8 @@ public class ArticleControllerTest {
     @Transactional
     @Test
     public void childrenArticle() throws Exception {
-        Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
-        assertTrue(ac.getArticleChildren(base.getId()).size() == 2);
+        Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        assertTrue(ac.getArticleChildrenIds(base.getId()).size() == 2);
     }
 
     @Transactional
@@ -145,37 +146,37 @@ public class ArticleControllerTest {
     @Test(expected = ArticleCanNotBeSectionException.class)
     public void sectionOrganization() throws Exception{
         Article newArticle1 = ac.addArticle(title, body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
-        Article newArticle2 = ac.addArticle(title, body, u.getId(), newArticle1.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        Article newArticle2 = ac.addArticle(title, body, u.getId(), newArticle1.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
+        Article newArticle3 = ac.addArticle(title, body, u.getId(), newArticle2.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+
     }
 
     @Transactional
     @Test
     public void getNextLevelSections() throws Exception {
-        Article newArticle1 = ac.addArticle("A1", body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
-        Article newArticle2 = ac.addArticle("A2", body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
-        Article newArticle3 = ac.addArticle("A3", body, u.getId(), newArticle2.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
-        List<Article> arts = sc.getNextLevelSections(updateArticle.getId());
+        Article newArticle1 = ac.addArticle("A1", body, u.getId(), base.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        Article newArticle2 = ac.addArticle("A2", body, u.getId(), newArticle1.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        Article newArticle3 = ac.addArticle("A3", body, u.getId(), newArticle1.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        List<Article> arts = sc.getNextLevelSections(newArticle1.getId());
         for (Article a : arts) {
             printObject(a);
         }
         assertTrue(arts.size() == 2);
         ac.deleteArticle(newArticle1.getId());
-        ac.deleteArticle(newArticle2.getId());
     }
 
     @Transactional
     @Test
     public void getSectionTree() throws Exception {
-        Article newArticle1 = ac.addArticle("A1", body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
-        Article newArticle2 = ac.addArticle("A2", body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        Article newArticle1 = ac.addArticle("A1", body, u.getId(), base.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        Article newArticle2 = ac.addArticle("A2", body, u.getId(), newArticle1.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
         Article newArticle3 = ac.addArticle("A3", body, u.getId(), newArticle2.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
-        List<Article> arts = sc.getSectionTree(updateArticle.getId());
+        List<Article> arts = sc.getSectionTree(newArticle1.getId());
         for (Article a : arts) {
             printObject(a);
         }
-        assertTrue(arts.size() == 4);
+        assertTrue(arts.size() == 3);
         ac.deleteArticle(newArticle1.getId());
-        ac.deleteArticle(newArticle2.getId());
     }
 
     private void printObject(Article a) {

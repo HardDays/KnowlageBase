@@ -10,6 +10,7 @@ import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.usermodule.UserController;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class ArticleWrapper {
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
-            
+
             Article art = articleController.addArticle(title, body, authorId, parentArticle, createdTime, updatedTime, lifeTime, isSection);
             archArticleController.addArchivationTime(art);
         }
@@ -154,8 +155,8 @@ public class ArticleWrapper {
      * @param articleId
      * @return
      */
-    public Response getNextLevelArticles(String token, int userId, int articleId) {
-        List<Integer> articles = null;
+    public Response getNextLevelArticles(String token, int userId, int articleId, int from ,int to) {
+        List<Article> articles = null;
         try {
             boolean okToken = userController.checkUserToken(userId, token);
             if (okToken != true) {
@@ -165,7 +166,7 @@ public class ArticleWrapper {
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
-            articles = articleController.getArticleChildrenIds(articleId);
+            articles = articleController.getArticleChildren(articleId, from, to);
         }
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
@@ -193,6 +194,37 @@ public class ArticleWrapper {
             return ResponseBuilder.buildResponse(ex);
         }
         return ResponseBuilder.buildSectionsResponse(sections);
+    }
+
+    public Response getFirstLevelArticles(String token, int userId) {
+        List<Article> sections = null;
+        try {
+            boolean okToken = userController.checkUserToken(userId, token);
+            if (okToken != true) {
+                return ResponseBuilder.buildWrongTokenResponse();
+            }
+            Article base = articleController.getBaseArticle();
+            sections = sectionController.getNextLevelSections(base.getId());
+        }
+        catch (Exception ex) {
+            return ResponseBuilder.buildResponse(ex);
+        }
+        return ResponseBuilder.buildSectionsResponse(sections);
+    }
+
+    public Response getSectionHierarchy(String token, int userId) {
+        HashMap<Integer, HashMap<Article, List<Article>>> sections = null;
+        try {
+            boolean okToken = userController.checkUserToken(userId, token);
+            if (okToken != true) {
+                return ResponseBuilder.buildWrongTokenResponse();
+            }
+            sections = sectionController.getSectionHierarchy();
+        }
+        catch (Exception ex) {
+            return ResponseBuilder.buildResponse(ex);
+        }
+        return ResponseBuilder.buildSectionHierarchyResponse(sections);
     }
 
     //END PUBLIC METHODS

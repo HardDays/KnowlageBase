@@ -34,7 +34,13 @@ public class SectionStorage {
 
     //BEGIN SECTION MAP PUBLIC METHODS
     public List<Integer> getNextLevel(Integer section) {
-        return this.sectionMap.get(section);
+        List<Integer> sections = this.sectionMap.get(section);
+        if (sections == null) {
+            return new LinkedList<>();
+        }
+        else {
+            return sections;
+        }
     }
 
     public void addSectionToMap(Integer parentSection, Integer currentSection) {
