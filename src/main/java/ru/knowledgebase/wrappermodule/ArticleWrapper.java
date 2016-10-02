@@ -227,5 +227,7 @@ public class ArticleWrapper {
         return ResponseBuilder.buildSectionHierarchyResponse(sections);
     }
 
+
+
     //END PUBLIC METHODS
 }

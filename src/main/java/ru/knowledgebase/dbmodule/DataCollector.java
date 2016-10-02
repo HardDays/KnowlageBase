@@ -537,29 +537,36 @@ public class DataCollector {
         HashMap<Integer, Integer> parentLevels = new HashMap<>();
 
         Queue<Article> queue = new LinkedList<>();
-        queue.add(root);
-        parentLevels.put(root.getParentArticle(), 0);
+        parentLevels.put(root.getId(), 0);
         Article current;
         List<Article> levelArticles = null;
-        int level = 1;
+        int level = 0;
         HashMap<Article, List<Article>> levelMap = new HashMap<>();
-
         levelArticles = getNextLevelSections(root.getId());
-        for (Article a : levelArticles) {
-            List<Article> toQ = getNextLevelSections(a.getId());
-            levelMap.put(a, toQ);
-            parentLevels.put(a.getId(), level);
-            queue.addAll(toQ);
-        }
+        queue.addAll(levelArticles);
 
         while(!queue.isEmpty()) {
             current = queue.poll();
             level = parentLevels.get(current.getParentArticle()) + 1;
-            levelArticles = getNextLevelSections(current.getId());
+
+            //Kostili:(
+            levelArticles = getChildren(current.getId(), 1, 0);
+
             levelMap = new HashMap<>();
+            if (!levelArticles.isEmpty() && levelArticles.get(0).isSection() == false) {
+                levelArticles = new LinkedList<>();
+            }
             levelMap.put(current, levelArticles);
+            queue.addAll(levelArticles);
             parentLevels.put(current.getId(), level);
-            sectionHierarchy.put(level, levelMap);
+            if (sectionHierarchy.get(level) == null)
+                sectionHierarchy.put(level, levelMap);
+            else {
+                HashMap<Article, List<Article>> newMap = new HashMap<>();
+                newMap.putAll(sectionHierarchy.get(level));
+                newMap.putAll(levelMap);
+                sectionHierarchy.put(level, newMap);
+            }
         }
         return sectionHierarchy;
     }

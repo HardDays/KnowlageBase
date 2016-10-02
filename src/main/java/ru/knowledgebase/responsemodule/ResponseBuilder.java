@@ -1,5 +1,6 @@
 package ru.knowledgebase.responsemodule;
 
+import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
@@ -108,6 +109,18 @@ public class ResponseBuilder {
     }
 
     public static Response buildSectionHierarchyResponse(HashMap<Integer, HashMap<Article, List<Article>>> sections) {
-        return null;
+        return new Response();
+    }
+
+    public static Response buildArticleMovedToArchiveResponse() {
+        return new Response();
+    }
+
+    public static Response buildArchiveArticleContentResponse(ArchiveArticle arch) {
+        return new Response();
+    }
+
+    public static Response buildArchiveArticleDeletedResponse() {
+        return new Response();
     }
 }
