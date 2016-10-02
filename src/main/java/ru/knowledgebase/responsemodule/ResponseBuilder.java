@@ -2,7 +2,11 @@ package ru.knowledgebase.responsemodule;
 
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.WrongPasswordException;
+import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
+import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
@@ -13,6 +17,8 @@ import javax.json.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -182,6 +188,16 @@ public class ResponseBuilder {
                 MediaType.APPLICATION_JSON).build();
     }
 
+    public static Response buildUserSectionsResponse(HashSet<Integer> sections){
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (Integer section : sections){
+            jarr.add(Json.createObjectBuilder()
+                    .add("section_id", section).build());
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
+    }
+
     public static Response buildSectionRoleListResponse(List <ArticleRole> roles){
         JsonArrayBuilder jarr = Json.createArrayBuilder();
         for (ArticleRole role : roles){
@@ -197,5 +213,73 @@ public class ResponseBuilder {
 
     public static Response buildArtilceCreatedResponse() {
         return Response.ok().build();
+    }
+
+    public static Response buildArticleMovedToArchiveResponse() {
+        return null;
+    }
+
+    public static Response buildArchiveArticleContentResponse(ArchiveArticle arch) {
+        return null;
+    }
+
+    public static Response buildArchiveArticleDeletedResponse() {
+        return null;
+    }
+
+    public static Response buildArticleCreatedResponse() {
+        return null;
+    }
+
+    public static Response buildArticleUpdatedResponse() {
+        return null;
+    }
+
+    public static Response buildArticleDeletedResponse() {
+        return null;
+    }
+
+    public static Response buildArticleContentResponse(Article article) {
+        return null;
+    }
+
+    public static Response buildArticleChildrenResponse(List<Article> articles) {
+        return null;
+    }
+
+    public static Response buildSectionsResponse(List<Article> sections) {
+        return null;
+    }
+
+    public static Response buildSectionHierarchyResponse(HashMap<Integer, HashMap<Article, List<Article>>> sections) {
+        return null;
+    }
+
+    public static Response buildImageCreatedResponse(String id) {
+        return null;
+    }
+
+    public static Response buildGetAllImagesResponse(List<Image> images) {
+        return null;
+    }
+
+    public static Response buildNewsCreatedResponse() {
+        return null;
+    }
+
+    public static Response buildDeleteNewsResponse() {
+        return null;
+    }
+
+    public static Response buildGetNewsResponse(News news) {
+        return null;
+    }
+
+    public static Response buildGetSectionNewsResponse(List<News> news) {
+        return null;
+    }
+
+    public static Response buildNewsUpdatedResponse() {
+        return null;
     }
 }

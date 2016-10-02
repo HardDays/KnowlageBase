@@ -2,6 +2,7 @@ package ru.knowledgebase.rolemodule;
 
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
+import ru.knowledgebase.exceptionmodule.articleexceptions.NotASectionException;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.AssignDefaultRoleException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
@@ -20,9 +21,8 @@ import java.util.List;
 public class ArticleRoleController {
 
     private int defaultArticleRoleId = 1;
-    private int defaultRootArticleId = 1;
 
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
 
     private static volatile ArticleRoleController instance;
 
@@ -117,12 +117,19 @@ public class ArticleRoleController {
         if (article == null)
             throw new ArticleNotFoundException();
         UserArticleRole role = null;
-        //go through article tree to root
+        //go through tree and clear previous roles
         try {
-            role = collector.findUserArticleRole(user, article);
-            while (role == null && article.getParentArticle() != null) {
-                article = article.getParentArticle();
-                role = collector.findUserArticleRole(user, article);
+            Article temp = article;
+            while (true) {
+                if (temp.isSection()){
+                    role = collector.findUserArticleRole(user, temp);
+                    if (role != null) {
+                        break;
+                    }
+                }
+                if (temp.getParentArticle() == -1)
+                    break;
+                temp = collector.findArticle(temp.getSectionId());
             }
         }catch (Exception e){
             throw  new DataBaseException();
@@ -157,14 +164,14 @@ public class ArticleRoleController {
         Article article = null;
         ArticleRole articleRole = null;
         try {
-            article = collector.findArticle(defaultRootArticleId);
+            article = collector.getBaseArticle();
             articleRole = collector.findArticleRole(defaultArticleRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
         if (article == null || articleRole == null)
             throw new AssignDefaultRoleException();
-//        assignUserRole(user, article, articleRole);
+        assignUserRole(user, article, articleRole);
     }
     /**
      * Create default user role for root article
@@ -175,7 +182,7 @@ public class ArticleRoleController {
         ArticleRole articleRole = null;
         User user = null;
         try {
-            article = collector.findArticle(defaultRootArticleId);
+            article = collector.getBaseArticle();
             articleRole = collector.findArticleRole(defaultArticleRoleId);
             user = collector.findUser(userId);
         }catch (Exception e){
@@ -185,20 +192,53 @@ public class ArticleRoleController {
             throw new AssignDefaultRoleException();
         assignUserRole(user, article, articleRole);
     }
+
+    private void removeParentRoles(User user, Article section) throws Exception{
+        try{
+            Article temp = collector.findArticle(section.getSectionId());
+            while (true){
+                UserArticleRole role = collector.findUserArticleRole(user, temp);
+                collector.deleteUserArticleRole(role);
+                if (temp.getParentArticle() == -1)
+                    break;
+                temp = collector.findArticle(temp.getSectionId());
+            }
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+    }
+
     /**
      * Create user role for specified article
      * @param role formed object
      */
     public void assignUserRole(UserArticleRole role) throws Exception{
+        Article article = role.getArticle();
+        if (!article.isSection())
+            throw new NotASectionException();
         try{
-            UserArticleRole existRole = collector.findUserArticleRole(role.getUser(),role.getArticle());
-            if (existRole != null)
-                role.setId(existRole.getId());
-         //   Article article = role.getArticle();
-         //   article.setIsSection(true);
-         //   collector.updateArticle(article);
+            Article temp = article;
+            while (true) {
+                if (temp.isSection()){
+                    UserArticleRole tempRole = collector.findUserArticleRole(role.getUser(), temp);
+                    if (tempRole != null) {
+                        deleteUserRole(tempRole);
+                        break;
+                    }
+                }
+                if (temp.getParentArticle() == -1)
+                    break;
+                temp = collector.findArticle(temp.getSectionId());
+            }
+            for (Article child : collector.getSectionTree(article.getId())){
+                UserArticleRole tempRole = collector.findUserArticleRole(role.getUser(), child);
+                if (tempRole != null)
+                    deleteUserRole(tempRole);
+            }
+
             collector.addUserArticleRole(role);
         }catch (Exception e){
+            e.printStackTrace();
             throw new DataBaseException();
         }
     }
@@ -218,7 +258,7 @@ public class ArticleRoleController {
         assignUserRole(new UserArticleRole(user, article, articleRole));
     }
     /**
-     * Create user role for specified article
+     * Create user role for specified section
      * @param userId user id
      * @param articleId article id
      * @param articleRoleId article role id
@@ -244,6 +284,7 @@ public class ArticleRoleController {
         try {
             collector.deleteUserArticleRole(role);
         }catch (Exception e){
+            e.printStackTrace();
             throw new DataBaseException();
         }
     }
@@ -356,14 +397,6 @@ public class ArticleRoleController {
 
     public void setDefaultArticleRoleId(int defaultArticleRoleId) {
         this.defaultArticleRoleId = defaultArticleRoleId;
-    }
-
-    public int getDefaultRootArticleId() {
-        return defaultRootArticleId;
-    }
-
-    public void setDefaultRootArticleId(int defaultRootArticleId) {
-        this.defaultRootArticleId = defaultRootArticleId;
     }
 
     public boolean canAddArticle(int userId, int articleId) throws Exception {

@@ -20,6 +20,10 @@ import javax.persistence.Entity;
 import java.util.LinkedList;
 import java.util.List;
 
+import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by root on 10.08.16.
  */
@@ -31,12 +35,6 @@ import java.util.List;
         filters = {
                 @TokenFilterDef(factory = LowerCaseFilterFactory.class),
                 @TokenFilterDef(factory = StopFilterFactory.class),
-//                @TokenFilterDef(factory = SynonymFilterFactory.class, params = {
-//                        @Parameter(name = "language", value = "Russian")
-//                }),
-//                @TokenFilterDef(factory = SynonymFilterFactory.class, params = {
-//                        @Parameter(name = "language", value = "English")
-//                }),
                 @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
                         @Parameter(name = "language", value = "Russian")
                 }),
@@ -70,47 +68,47 @@ public class Article {
     @Column(length = 1200000)
     private String clearBody;
 
+
     @Column
     private boolean isSection;
 
-    //*
-    @ManyToOne
-    private Article parentArticle;
-    //*/
-
-    @OneToMany(mappedBy="parentArticle", cascade = {CascadeType.ALL})
-    private List<Article> children;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    List<Image> images;
+    private int parentId;
 
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
     private List<UserArticleRole> userArticleRole;
 
-    @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
-    private List<Comment> comments;
+    /**
+     * Date when article should be moved to Archive.
+     */
+    private Timestamp lifeTime;
 
+    private Timestamp createdTime;
+
+    private Timestamp updatedTime;
+
+    private int sectionId;
 
     //BEGIN CONSTRUCTORS
-    public Article(){}
+    public Article(){
+    }
 
     public Article(int id) {
         this.id = id;
     }
 
     public Article(String title, String body, String clearBody,
-                   User author, Article parentArticle, boolean isSection, List<Image> images) {
+                   User author, int parentId, Timestamp createdDate,
+                   Timestamp updatedTime, Timestamp lifeTime, boolean isSection) {
         this.title         = title;
         this.body          = body;
         this.clearBody     = clearBody;
         this.author        = author;
-        this.parentArticle = parentArticle;
-        this.isSection = isSection;
-        if (images != null) {
-            this.images = images;
-        } else {
-            this.images = new LinkedList<Image>();
-        }
+        this.parentId      = parentId;
+        this.lifeTime      = lifeTime;
+        this.isSection     = isSection;
+        this.createdTime   = createdDate;
+        this.updatedTime   = updatedTime;
+
     }
 
     //END CONSTRUCTORS
@@ -118,21 +116,36 @@ public class Article {
 
     //BEGIN SG METHODS
 
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdDate) {
+        this.createdTime = createdDate;
+    }
+
+    public Timestamp getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Timestamp updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public boolean isSection() {
+        return isSection;
+    }
+
+    public void setSection(boolean section) {
+        isSection = section;
+    }
+
     public User getAuthor() {
         return author;
     }
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    @Transactional
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
     }
 
     public int getId() {
@@ -167,22 +180,29 @@ public class Article {
         this.clearBody = clearBody;
     }
 
-    public Article getParentArticle() {
-        return parentArticle;
+    public int getParentArticle() {
+        return parentId;
     }
 
-    public void setParentArticle(Article parentArticle) {
-        this.parentArticle = parentArticle;
+    public void setParentArticle(int parentId) {
+        this.parentId = parentId;
     }
 
-    public boolean isSection() {
-        return isSection;
+    public void setSectionId(int sectionId) {
+        this.sectionId = sectionId;
     }
 
-    public void setIsSection(boolean hasAdmin) {
-        this.isSection = hasAdmin;
+    public int getSectionId() {
+        return this.sectionId;
     }
 
+    public Timestamp getLifeTime() {
+        return lifeTime;
+    }
+
+    public void setLifeTime(Timestamp lifeTime) {
+        this.lifeTime = lifeTime;
+    }
     //END SG METHODS
 
 
@@ -195,9 +215,9 @@ public class Article {
         this.title         = article.title;
         this.clearBody     = article.clearBody;
         this.body          = article.body;
-        this.parentArticle = article.parentArticle;
-        this.images        = article.images;
-        this.isSection = article.isSection;
+        this.parentId      = article.parentId;
+        this.lifeTime      = article.lifeTime;
+        this.isSection     = article.isSection;
     }
 
     @Override
@@ -209,14 +229,14 @@ public class Article {
         res &= this.author.equals(comp.author);
         res &= this.id == comp.id;
         res &= this.title.equals(comp.title);
+        res &= this.lifeTime == comp.lifeTime;
         res &= this.clearBody.equals(comp.clearBody);
         res &= this.body.equals(comp.body);
-        if (this.images == comp.images && comp.images != null)
-            res &= this.images.equals(comp.images);
-        if (this.parentArticle == comp.parentArticle && comp.parentArticle != null)
-            res &= this.parentArticle.getId() == comp.parentArticle.getId();
+        res &= this.parentId == comp.parentId;
+        res &= this.isSection == comp.isSection;
         return res;
     }
+
 
     //END SUPPORT METHODS
 

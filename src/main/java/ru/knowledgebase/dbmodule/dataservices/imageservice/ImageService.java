@@ -1,9 +1,12 @@
 package ru.knowledgebase.dbmodule.dataservices.imageservice;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.knowledgebase.dbmodule.repositories.articlerepositories.ImageRepository;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
+
+import java.util.List;
 
 /**
  * Created by root on 17.08.16.
@@ -28,5 +31,10 @@ public class ImageService {
 
     public void delete(String id) {
         imageRepository.delete(id);
+    }
+
+    public List<Image> getAllImages() {
+        Iterable<Image> imgs = imageRepository.findAll();
+        return Lists.newLinkedList(imgs);
     }
 }

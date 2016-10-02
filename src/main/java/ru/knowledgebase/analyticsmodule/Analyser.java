@@ -20,7 +20,7 @@ import java.util.*;
  */
 public class Analyser {
 
-    private DataCollector dataCollector = new DataCollector();
+    private DataCollector dataCollector = DataCollector.getInstance();
     private RequestParser requestParser = new RequestParser();
 
     private static volatile Analyser instance;
@@ -290,7 +290,7 @@ public class Analyser {
         }
         return newLog;
     }
-
+    //get article id if request is connected with some article
     private Integer getArticleId(ALogRecord rec){
         if (rec.getOperationType() == OPERATION.SEARCH_RESULT){
             return ((SearchResultRecord)rec).getArticleID();
@@ -319,25 +319,22 @@ public class Analyser {
     /**
      * Filter log records by sections
      * @param log list with log records
-     * @param parentId id of parent article
+     * @param sectionId id of parent article
      * @return filtered list of log records
      */
-    private List<ALogRecord> filterParent(List <ALogRecord> log, int parentId) throws Exception{
+    private List<ALogRecord> filterSection(List <ALogRecord> log, int sectionId) throws Exception{
         List <ALogRecord> newLog = new LinkedList<>();
         for (ALogRecord rec : log){
             Integer id = getArticleId(rec);
             if (id != -1){
                 try {
-                    //find parent article
-                    Article temp = dataCollector.findArticle(id);
-                    while(temp != null){
-                        if (temp.getId() == parentId)
-                            break;
-                        temp = temp.getParentArticle();
-                    }
-                    if (temp != null) {
-                        if (temp.getId() == parentId)
+                    //check section article
+                    Article article = dataCollector.findArticle(id);
+                    if (!article.isSection()){
+                        Article section = dataCollector.findArticle(article.getSectionId());
+                        if (article.getSectionId() == sectionId){
                             newLog.add(rec);
+                        }
                     }
                 }catch (Exception e){
                     throw new DataBaseException();
@@ -365,7 +362,7 @@ public class Analyser {
      * @return list of articles and rank ordered by rank
      */
     public List<ArticleRank> getPopularArticles(List <ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception{
-        return getPopularArticles(filterParent(filterTime(log, from, to), parentId));
+        return getPopularArticles(filterSection(filterTime(log, from, to), parentId));
     }
     /**
      * Find popular articles in log in section
@@ -374,7 +371,7 @@ public class Analyser {
      * @return list of articles and rank ordered by rank
      */
     public List<ArticleRank> getPopularArticles(List <ALogRecord> log, int parentId) throws Exception{
-        return getPopularArticles(filterParent(log, parentId));
+        return getPopularArticles(filterSection(log, parentId));
     }
     /**
      * Find relevant articles for requests in time period
@@ -395,7 +392,7 @@ public class Analyser {
      * @return hashmap with request key and list of articles with rank ordered by rank
      */
     public HashMap<String, List<ArticleRank>> getRelevantArticles(List <ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception{
-        return getRelevantArticles(filterParent(filterTime(log, from, to), parentId));
+        return getRelevantArticles(filterSection(filterTime(log, from, to), parentId));
     }
     /**
      * Find relevant articles for requests in time period in section
@@ -404,7 +401,7 @@ public class Analyser {
      * @return hashmap with request key and list of articles with rank ordered by rank
      */
     public HashMap<String, List<ArticleRank>> getRelevantArticles(List <ALogRecord> log, int parentId) throws Exception{
-        return getRelevantArticles(filterParent(log, parentId));
+        return getRelevantArticles(filterSection(log, parentId));
     }
     /**
      * Find popular requests in time period
@@ -455,7 +452,7 @@ public class Analyser {
      * @return set with article ids
      */
     public HashSet<Integer> getUploadedArticles(List<ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception {
-        return getUploadedArticles(filterParent(filterTime(log, from, to), parentId));
+        return getUploadedArticles(filterSection(filterTime(log, from, to), parentId));
     }
     /**
      * Get uploaded articles
@@ -464,7 +461,7 @@ public class Analyser {
      * @return set with article ids
      */
     public HashSet<Integer> getUploadedArticles(List<ALogRecord> log, int parentId) throws Exception {
-        return getUploadedArticles(filterParent(log, parentId));
+        return getUploadedArticles(filterSection(log, parentId));
     }
     /**
      * Get number of usage of search function
@@ -475,7 +472,7 @@ public class Analyser {
      * @return int
      */
     public Integer getSearchUsage(List <ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception{
-        return getSearchUsage(filterParent(filterTime(log, from, to), parentId));
+        return getSearchUsage(filterSection(filterTime(log, from, to), parentId));
     }
     /**
      * Get number of usage of search function
@@ -494,7 +491,7 @@ public class Analyser {
      * @return int
      */
     public Integer getSearchUsage(List <ALogRecord> log, int parentId) throws Exception{
-        return getSearchUsage(filterParent(log, parentId));
+        return getSearchUsage(filterSection(log, parentId));
     }
     /**
      * Get number of article views by user
@@ -523,7 +520,7 @@ public class Analyser {
      * @return hashmap with users and requests
      */
     public HashMap<Integer, LinkedList<String>> getUserRequests(List <ALogRecord> log, int parentId) throws Exception{
-        return getUserRequests(filterParent(log, parentId));
+        return getUserRequests(filterSection(log, parentId));
     }
     /**
      * Get user requests
@@ -534,7 +531,7 @@ public class Analyser {
      * @return hashmap with users and requests
      */
     public HashMap<Integer, LinkedList<String>> getUserRequests(List <ALogRecord> log, int parentId, Timestamp from, Timestamp to) throws Exception{
-        return getUserRequests(filterTime(filterParent(log, parentId), from, to));
+        return getUserRequests(filterTime(filterSection(log, parentId), from, to));
     }
     /**
      * Get user requests

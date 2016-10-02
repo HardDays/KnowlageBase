@@ -1,5 +1,7 @@
 package ru.knowledgebase.articlemodule;
 
+import org.jsoup.Jsoup;
+
 /**
  * Created by root on 25.08.16.
  */
@@ -11,6 +13,7 @@ public class ArticleProcessor {
      * @return - body without tags
      */
     public static String getPureBody(String body) {
-        return body;
+        String clearBody = Jsoup.parse(body).text();
+        return clearBody;
     }
 }

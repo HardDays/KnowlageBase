@@ -36,6 +36,12 @@ public class SectionRoleStorage {
         userSections.get(userId).add(sectionId);
     }
 
+    public void delete(int userId, int sectionId) throws Exception{
+        if (userSections.get(userId) != null) {
+            userSections.get(userId).remove(sectionId);
+        }
+    }
+
     public HashSet<Integer> getSections(int userId) throws Exception{
         if (userSections.get(userId) == null) {
             return new HashSet<>();

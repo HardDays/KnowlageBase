@@ -16,7 +16,7 @@ import java.util.List;
  * Created by vova on 01.09.16.
  */
 public class CommentController {
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
 
     private static volatile CommentController instance;
 
@@ -57,11 +57,13 @@ public class CommentController {
     public void add(int userId, int articleId, String comment, String articleText) throws Exception{
         User user = null;
         Article article = null;
+        Article section = null;
         if (articleText.length() == 0 || comment.length() == 0)
             throw new WrongUserDataException();
         try{
             user = collector.findUser(userId);
             article = collector.findArticle(articleId);
+            section = collector.findArticle(article.getSectionId());
         }catch (Exception e){
             e.printStackTrace();
             throw new DataBaseException();
@@ -70,13 +72,9 @@ public class CommentController {
             throw new UserNotFoundException();
         if (article == null)
             throw new ArticleNotFoundException();
-        Article temp = article;
-        while(!temp.isSection()){
-            temp = temp.getParentArticle();
-        }
         User admin = null;
         try {
-            admin = collector.findMistakeViewers(temp).get(0);
+            admin = collector.findMistakeViewers(section).get(0);
         }catch (Exception e){
             throw new DataBaseException();
         }

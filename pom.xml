@@ -13,17 +13,7 @@
     <org.springframework.version>4.0.5.RELEASE</org.springframework.version>
     <org.hibernate.version>4.3.11.Final</org.hibernate.version>
   </properties>
-  <repositories>
 
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>bintray-akuznetsov-russianmorphology</id>
-      <name>bintray</name>
-      <url>http://dl.bintray.com/akuznetsov/russianmorphology</url>
-    </repository>
-  </repositories>
   <dependencies>
 
     <!--PostgreSQL-->
@@ -73,6 +63,7 @@
       <version>${org.springframework.version}</version>
     </dependency>
 
+
     <!--Commons-->
     <dependency>
       <groupId>commons-dbcp</groupId>
@@ -103,17 +94,14 @@
       <version>3.9</version>
     </dependency>
 
-    <dependency>
-      <groupId>xml-apis</groupId>
-      <artifactId>xml-apis</artifactId>
-      <version>1.4.01</version>
-    </dependency>
+
 
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>15.0</version>
     </dependency>
+
 
     <dependency>
       <groupId>junit</groupId>
@@ -157,6 +145,7 @@
       <version>7.0</version>
       <scope>provided</scope>
     </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
     <dependency>
@@ -205,7 +194,7 @@
       <version>1.9.2</version>
     </dependency>
 
-  <!--- NLP -->
+    <!--- NLP -->
     <dependency>
       <groupId>ru.stachek66.nlp</groupId>
       <artifactId>mystem-scala</artifactId>
@@ -227,7 +216,11 @@
       <version>1.0.5</version>
     </dependency>
 
-
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <version>1.4.01</version>
+    </dependency>
 
   </dependencies>
   <build>

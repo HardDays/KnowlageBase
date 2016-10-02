@@ -3,7 +3,9 @@ package ru.knowledgebase.usermodule;
 import org.junit.*;
 import static org.junit.Assert.*;
 
+import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.exceptionmodule.ldapexceptions.LdapException;
 import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
@@ -14,6 +16,8 @@ import ru.knowledgebase.exceptionmodule.userexceptions.UserAlreadyExistsExceptio
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.WrongPasswordException;
 import ru.knowledgebase.exceptionmodule.userexceptions.WrongUserDataException;
+
+import java.sql.Timestamp;
 
 /**
  * Created by vova on 18.08.16.
@@ -31,15 +35,13 @@ public class UserControllerTest {
 
     private final int roleId = 1;
     private  String roleName = "User";
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
 
     @Before
     public void prepareArticle() throws Exception{
-        Article article = collector.findArticle(articleId);
+        Article article = collector.getBaseArticle();
         if (article == null) {
-            article = new Article(articleId);
-            article.setTitle(articleName);
-            collector.addArticle(article);
+            ArticleController.getInstance().addBaseArticle("1", "2", 1, new Timestamp(5), new Timestamp(5), new Timestamp(5));
         }
     }
 
@@ -155,7 +157,7 @@ public class UserControllerTest {
         ru.knowledgebase.usermodule.UserController.getInstance().authorizeLdap(login1, password2);
     }
 
-    @Test
+    @Test(expected = LdapException.class)
     public void changePassword1() throws Exception{
         ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
                 "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
@@ -166,8 +168,7 @@ public class UserControllerTest {
     }
 
 
-
-    @Test
+    @Test(expected = LdapException.class)
     public void changeLogin1() throws Exception{
         ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
                 "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
@@ -206,7 +207,7 @@ public class UserControllerTest {
         assertTrue(user == null);
         GlobalRole globalRole = collector.findGlobalRole(roleId);
         assertTrue(globalRole != null);
-        Article article = collector.findArticle(articleId);
+        Article article = collector.getBaseArticle();
         assertTrue(article != null);
         ArticleRole articleRole = collector.findArticleRole(roleId);
         assertTrue(articleRole != null);
@@ -223,7 +224,7 @@ public class UserControllerTest {
         GlobalRole globalRole = collector.findGlobalRole(roleId);
         assertTrue(globalRole != null);
         assertTrue(globalRole.getName().equals(roleName));
-        Article article = collector.findArticle(articleId);
+        Article article = collector.getBaseArticle();
         assertTrue(article != null);
         ArticleRole articleRole = collector.findArticleRole(roleId);
         assertTrue(articleRole != null);
@@ -239,7 +240,7 @@ public class UserControllerTest {
         assertTrue(user == null);
         GlobalRole globalRole = collector.findGlobalRole(roleId);
         assertTrue(globalRole != null);
-        Article article = collector.findArticle(articleId);
+        Article article = collector.getBaseArticle();
         assertTrue(article != null);
         ArticleRole articleRole = collector.findArticleRole(roleId);
         assertTrue(articleRole != null);

@@ -6,6 +6,7 @@ import ru.knowledgebase.commentmodule.CommentController;
 import ru.knowledgebase.configmodule.Configurations;
 import ru.knowledgebase.convertermodule.ArticleConverter;
 
+import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
@@ -44,7 +45,15 @@ public class Main {
         //LdapWorker.getInstance().createUser("cc3c", DigestUtils.md5Hex("cc3c"));
 //        System.out.println(Configurations.getLogFilePath());
      //   GlobalRoleController.getInstance().createBaseRoles();
-        ArticleRoleController.getInstance().createBaseRoles();
+     //   ArticleRoleController.getInstance().createBaseRoles();
+    //    LdapWorker.getInstance().getUserInfo("dssddssdsa");
+        //ArticleController.getInstance().addArticle("a", "a", 1, 1, null, null, null, true);
+       // ArticleController.getInstance().addArticle("b", "b", 1, 1, null, null, null, true);
+     //   ArticleController.getInstance().addArticle("c", "c", 1, 33, null, null, null, true);
+     //   ArticleController.getInstance().addArticle("e", "e", 1, 33, null, null, null, true);
+
+
+
     }
 
 
@@ -57,11 +66,11 @@ public class Main {
       //  role.setName("SectionAdmin");
       //  role.setCanViewMistakes(true);
       //  ArticleRoleController.getInstance().create(role);
-        ArticleController.getInstance().addBaseArticle("1", "1", 1, new LinkedList<String>());
-        ArticleController.getInstance().addArticle("2", "2", 1, 1,false, new LinkedList<String>());
-        ArticleController.getInstance().addArticle("3", "3", 1, 2, true, new LinkedList<String>());
-        ArticleController.getInstance().addArticle("4", "4", 1, 3, false, new LinkedList<String>());
-        ArticleRoleController.getInstance().assignUserRole(2, 2, 1);
+      //  ArticleController.getInstance().addBaseArticle("1", "1", 1, new LinkedList<String>());
+     //   ArticleController.getInstance().addArticle("2", "2", 1, 1,false, new LinkedList<String>());
+     //   ArticleController.getInstance().addArticle("3", "3", 1, 2, true, new LinkedList<String>());
+    //    ArticleController.getInstance().addArticle("4", "4", 1, 3, false, new LinkedList<String>());
+     //   ArticleRoleController.getInstance().assignUserRole(2, 2, 1);
 
     }
 }

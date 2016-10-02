@@ -18,7 +18,7 @@ import java.util.List;
 public class SearchController {
 
     @Autowired
-    private DataCollector dataCollector = new DataCollector();
+    private DataCollector dataCollector = DataCollector.getInstance();
 
     private static SearchController instance;
 

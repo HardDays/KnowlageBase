@@ -16,8 +16,8 @@
       <schema id="3" parent="1" name="public">
         <object-id>2200</object-id>
         <visible>1</visible>
-        <introspection-state-number>23209</introspection-state-number>
-        <introspection-timestamp>2016-10-02.00:34:25.247</introspection-timestamp>
+        <introspection-state-number>23844</introspection-state-number>
+        <introspection-timestamp>2016-10-02.20:48:44.613</introspection-timestamp>
       </schema>
       <schema id="4" parent="1" name="pg_catalog">
         <object-id>11</object-id>
@@ -39,595 +39,727 @@
         <state-number>2687</state-number>
       </sequence>
       <sequence id="10" parent="3" name="article_id_seq">
-        <object-id>49957</object-id>
-        <state-number>23202</state-number>
+        <object-id>50444</object-id>
+        <state-number>23836</state-number>
       </sequence>
       <sequence id="11" parent="3" name="article_role_id_seq">
         <object-id>21195</object-id>
         <state-number>3954</state-number>
       </sequence>
-      <sequence id="12" parent="3" name="comment_id_seq">
-        <object-id>49959</object-id>
-        <state-number>23203</state-number>
+      <sequence id="12" parent="3" name="articlecon_id_seq">
+        <object-id>50446</object-id>
+        <state-number>23837</state-number>
       </sequence>
-      <sequence id="13" parent="3" name="global_role_id_seq">
-        <object-id>49961</object-id>
-        <state-number>23204</state-number>
+      <sequence id="13" parent="3" name="comment_id_seq">
+        <object-id>50448</object-id>
+        <state-number>23838</state-number>
       </sequence>
-      <sequence id="14" parent="3" name="role_id_seq">
+      <sequence id="14" parent="3" name="global_role_id_seq">
+        <object-id>50450</object-id>
+        <state-number>23839</state-number>
+      </sequence>
+      <sequence id="15" parent="3" name="role_id_seq">
         <object-id>18291</object-id>
         <state-number>2495</state-number>
       </sequence>
-      <sequence id="15" parent="3" name="section_role_id_seq">
-        <object-id>49963</object-id>
-        <state-number>23205</state-number>
+      <sequence id="16" parent="3" name="section_role_id_seq">
+        <object-id>50452</object-id>
+        <state-number>23840</state-number>
       </sequence>
-      <sequence id="16" parent="3" name="token_id_seq">
-        <object-id>49965</object-id>
-        <state-number>23206</state-number>
+      <sequence id="17" parent="3" name="token_id_seq">
+        <object-id>50454</object-id>
+        <state-number>23841</state-number>
       </sequence>
-      <sequence id="17" parent="3" name="user_article_role_id_seq">
-        <object-id>49967</object-id>
-        <state-number>23207</state-number>
+      <sequence id="18" parent="3" name="user_article_role_id_seq">
+        <object-id>50456</object-id>
+        <state-number>23842</state-number>
       </sequence>
-      <sequence id="18" parent="3" name="user_global_role_id_seq">
-        <object-id>49969</object-id>
-        <state-number>23208</state-number>
+      <sequence id="19" parent="3" name="user_global_role_id_seq">
+        <object-id>50458</object-id>
+        <state-number>23843</state-number>
       </sequence>
-      <sequence id="19" parent="3" name="user_id_seq">
-        <object-id>49971</object-id>
-        <state-number>23209</state-number>
+      <sequence id="20" parent="3" name="user_id_seq">
+        <object-id>50460</object-id>
+        <state-number>23844</state-number>
       </sequence>
-      <sequence id="20" parent="3" name="user_section_role_id_seq">
+      <sequence id="21" parent="3" name="user_section_role_id_seq">
         <object-id>19486</object-id>
         <state-number>3046</state-number>
       </sequence>
-      <table id="21" parent="3" name="article">
-        <object-id>49824</object-id>
-        <state-number>23197</state-number>
+      <table id="22" parent="3" name="archivearticle">
+        <object-id>50300</object-id>
+        <state-number>23824</state-number>
       </table>
-      <table id="22" parent="3" name="article_image">
+      <table id="23" parent="3" name="article">
+        <object-id>50308</object-id>
+        <state-number>23831</state-number>
+      </table>
+      <table id="24" parent="3" name="article_image">
         <object-id>49837</object-id>
         <state-number>23192</state-number>
       </table>
-      <table id="23" parent="3" name="articlerole">
-        <object-id>49832</object-id>
-        <state-number>23198</state-number>
+      <table id="25" parent="3" name="articleconnection">
+        <object-id>50316</object-id>
+        <state-number>23811</state-number>
       </table>
-      <table id="24" parent="3" name="comment">
-        <object-id>49840</object-id>
-        <state-number>23195</state-number>
+      <table id="26" parent="3" name="articlerole">
+        <object-id>50321</object-id>
+        <state-number>23832</state-number>
       </table>
-      <table id="25" parent="3" name="globalrole">
-        <object-id>49848</object-id>
-        <state-number>23200</state-number>
+      <table id="27" parent="3" name="comment">
+        <object-id>50326</object-id>
+        <state-number>23828</state-number>
       </table>
-      <table id="26" parent="3" name="image">
-        <object-id>49853</object-id>
-        <state-number>23191</state-number>
+      <table id="28" parent="3" name="globalrole">
+        <object-id>50334</object-id>
+        <state-number>23834</state-number>
       </table>
-      <table id="27" parent="3" name="token">
-        <object-id>49861</object-id>
-        <state-number>23196</state-number>
+      <table id="29" parent="3" name="image">
+        <object-id>50339</object-id>
+        <state-number>23815</state-number>
       </table>
-      <table id="28" parent="3" name="userarticlerole">
-        <object-id>49866</object-id>
-        <state-number>23199</state-number>
+      <table id="30" parent="3" name="news">
+        <object-id>50347</object-id>
+        <state-number>23829</state-number>
       </table>
-      <table id="29" parent="3" name="userglobalrole">
-        <object-id>49871</object-id>
-        <state-number>23201</state-number>
+      <table id="31" parent="3" name="token">
+        <object-id>50355</object-id>
+        <state-number>23830</state-number>
       </table>
-      <table id="30" parent="3" name="users">
-        <object-id>49876</object-id>
-        <state-number>23201</state-number>
+      <table id="32" parent="3" name="userarticlerole">
+        <object-id>50360</object-id>
+        <state-number>23833</state-number>
       </table>
-      <column id="31" parent="21" name="id">
-        <state-number>23175</state-number>
+      <table id="33" parent="3" name="userglobalrole">
+        <object-id>50365</object-id>
+        <state-number>23835</state-number>
+      </table>
+      <table id="34" parent="3" name="users">
+        <object-id>50370</object-id>
+        <state-number>23835</state-number>
+      </table>
+      <column id="35" parent="22" name="id">
+        <state-number>23809</state-number>
         <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <column id="32" parent="21" name="body">
-        <state-number>23175</state-number>
-        <data-type>varchar(1200000)|0</data-type>
+      <column id="36" parent="22" name="body">
+        <state-number>23809</state-number>
+        <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="33" parent="21" name="clearbody">
-        <state-number>23175</state-number>
-        <data-type>varchar(1200000)|0</data-type>
+      <column id="37" parent="22" name="clearbody">
+        <state-number>23809</state-number>
+        <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="34" parent="21" name="issection">
-        <state-number>23175</state-number>
-        <data-type>boolean|0</data-type>
+      <column id="38" parent="22" name="sectionid">
+        <state-number>23809</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer|0</data-type>
       </column>
-      <column id="35" parent="21" name="title">
-        <state-number>23175</state-number>
+      <column id="39" parent="22" name="title">
+        <state-number>23809</state-number>
         <data-type>varchar(256)|0</data-type>
       </column>
-      <column id="36" parent="21" name="author_id">
-        <state-number>23175</state-number>
+      <column id="40" parent="22" name="author_id">
+        <state-number>23809</state-number>
         <data-type>integer|0</data-type>
       </column>
-      <column id="37" parent="21" name="parentarticle_id">
-        <state-number>23175</state-number>
-        <data-type>integer|0</data-type>
-      </column>
-      <index id="38" parent="21" name="article_pkey">
-        <object-id>49830</object-id>
+      <index id="41" parent="22" name="archivearticle_pkey">
+        <object-id>50306</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="39" parent="21" name="article_pkey">
-        <object-id>49831</object-id>
+      <key id="42" parent="22" name="archivearticle_pkey">
+        <object-id>50307</object-id>
         <columns>id</columns>
-        <underlying-index>article_pkey</underlying-index>
+        <underlying-index>archivearticle_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="40" parent="21" name="fk_i83utkpqpts0yrsy4ydqocrj1">
-        <object-id>49892</object-id>
+      <foreign-key id="43" parent="22" name="fk_pb0s2mpe6ctul14x7n1l5gcxa">
+        <object-id>50384</object-id>
         <columns>author_id</columns>
         <ref-key>~.users.users_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="41" parent="21" name="fk_hfspw50271s0l0v27a53fnd86">
-        <object-id>49897</object-id>
-        <columns>parentarticle_id</columns>
-        <ref-key>article_pkey</ref-key>
+      <column id="44" parent="23" name="id">
+        <state-number>23810</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer|0</data-type>
+      </column>
+      <column id="45" parent="23" name="body">
+        <state-number>23810</state-number>
+        <data-type>varchar(1200000)|0</data-type>
+      </column>
+      <column id="46" parent="23" name="clearbody">
+        <state-number>23810</state-number>
+        <data-type>varchar(1200000)|0</data-type>
+      </column>
+      <column id="47" parent="23" name="createdtime">
+        <state-number>23810</state-number>
+        <data-type>timestamp|0</data-type>
+      </column>
+      <column id="48" parent="23" name="issection">
+        <state-number>23810</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="49" parent="23" name="lifetime">
+        <state-number>23810</state-number>
+        <data-type>timestamp|0</data-type>
+      </column>
+      <column id="50" parent="23" name="parentid">
+        <state-number>23810</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer|0</data-type>
+      </column>
+      <column id="51" parent="23" name="sectionid">
+        <state-number>23810</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer|0</data-type>
+      </column>
+      <column id="52" parent="23" name="title">
+        <state-number>23810</state-number>
+        <data-type>varchar(256)|0</data-type>
+      </column>
+      <column id="53" parent="23" name="updatedtime">
+        <state-number>23810</state-number>
+        <data-type>timestamp|0</data-type>
+      </column>
+      <column id="54" parent="23" name="author_id">
+        <state-number>23810</state-number>
+        <data-type>integer|0</data-type>
+      </column>
+      <index id="55" parent="23" name="article_pkey">
+        <object-id>50314</object-id>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="56" parent="23" name="article_pkey">
+        <object-id>50315</object-id>
+        <columns>id</columns>
+        <underlying-index>article_pkey</underlying-index>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="57" parent="23" name="fk_i83utkpqpts0yrsy4ydqocrj1">
+        <object-id>50389</object-id>
+        <columns>author_id</columns>
+        <ref-key>~.users.users_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="42" parent="22" name="article_id">
+      <column id="58" parent="24" name="article_id">
         <state-number>23177</state-number>
         <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <column id="43" parent="22" name="images_id">
+      <column id="59" parent="24" name="images_id">
         <state-number>23177</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <index id="44" parent="22" name="uk_3f4vt0u9151rwxro0y2tu29gs">
+      <index id="60" parent="24" name="uk_3f4vt0u9151rwxro0y2tu29gs">
         <object-id>49886</object-id>
         <columns>images_id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="45" parent="22" name="uk_3f4vt0u9151rwxro0y2tu29gs">
+      <key id="61" parent="24" name="uk_3f4vt0u9151rwxro0y2tu29gs">
         <object-id>49887</object-id>
         <columns>images_id</columns>
         <underlying-index>uk_3f4vt0u9151rwxro0y2tu29gs</underlying-index>
       </key>
-      <foreign-key id="46" parent="22" name="fk_2vfciwxsuuy7lwhjt7pi20lp9">
-        <object-id>49907</object-id>
-        <columns>article_id</columns>
-        <ref-key>~.article.article_pkey</ref-key>
-        <cascade-update-rule>restrict</cascade-update-rule>
-        <cascade-delete-rule>restrict</cascade-delete-rule>
-      </foreign-key>
-      <foreign-key id="47" parent="22" name="fk_3f4vt0u9151rwxro0y2tu29gs">
-        <object-id>49902</object-id>
-        <columns>images_id</columns>
-        <ref-key>~.image.image_pkey</ref-key>
-        <cascade-update-rule>restrict</cascade-update-rule>
-        <cascade-delete-rule>restrict</cascade-delete-rule>
-      </foreign-key>
-      <column id="48" parent="23" name="id">
-        <state-number>23176</state-number>
+      <column id="62" parent="25" name="id">
+        <state-number>23811</state-number>
         <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <column id="49" parent="23" name="canaddarticle">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
+      <column id="63" parent="25" name="childid">
+        <state-number>23811</state-number>
+        <data-type>integer|0</data-type>
       </column>
-      <column id="50" parent="23" name="canaddmistakes">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
+      <column id="64" parent="25" name="parentid">
+        <state-number>23811</state-number>
+        <data-type>integer|0</data-type>
       </column>
-      <column id="51" parent="23" name="canaddnews">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="52" parent="23" name="candeletearticle">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="53" parent="23" name="caneditarticle">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="54" parent="23" name="cangetemployeesactionsreports">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="55" parent="23" name="cangetnotifications">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="56" parent="23" name="cangetsearchoperationsreports">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="57" parent="23" name="cangetsystemactionsreports">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="58" parent="23" name="canonoffnotifications">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="59" parent="23" name="cansearch">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="60" parent="23" name="canviewarticle">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="61" parent="23" name="canviewmistakes">
-        <state-number>23176</state-number>
-        <data-type>boolean|0</data-type>
-      </column>
-      <column id="62" parent="23" name="name">
-        <state-number>23176</state-number>
-        <data-type>varchar(255)|0</data-type>
-      </column>
-      <index id="63" parent="23" name="articlerole_pkey">
-        <object-id>49835</object-id>
+      <index id="65" parent="25" name="articleconnection_pkey">
+        <object-id>50319</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="64" parent="23" name="uk_3gg32yhdpnx8gifbhw216g2lh">
-        <object-id>49884</object-id>
+      <key id="66" parent="25" name="articleconnection_pkey">
+        <object-id>50320</object-id>
+        <columns>id</columns>
+        <underlying-index>articleconnection_pkey</underlying-index>
+        <primary>1</primary>
+      </key>
+      <column id="67" parent="26" name="id">
+        <state-number>23812</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer|0</data-type>
+      </column>
+      <column id="68" parent="26" name="canaddarticle">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="69" parent="26" name="canaddmistakes">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="70" parent="26" name="canaddnews">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="71" parent="26" name="candeletearticle">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="72" parent="26" name="caneditarticle">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="73" parent="26" name="cangetemployeesactionsreports">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="74" parent="26" name="cangetnotifications">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="75" parent="26" name="cangetsearchoperationsreports">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="76" parent="26" name="cangetsystemactionsreports">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="77" parent="26" name="canonoffnotifications">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="78" parent="26" name="cansearch">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="79" parent="26" name="canviewarticle">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="80" parent="26" name="canviewmistakes">
+        <state-number>23812</state-number>
+        <data-type>boolean|0</data-type>
+      </column>
+      <column id="81" parent="26" name="name">
+        <state-number>23812</state-number>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <index id="82" parent="26" name="articlerole_pkey">
+        <object-id>50324</object-id>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <index id="83" parent="26" name="uk_3gg32yhdpnx8gifbhw216g2lh">
+        <object-id>50378</object-id>
         <columns>name</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="65" parent="23" name="articlerole_pkey">
-        <object-id>49836</object-id>
+      <key id="84" parent="26" name="articlerole_pkey">
+        <object-id>50325</object-id>
         <columns>id</columns>
         <underlying-index>articlerole_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <key id="66" parent="23" name="uk_3gg32yhdpnx8gifbhw216g2lh">
-        <object-id>49885</object-id>
+      <key id="85" parent="26" name="uk_3gg32yhdpnx8gifbhw216g2lh">
+        <object-id>50379</object-id>
         <columns>name</columns>
         <underlying-index>uk_3gg32yhdpnx8gifbhw216g2lh</underlying-index>
       </key>
-      <column id="67" parent="24" name="id">
-        <state-number>23178</state-number>
+      <column id="86" parent="27" name="id">
+        <state-number>23813</state-number>
         <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <column id="68" parent="24" name="articletext">
-        <state-number>23178</state-number>
-        <mandatory>1</mandatory>
-        <data-type>varchar(255)|0</data-type>
-      </column>
-      <column id="69" parent="24" name="comment">
-        <state-number>23178</state-number>
+      <column id="87" parent="27" name="articletext">
+        <state-number>23813</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="70" parent="24" name="admin_id">
-        <state-number>23178</state-number>
+      <column id="88" parent="27" name="comment">
+        <state-number>23813</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="89" parent="27" name="admin_id">
+        <state-number>23813</state-number>
         <data-type>integer|0</data-type>
       </column>
-      <column id="71" parent="24" name="article_id">
-        <state-number>23178</state-number>
+      <column id="90" parent="27" name="article_id">
+        <state-number>23813</state-number>
         <data-type>integer|0</data-type>
       </column>
-      <column id="72" parent="24" name="commentator_id">
-        <state-number>23178</state-number>
+      <column id="91" parent="27" name="commentator_id">
+        <state-number>23813</state-number>
         <data-type>integer|0</data-type>
       </column>
-      <index id="73" parent="24" name="comment_pkey">
-        <object-id>49846</object-id>
+      <index id="92" parent="27" name="comment_pkey">
+        <object-id>50332</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="74" parent="24" name="comment_pkey">
-        <object-id>49847</object-id>
+      <key id="93" parent="27" name="comment_pkey">
+        <object-id>50333</object-id>
         <columns>id</columns>
         <underlying-index>comment_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="75" parent="24" name="fk_a639usgpur33ma5s6p2ncxox8">
-        <object-id>49912</object-id>
+      <foreign-key id="94" parent="27" name="fk_a639usgpur33ma5s6p2ncxox8">
+        <object-id>50394</object-id>
         <columns>admin_id</columns>
         <ref-key>~.users.users_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="76" parent="24" name="fk_qwylmq9xjkhn6as6u91b94y9o">
-        <object-id>49917</object-id>
+      <foreign-key id="95" parent="27" name="fk_qwylmq9xjkhn6as6u91b94y9o">
+        <object-id>50399</object-id>
         <columns>article_id</columns>
         <ref-key>~.article.article_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="77" parent="24" name="fk_8mwr37ts1x6puw85tkruv32fa">
-        <object-id>49922</object-id>
+      <foreign-key id="96" parent="27" name="fk_8mwr37ts1x6puw85tkruv32fa">
+        <object-id>50404</object-id>
         <columns>commentator_id</columns>
         <ref-key>~.users.users_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="78" parent="25" name="id">
-        <state-number>23179</state-number>
+      <column id="97" parent="28" name="id">
+        <state-number>23814</state-number>
         <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <column id="79" parent="25" name="canadduser">
-        <state-number>23179</state-number>
+      <column id="98" parent="28" name="canadduser">
+        <state-number>23814</state-number>
         <data-type>boolean|0</data-type>
       </column>
-      <column id="80" parent="25" name="candeleteuser">
-        <state-number>23179</state-number>
+      <column id="99" parent="28" name="candeleteuser">
+        <state-number>23814</state-number>
         <data-type>boolean|0</data-type>
       </column>
-      <column id="81" parent="25" name="canedituser">
-        <state-number>23179</state-number>
+      <column id="100" parent="28" name="canedituser">
+        <state-number>23814</state-number>
         <data-type>boolean|0</data-type>
       </column>
-      <column id="82" parent="25" name="canedituserrole">
-        <state-number>23179</state-number>
+      <column id="101" parent="28" name="canedituserrole">
+        <state-number>23814</state-number>
         <data-type>boolean|0</data-type>
       </column>
-      <column id="83" parent="25" name="canviewuser">
-        <state-number>23179</state-number>
+      <column id="102" parent="28" name="canviewuser">
+        <state-number>23814</state-number>
         <data-type>boolean|0</data-type>
       </column>
-      <column id="84" parent="25" name="name">
-        <state-number>23179</state-number>
+      <column id="103" parent="28" name="name">
+        <state-number>23814</state-number>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <index id="85" parent="25" name="globalrole_pkey">
-        <object-id>49851</object-id>
+      <index id="104" parent="28" name="globalrole_pkey">
+        <object-id>50337</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="86" parent="25" name="uk_8kbul5ot2lst1tp31l2h8592w">
-        <object-id>49888</object-id>
+      <index id="105" parent="28" name="uk_8kbul5ot2lst1tp31l2h8592w">
+        <object-id>50380</object-id>
         <columns>name</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="87" parent="25" name="globalrole_pkey">
-        <object-id>49852</object-id>
+      <key id="106" parent="28" name="globalrole_pkey">
+        <object-id>50338</object-id>
         <columns>id</columns>
         <underlying-index>globalrole_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <key id="88" parent="25" name="uk_8kbul5ot2lst1tp31l2h8592w">
-        <object-id>49889</object-id>
+      <key id="107" parent="28" name="uk_8kbul5ot2lst1tp31l2h8592w">
+        <object-id>50381</object-id>
         <columns>name</columns>
         <underlying-index>uk_8kbul5ot2lst1tp31l2h8592w</underlying-index>
       </key>
-      <column id="89" parent="26" name="id">
-        <state-number>23180</state-number>
+      <column id="108" parent="29" name="id">
+        <state-number>23815</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="90" parent="26" name="path">
-        <state-number>23180</state-number>
+      <column id="109" parent="29" name="name">
+        <state-number>23815</state-number>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <index id="91" parent="26" name="image_pkey">
-        <object-id>49859</object-id>
+      <column id="110" parent="29" name="path">
+        <state-number>23815</state-number>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <index id="111" parent="29" name="image_pkey">
+        <object-id>50345</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="92" parent="26" name="image_pkey">
-        <object-id>49860</object-id>
+      <key id="112" parent="29" name="image_pkey">
+        <object-id>50346</object-id>
         <columns>id</columns>
         <underlying-index>image_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="93" parent="27" name="id">
-        <state-number>23181</state-number>
+      <column id="113" parent="30" name="id">
+        <state-number>23816</state-number>
         <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <column id="94" parent="27" name="enddate">
-        <state-number>23181</state-number>
-        <data-type>date|0</data-type>
+      <column id="114" parent="30" name="body">
+        <state-number>23816</state-number>
+        <data-type>varchar(10000)|0</data-type>
       </column>
-      <column id="95" parent="27" name="token">
-        <state-number>23181</state-number>
-        <data-type>varchar(255)|0</data-type>
+      <column id="115" parent="30" name="clearbody">
+        <state-number>23816</state-number>
+        <data-type>varchar(10000)|0</data-type>
       </column>
-      <column id="96" parent="27" name="user_id">
-        <state-number>23181</state-number>
+      <column id="116" parent="30" name="sectionid">
+        <state-number>23816</state-number>
+        <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <index id="97" parent="27" name="token_pkey">
-        <object-id>49864</object-id>
+      <column id="117" parent="30" name="title">
+        <state-number>23816</state-number>
+        <data-type>varchar(256)|0</data-type>
+      </column>
+      <column id="118" parent="30" name="author_id">
+        <state-number>23816</state-number>
+        <data-type>integer|0</data-type>
+      </column>
+      <index id="119" parent="30" name="news_pkey">
+        <object-id>50353</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="98" parent="27" name="token_pkey">
-        <object-id>49865</object-id>
+      <key id="120" parent="30" name="news_pkey">
+        <object-id>50354</object-id>
+        <columns>id</columns>
+        <underlying-index>news_pkey</underlying-index>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="121" parent="30" name="fk_e3k3kapw96m39ma7uus1r6f7m">
+        <object-id>50409</object-id>
+        <columns>author_id</columns>
+        <ref-key>~.users.users_pkey</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="122" parent="31" name="id">
+        <state-number>23817</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer|0</data-type>
+      </column>
+      <column id="123" parent="31" name="enddate">
+        <state-number>23817</state-number>
+        <data-type>date|0</data-type>
+      </column>
+      <column id="124" parent="31" name="token">
+        <state-number>23817</state-number>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="125" parent="31" name="user_id">
+        <state-number>23817</state-number>
+        <data-type>integer|0</data-type>
+      </column>
+      <index id="126" parent="31" name="token_pkey">
+        <object-id>50358</object-id>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="127" parent="31" name="token_pkey">
+        <object-id>50359</object-id>
         <columns>id</columns>
         <underlying-index>token_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="99" parent="27" name="fk_c56184j4djjqx16jwprg167qp">
-        <object-id>49927</object-id>
+      <foreign-key id="128" parent="31" name="fk_c56184j4djjqx16jwprg167qp">
+        <object-id>50414</object-id>
         <columns>user_id</columns>
         <ref-key>~.users.users_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="100" parent="28" name="id">
-        <state-number>23182</state-number>
+      <column id="129" parent="32" name="id">
+        <state-number>23818</state-number>
         <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <column id="101" parent="28" name="article_id">
-        <state-number>23182</state-number>
+      <column id="130" parent="32" name="article_id">
+        <state-number>23818</state-number>
         <data-type>integer|0</data-type>
       </column>
-      <column id="102" parent="28" name="articlerole_id">
-        <state-number>23182</state-number>
+      <column id="131" parent="32" name="articlerole_id">
+        <state-number>23818</state-number>
         <data-type>integer|0</data-type>
       </column>
-      <column id="103" parent="28" name="user_id">
-        <state-number>23182</state-number>
+      <column id="132" parent="32" name="user_id">
+        <state-number>23818</state-number>
         <data-type>integer|0</data-type>
       </column>
-      <index id="104" parent="28" name="userarticlerole_pkey">
-        <object-id>49869</object-id>
+      <index id="133" parent="32" name="userarticlerole_pkey">
+        <object-id>50363</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="105" parent="28" name="userarticlerole_pkey">
-        <object-id>49870</object-id>
+      <key id="134" parent="32" name="userarticlerole_pkey">
+        <object-id>50364</object-id>
         <columns>id</columns>
         <underlying-index>userarticlerole_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="106" parent="28" name="fk_s9qi14cjul83dlyt1nrdr2xup">
-        <object-id>49932</object-id>
+      <foreign-key id="135" parent="32" name="fk_s9qi14cjul83dlyt1nrdr2xup">
+        <object-id>50419</object-id>
         <columns>article_id</columns>
         <ref-key>~.article.article_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="107" parent="28" name="fk_caf7gnw28e3oe33luhsmcmmxb">
-        <object-id>49937</object-id>
+      <foreign-key id="136" parent="32" name="fk_caf7gnw28e3oe33luhsmcmmxb">
+        <object-id>50424</object-id>
         <columns>articlerole_id</columns>
         <ref-key>~.articlerole.articlerole_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="108" parent="28" name="fk_e2f6pt8ddtw57g7xgnstc5vq3">
-        <object-id>49942</object-id>
+      <foreign-key id="137" parent="32" name="fk_e2f6pt8ddtw57g7xgnstc5vq3">
+        <object-id>50429</object-id>
         <columns>user_id</columns>
         <ref-key>~.users.users_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="109" parent="29" name="id">
-        <state-number>23183</state-number>
+      <column id="138" parent="33" name="id">
+        <state-number>23819</state-number>
         <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <column id="110" parent="29" name="globalrole_id">
-        <state-number>23183</state-number>
+      <column id="139" parent="33" name="globalrole_id">
+        <state-number>23819</state-number>
         <data-type>integer|0</data-type>
       </column>
-      <column id="111" parent="29" name="user_id">
-        <state-number>23183</state-number>
+      <column id="140" parent="33" name="user_id">
+        <state-number>23819</state-number>
         <data-type>integer|0</data-type>
       </column>
-      <index id="112" parent="29" name="userglobalrole_pkey">
-        <object-id>49874</object-id>
+      <index id="141" parent="33" name="userglobalrole_pkey">
+        <object-id>50368</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="113" parent="29" name="userglobalrole_pkey">
-        <object-id>49875</object-id>
+      <key id="142" parent="33" name="userglobalrole_pkey">
+        <object-id>50369</object-id>
         <columns>id</columns>
         <underlying-index>userglobalrole_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="114" parent="29" name="fk_quoyu8kvh9nmdfk8mbehae59o">
-        <object-id>49947</object-id>
+      <foreign-key id="143" parent="33" name="fk_quoyu8kvh9nmdfk8mbehae59o">
+        <object-id>50434</object-id>
         <columns>globalrole_id</columns>
         <ref-key>~.globalrole.globalrole_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="115" parent="29" name="fk_l27p7vydjj0r6hfdx7y9fvns8">
-        <object-id>49952</object-id>
+      <foreign-key id="144" parent="33" name="fk_l27p7vydjj0r6hfdx7y9fvns8">
+        <object-id>50439</object-id>
         <columns>user_id</columns>
         <ref-key>~.users.users_pkey</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="116" parent="30" name="id">
-        <state-number>23184</state-number>
+      <column id="145" parent="34" name="id">
+        <state-number>23820</state-number>
         <mandatory>1</mandatory>
         <data-type>integer|0</data-type>
       </column>
-      <column id="117" parent="30" name="dismissal_date">
-        <state-number>23184</state-number>
+      <column id="146" parent="34" name="dismissal_date">
+        <state-number>23820</state-number>
         <data-type>timestamp|0</data-type>
       </column>
-      <column id="118" parent="30" name="email">
-        <state-number>23184</state-number>
+      <column id="147" parent="34" name="email">
+        <state-number>23820</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="119" parent="30" name="first_name">
-        <state-number>23184</state-number>
+      <column id="148" parent="34" name="first_name">
+        <state-number>23820</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="120" parent="30" name="last_name">
-        <state-number>23184</state-number>
+      <column id="149" parent="34" name="last_name">
+        <state-number>23820</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="121" parent="30" name="login">
-        <state-number>23184</state-number>
+      <column id="150" parent="34" name="login">
+        <state-number>23820</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="122" parent="30" name="middle_name">
-        <state-number>23184</state-number>
+      <column id="151" parent="34" name="middle_name">
+        <state-number>23820</state-number>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="123" parent="30" name="office">
-        <state-number>23184</state-number>
+      <column id="152" parent="34" name="office">
+        <state-number>23820</state-number>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="124" parent="30" name="password">
-        <state-number>23184</state-number>
+      <column id="153" parent="34" name="password">
+        <state-number>23820</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="125" parent="30" name="phone_1">
-        <state-number>23184</state-number>
+      <column id="154" parent="34" name="phone_1">
+        <state-number>23820</state-number>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="126" parent="30" name="phone_2">
-        <state-number>23184</state-number>
+      <column id="155" parent="34" name="phone_2">
+        <state-number>23820</state-number>
         <data-type>varchar(255)|0</data-type>
       </column>
-      <column id="127" parent="30" name="recruitment_date">
-        <state-number>23184</state-number>
+      <column id="156" parent="34" name="recruitment_date">
+        <state-number>23820</state-number>
         <data-type>timestamp|0</data-type>
       </column>
-      <index id="128" parent="30" name="users_pkey">
-        <object-id>49882</object-id>
+      <index id="157" parent="34" name="users_pkey">
+        <object-id>50376</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="129" parent="30" name="uk_ow0gan20590jrb00upg3va2fn">
-        <object-id>49890</object-id>
+      <index id="158" parent="34" name="uk_ow0gan20590jrb00upg3va2fn">
+        <object-id>50382</object-id>
         <columns>login</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="130" parent="30" name="users_pkey">
-        <object-id>49883</object-id>
+      <key id="159" parent="34" name="users_pkey">
+        <object-id>50377</object-id>
         <columns>id</columns>
         <underlying-index>users_pkey</underlying-index>
         <primary>1</primary>
       </key>
-      <key id="131" parent="30" name="uk_ow0gan20590jrb00upg3va2fn">
-        <object-id>49891</object-id>
+      <key id="160" parent="34" name="uk_ow0gan20590jrb00upg3va2fn">
+        <object-id>50383</object-id>
         <columns>login</columns>
         <underlying-index>uk_ow0gan20590jrb00upg3va2fn</underlying-index>
       </key>

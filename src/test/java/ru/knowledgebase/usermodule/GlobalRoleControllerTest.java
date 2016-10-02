@@ -2,6 +2,7 @@ package ru.knowledgebase.usermodule;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
@@ -13,6 +14,8 @@ import ru.knowledgebase.rolemodule.GlobalRoleController;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
+
+import java.sql.Timestamp;
 
 import static org.junit.Assert.assertTrue;
 
@@ -33,7 +36,7 @@ public class GlobalRoleControllerTest {
     private final int roleId = 1;
     private final String roleName = "User";
 
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
 
     public void prepareUser() throws Exception{
         User user = collector.findUser(login1);
@@ -85,11 +88,10 @@ public class GlobalRoleControllerTest {
 
     @Before
     public void prepareArticle() throws Exception{
-        Article article = collector.findArticle(articleId);
+        Article article = collector.getBaseArticle();
+
         if (article == null) {
-            article = new Article(articleId);
-            article.setTitle(articleName);
-            collector.addArticle(article);
+            ArticleController.getInstance().addBaseArticle("1", "2", 1, new Timestamp(5), new Timestamp(5), new Timestamp(5));
         }
     }
 

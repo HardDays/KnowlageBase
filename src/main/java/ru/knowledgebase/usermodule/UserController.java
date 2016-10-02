@@ -2,7 +2,9 @@ package ru.knowledgebase.usermodule;
 
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
+import ru.knowledgebase.exceptionmodule.ldapexceptions.LdapException;
 import ru.knowledgebase.ldapmodule.LdapWorker;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
@@ -25,7 +27,7 @@ import java.util.List;
  */
 public class UserController {
 
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
     private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     private static volatile UserController instance;
@@ -234,7 +236,7 @@ public class UserController {
                 || firstName.length() == 0 || lastName.length() == 0){
             throw new WrongUserDataException();
         }
-        User user = null, exist = null;
+        User user = null, exist = null, ldapUser = null;
         try{
             user = collector.findUser(userId);
             if (!user.getLogin().equals(login))
@@ -242,10 +244,17 @@ public class UserController {
         }catch (Exception e){
             throw new DataBaseException();
         }
+        try{
+            ldapUser = ldapWorker.getUserInfo(user.getLogin());
+        }catch (Exception e){
+
+        }
         if (user == null)
             throw new UserNotFoundException();
         if (exist != null)
             throw new UserAlreadyExistsException();
+        if (ldapUser != null)
+            throw new LdapException();
         password = DigestUtils.md5Hex(password);
         user = new User(login, password, email,
                 firstName, middleName, lastName,
@@ -354,6 +363,14 @@ public class UserController {
     public HashSet<Integer> getUserSections(int userId) throws Exception{
         try {
             return collector.getUserSections(userId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+    }
+
+    public HashSet<Article> getUserSectionsObj(int userId) throws Exception{
+        try {
+            return collector.getUserSectionsObj(userId);
         }catch (Exception e){
             throw new DataBaseException();
         }

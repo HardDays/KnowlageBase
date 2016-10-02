@@ -12,6 +12,7 @@ import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class SearchServiceTest {
     private static ImageController ic = new ImageController();
-    private static DataCollector dc = new DataCollector();
+    private static DataCollector dc = DataCollector.getInstance();
     private static Integer parentArticle = 1;
     private static List<String> imgs = new LinkedList<String>();
     private static ArticleController ac = new ArticleController();
@@ -48,7 +49,7 @@ public class SearchServiceTest {
                 "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         u = dc.addUser(u);
         author = u.getId();
-        base = ac.addBaseArticle("Base title", "Base body", u.getId(), new LinkedList<String>());
+        base = ac.addBaseArticle("Base title", "Base body", u.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5));
         parentArticle = base.getId();
         createArticles();
     }
@@ -61,7 +62,7 @@ public class SearchServiceTest {
 
     private static void createArticles() throws Exception {
         for (String title : titles) {
-            addArticle = ac.addArticle(title, body, u.getId(), parentArticle, false,new LinkedList<String>());
+            addArticle = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
         }
     }
 

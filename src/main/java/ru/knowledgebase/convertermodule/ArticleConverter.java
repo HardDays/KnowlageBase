@@ -12,6 +12,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 import java.io.*;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,7 +84,11 @@ public class ArticleConverter {
 
     }
 
-    public void convertDoc(InputStream input, String title, int authorId, int parentArticle, boolean isSection) throws Exception{
+    public void convertDoc(InputStream input, String title,
+                           int authorId, int parentArticle,
+                           boolean isSection, Timestamp archiveTime,
+                           Timestamp createDate, Timestamp updateDate)
+                                    throws Exception{
         String body = null;
         try {
             HWPFDocumentCore wordDocument = WordToHtmlUtils.loadDoc(input);
@@ -106,10 +111,11 @@ public class ArticleConverter {
             throw new ConvertException();
         }
 
-        articleController.addArticle(title, body, authorId, parentArticle, isSection, new LinkedList<>());
+        articleController.addArticle(title, body, authorId, parentArticle, createDate, updateDate, archiveTime, isSection);
     }
 
-    public void convertDocx(InputStream input, String title, int authorId, int parentArticle, boolean isSection) throws Exception{
+    public void convertDocx(InputStream input, String title, int authorId, int parentArticle, Timestamp archiveTime,
+                            Timestamp createDate, Timestamp updateDate, boolean isSection) throws Exception{
         String body = null;
         String curPath = imagePath + title;
         List <String> images = new LinkedList<String>();
@@ -156,7 +162,7 @@ public class ArticleConverter {
             //upload images to db
             for (File file : outFolder.listFiles()) {
                 if (file.isFile()) {
-                    Image image = imageController.addImage(new Image(file.getAbsolutePath()));
+                    Image image = imageController.addImage(new Image(file.getAbsolutePath(), file.getName()));
                     images.add(image.getId());
                 }
             }
@@ -165,6 +171,6 @@ public class ArticleConverter {
             throw new ConvertException();
         }
 
-        articleController.addArticle(title, body, authorId, parentArticle, isSection, images);
+        articleController.addArticle(title, body, authorId, parentArticle, createDate, updateDate, archiveTime, isSection);
     }
 }

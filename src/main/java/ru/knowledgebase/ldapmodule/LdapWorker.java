@@ -157,22 +157,26 @@ public class LdapWorker {
      * @return user object
      */
     public User getUserInfo(String login) throws Exception{
-        DirContext context = formContext(formEnvironment());
-        Attributes attributes = context.getAttributes(findUserDomain(login));
-        User user = new User();
-        for (NamingEnumeration ae = attributes.getAll(); ae.hasMore();) {
-            Attribute attr = (Attribute) ae.next();
-            System.out.println("attribute: " + attr.getID());
-            if (attr.getID().equals("uid")) {
-                NamingEnumeration e = attr.getAll();
-                while (e.hasMore()) {
-                    String t = e.next().toString();
-                    user = new User(t, t, t, t, t, t, t, t, t, null, null);
-                    return user;
+        try {
+            DirContext context = formContext(formEnvironment());
+            Attributes attributes = context.getAttributes(findUserDomain(login));
+            User user = new User();
+            for (NamingEnumeration ae = attributes.getAll(); ae.hasMore(); ) {
+                Attribute attr = (Attribute) ae.next();
+                System.out.println("attribute: " + attr.getID());
+                if (attr.getID().equals("uid")) {
+                    NamingEnumeration e = attr.getAll();
+                    while (e.hasMore()) {
+                        String t = e.next().toString();
+                        user = new User(t, t, t, t, t, t, t, t, t, null, null);
+                        return user;
+                    }
                 }
             }
+            return user;
+        }catch (Exception e){
+            throw new LdapException();
         }
-        return user;
     }
 
     /**

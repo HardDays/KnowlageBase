@@ -86,7 +86,7 @@ public class UserWebService {
                           @FormParam(value = "role_id") int roleId){
         return userWrapper.assignSectionRole(adminId, adminToken, userId, sectionId, roleId);
     }
-
+    /*
     @POST
     @Path("/assign_global_role")
     public Response assignGlobalRole(@FormParam(value = "admin_id") int adminId,
@@ -94,7 +94,7 @@ public class UserWebService {
                                       @FormParam(value = "user_id") int userId,
                                       @FormParam(value = "role_id") int roleId){
         return userWrapper.assignGlobalRole(adminId, adminToken, userId, roleId);
-    }
+    }*/
 
     @POST
     @Path("/get_section_permissions")
@@ -151,6 +151,19 @@ public class UserWebService {
         return userWrapper.getSectionUsers(adminId, adminToken, sectionId);
     }
 
-    //TODO: get_user_sections
+    @POST
+    @Path("/get_user_sections")
+    public Response getUserSecions(@FormParam(value = "admin_id") int adminId,
+                                   @FormParam(value = "admin_token") String adminToken,
+                                   @FormParam(value = "user_id") int userId){
+        return userWrapper.getUserSections(adminId, adminToken, userId);
+    }
+
+    @POST
+    @Path("/get_my_sections")
+    public Response getUserSecions(@FormParam(value = "user_id") int userId,
+                                   @FormParam(value = "user_token") String userToken){
+        return userWrapper.getUserSections(userId, userToken);
+    }
 }
 

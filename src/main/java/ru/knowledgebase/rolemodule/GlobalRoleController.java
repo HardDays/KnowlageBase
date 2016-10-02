@@ -20,7 +20,7 @@ public class GlobalRoleController {
 
     private int defaultGlobalRoleId = 1;
 
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
    // private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     private static volatile GlobalRoleController instance;
