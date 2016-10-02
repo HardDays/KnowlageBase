@@ -74,6 +74,8 @@ public class ArticleController {
             throw new ArticleAddException();
         }
 
+        isBaseArticleCreated = true;
+
         return resultArticle;
     }
 
