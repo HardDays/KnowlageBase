@@ -41,7 +41,7 @@ public class SectionControllerTest {
     @Transactional
     public static void init() throws Exception{
 
-        img = new Image("home/path");
+        img = new Image("home/path", "some3");
         img = ic.addImage(img);
 
         u = new User("TestUser", "123");

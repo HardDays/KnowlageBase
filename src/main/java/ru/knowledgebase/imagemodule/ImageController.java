@@ -90,7 +90,7 @@ public class ImageController {
         catch (Exception ex) {
             throw new ImageCantBeSavedException();
         }
-        return addImage(new Image(path)).getId();
+        return addImage(new Image(path, filename)).getId();
     }
 
     public void deleteImage(String id) throws Exception{

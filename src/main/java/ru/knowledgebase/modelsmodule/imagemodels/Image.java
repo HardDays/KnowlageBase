@@ -21,14 +21,26 @@ public class Image {
     @Column
     private String path;
 
+    @Column
+    private String name;
+
     public Image() {}
 
-    public Image(String path) {
-        this.path = path;
+    public Image(String path, String filename) {
+        setPath(path);
+        setName(filename);
     }
 
 
     //BEGIN SG METHODS
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getId() {
         return id;

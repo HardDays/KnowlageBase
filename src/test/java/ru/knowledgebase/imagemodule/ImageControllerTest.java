@@ -20,7 +20,7 @@ public class ImageControllerTest {
     @Test
     public void addImage() throws Exception {
         String path = "path/newpath";
-        Image img = new Image(path);
+        Image img = new Image(path, "some");
         img = ic.addImage(img);
         List<Image> imgs = ic.getImages(Arrays.asList(img.getId()));
         assertTrue(imgs.size() == 1 && imgs.get(0).getPath().equals(path));
@@ -32,11 +32,11 @@ public class ImageControllerTest {
     @Test
     public void getAllImages() throws Exception{
         String path1 = "path/newpath";
-        Image img1 = new Image(path1);
+        Image img1 = new Image(path1, "some");
         img1 = ic.addImage(img1);
 
         String path2 = "path/newpath2";
-        Image img2 = new Image(path2);
+        Image img2 = new Image(path2, "some");
         img2 = ic.addImage(img2);
 
         List<Image> images = ic.getAllImages();

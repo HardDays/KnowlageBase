@@ -44,7 +44,7 @@ public class NewsControllerTest {
     @Transactional
     public static void init() throws Exception{
 
-        img = new Image("home/path");
+        img = new Image("home/path", "some2");
         img = ic.addImage(img);
 
         u = new User("TestUser", "123");
