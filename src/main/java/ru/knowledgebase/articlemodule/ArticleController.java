@@ -23,6 +23,7 @@ public class ArticleController {
 
     private DataCollector dataCollector = DataCollector.getInstance();
     private final int BASE_ARTICLE = -1;
+    private static boolean isBaseArticleCreated;
 
     private static ArticleController instance;
 
@@ -59,6 +60,9 @@ public class ArticleController {
         Article article = getFullArticleObject(title, body, authorId,
                 -1, createdTime, updatedTime, lifeTime, true);
 
+        if (isBaseArticleCreated) {
+            throw new BaseArticleWasAlreadyCreatedException();
+        }
         Article resultArticle = null;
         try {
             resultArticle = dataCollector.addArticle(article);
