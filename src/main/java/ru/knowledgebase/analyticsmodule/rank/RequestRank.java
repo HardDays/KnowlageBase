@@ -14,4 +14,8 @@ public class RequestRank extends Rank {
         this.request = request;
     }
 
+
+    public String getRequest() {
+        return request;
+    }
 }

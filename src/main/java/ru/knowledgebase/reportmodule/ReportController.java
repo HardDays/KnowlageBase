@@ -121,7 +121,7 @@ public class ReportController {
         Map<String, Map<String, Integer>> usersArticlesNumViews = new HashMap<>();
         for (UserArticleRole userRole: users) {
             usersArticlesNumViews.put(
-                    userRole.getUser().getFullName(),
+                    getUsersFullName(userRole),
                     getArticlesUserViewedWithNumOfViews(userRole, from, to));
         }
         return usersArticlesNumViews;
@@ -173,14 +173,16 @@ public class ReportController {
      */
     public String getSearchActionsReport(Timestamp from, Timestamp to, List<Integer> sections)
             throws Exception {
-        //TODO
         Integer numSearchActions = numTimesSearchWasMade(from, to);
+
+        //Popular Search requests grouped by first level sections
+        //Search requests grouped by first level sections and people who mede them
+        HashMap<Integer, LinkedList<String>> allUsersWithRequestsForPeriod = analyser.getUserRequests(
+                getRecordsFromLog(), from, to);
         List<RequestRank> popularRequests = analyser.getPopularRequests(getRecordsFromLog(), from, to);
+        Map<Integer, LinkedList<RequestRank>> levelPopularRequests = new HashMap<>();
 
-        //TODO: Popular Search requests grouped by first level sections
 
-
-        //DONE: Search requests grouped by first level sections and people who mede them
         Map<Integer, LinkedList<Integer>> allFirstLevelSectionsWithSubsections = getListOfSectionsForEachLeavel();
         // Making map with all first level sections and users in those sections
         Map<Integer, Map<String, LinkedList<String>>> levelUsersRequests = new HashMap<>();
@@ -189,22 +191,29 @@ public class ReportController {
             if(!sections.contains(firstLevelSection)){
                 allFirstLevelSectionsWithSubsections.remove(firstLevelSection);
             }else{
+                levelPopularRequests.put(
+                        firstLevelSection,
+                        new LinkedList<>()
+                );
                 //Form list of all sections of that level
-                List<Integer> sectionsOnLevel = new LinkedList<>();
-                sectionsOnLevel.add(firstLevelSection);
-                sectionsOnLevel.addAll(allFirstLevelSectionsWithSubsections.get(firstLevelSection));
+                List<Integer> sectionsOnLevel = getAllSectionsOnLevel(allFirstLevelSectionsWithSubsections, firstLevelSection);
                 //Checks if those users made search requests during the period and gets those requests
-                LinkedList<UserArticleRole> usersOfSections = new LinkedList<>(
-                        getUsersOfGivenSections(sectionsOnLevel));
-                HashMap<Integer, LinkedList<String>> allUserRequestsForPeriod = analyser.getUserRequests(
-                        getRecordsFromLog(), from, to);
-                Set<Integer> allUsersMadeSearchRequestsDuringPeriod = allUserRequestsForPeriod.keySet();
                 Map<String, LinkedList<String>> usersRequests = new HashMap<>();
-                for(UserArticleRole userArticleRole : usersOfSections){
-                    if(allUsersMadeSearchRequestsDuringPeriod.contains(userArticleRole.getUser().getId())){
+                for(UserArticleRole userOfSection : getListOfUsersOnLevel(sectionsOnLevel)){
+                    Integer userId = userOfSection.getUser().getId();
+                    if(allUsersWithRequestsForPeriod.keySet().contains(userId)){
+                        LinkedList<String> requests = allUsersWithRequestsForPeriod.get(userOfSection.getUser().getId());
                         usersRequests.put(
-                                userArticleRole.getUser().getFullName(),
-                                allUserRequestsForPeriod.get(userArticleRole.getUser().getId()));
+                                getUsersFullName(userOfSection),
+                                requests);
+                        // Checks for popular requests on that level
+                        LinkedList<RequestRank> popularRequestsOnLevel = new LinkedList<>();
+                        for(RequestRank popReq : popularRequests){
+                            if(requests.contains(popReq.getRequest())){
+                                popularRequestsOnLevel.add(popReq);
+                            }
+                        }
+                        levelPopularRequests.get(firstLevelSection).addAll(popularRequestsOnLevel);
                     }
                 }
                 levelUsersRequests.put(firstLevelSection, usersRequests);
@@ -218,6 +227,22 @@ public class ReportController {
 
         String path = reportBuilder.buildSearchActionsReport(userID, from, to, sections);
         return path;
+    }
+
+    private String getUsersFullName(UserArticleRole userOfSection) {
+        return userOfSection.getUser().getFullName();
+    }
+
+    private LinkedList<UserArticleRole> getListOfUsersOnLevel(List<Integer> sectionsOnLevel) throws UnableToCreateReportExeption {
+        return new LinkedList<>(
+                getUsersOfGivenSections(sectionsOnLevel));
+    }
+
+    private List<Integer> getAllSectionsOnLevel(Map<Integer, LinkedList<Integer>> allFirstLevelSectionsWithSubsections, Integer firstLevelSection) {
+        List<Integer> sectionsOnLevel = new LinkedList<>();
+        sectionsOnLevel.add(firstLevelSection);
+        sectionsOnLevel.addAll(allFirstLevelSectionsWithSubsections.get(firstLevelSection));
+        return sectionsOnLevel;
     }
 
     private Integer numTimesSearchWasMade(Timestamp from, Timestamp to) throws Exception {
