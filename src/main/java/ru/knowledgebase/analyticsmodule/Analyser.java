@@ -444,7 +444,8 @@ public class Analyser {
      * @param to higher bound of time period
      * @return set with article ids
      */
-    public HashSet<Integer> getUploadedArticles(List<ALogRecord> log, Timestamp from, Timestamp to) throws Exception {
+    public HashSet<Integer> getUploadedArticles(List<ALogRecord> log, Timestamp from, Timestamp to)
+            throws Exception {
         return getUploadedArticles(filterTime(log, from, to));
     }
     /**

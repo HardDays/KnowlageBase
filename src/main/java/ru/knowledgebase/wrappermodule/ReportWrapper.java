@@ -9,7 +9,7 @@ import ru.knowledgebase.usermodule.UserController;
 
 
 import javax.ws.rs.core.Response;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -37,9 +37,9 @@ public class ReportWrapper {
             return responseBuilder.buildNoAccessResponse();
 
         return responseBuilder.buildReportResponse(
-                    reportController.getSystemActionsReport(from, to, sections));
+                    reportController.getSystemActionsReport(userID, from, to, sections));
         }catch(Exception ex){
-            return responseBuilder.buidlReportBuildingError();
+            return ResponseBuilder.buildResponse(ex);
         }
     }
 
@@ -63,7 +63,7 @@ public class ReportWrapper {
         } catch (UnableToCreateReportExeption ex){
             return responseBuilder.buildResponse(ex);
         } catch (Exception ex) {
-            return responseBuilder.buidlReportBuildingError();
+            return ResponseBuilder.buildResponse(ex);
         }
     }
 
@@ -83,9 +83,9 @@ public class ReportWrapper {
                 return responseBuilder.buildNoAccessResponse();
 
             return responseBuilder.buildReportResponse(
-                    reportController.getSearchActionsReport(from, to, sections));
+                    reportController.getSearchActionsReport(userID, from, to, sections));
         }catch(Exception ex){
-            return responseBuilder.buidlReportBuildingError();
+            return ResponseBuilder.buildResponse(ex);
         }
     }
 

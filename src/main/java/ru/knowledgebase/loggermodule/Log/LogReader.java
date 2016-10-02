@@ -28,7 +28,7 @@ public class LogReader {
      * {@code ALogRecord} class.
      * @return a list of records from log
      */
-    public LinkedList<ALogRecord> getRecordsFromLog(){
+    public LinkedList<ALogRecord> getRecordsFromLog() throws Exception {
         logRecords = new LinkedList<ALogRecord>();
 
         LogRecordFactory logRecordFactory = new LogRecordFactory();

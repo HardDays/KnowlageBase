@@ -49,6 +49,11 @@ public class User {
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<Article> article;
 
+    private String firstName;
+
+    private String lastName;
+
+    private String middleName;
 
     public int getId() {
         return id;
@@ -133,5 +138,21 @@ public class User {
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
+    }
+
+    public String getFullName() {
+        return lastName + " " + firstName + " " + middleName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
     }
 }

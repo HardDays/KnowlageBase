@@ -17,6 +17,7 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -90,6 +91,9 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
     private List<Comment> comments;
 
+    private Timestamp createdTime;
+
+    private Timestamp updatedTime;
 
     //BEGIN CONSTRUCTORS
     public Article(){}
@@ -216,6 +220,18 @@ public class Article {
         if (this.parentArticle == comp.parentArticle && comp.parentArticle != null)
             res &= this.parentArticle.getId() == comp.parentArticle.getId();
         return res;
+    }
+
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setUpdatedTime(Timestamp updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public Timestamp getUpdatedTime() {
+        return updatedTime;
     }
 
     //END SUPPORT METHODS
