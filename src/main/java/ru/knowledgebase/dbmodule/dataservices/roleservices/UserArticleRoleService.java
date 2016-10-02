@@ -8,6 +8,8 @@ import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -18,6 +20,12 @@ public class UserArticleRoleService {
 
     @Autowired
     private UserArticleRoleRepository userArticleRoleRepository;
+
+    private HashMap<Integer, HashSet<Integer>> userSections;
+
+    public List<UserArticleRole> getAll() throws Exception{
+        return userArticleRoleRepository.getAll();
+    }
 
     @Transactional
     public void create(UserArticleRole role) throws Exception{
@@ -34,7 +42,21 @@ public class UserArticleRoleService {
     }
 
     @Transactional
+    public List <User> findMistakeViewers(Article article) throws Exception{
+        return userArticleRoleRepository.findMistakeViewers(article);
+    }
+
+    @Transactional
     public void delete(UserArticleRole role) throws Exception{
         userArticleRoleRepository.delete(role);
+    }
+
+    public List<UserArticleRole> findByArticle(int articleId){
+       return userArticleRoleRepository.findByArticle(articleId);
+    }
+
+    @Transactional
+    public void delete(int id) throws Exception{
+        userArticleRoleRepository.delete(id);
     }
 }

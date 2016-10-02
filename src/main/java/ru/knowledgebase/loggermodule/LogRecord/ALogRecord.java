@@ -24,6 +24,30 @@ public abstract class ALogRecord {
      */
 	protected String addRecordSeparator(String word){ return word + CONSTANTS.INSIDE_RECORD_SEPARATOR; }
 
+	public OPERATION getOperationType() {
+		return operationType;
+	}
+
+	public void setOperationType(OPERATION operationType) {
+		this.operationType = operationType;
+	}
+
+	public Timestamp getTime() {
+		return time;
+	}
+
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
 	/**
 	 * Creates a {@code StringBuilder} of class' fields {@code operationType}, {@code time} and
 	 * {@code userID}.

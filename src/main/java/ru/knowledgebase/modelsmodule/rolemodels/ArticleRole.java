@@ -24,7 +24,7 @@ public class ArticleRole {
     private String name;
 
     @Column
-    private boolean canAddArticles;
+    private boolean canAddArticle;
 
     @Column
     private boolean canEditArticle;
@@ -42,7 +42,16 @@ public class ArticleRole {
     private boolean canOnOffNotifications;
 
     @Column
-    private boolean canGetReports;
+    private boolean canGetNotifications;
+
+    @Column
+    private boolean canGetSystemActionsReports;
+
+    @Column
+    private boolean canGetSearchOperationsReports;
+
+    @Column
+    private boolean canGetEmployeesActionsReports;
 
     @Column
     private boolean canViewMistakes;
@@ -82,12 +91,12 @@ public class ArticleRole {
     }
 
 
-    public boolean isCanAddArticles() {
-        return canAddArticles;
+    public boolean isCanAddArticle() {
+        return canAddArticle;
     }
 
-    public void setCanAddArticles(boolean canAddArticles) {
-        this.canAddArticles = canAddArticles;
+    public void setCanAddArticle(boolean canAddArticles) {
+        this.canAddArticle = canAddArticles;
     }
 
     public boolean isCanEditArticle() {
@@ -130,12 +139,12 @@ public class ArticleRole {
         this.canOnOffNotifications = canOnOffNotifications;
     }
 
-    public boolean isCanGetReports() {
-        return canGetReports;
+    public boolean isCanGetSystemActionsReports() {
+        return canGetSystemActionsReports;
     }
 
-    public void setCanGetReports(boolean canGetReports) {
-        this.canGetReports = canGetReports;
+    public void setCanGetSystemActionsReports(boolean canGetReports) {
+        this.canGetSystemActionsReports = canGetReports;
     }
 
     public boolean isCanViewMistakes() {
@@ -161,4 +170,37 @@ public class ArticleRole {
     public void setCanSearch(boolean canSearch) {
         this.canSearch = canSearch;
     }
+
+    public boolean isCanGetNotifications() {
+        return canGetNotifications;
+    }
+
+    public void setCanGetNotifications(boolean canGetNotifications) {
+        this.canGetNotifications = canGetNotifications;
+    }
+
+    public List<UserArticleRole> getUserArticleRoles() {
+        return userArticleRoles;
+    }
+
+    public void setUserArticleRoles(List<UserArticleRole> userArticleRoles) {
+        this.userArticleRoles = userArticleRoles;
+    }
+
+    public boolean isCanGetSearchOperationsReports() {
+        return canGetSearchOperationsReports;
+    }
+
+    public void setCanGetSearchOperationsReports(boolean canGetSearchReports) {
+        this.canGetSearchOperationsReports = canGetSearchReports;
+    }
+
+    public boolean isCanGetEmployeesActionsReports() {
+        return canGetEmployeesActionsReports;
+    }
+
+    public void setCanGetEmployeesActionsReports(boolean canGetHistoryReports) {
+        this.canGetEmployeesActionsReports = canGetHistoryReports;
+    }
 }
+

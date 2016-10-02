@@ -1,0 +1,10 @@
+{
+	logPath : "/home/log",
+
+	imagePath : "/home/vova/Project BZ/trash/image_folder/",
+	imageFolder : "/word/media/",
+
+	ldapURI : "ldap://localhost",
+        ldapContextFactory : "com.sun.jndi.ldap.LdapCtxFactory",
+	ldapDomain : "dc=knowledge,dc=base",
+}

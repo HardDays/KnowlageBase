@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.repositories.userrepositories.UserRepository;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**

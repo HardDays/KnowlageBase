@@ -12,13 +12,14 @@ import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsExceptio
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 
+import java.util.List;
+
 /**
  * Created by vova on 20.08.16.
  */
 public class ArticleRoleController {
 
     private int defaultArticleRoleId = 1;
-    private int defaultRootArticleId = 1;
 
     private DataCollector collector = DataCollector.getInstance();
 
@@ -40,7 +41,19 @@ public class ArticleRoleController {
         }
         return localInstance;
     }
-
+    /**
+     * Return all available section roles
+     * @return list of roles
+     */
+    public List<ArticleRole> getAll() throws Exception{
+        List <ArticleRole> roles = null;
+        try{
+            roles = collector.getArticleRoles();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        return roles;
+    }
     /**
      * Create new article role
      * @param articleRole article role formed object
@@ -105,17 +118,18 @@ public class ArticleRoleController {
         UserArticleRole role = null;
         //go through article tree to root
         try {
-            role = collector.findUserArticleRole(user, article);
-            while (role == null && collector.getParentArticle(article) != null) {
-                article = collector.getParentArticle(article);
+            if (article.isSection()){
                 role = collector.findUserArticleRole(user, article);
+            }else {
+                Article section = collector.findArticle(article.getSectionId());
+                role = collector.findUserArticleRole(user, section);
             }
         }catch (Exception e){
             throw  new DataBaseException();
         }
         ArticleRole articleRole = role.getArticleRole();
         if (articleRole == null)
-            throw new DataBaseException();
+            throw new RoleNotFoundException();
         return articleRole;
     }
     /**
@@ -143,12 +157,31 @@ public class ArticleRoleController {
         Article article = null;
         ArticleRole articleRole = null;
         try {
-            article = collector.findArticle(defaultRootArticleId);
+            article = collector.getBaseArticle();
             articleRole = collector.findArticleRole(defaultArticleRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
         if (article == null || articleRole == null)
+            throw new AssignDefaultRoleException();
+        assignUserRole(user, article, articleRole);
+    }
+    /**
+     * Create default user role for root article
+     * @param userId user id
+     */
+    public void assignDefaultUserRole(int userId) throws Exception{
+        Article article = null;
+        ArticleRole articleRole = null;
+        User user = null;
+        try {
+            article = collector.getBaseArticle();
+            articleRole = collector.findArticleRole(defaultArticleRoleId);
+            user = collector.findUser(userId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        if (article == null || articleRole == null || user == null)
             throw new AssignDefaultRoleException();
         assignUserRole(user, article, articleRole);
     }
@@ -161,6 +194,9 @@ public class ArticleRoleController {
             UserArticleRole existRole = collector.findUserArticleRole(role.getUser(),role.getArticle());
             if (existRole != null)
                 role.setId(existRole.getId());
+         //   Article article = role.getArticle();
+         //   article.setIsSection(true);
+         //   collector.updateArticle(article);
             collector.addUserArticleRole(role);
         }catch (Exception e){
             throw new DataBaseException();
@@ -196,7 +232,6 @@ public class ArticleRoleController {
             article = collector.findArticle(articleId);
             articleRole = collector.findArticleRole(articleRoleId);
         }catch (Exception e){
-            //e.printStackTrace();
             throw new DataBaseException();
         }
         assignUserRole(user, article, articleRole);
@@ -249,6 +284,72 @@ public class ArticleRoleController {
         deleteUserRole(user, article, articleRole);
     }
 
+    public void createBaseRoles() throws Exception{
+        ArticleRole user = new ArticleRole();
+        user.setName("Пользователь");
+        user.setCanViewArticle(true);
+        user.setCanAddMistakes(true);
+        user.setCanSearch(true);
+        user.setCanAddArticle(true);
+        create(user);
+
+        try{
+            defaultArticleRoleId = collector.findArticleRole("Пользователь").getId();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+
+        ArticleRole superUser = new ArticleRole();
+        superUser.setName("Суперпользователь");
+        superUser.setCanViewArticle(true);
+        superUser.setCanAddMistakes(true);
+        superUser.setCanSearch(true);
+        superUser.setCanAddArticle(true);
+        superUser.setCanEditArticle(true);
+        superUser.setCanViewArticle(true);
+        superUser.setCanDeleteArticle(true);
+        superUser.setCanAddNews(true);
+        superUser.setCanGetEmployeesActionsReports(true);
+        superUser.setCanGetNotifications(true);
+        superUser.setCanGetSearchOperationsReports(true);
+        superUser.setCanGetSystemActionsReports(true);
+        superUser.setCanOnOffNotifications(true);
+        superUser.setCanSearch(true);
+        superUser.setCanViewArticle(true);
+        superUser.setCanViewMistakes(true);
+        create(superUser);
+
+        ArticleRole admin = new ArticleRole();
+        admin.setName("Администратор раздела");
+        admin.setCanViewArticle(true);
+        admin.setCanAddMistakes(true);
+        admin.setCanSearch(true);
+        admin.setCanAddArticle(true);
+        admin.setCanEditArticle(true);
+        admin.setCanViewArticle(true);
+        admin.setCanDeleteArticle(true);
+        admin.setCanAddNews(true);
+        admin.setCanGetEmployeesActionsReports(true);
+        admin.setCanGetNotifications(true);
+        admin.setCanGetSearchOperationsReports(true);
+        admin.setCanGetSystemActionsReports(true);
+        admin.setCanOnOffNotifications(true);
+        admin.setCanSearch(true);
+        admin.setCanViewArticle(true);
+        admin.setCanViewMistakes(true);
+        create(admin);
+
+        ArticleRole superVisor = new ArticleRole();
+        superVisor.setName("Супервизор");
+        superVisor.setCanViewArticle(true);
+        superVisor.setCanAddMistakes(true);
+        superVisor.setCanSearch(true);
+        superVisor.setCanAddArticle(true);
+        superVisor.setCanGetEmployeesActionsReports(true);
+        create(superVisor);
+
+    }
+
     public int getDefaultArticleRoleId() {
         return defaultArticleRoleId;
     }
@@ -257,16 +358,8 @@ public class ArticleRoleController {
         this.defaultArticleRoleId = defaultArticleRoleId;
     }
 
-    public int getDefaultRootArticleId() {
-        return defaultRootArticleId;
-    }
-
-    public void setDefaultRootArticleId(int defaultRootArticleId) {
-        this.defaultRootArticleId = defaultRootArticleId;
-    }
-
-    public boolean canAddArticles(int userId, int articleId) throws Exception {
-        return findUserRole(userId, articleId).isCanAddArticles();
+    public boolean canAddArticle(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanAddArticle();
     }
 
     public boolean canEditArticle(int userId, int articleId) throws Exception {
@@ -290,7 +383,7 @@ public class ArticleRoleController {
     }
 
     public boolean canGetReports(int userId, int articleId) throws Exception {
-        return findUserRole(userId, articleId).isCanGetReports();
+        return findUserRole(userId, articleId).isCanGetSystemActionsReports();
     }
 
     public boolean canViewMistakes(int userId, int articleId) throws Exception {
@@ -304,4 +397,36 @@ public class ArticleRoleController {
     public boolean canSearch(int userId, int articleId) throws Exception {
         return findUserRole(userId, articleId).isCanSearch();
     }
+
+    public boolean canGetNotifications(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetNotifications();
+    }
+
+    public boolean canGetSearchOperationsReports(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetSearchOperationsReports();
+    }
+
+    public boolean canGetEmployeesActionsReports(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetEmployeesActionsReports();
+    }
+
+    public boolean canGetSystemActionsReports(int userId, int articleId) throws Exception {
+        return findUserRole(userId, articleId).isCanGetSystemActionsReports();
+    }
+
+    /** Indicates if user has an access to all those sections
+    @param userID @param sections
+    @return */
+    public boolean hasAccessToSections(int userID, List<Integer> sections) throws Exception{
+        try {
+            boolean res = true;
+            for (Integer sectionId : sections) {
+                res = res && findUserRole(userID, sectionId).isCanViewArticle();
+            }
+            return res;
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+    }
+
 }

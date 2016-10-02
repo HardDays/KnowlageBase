@@ -45,4 +45,8 @@ public class GlobalRoleService {
     public void delete(GlobalRole role) throws Exception{
         globalRoleRepository.delete(role);
     }
+
+    public void delete(int id) throws Exception{
+        globalRoleRepository.delete(id);
+    }
 }

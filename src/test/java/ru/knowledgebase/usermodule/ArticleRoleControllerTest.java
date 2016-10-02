@@ -1,6 +1,7 @@
-package ru.knowledgebase.articlemodule;
+package ru.knowledgebase.usermodule;
 
 import org.junit.*;
+import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
 import ru.knowledgebase.ldapmodule.LdapWorker;
@@ -13,6 +14,8 @@ import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
+
+import java.sql.Timestamp;
 
 import static org.junit.Assert.assertTrue;
 /**
@@ -33,20 +36,16 @@ public class ArticleRoleControllerTest {
     private final String roleName = "User";
 
     private DataCollector collector = DataCollector.getInstance();
-    private LdapWorker ldapWorker = LdapWorker.getInstance();
+ //   private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     @Before
     public void prepareUser() throws Exception{
         User user = collector.findUser(login1);
         if (user == null) {
-            user = new User();
-            user.setLogin(login1);
-            user.setPassword(password1);
-            collector.addUser(user);
+            UserController.getInstance().register(login1, password1, "t1@m",
+                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         }
 
-        if (!ldapWorker.isUserExists(login1))
-            ldapWorker.createUser(login1, password1);
     }
 
     @Before
@@ -85,9 +84,7 @@ public class ArticleRoleControllerTest {
     public void prepareArticle() throws Exception{
         Article article = collector.findArticle(articleId);
         if (article == null) {
-            article = new Article(articleId);
-            article.setTitle(articleName);
-            collector.addArticle(article);
+            ArticleController.getInstance().addBaseArticle("1", "2", 1, new Timestamp(5), new Timestamp(5), new Timestamp(5));
         }
     }
 

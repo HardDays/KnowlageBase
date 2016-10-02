@@ -2,8 +2,10 @@ package ru.knowledgebase.dbmodule.storages;
 
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class LocalStorage {
     }
 
     private SectionStorage sectionStorage = SectionStorage.getInstance();
+    private SectionRoleStorage sectionRoleStorage = SectionRoleStorage.getInstance();
 
     //BEGIN SECTION METHODS
 
@@ -78,10 +81,30 @@ public class LocalStorage {
 
     //END SECTION METHODS
 
+    //BEGIN SectionRole METHODS
+
+    public void add(int userId, int sectionId) throws Exception {
+        sectionRoleStorage.add(userId, sectionId);
+    }
+
+    public HashSet<Integer> getSections(int userId) throws Exception {
+        return sectionRoleStorage.getSections(userId);
+    }
+
+    //END SectionRole METHODS
+
 
     //BEGIN INIT ACTIONS
-    public void initSectionMapStorage(HashMap<Integer, LinkedList<Integer>> sectionMap) {
+    public void initSectionMapStorage(HashMap<Integer, LinkedList<Integer>> sectionMap) throws Exception{
         sectionStorage.setSectionsToMap(sectionMap);
     }
+
+    public void initSectionRoleStarage(List<UserArticleRole> userArticleRoles) throws Exception{
+        for (UserArticleRole role : userArticleRoles) {
+            sectionRoleStorage.add(role.getUser().getId(), role.getArticle().getId());
+        }
+    }
+
+
     //END INIT ACTIONS
 }

@@ -17,7 +17,7 @@ public class LogReader {
     private Log log;
     private LinkedList<ALogRecord> logRecords;
 
-    public LogReader getInstance(){ return ourInstance;}
+    public static LogReader getInstance(){ return ourInstance;}
 
     public LogReader(){
         log = Log.getInstance();
@@ -29,7 +29,7 @@ public class LogReader {
      * @return a list of records from log
      */
     public LinkedList<ALogRecord> getRecordsFromLog(){
-        logRecords = new LinkedList<>();
+        logRecords = new LinkedList<ALogRecord>();
 
         LogRecordFactory logRecordFactory = new LogRecordFactory();
         LinkedList<String> listOfStringRecords = new LinkedList<>(log.getAllRecordsFromLog());

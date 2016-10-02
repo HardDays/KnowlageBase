@@ -45,4 +45,8 @@ public class ArticleRoleService {
     public void delete(ArticleRole role) throws Exception{
         articleRoleRepository.delete(role);
     }
+
+    public void delete(int id) throws Exception{
+        articleRoleRepository.delete(id);
+    }
 }

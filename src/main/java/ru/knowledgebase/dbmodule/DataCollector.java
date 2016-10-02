@@ -8,17 +8,20 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.dataservices.archiveservice.ArchiveArticleService;
 import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
+import ru.knowledgebase.dbmodule.dataservices.commentservice.CommentService;
 import ru.knowledgebase.dbmodule.dataservices.imageservice.ImageService;
 import ru.knowledgebase.dbmodule.dataservices.newsservice.NewsService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.ArticleRoleService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.GlobalRoleService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.UserArticleRoleService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.UserGlobalRoleService;
+import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 import ru.knowledgebase.dbmodule.storages.LocalStorage;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
+import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
 import java.awt.*;
@@ -48,6 +51,8 @@ public class DataCollector {
     private UserGlobalRoleService userGlobalRoleService;
     private ArchiveArticleService archiveArticleService;
     private NewsService newsService;
+    private CommentService commentService;
+    private SearchService searchService;
 
     private final int BASE_ARTICLE = -1;
 
@@ -86,6 +91,8 @@ public class DataCollector {
         userGlobalRoleService = (UserGlobalRoleService) context.getBean("userGlobalRoleService");
         archiveArticleService = (ArchiveArticleService) context.getBean("archiveArticleService");
         newsService = (NewsService)context.getBean("newsService");
+        commentService = (CommentService) context.getBean("commentService");
+        searchService = SearchService.getInstance();
 
         try {
             initLocalStorage();
@@ -99,6 +106,11 @@ public class DataCollector {
     private void initLocalStorage() throws Exception {
         localStorage = LocalStorage.getInstance();
         localStorage.initSectionMapStorage(this.initSectionStorage());
+        localStorage.initSectionRoleStarage(this.initSectionRoleStarage());
+    }
+
+    private List<UserArticleRole> initSectionRoleStarage() throws Exception {
+        return userArticleRoleService.getAll();
     }
 
     private HashMap<Integer, LinkedList<Integer>> initSectionStorage() throws Exception {
@@ -291,6 +303,10 @@ public class DataCollector {
         articleRoleService.delete(role);
     }
 
+    public void deleteArticleRole(int id) throws Exception {
+        articleRoleService.delete(id);
+    }
+
     public List<ArticleRole> getArticleRoles() throws Exception{
         return articleRoleService.getAll();
     }
@@ -309,14 +325,31 @@ public class DataCollector {
 
     public void addUserArticleRole(UserArticleRole role) throws Exception{
         userArticleRoleService.create(role);
+        localStorage.add(role.getUser().getId(), role.getArticle().getId());
+    }
+
+    public HashSet<Integer> getUserSections(int userId) throws Exception{
+        return localStorage.getSections(userId);
     }
 
     public void deleteUserArticleRole(UserArticleRole role) throws Exception{
         userArticleRoleService.delete(role);
     }
 
+    public void deleteUserArticleRole(int id) throws Exception{
+        userArticleRoleService.delete(id);
+    }
+
     public UserArticleRole findUserArticleRole(User user, Article article) throws Exception{
         return userArticleRoleService.find(user, article);
+    }
+
+    public List <User> findMistakeViewers(Article article) throws Exception{
+        return userArticleRoleService.findMistakeViewers(article);
+    }
+
+    public List <UserArticleRole> findUserArticleRoleByArticle(int articleId){
+        return userArticleRoleService.findByArticle(articleId);
     }
 
     //END USERARTICLEROLE METHODS
@@ -333,6 +366,10 @@ public class DataCollector {
 
     public void deleteGlobalRole(GlobalRole globalRole) throws Exception{
         globalRoleService.delete(globalRole);
+    }
+
+    public void deleteGlobalRole(int id) throws Exception{
+        globalRoleService.delete(id);
     }
 
     public GlobalRole findGlobalRole(String name) throws Exception{
@@ -359,8 +396,12 @@ public class DataCollector {
 
     public void deleteUserGlobalRole(UserGlobalRole role) throws Exception{
         userGlobalRoleService.delete(role);
-
     }
+
+    public void deleteUserGlobalRole(int id) throws Exception{
+        userGlobalRoleService.delete(id);
+    }
+
     //END USERGLOBALROLE METHODS
 
     //BEGIN IMAGE CRUD METHODS
@@ -601,4 +642,41 @@ public class DataCollector {
     }
 
     //END NEWS METHODS
+
+    //BEGIN COMMENT CRUD METHODS
+    public void addComment(Comment comment) throws Exception{
+        commentService.create(comment);
+    }
+
+    public void updateComment(Comment comment) throws Exception{
+        commentService.update(comment);
+    }
+
+    public Comment findComment(int id) throws Exception{
+        return commentService.find(id);
+    }
+
+    public void deleteComment(int id) throws Exception{
+        commentService.delete(id);
+    }
+
+    public List<Comment> findCommentsByAdmin(User admin) throws Exception{
+        return commentService.findByAdmin(admin);
+    }
+
+    public void deleteComment(Comment comment) throws Exception{
+        commentService.delete(comment);
+    }
+    //END COMMENT CRUD METHODS
+
+    //BEGIN SERCH METHODS
+    public List<Article> searchByTitle(String searchRequest) {
+        return searchService.searchByTitle(searchRequest);
+    }
+
+    public List<Article> searchByBody(String searchRequest) {
+        return searchService.searchByBody(searchRequest);
+    }
+    //END   SERCH METHODS
+
 }

@@ -47,7 +47,8 @@ public class NewsControllerTest {
         img = new Image("home/path", "some2");
         img = ic.addImage(img);
 
-        u = new User("TestUser", "123");
+        u = new User("TestUser", "123", "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         u = dc.addUser(u);
         author = u.getId();
 

@@ -8,9 +8,10 @@ import java.sql.Timestamp;
  * made in the system.
  */
 public class SearchRequestRecord extends ALogRecord {
+
     private String searchRequest;
 
-    public SearchRequestRecord(Timestamp time, int userID, String searchRequest) {
+    public SearchRequestRecord(int userID, String searchRequest) {
         this.operationType = OPERATION.SEARCH_REQUEST;
         this.time = time;
         this.userID = userID;
@@ -22,5 +23,13 @@ public class SearchRequestRecord extends ALogRecord {
         StringBuilder record = getRecordBase();
         record.append(searchRequest);
         return record.toString();
+    }
+
+    public String getSearchRequest() {
+        return searchRequest;
+    }
+
+    public void setSearchRequest(String searchRequest) {
+        this.searchRequest = searchRequest;
     }
 }

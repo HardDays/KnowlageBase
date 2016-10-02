@@ -4,7 +4,7 @@ import ru.knowledgebase.archivemodule.ArchiveArticleController;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.articlemodule.SectionController;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
-import ru.knowledgebase.responsemodule.Response;
+import javax.ws.rs.core.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.usermodule.UserController;
@@ -44,7 +44,7 @@ public class ArticleWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canAddArticles(authorId, parentArticle);
+            boolean hasRights = articleRoleController.canAddArticle(authorId, parentArticle);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }

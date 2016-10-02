@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class SearchResultRecord extends ALogRecord {
     private int articleID;
 
-    public SearchResultRecord(Timestamp time, int userID, int articleID) {
+    public SearchResultRecord(int userID, int articleID) {
         this.time = time;
         this.articleID = articleID;
         this.operationType = OPERATION.SEARCH_RESULT;
@@ -26,5 +26,13 @@ public class SearchResultRecord extends ALogRecord {
         StringBuilder record = getRecordBase();
         record.append(Integer.toString(articleID));
         return record.toString();
+    }
+
+    public int getArticleID() {
+        return articleID;
+    }
+
+    public void setArticleID(int articleID) {
+        this.articleID = articleID;
     }
 }

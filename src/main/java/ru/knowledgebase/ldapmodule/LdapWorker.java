@@ -1,5 +1,6 @@
 package ru.knowledgebase.ldapmodule;
 
+import ru.knowledgebase.configmodule.Configurations;
 import ru.knowledgebase.exceptionmodule.ldapexceptions.LdapConnectionException;
 import ru.knowledgebase.exceptionmodule.ldapexceptions.LdapException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
@@ -9,6 +10,7 @@ import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.WrongPasswordException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserAlreadyExistsException;
 import ru.knowledgebase.exceptionmodule.userexceptions.WrongUserDataException;
+import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -20,11 +22,11 @@ import java.util.regex.Pattern;
 public class LdapWorker {
 
     //params for LDAP
-    private String ldapURI = "ldap://localhost";
-    private String contextFactory = "com.sun.jndi.ldap.LdapCtxFactory";
+    private String ldapURI = Configurations.getLdapURI();
+    private String contextFactory = Configurations.getLdapContextFactory();
     private String adminName = "admin";
     private String adminPass = "d2434fg4hjS2340_113";
-    private String domain = "dc=knowledge,dc=base";
+    private String domain = Configurations.getLdapDomain();
     private String defaultRole = "User";
 
     private static volatile LdapWorker instance;
@@ -83,7 +85,7 @@ public class LdapWorker {
      * @return context with user parameters
      */
     private DirContext formAuthContext(String domain, String password) throws Exception {
-        Hashtable<String,String> env = formEnvironment();
+        Hashtable<String, String> env = formEnvironment();
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
         env.put(Context.SECURITY_PRINCIPAL, domain);
         env.put(Context.SECURITY_CREDENTIALS, password);
@@ -149,6 +151,34 @@ public class LdapWorker {
     public boolean isRoleExists(String role) throws Exception{
         return findRoleDomain(role) != null;
     }
+    /**
+     * Get user info from ldap
+     * @param login user login
+     * @return user object
+     */
+    public User getUserInfo(String login) throws Exception{
+        try {
+            DirContext context = formContext(formEnvironment());
+            Attributes attributes = context.getAttributes(findUserDomain(login));
+            User user = new User();
+            for (NamingEnumeration ae = attributes.getAll(); ae.hasMore(); ) {
+                Attribute attr = (Attribute) ae.next();
+                System.out.println("attribute: " + attr.getID());
+                if (attr.getID().equals("uid")) {
+                    NamingEnumeration e = attr.getAll();
+                    while (e.hasMore()) {
+                        String t = e.next().toString();
+                        user = new User(t, t, t, t, t, t, t, t, t, null, null);
+                        return user;
+                    }
+                }
+            }
+            return user;
+        }catch (Exception e){
+            throw new LdapException();
+        }
+    }
+
     /**
      * Authorize user with login and password
      * @param login user id

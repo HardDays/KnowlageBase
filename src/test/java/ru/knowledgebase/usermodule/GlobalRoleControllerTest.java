@@ -1,7 +1,8 @@
-package ru.knowledgebase.articlemodule;
+package ru.knowledgebase.usermodule;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
@@ -13,6 +14,8 @@ import ru.knowledgebase.rolemodule.GlobalRoleController;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
+
+import java.sql.Timestamp;
 
 import static org.junit.Assert.assertTrue;
 
@@ -34,26 +37,19 @@ public class GlobalRoleControllerTest {
     private final String roleName = "User";
 
     private DataCollector collector = DataCollector.getInstance();
-    private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     public void prepareUser() throws Exception{
         User user = collector.findUser(login1);
         if (user == null) {
-            user = new User();
-            user.setLogin(login1);
-            user.setPassword(password1);
-            collector.addUser(user);
+            ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         }
-        if (!ldapWorker.isUserExists(login1))
-            ldapWorker.createUser(login1, password1);
     }
 
     public void afterUser() throws Exception{
         User user = collector.findUser(login1);
         if (user != null)
             collector.deleteUser(user);
-        if (ldapWorker.isUserExists(login1))
-            ldapWorker.deleteUser(login1);
     }
 
     @Before
@@ -87,11 +83,6 @@ public class GlobalRoleControllerTest {
         if (role != null){
             collector.deleteGlobalRole(role);
         }
-        if (ldapWorker.isRoleExists(role1Name)) {
-            ldapWorker.deleteRole(role1Name);
-        }
-        if (ldapWorker.isRoleExists(role2Name))
-            ldapWorker.deleteRole(role2Name);
         prepareUser();
     }
 
@@ -99,9 +90,7 @@ public class GlobalRoleControllerTest {
     public void prepareArticle() throws Exception{
         Article article = collector.findArticle(articleId);
         if (article == null) {
-            article = new Article(articleId);
-            article.setTitle(articleName);
-            collector.addArticle(article);
+            ArticleController.getInstance().addBaseArticle("1", "2", 1, new Timestamp(5), new Timestamp(5), new Timestamp(5));
         }
     }
 

@@ -11,6 +11,8 @@ import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsExceptio
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 
+import java.util.List;
+
 /**
  * Created by vova on 20.08.16.
  */
@@ -19,11 +21,9 @@ public class GlobalRoleController {
     private int defaultGlobalRoleId = 1;
 
     private DataCollector collector = DataCollector.getInstance();
-    private LdapWorker ldapWorker = LdapWorker.getInstance();
+   // private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     private static volatile GlobalRoleController instance;
-
-    private GlobalRole globalRole;
 
     /**
      * Get instance of a class
@@ -41,22 +41,34 @@ public class GlobalRoleController {
         }
         return localInstance;
     }
-
+    /**
+     * Return all available global roles
+     * @return list of roles
+     */
+    public List<GlobalRole> getAll() throws Exception{
+        List <GlobalRole> roles = null;
+        try{
+            roles = collector.getGlobalRoles();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        return roles;
+    }
     /**
      * Create new global role
      * @param globalRole global role formed object
      */
     public void create(GlobalRole globalRole) throws Exception{
-        ldapWorker.createRole(globalRole.getName());
+ //       ldapWorker.createRole(globalRole.getName());
         try {
             collector.addGlobalRole(globalRole);
         }catch (org.springframework.dao.DataIntegrityViolationException e){
             //rollback
-            ldapWorker.deleteRole(globalRole.getName());
+        //    ldapWorker.deleteRole(globalRole.getName());
             throw new RoleAlreadyExistsException();
         }catch (Exception e){
             //rollback
-            ldapWorker.deleteRole(globalRole.getName());
+          //  ldapWorker.deleteRole(globalRole.getName());
             throw new DataBaseException();
         }
     }
@@ -78,12 +90,12 @@ public class GlobalRoleController {
     public void delete(GlobalRole globalRole) throws Exception{
         if (globalRole == null)
             throw new RoleNotFoundException();
-        ldapWorker.deleteRole(globalRole.getName());
+     //   ldapWorker.deleteRole(globalRole.getName());
         try {
             collector.deleteGlobalRole(globalRole);
         }catch (Exception e){
             //rollback ldap
-            ldapWorker.createRole(globalRole.getName());
+       //     ldapWorker.createRole(globalRole.getName());
             throw new DataBaseException();
         }
     }
@@ -131,7 +143,7 @@ public class GlobalRoleController {
         }catch (Exception e){
             throw new DataBaseException();
         }
-        ldapWorker.changeRole(role.getUser().getLogin(), role.getGlobalRole().getName());
+       // ldapWorker.changeRole(role.getUser().getLogin(), role.getGlobalRole().getName());
     }
     /**
      * Assign default global role for specified user
@@ -140,11 +152,28 @@ public class GlobalRoleController {
     public void assignDefaultUserRole(User user) throws Exception{
         GlobalRole globalRole = null;
         try {
-            collector.findGlobalRole(defaultGlobalRoleId);
+            globalRole = collector.findGlobalRole(defaultGlobalRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
         if (globalRole == null)
+            throw new AssignDefaultRoleException();
+        assignUserRole(user, globalRole);
+    }
+    /**
+     * Assign default global role for specified user
+     * @param userId user id
+     */
+    public void assignDefaultUserRole(int userId) throws Exception{
+        GlobalRole globalRole = null;
+        User user = null;
+        try {
+            globalRole = collector.findGlobalRole(defaultGlobalRoleId);
+            user = collector.findUser(userId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        if (globalRole == null || user == null)
             throw new AssignDefaultRoleException();
         assignUserRole(user, globalRole);
     }
@@ -248,12 +277,34 @@ public class GlobalRoleController {
         deleteUserRole(user, role);
     }
 
-    public int getDefaultGlobalRoleId() {
-        return defaultGlobalRoleId;
-    }
+    public void createBaseRoles() throws Exception{
+        GlobalRole user = new GlobalRole();
+        user.setName("Пользователь");
+        create(user);
 
-    public void setDefaultGlobalRoleId(int defaultGlobalRoleId) {
-        this.defaultGlobalRoleId = defaultGlobalRoleId;
+        try {
+            defaultGlobalRoleId = collector.findGlobalRole("Пользователь").getId();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+
+        GlobalRole superUser = new GlobalRole();
+        superUser.setName("Суперпользователь");
+        superUser.setCanAddUser(true);
+        superUser.setCanDeleteUser(true);
+        superUser.setCanEditUser(true);
+        superUser.setCanEditUserRole(true);
+        superUser.setCanViewUser(true);
+        create(superUser);
+
+        GlobalRole admin = new GlobalRole();
+        admin.setName("Администратор раздела");
+        admin.setCanViewUser(true);
+        create(admin);
+
+        GlobalRole superVisor = new GlobalRole();
+        superVisor.setName("Супервизор");
+        create(superVisor);
     }
 
     public boolean canAddUser(int userId) throws Exception{
@@ -268,7 +319,12 @@ public class GlobalRoleController {
         return findUserRole(userId).isCanDeleteUser();
     }
 
-    public boolean canEditUserRoles(int userId) throws Exception{
-        return findUserRole(userId).isCanEditUserRoles();
+    public boolean canViewUser(int userId) throws Exception{
+        return findUserRole(userId).isCanViewUser();
     }
+
+    public boolean canEditUserRole(int userId) throws Exception{
+        return findUserRole(userId).isCanEditUserRole();
+    }
+
 }

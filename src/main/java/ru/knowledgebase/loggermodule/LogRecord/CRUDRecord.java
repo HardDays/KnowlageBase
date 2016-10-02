@@ -15,10 +15,13 @@ import java.sql.Timestamp;
 public class CRUDRecord extends ALogRecord {
     private final int articleID;
 
+    public int getArticleID() {
+        return articleID;
+    }
 
-    public CRUDRecord(OPERATION CRUDOperation, Timestamp time, int userID, int articleID) {
+    public CRUDRecord(OPERATION CRUDOperation, int userID, int articleID) {
         this.operationType = CRUDOperation;
-        this.time = time;
+        this.time = new Timestamp(System.currentTimeMillis());
 		this.userID = userID;
 		this.articleID = articleID;
     }

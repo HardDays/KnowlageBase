@@ -5,7 +5,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ru.knowledgebase.archivemodule.ArchiveArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
 import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.usermodels.User;
@@ -36,7 +35,8 @@ public class ArchiveArticleControllerTest {
 
     @BeforeClass
     public static void init() throws Exception{
-        u = new User("TestUser", "123");
+        u = new User("TestUser", "123", "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         u = dc.addUser(u);
         author = u.getId();
 

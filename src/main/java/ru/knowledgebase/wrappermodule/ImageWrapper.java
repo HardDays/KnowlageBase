@@ -3,7 +3,7 @@ package ru.knowledgebase.wrappermodule;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import ru.knowledgebase.imagemodule.ImageController;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
-import ru.knowledgebase.responsemodule.Response;
+import javax.ws.rs.core.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.usermodule.UserController;
 

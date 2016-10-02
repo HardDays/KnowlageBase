@@ -2,9 +2,6 @@ package ru.knowledgebase.webmodule.services;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import ru.knowledgebase.articlemodule.ArticleController;
-import ru.knowledgebase.modelsmodule.articlemodels.Article;
-import ru.knowledgebase.wrappermodule.ArticleWrapper;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -28,10 +25,8 @@ public class AddService {
 
     @GET
     @Path("/article/{param}")
-    public Response addNewArticleG(@PathParam("param") String smg) throws Exception{
-        ArticleController w = new ArticleController();
-        Article a = w.getArticle(123);
-        return Response.status(200).entity(a.toString()).build();
+    public Response addNewArticleG(@PathParam("param") String smg) {
+        return Response.status(200).entity(smg).build();
     }
 
     @POST

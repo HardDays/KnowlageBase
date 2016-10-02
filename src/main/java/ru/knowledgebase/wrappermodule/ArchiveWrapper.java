@@ -5,7 +5,7 @@ import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.articlemodule.SectionController;
 import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
-import ru.knowledgebase.responsemodule.Response;
+import javax.ws.rs.core.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.usermodule.UserController;

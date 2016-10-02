@@ -3,7 +3,7 @@ package ru.knowledgebase.wrappermodule;
 import ru.knowledgebase.articlemodule.NewsController;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
-import ru.knowledgebase.responsemodule.Response;
+import javax.ws.rs.core.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.usermodule.UserController;
