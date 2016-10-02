@@ -1,12 +1,15 @@
 package ru.knowledgebase.wrappermodule;
 
-import ru.knowledgebase.exceptionmodule.searchexceptions.SearchException;
-import ru.knowledgebase.exceptionmodule.searchexceptions.WrongSearchParametersException;
+import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.loggermodule.LogRecord.LogRecordFactory;
 import ru.knowledgebase.loggermodule.Server.Logger;
 import javax.ws.rs.core.Response;
+
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.searchmodule.SearchController;
+
+import java.util.List;
 
 
 public class SearchWrapper {
@@ -42,7 +45,8 @@ public class SearchWrapper {
     public Response searchByBody(int userID, String searchRequest){
         writeToLog(userID, searchRequest);
         try{
-            return ResponseBuilder.buildSearchResultResponse(searchController.searchByBody(userID, searchRequest));
+            return ResponseBuilder.buildSearchResultResponse(
+                    searchController.searchByBody(userID, searchRequest));
         }catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }

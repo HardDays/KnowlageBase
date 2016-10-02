@@ -3,10 +3,12 @@ package ru.knowledgebase.searchmodule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.searchexceptions.SearchException;
 import ru.knowledgebase.exceptionmodule.searchexceptions.WrongSearchParametersException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class SearchController {
             throw new SearchException();
         }
 
-        return getArticlesUserHasAcessTo(userID, result);
+        return getArticlesAvailableToUser(result, userID);
     }
 
     /**
@@ -76,36 +78,30 @@ public class SearchController {
         }catch (Exception ex){
             throw new SearchException();
         }
-        return getArticlesUserHasAcessTo(userID, result);
+        return getArticlesAvailableToUser(result, userID);
     }
 
     /**
      * Traverse through given list of articles and finds those to which user {@code userID} has access to
-     * @param userID
      * @param articles
-     * @return list of articles user has access to
-     */
-    private List<Article> getArticlesUserHasAcessTo(int userID, List<Article> articles) {
-        if(articles.isEmpty())
-            return articles;
-        List<Article>  avalableArticles = new LinkedList<>();
-        for (Article article:articles) {
-            if(hasAcess(userID, article)){
-                avalableArticles.add(article);
-            }
-        }
-        return avalableArticles;
-    }
-
-    /**
-     * Indicates wheather user has access to a given article
      * @param userID
-     * @param article
      * @return
+     * @throws DataBaseException
      */
-    private boolean hasAcess(int userID, Article article) {
-        //TODO: check if user has access to given article
-        return false;
+    private List<Article> getArticlesAvailableToUser(List<Article> articles, Integer userID)
+            throws DataBaseException {
+        if(articles.isEmpty()) return articles;
+        List<Article> articlesUserHasAccessTo = new LinkedList<>();
+        try {
+            HashSet<Integer> usersSections = dataCollector.getUserSections(userID);
+            for(Article article : articles){
+                if(usersSections.contains(article.getId()))
+                    articlesUserHasAccessTo.add(article);
+            }
+        } catch (Exception e) {
+            throw new DataBaseException();
+        }
+        return articlesUserHasAccessTo;
     }
 
     /**
