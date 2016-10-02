@@ -1,4 +1,4 @@
-package ru.knowledgebase.articlemodule;
+package ru.knowledgebase.usermodule;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,26 +34,19 @@ public class GlobalRoleControllerTest {
     private final String roleName = "User";
 
     private DataCollector collector = new DataCollector();
-    private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     public void prepareUser() throws Exception{
         User user = collector.findUser(login1);
         if (user == null) {
-            user = new User();
-            user.setLogin(login1);
-            user.setPassword(password1);
-            collector.addUser(user);
+            ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         }
-        if (!ldapWorker.isUserExists(login1))
-            ldapWorker.createUser(login1, password1);
     }
 
     public void afterUser() throws Exception{
         User user = collector.findUser(login1);
         if (user != null)
             collector.deleteUser(user);
-        if (ldapWorker.isUserExists(login1))
-            ldapWorker.deleteUser(login1);
     }
 
     @Before
@@ -87,11 +80,6 @@ public class GlobalRoleControllerTest {
         if (role != null){
             collector.deleteGlobalRole(role);
         }
-        if (ldapWorker.isRoleExists(role1Name)) {
-            ldapWorker.deleteRole(role1Name);
-        }
-        if (ldapWorker.isRoleExists(role2Name))
-            ldapWorker.deleteRole(role2Name);
         prepareUser();
     }
 

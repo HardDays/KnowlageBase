@@ -30,6 +30,7 @@ import org.apache.poi.hwpf.usermodel.Picture;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import ru.knowledgebase.articlemodule.ArticleController;
+import ru.knowledgebase.configmodule.Configurations;
 import ru.knowledgebase.exceptionmodule.converterexceptions.ConvertException;
 import ru.knowledgebase.imagemodule.ImageController;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
@@ -43,8 +44,8 @@ public class ArticleConverter {
     private ArticleController articleController = ArticleController.getInstance();
     private ImageController imageController = ImageController.getInstance();
 
-    private String imagePath = "/home/vova/Project BZ/trash/image_folder/";
-    private String imageFolder = "/word/media";
+    private String imagePath = Configurations.getImageFilePath();
+    private String imageFolder = Configurations.getImageFolderPath();
 
     private static volatile ArticleConverter instance;
 

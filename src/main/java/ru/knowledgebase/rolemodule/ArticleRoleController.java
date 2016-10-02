@@ -164,7 +164,7 @@ public class ArticleRoleController {
         }
         if (article == null || articleRole == null)
             throw new AssignDefaultRoleException();
-        assignUserRole(user, article, articleRole);
+//        assignUserRole(user, article, articleRole);
     }
     /**
      * Create default user role for root article
@@ -282,6 +282,72 @@ public class ArticleRoleController {
             throw new DataBaseException();
         }
         deleteUserRole(user, article, articleRole);
+    }
+
+    public void createBaseRoles() throws Exception{
+        ArticleRole user = new ArticleRole();
+        user.setName("Пользователь");
+        user.setCanViewArticle(true);
+        user.setCanAddMistakes(true);
+        user.setCanSearch(true);
+        user.setCanAddArticle(true);
+        create(user);
+
+        try{
+            defaultArticleRoleId = collector.findArticleRole("Пользователь").getId();
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+
+        ArticleRole superUser = new ArticleRole();
+        superUser.setName("Суперпользователь");
+        superUser.setCanViewArticle(true);
+        superUser.setCanAddMistakes(true);
+        superUser.setCanSearch(true);
+        superUser.setCanAddArticle(true);
+        superUser.setCanEditArticle(true);
+        superUser.setCanViewArticle(true);
+        superUser.setCanDeleteArticle(true);
+        superUser.setCanAddNews(true);
+        superUser.setCanGetEmployeesActionsReports(true);
+        superUser.setCanGetNotifications(true);
+        superUser.setCanGetSearchOperationsReports(true);
+        superUser.setCanGetSystemActionsReports(true);
+        superUser.setCanOnOffNotifications(true);
+        superUser.setCanSearch(true);
+        superUser.setCanViewArticle(true);
+        superUser.setCanViewMistakes(true);
+        create(superUser);
+
+        ArticleRole admin = new ArticleRole();
+        admin.setName("Администратор раздела");
+        admin.setCanViewArticle(true);
+        admin.setCanAddMistakes(true);
+        admin.setCanSearch(true);
+        admin.setCanAddArticle(true);
+        admin.setCanEditArticle(true);
+        admin.setCanViewArticle(true);
+        admin.setCanDeleteArticle(true);
+        admin.setCanAddNews(true);
+        admin.setCanGetEmployeesActionsReports(true);
+        admin.setCanGetNotifications(true);
+        admin.setCanGetSearchOperationsReports(true);
+        admin.setCanGetSystemActionsReports(true);
+        admin.setCanOnOffNotifications(true);
+        admin.setCanSearch(true);
+        admin.setCanViewArticle(true);
+        admin.setCanViewMistakes(true);
+        create(admin);
+
+        ArticleRole superVisor = new ArticleRole();
+        superVisor.setName("Супервизор");
+        superVisor.setCanViewArticle(true);
+        superVisor.setCanAddMistakes(true);
+        superVisor.setCanSearch(true);
+        superVisor.setCanAddArticle(true);
+        superVisor.setCanGetEmployeesActionsReports(true);
+        create(superVisor);
+
     }
 
     public int getDefaultArticleRoleId() {

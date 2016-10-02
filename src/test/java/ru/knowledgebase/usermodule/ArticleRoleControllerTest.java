@@ -1,4 +1,4 @@
-package ru.knowledgebase.articlemodule;
+package ru.knowledgebase.usermodule;
 
 import org.junit.*;
 import ru.knowledgebase.dbmodule.DataCollector;
@@ -33,20 +33,16 @@ public class ArticleRoleControllerTest {
     private final String roleName = "User";
 
     private DataCollector collector = new DataCollector();
-    private LdapWorker ldapWorker = LdapWorker.getInstance();
+ //   private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     @Before
     public void prepareUser() throws Exception{
         User user = collector.findUser(login1);
         if (user == null) {
-            user = new User();
-            user.setLogin(login1);
-            user.setPassword(password1);
-            collector.addUser(user);
+            ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
         }
 
-        if (!ldapWorker.isUserExists(login1))
-            ldapWorker.createUser(login1, password1);
     }
 
     @Before

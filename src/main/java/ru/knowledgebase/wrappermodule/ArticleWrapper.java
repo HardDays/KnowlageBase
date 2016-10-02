@@ -26,7 +26,7 @@ public class ArticleWrapper {
             articleController.addArticle(title, body, authorId, parentArticle, isSection, imagesId);
         }
         catch (Exception ex) {
-            response = ResponseBuilder.buildResponse(ex);
+            return ResponseBuilder.buildResponse(ex);
         }
         if (response == null) {
             response = ResponseBuilder.buildArtilceCreatedResponse();

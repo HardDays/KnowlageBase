@@ -1,7 +1,10 @@
 package ru.knowledgebase.configmodule;
 
+import org.json.JSONObject;
 import ru.knowledgebase.exceptionmodule.configexceptions.ConfigFileNotFoundError;
+import ru.knowledgebase.exceptionmodule.configexceptions.ConfigParseException;
 
+import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,8 +16,8 @@ import java.util.List;
 public class ConfigReader {
 
     private static ConfigReader instance;
-    private String filePath = "/resources/config.cnf";
-    private List<String> fileContent;
+    private String filePath = "/home/vova/Project BZ/config.cnf";
+    private String fileContent;
     private Config config = new Config();
 
     /**
@@ -47,7 +50,7 @@ public class ConfigReader {
 
     private void readFile(){
         try {
-            fileContent = Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8);
+            fileContent = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
         }
         catch (Exception ex) {
             throw new ConfigFileNotFoundError();
@@ -55,7 +58,17 @@ public class ConfigReader {
     }
 
     private void initConfig() {
-        config.setLogPath(fileContent.get(0));
+        try {
+            JSONObject obj = new JSONObject(fileContent);
+            config.setLogPath(obj.getString("logPath"));
+            config.setImagePath(obj.getString("imagePath"));
+            config.setImageFolder(obj.getString("imageFolder"));
+            config.setLdapURI(obj.getString("ldapURI"));
+            config.setLdapContextFactory(obj.getString("ldapContextFactory"));
+            config.setLdapDomain(obj.getString("ldapDomain"));
+        }catch (Exception e){
+            throw new ConfigParseException();
+        }
     }
 
     //END PRIVATE METHODS

@@ -1,4 +1,4 @@
-package ru.knowledgebase.articlemodule;
+package ru.knowledgebase.usermodule;
 
 import org.junit.*;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserAlreadyExistsException;

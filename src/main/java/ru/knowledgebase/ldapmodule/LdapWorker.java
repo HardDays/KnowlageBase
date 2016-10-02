@@ -1,5 +1,6 @@
 package ru.knowledgebase.ldapmodule;
 
+import ru.knowledgebase.configmodule.Configurations;
 import ru.knowledgebase.exceptionmodule.ldapexceptions.LdapConnectionException;
 import ru.knowledgebase.exceptionmodule.ldapexceptions.LdapException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
@@ -21,11 +22,11 @@ import java.util.regex.Pattern;
 public class LdapWorker {
 
     //params for LDAP
-    private String ldapURI = "ldap://localhost";
-    private String contextFactory = "com.sun.jndi.ldap.LdapCtxFactory";
+    private String ldapURI = Configurations.getLdapURI();
+    private String contextFactory = Configurations.getLdapContextFactory();
     private String adminName = "admin";
     private String adminPass = "d2434fg4hjS2340_113";
-    private String domain = "dc=knowledge,dc=base";
+    private String domain = Configurations.getLdapDomain();
     private String defaultRole = "User";
 
     private static volatile LdapWorker instance;

@@ -358,6 +358,4 @@ public class UserController {
             throw new DataBaseException();
         }
     }
-
-
 }
