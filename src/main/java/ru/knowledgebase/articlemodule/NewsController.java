@@ -12,8 +12,11 @@ import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.xml.crypto.Data;
+import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by root on 02.10.16.
@@ -74,8 +77,9 @@ public class NewsController {
         }
     }
 
-    public News addNews(String title, String body, int authorId, int sectionId) throws Exception {
-        News news = getFullNewsObject(title, body, authorId, sectionId);
+    public News addNews(String title, String body, int authorId,
+                        int sectionId, Timestamp date) throws Exception {
+        News news = getFullNewsObject(title, body, authorId, sectionId, date);
 
         try {
             news = dataCollector.addNews(news);
@@ -114,8 +118,9 @@ public class NewsController {
     }
 
 
-    public News updateNews(int id, String title, String body, int authorId, int sectionId) throws Exception{
-        News news = getFullNewsObject(title, body, authorId, sectionId);
+    public News updateNews(int id, String title, String body,
+                           int authorId, int sectionId, Timestamp date) throws Exception{
+        News news = getFullNewsObject(title, body, authorId, sectionId, date);
         news.setId(id);
 
         try {
@@ -132,8 +137,26 @@ public class NewsController {
         return news;
     }
 
+    public List<News> getUserNewsFromDate(int userId, Timestamp date) throws Exception {
+        Set<Integer> userSections = new HashSet<>();
+
+        try {
+            userSections = dataCollector.getUserSections(userId);
+        }
+        catch (Exception ex) {
+            throw new DataBaseException();
+        }
+        List<News> news = new LinkedList<>();
+        for (Integer i : userSections) {
+            news.addAll(dataCollector.getSectionNewsFromDate(i, date));
+        }
+
+        return news;
+    }
+
     //BEGIN PRIVATE METHODS
-    private News getFullNewsObject(String title, String body, int authorId, int sectionId) throws Exception {
+    private News getFullNewsObject(String title, String body, int authorId,
+                                   int sectionId, Timestamp date) throws Exception {
         User user = null;
         try {
             user = dataCollector.findUser(authorId);
@@ -164,7 +187,7 @@ public class NewsController {
             throw new SectionNotFoundException();
         }
 
-        News news = new News(title, body, clearBody, user, sectionId);
+        News news = new News(title, body, clearBody, user, sectionId, date);
         return news;
     }
 

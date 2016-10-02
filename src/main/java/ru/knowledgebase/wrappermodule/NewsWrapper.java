@@ -8,6 +8,7 @@ import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.usermodule.UserController;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class NewsWrapper {
     private ArticleRoleController articleRoleController = ArticleRoleController.getInstance();
 
     public Response addNews(String token, int userId, int authorId, int sectionId,
-                            String title, String body) {
+                            String title, String body, Timestamp date) {
         try {
             boolean okToken = userController.checkUserToken(authorId, token);
             if (okToken != true) {
@@ -30,7 +31,7 @@ public class NewsWrapper {
                 return ResponseBuilder.buildNoAccessResponse();
             }
 
-            News news = newsController.addNews(title, body, authorId, sectionId);
+            News news = newsController.addNews(title, body, authorId, sectionId, date);
         }
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
@@ -108,7 +109,7 @@ public class NewsWrapper {
     }
 
     public Response updateNews(int id, String token, int userId, int authorId, int sectionId,
-                               String title, String body) {
+                               String title, String body, Timestamp date) {
         try {
             boolean okToken = userController.checkUserToken(authorId, token);
             if (okToken != true) {
@@ -119,11 +120,26 @@ public class NewsWrapper {
                 return ResponseBuilder.buildNoAccessResponse();
             }
 
-            News news = newsController.updateNews(id, title, body, authorId, sectionId);
+            News news = newsController.updateNews(id, title, body, authorId, sectionId, date);
         }
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
         return ResponseBuilder.buildNewsUpdatedResponse();
+    }
+
+    public Response getUserNews(int userId, String token, Timestamp day) {
+        try {
+            boolean okToken = userController.checkUserToken(userId, token);
+            if (okToken != true) {
+                return ResponseBuilder.buildWrongTokenResponse();
+            }
+
+            List<News> news = newsController.getUserNewsFromDate(userId, day);
+        }
+        catch (Exception ex) {
+            return ResponseBuilder.buildResponse(ex);
+        }
+        return ResponseBuilder.buildUserNewsResponse();
     }
 }

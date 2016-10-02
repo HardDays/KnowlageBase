@@ -25,6 +25,7 @@ import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
 import java.awt.*;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.List;
 
@@ -641,6 +642,10 @@ public class DataCollector {
         return newsService.updateNews(news);
     }
 
+    public List<News> getSectionNewsFromDate(Integer i, Timestamp date) {
+        return newsService.getSectionNewsFromDate(i, date);
+    }
+
     //END NEWS METHODS
 
     //BEGIN COMMENT CRUD METHODS
@@ -669,7 +674,7 @@ public class DataCollector {
     }
     //END COMMENT CRUD METHODS
 
-    //BEGIN SERCH METHODS
+    //BEGIN SEARCH METHODS
     public List<Article> searchByTitle(String searchRequest) {
         return searchService.searchByTitle(searchRequest);
     }
@@ -677,6 +682,7 @@ public class DataCollector {
     public List<Article> searchByBody(String searchRequest) {
         return searchService.searchByBody(searchRequest);
     }
-    //END   SERCH METHODS
+
+    //END   SEARCH METHODS
 
 }

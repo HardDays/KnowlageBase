@@ -271,4 +271,8 @@ public class ResponseBuilder {
     public static Response buildNewsUpdatedResponse() {
         return null;
     }
+
+    public static Response buildUserNewsResponse() {
+        return null;
+    }
 }

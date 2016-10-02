@@ -6,6 +6,7 @@ import ru.knowledgebase.dbmodule.repositories.articlerepositories.ImageRepositor
 import ru.knowledgebase.dbmodule.repositories.newsrepositories.NewsRepository;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -39,5 +40,9 @@ public class NewsService {
 
     public void deleteAllBySection(int section) {
         newsRepository.deleteBySectionId(section);
+    }
+
+    public List<News> getSectionNewsFromDate(Integer i, Timestamp date) {
+        return newsRepository.getSectionNewsByDate(i, date);
     }
 }
