@@ -57,21 +57,24 @@ public class ResponseBuilder {
         return Response.ok().build();
     }
 
-
-    public static Response buildGlobalPermissionsResponse(GlobalRole role){
-        JsonObject json = Json.createObjectBuilder()
+    private static JsonObjectBuilder buildGlobalPermissions(GlobalRole role) {
+         return Json.createObjectBuilder()
+                .add("id", role.getId())
                 .add("name", role.getName())
                 .add("can_add_user", role.isCanAddUser())
                 .add("can_delete_user", role.isCanDeleteUser())
                 .add("can_edit_user", role.isCanEditUser())
                 .add("can_edit_user_role", role.isCanEditUserRole())
-                .add("can_view_user", role.isCanViewUser())
-                .build();
-        return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
+                .add("can_view_user", role.isCanViewUser());
     }
 
-    public static Response buildSectionPermissionsResponse(ArticleRole role){
-        JsonObject json = Json.createObjectBuilder()
+    public static Response buildGlobalPermissionsResponse(GlobalRole role){
+        return Response.ok(buildGlobalPermissions(role).build().toString(), MediaType.APPLICATION_JSON).build();
+    }
+
+    private static JsonObjectBuilder buildSecionPermissions(ArticleRole role){
+        return Json.createObjectBuilder()
+                .add("id", role.getId())
                 .add("name", role.getName())
                 .add("can_add_article", role.isCanAddArticle())
                 .add("can_add_mistakes", role.isCanAddMistakes())
@@ -85,9 +88,11 @@ public class ResponseBuilder {
                 .add("can_off_on_notifications", role.isCanOnOffNotifications())
                 .add("can_search", role.isCanSearch())
                 .add("can_view_articles", role.isCanViewArticle())
-                .add("can_view_mistakes", role.isCanViewMistakes())
-                .build();
-        return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
+                .add("can_view_mistakes", role.isCanViewMistakes());
+    }
+
+    public static Response buildSectionPermissionsResponse(ArticleRole role){
+        return Response.ok(buildSecionPermissions(role).build().toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildRoleNotAssigned(){
@@ -169,11 +174,21 @@ public class ResponseBuilder {
     }
 
     public static Response buildGlobalRoleListResponse(List <GlobalRole> roles){
-        return Response.ok().build();
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (GlobalRole role : roles){
+            jarr.add(buildGlobalPermissions(role));
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildSectionRoleListResponse(List <ArticleRole> roles){
-        return Response.ok().build();
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (ArticleRole role : roles){
+            jarr.add(buildSecionPermissions(role));
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildNoAccessResponse(){

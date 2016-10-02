@@ -14,17 +14,17 @@ import javax.ws.rs.core.Response;
 @Path("/comments")
 public class CommentWebService {
 
-        private CommentWrapper commentWrapper = new CommentWrapper();
+    private CommentWrapper commentWrapper = new CommentWrapper();
 
-        @POST
-        @Path("/add")
-        public Response add(@FormParam(value = "user_id") int userId,
-                            @FormParam(value = "user_token") String userToken,
-                            @FormParam(value = "article_id") int articleId,
-                            @FormParam(value = "comment") String comment,
-                            @FormParam(value = "article_text") String articleText) {
-            return commentWrapper.add(userId, userToken, articleId, comment, articleText);
-        }
+    @POST
+    @Path("/add")
+    public Response add(@FormParam(value = "user_id") int userId,
+                        @FormParam(value = "user_token") String userToken,
+                        @FormParam(value = "article_id") int articleId,
+                        @FormParam(value = "comment") String comment,
+                        @FormParam(value = "article_text") String articleText) {
+        return commentWrapper.add(userId, userToken, articleId, comment, articleText);
+    }
 
     @POST
     @Path("/get_list")
@@ -33,4 +33,11 @@ public class CommentWebService {
         return commentWrapper.get(userId, userToken);
     }
 
+    @POST
+    @Path("/delete")
+    public Response add(@FormParam(value = "user_id") int userId,
+                        @FormParam(value = "user_token") String userToken,
+                        @FormParam(value = "comment_id") int commentId){
+        return commentWrapper.delete(userId, userToken, commentId);
     }
+}

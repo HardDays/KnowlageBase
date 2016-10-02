@@ -100,7 +100,17 @@ public class UserController {
      * @return return user token
      */
     public Token authorizeLdap(String login, String password) throws Exception{
-        ldapWorker.authorize(login, DigestUtils.md5Hex(password));
+        try {
+            ldapWorker.authorize(login, DigestUtils.md5Hex(password));
+            try{
+                find(login);
+            }catch (UserNotFoundException e){
+                User user = ldapWorker.getUserInfo(login);
+                user.setPassword(DigestUtils.md5Hex(password));
+                register(user);
+            }
+        }catch (UserNotFoundException e){
+        }
         return authorize(login, password);
     }
     /**
@@ -108,16 +118,16 @@ public class UserController {
      * @param user formed user object
      */
     public User register(User user) throws Exception{
-        ldapWorker.createUser(user.getLogin(), user.getPassword());
+      //  ldapWorker.createUser(user.getLogin(), user.getPassword());
         try {
             return collector.addUser(user);
         }catch(org.springframework.dao.DataIntegrityViolationException e){
             //rollback LDAP
-            ldapWorker.deleteUser(user.getLogin());
+           // ldapWorker.deleteUser(user.getLogin());
             throw new UserAlreadyExistsException();
         }catch(Exception e){
             //rollback LDAP
-            ldapWorker.deleteUser(user.getLogin());
+          //  ldapWorker.deleteUser(user.getLogin());
             throw new DataBaseException();
         }
     }
@@ -147,12 +157,12 @@ public class UserController {
     public void delete(User user) throws Exception{
         if (user == null)
             throw new UserNotFoundException();
-        ldapWorker.deleteUser(user.getLogin());
+      //  ldapWorker.deleteUser(user.getLogin());
         try {
             collector.deleteUser(user);
         }catch (Exception e){
             //rollback LDAP
-            ldapWorker.createUser(user.getLogin(), user.getPassword());
+         //   ldapWorker.createUser(user.getLogin(), user.getPassword());
             throw new DataBaseException();
         }
 
@@ -181,7 +191,7 @@ public class UserController {
     public User find(int id) throws Exception {
         User user = null;
         try {
-            collector.findUser(id);
+            user = collector.findUser(id);
         } catch (Exception e) {
             throw new DataBaseException();
         }
@@ -215,12 +225,43 @@ public class UserController {
         }
         delete(user);
     }
+
+    public void update(int userId, String login, String password, String email,
+                         String firstName, String middleName, String lastName,
+                         String office, String phone1, String phone2,
+                         Timestamp recruitmentDate, Timestamp dismissalDate) throws Exception{
+        if (login.length() == 0 || password.length() == 0
+                || firstName.length() == 0 || lastName.length() == 0){
+            throw new WrongUserDataException();
+        }
+        User user = null, exist = null;
+        try{
+            user = collector.findUser(userId);
+            if (!user.getLogin().equals(login))
+                exist = collector.findUser(login);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        if (user == null)
+            throw new UserNotFoundException();
+        if (exist != null)
+            throw new UserAlreadyExistsException();
+        password = DigestUtils.md5Hex(password);
+        user = new User(login, password, email,
+                firstName, middleName, lastName,
+                office, phone1, phone2,
+                recruitmentDate, dismissalDate);
+        user.setId(userId);
+        collector.updateUser(user);
+    }
+    /*
     /**
      * Change user login and password in database and LDAP
      * @param id user id
      * @param newLogin new login
      * @param newPassword new password
-     */
+
+
     public void update(int id, String newLogin, String newPassword) throws Exception {
         if (newLogin.length() == 0 || newPassword.length() == 0)
             throw new WrongUserDataException();
@@ -249,7 +290,7 @@ public class UserController {
             ldapWorker.changePassword(newLogin, oldLogin);
             throw new DataBaseException();
         }
-    }
+    }*/
 
     private long getDatePart(Date date) {
         Calendar cal = Calendar.getInstance();

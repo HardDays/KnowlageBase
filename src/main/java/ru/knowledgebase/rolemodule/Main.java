@@ -1,9 +1,11 @@
 package ru.knowledgebase.rolemodule;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.commentmodule.CommentController;
 import ru.knowledgebase.convertermodule.ArticleConverter;
 
+import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.usermodule.UserController;
@@ -37,6 +39,8 @@ public class Main {
         //ArticleController c = ArticleController.getInstance();
       //  c.addBaseArticle("sd", "ds", 1, new LinkedList <String>());
        // createTest();
+      //  System.out.println(LdapWorker.getInstance().getUserInfo("tttttt").getEmail());
+        LdapWorker.getInstance().createUser("ccc", DigestUtils.md5Hex("ccc"));
     }
 
 

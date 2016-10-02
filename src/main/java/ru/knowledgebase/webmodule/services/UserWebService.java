@@ -49,6 +49,27 @@ public class UserWebService {
     }
 
     @POST
+    @Path("/update")
+    public Response update(@FormParam(value = "user_id") int userId,
+                             @FormParam(value = "user_token") String userToken,
+                             @FormParam(value = "login") String login,
+                             @FormParam(value = "password")String password,
+                             @FormParam(value = "email")String email,
+                             @FormParam(value = "first_name")String firstName,
+                             @FormParam(value = "middle_name")String middleName,
+                             @FormParam(value = "last_name")String lastName,
+                             @FormParam(value = "office")String office,
+                             @FormParam(value = "phone1")String phone1,
+                             @FormParam(value = "phone2")String phone2,
+                             @FormParam(value = "recruitment_date")Timestamp recruitmentDate,
+                             @FormParam(value = "dismissal_date")Timestamp dismissalDate){
+        return userWrapper.update(userId, userToken, login, password, email,
+                firstName, middleName, lastName,
+                office, phone1, phone2,
+                recruitmentDate, dismissalDate);
+    }
+
+    @POST
     @Path("/delete")
     public Response delete(@FormParam(value = "admin_id") int adminId,
                              @FormParam(value = "admin_token") String adminToken,

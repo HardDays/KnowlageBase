@@ -31,7 +31,7 @@ public class UserWrapper {
      */
     public Response authorize(String login, String password) {
         try {
-            Token token = userController.authorize(login, password);
+            Token token = userController.authorizeLdap(login, password);
             return ResponseBuilder.buildAuthorizedResponse(token);
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
@@ -71,16 +71,20 @@ public class UserWrapper {
      * Update user
      * @param userId id of user
      * @param token token of user
-     * @param newLogin new login
-     * @param newPassword new password
      * @return Response object
      */
-    public Response update(int userId, String token, String newLogin, String newPassword) {
+    public Response update(int userId, String token, String login, String password, String email,
+                           String firstName, String middleName, String lastName,
+                           String office, String phone1, String phone2,
+                           Timestamp recruitmentDate, Timestamp dismissalDate) {
         try {
             boolean okToken = userController.checkUserToken(userId, token);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
-            userController.update(userId, newLogin, newPassword);
+            userController.update(userId, login, password, email,
+                                  firstName, middleName, lastName,
+                                  office, phone1, phone2,
+                                  recruitmentDate, dismissalDate);
             return ResponseBuilder.buildUserChangedResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
@@ -103,7 +107,7 @@ public class UserWrapper {
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            userController.update(userId, newLogin, newPassword);
+           // userController.update(userId, newLogin, newPassword);
             return ResponseBuilder.buildUserChangedResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
