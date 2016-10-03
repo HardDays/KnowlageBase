@@ -42,6 +42,15 @@ public class UserArticleRoleService {
     }
 
     @Transactional
+    public UserArticleRole find(int userId, int articleId) throws Exception{
+        List<UserArticleRole> res = userArticleRoleRepository.find(userId, articleId);
+        if (res.size() == 1){
+            return res.get(0);
+        }
+        return null;
+    }
+
+    @Transactional
     public List <User> findMistakeViewers(Article article) throws Exception{
         return userArticleRoleRepository.findMistakeViewers(article);
     }
@@ -58,5 +67,10 @@ public class UserArticleRoleService {
     @Transactional
     public void delete(int id) throws Exception{
         userArticleRoleRepository.delete(id);
+    }
+
+    @Transactional
+    public void delete(int userId, int articleId) throws Exception{
+        userArticleRoleRepository.delete(userId, articleId);
     }
 }

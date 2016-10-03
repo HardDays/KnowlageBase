@@ -58,18 +58,23 @@ public class User {
     @Column(name = "dismissal_date")
     private Timestamp dismissalDate;
 
+
     @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private Token token;
 
+  //  @OnDelete(action=OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<UserGlobalRole> userGlobalRoles;
 
+   // @OnDelete(action=OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<UserArticleRole> userArticleRoles;
 
+   // @OnDelete(action=OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "commentator", cascade = {CascadeType.REMOVE})
     private List<Comment> comments;
 
+  //  @OnDelete(action=OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "admin", cascade = {CascadeType.REMOVE})
     private List<Comment> adminComments;
 

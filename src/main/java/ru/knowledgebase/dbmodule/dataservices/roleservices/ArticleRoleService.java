@@ -18,8 +18,8 @@ public class ArticleRoleService {
     private ArticleRoleRepository articleRoleRepository;
 
     @Transactional
-    public void create(ArticleRole articleRole) throws Exception{
-        articleRoleRepository.save(articleRole);
+    public ArticleRole create(ArticleRole articleRole) throws Exception{
+        return articleRoleRepository.save(articleRole);
     }
 
     public List<ArticleRole> getAll() throws Exception{
@@ -49,4 +49,5 @@ public class ArticleRoleService {
     public void delete(int id) throws Exception{
         articleRoleRepository.delete(id);
     }
+
 }

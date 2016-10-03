@@ -36,6 +36,13 @@ public class TokenService {
         return null;
     }
 
+    public Token getUserToken(int userId) throws Exception{
+        List<Token> tokens = tokenRepository.getUserToken(userId);
+        if (tokens.size() == 1)
+            return tokens.get(0);
+        return null;
+    }
+
     @Transactional
     public void update(Token token) throws Exception{
         Token oldToken = tokenRepository.findOne(token.getId());

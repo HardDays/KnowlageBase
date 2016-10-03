@@ -3,6 +3,7 @@ package ru.knowledgebase.rolemodule;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.AssignDefaultRoleException;
+import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotAssignedException;
 import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
@@ -104,13 +105,11 @@ public class GlobalRoleController {
      * @param globalRoleId of global role
      */
     public void delete(int globalRoleId) throws Exception{
-        GlobalRole globalRole = null;
         try {
-            globalRole = collector.findGlobalRole(globalRoleId);
+            collector.deleteGlobalRole(globalRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        delete(globalRole);
     }
     /**
      * Finds global role
@@ -220,7 +219,7 @@ public class GlobalRoleController {
             throw new DataBaseException();
         }
         if (globalRole == null)
-            throw new DataBaseException();
+            throw new RoleNotAssignedException();
         return globalRole;
     }
     /**
@@ -229,13 +228,11 @@ public class GlobalRoleController {
      * @return global role for user
      */
     public GlobalRole findUserRole(int userId) throws Exception{
-        User user = null;
         try {
-            user = collector.findUser(userId);
+           return collector.findUserGlobalRole(userId).getGlobalRole();
         }catch (Exception e){
             throw new DataBaseException();
         }
-        return findUserRole(user);
     }
     /**
      * Delete user global role
@@ -258,23 +255,18 @@ public class GlobalRoleController {
             throw new UserNotFoundException();
         if (globalRole == null)
             throw new RoleNotFoundException();
-        deleteUserRole(new UserGlobalRole(user, globalRole));
+        deleteUserRole(collector.findUserGlobalRole(user));
     }
     /**
      * Delete user global role
      * @param userId user id
-     * @param globalRoleId global role id
      */
-    public void deleteUserRole(int userId, int globalRoleId) throws Exception{
-        User user = null;
-        GlobalRole role = null;
+    public void deleteUserRole(int userId) throws Exception{
         try {
-            user = collector.findUser(userId);
-            role = collector.findGlobalRole(globalRoleId);
+            collector.deleteUserGlobalRoleByUser(userId);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        deleteUserRole(user, role);
     }
 
     public void createBaseRoles() throws Exception{

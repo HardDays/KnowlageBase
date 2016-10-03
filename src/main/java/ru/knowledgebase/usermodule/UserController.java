@@ -5,7 +5,6 @@ import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.ldapexceptions.LdapException;
 import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
-import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
@@ -18,7 +17,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -173,23 +171,7 @@ public class UserController {
                                 office, phone1, phone2,
                                 recruitmentDate, dismissalDate));
     }
-    /**
-     * Delete user from database and LDAP
-     * @param user user object (important: id should be specified)
-     */
-    public void delete(User user) throws Exception{
-        if (user == null)
-            throw new UserNotFoundException();
-      //  ldapWorker.deleteUser(user.getLogin());
-        try {
-            collector.deleteUser(user);
-        }catch (Exception e){
-            //rollback LDAP
-         //   ldapWorker.createUser(user.getLogin(), user.getPassword());
-            throw new DataBaseException();
-        }
 
-    }
     /**
      * Find user object
      * @param login user login
@@ -224,16 +206,33 @@ public class UserController {
     }
     /**
      * Delete user from database and LDAP
-     * @param id user id
+     * @param user user object (important: id should be specified)
      */
-    public void delete(int id) throws Exception{
-        User user = null;
+    public void delete(User user) throws Exception{
+        if (user == null)
+            throw new UserNotFoundException();
+        //  try {
+        //       collector.deleteToken(collector.getUserToken(user));
+        //   }catch (Exception e){
+        //  }
         try {
-            user = collector.findUser(id);
+            collector.deleteUser(user);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        delete(user);
+    }
+
+    /**
+     * Delete user from database and LDAP
+     * @param id user id
+     */
+    public void delete(int id) throws Exception{
+        try {
+            collector.deleteUser(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new DataBaseException();
+        }
     }
     /**
      * Delete userfrom database and LDAP
@@ -338,16 +337,13 @@ public class UserController {
      * @return true if valid and actual
      */
     public boolean checkUserToken(int id, String token) throws Exception{
-        User user = null;
         Token tokenObj = null;
         try{
-            user = collector.findUser(id);
-            tokenObj = collector.getUserToken(user);
+            tokenObj = collector.getUserToken(id);
         }catch (Exception e){
             throw new DataBaseException();
         }
-
-        if (tokenObj == null || user == null)
+        if (tokenObj == null)
             return false;
         Date tokenDate = tokenObj.getEndDate();
         Date curDate = new Date(new java.util.Date().getTime());
@@ -374,7 +370,7 @@ public class UserController {
     public List <UserArticleRole> getSectionUsers(int sectionId) throws Exception{
         List <UserArticleRole> roles = null;
         try{
-            roles = collector.findUserArticleRoleByArticle(sectionId);
+            roles = collector.findUserArticleRoleBySection(sectionId);
         }catch (Exception e){
             throw new DataBaseException();
         }

@@ -18,8 +18,8 @@ public class GlobalRoleService {
     private GlobalRoleRepository globalRoleRepository;
 
     @Transactional
-    public void create(GlobalRole globalRole) throws Exception{
-        globalRoleRepository.save(globalRole);
+    public GlobalRole create(GlobalRole globalRole) throws Exception{
+        return globalRoleRepository.save(globalRole);
     }
 
     public List<GlobalRole> getAll() throws Exception{

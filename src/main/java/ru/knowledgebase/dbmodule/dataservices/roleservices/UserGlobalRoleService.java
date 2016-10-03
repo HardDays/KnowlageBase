@@ -33,6 +33,15 @@ public class UserGlobalRoleService {
     }
 
     @Transactional
+    public UserGlobalRole find(int userId) throws Exception{
+        List<UserGlobalRole> res = userGlobalRoleRepository.find(userId);
+        if (res.size() == 1){
+            return res.get(0);
+        }
+        return null;
+    }
+
+    @Transactional
     public void delete(UserGlobalRole role) throws Exception{
         userGlobalRoleRepository.delete(role);
     }
@@ -40,5 +49,10 @@ public class UserGlobalRoleService {
     @Transactional
     public void delete(int id) throws Exception{
         userGlobalRoleRepository.delete(id);
+    }
+
+    @Transactional
+    public void deleteByUser(int userId) throws Exception{
+        userGlobalRoleRepository.deleteByUser(userId);
     }
 }

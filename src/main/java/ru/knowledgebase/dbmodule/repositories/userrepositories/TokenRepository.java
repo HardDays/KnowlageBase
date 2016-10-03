@@ -14,4 +14,7 @@ import java.util.List;
 public interface TokenRepository extends CrudRepository<Token, Integer> {
     @Query("from Token where user = ?1")
     public List<Token> getUserToken(User user) throws Exception;
+
+    @Query("from Token where user.id = ?1")
+    public List<Token> getUserToken(int userId) throws Exception;
 }

@@ -95,13 +95,11 @@ public class ArticleRoleController {
      * @param articleRoleId id of article role
      */
     public void delete(int articleRoleId) throws Exception{
-        ArticleRole role = null;
         try{
-            role = collector.findArticleRole(articleRoleId);
+            collector.deleteArticleRole(articleRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        delete(role);
     }
     /**
      * Find user role for article
@@ -132,6 +130,8 @@ public class ArticleRoleController {
         }catch (Exception e){
             throw  new DataBaseException();
         }
+        if (role == null)
+            throw new RoleNotAssignedException();
         ArticleRole articleRole = role.getArticleRole();
         if (articleRole == null)
             throw new RoleNotFoundException();
@@ -219,9 +219,11 @@ public class ArticleRoleController {
             while (true) {
                 if (temp.isSection()){
                     UserArticleRole tempRole = collector.findUserArticleRole(role.getUser(), temp);
-                    if (tempRole != null) {
-                        deleteUserRole(tempRole);
+                    try{
+                        deleteUserRoleFromDB(role.getUser().getId(), temp.getId());
                         break;
+                    }catch (Exception e){
+
                     }
                 }
                 if (temp.getParentArticle() == -1)
@@ -229,10 +231,10 @@ public class ArticleRoleController {
                 temp = collector.findArticle(temp.getSectionId());
             }
             User user = role.getUser();
-            for (Article child : collector.getUserSectionsObj(user.getId())){
+            for (Article child : collector.getSectionTree(article.getId())){
                 UserArticleRole tempRole = collector.findUserArticleRole(user, child);
                 if (tempRole != null)
-                    deleteUserRole(tempRole);
+                    deleteUserRoleFromDB(tempRole);
             }
             collector.addUserArticleRole(role);
         }catch (Exception e){
@@ -289,6 +291,22 @@ public class ArticleRoleController {
         assignUserRole(user, article, articleRole);
     }
 
+    private void deleteUserRoleFromDB(UserArticleRole role) throws Exception{
+        try {
+            collector.deleteUserArticleRole(role);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+    }
+
+    private void deleteUserRoleFromDB(int userId, int articleId) throws Exception{
+        try {
+            collector.deleteUserArticleRole(userId, articleId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+    }
+
     /**
      * Delete user role for specified article
      * @param role role formed object (important: id should be specified)
@@ -298,11 +316,7 @@ public class ArticleRoleController {
         if (count == 1){
             throw new RoleDeleteException();
         }
-        try {
-            collector.deleteUserArticleRole(role);
-        }catch (Exception e){
-            throw new DataBaseException();
-        }
+        deleteUserRoleFromDB(role);
     }
     /**
      * Create user role for specified article
@@ -333,21 +347,11 @@ public class ArticleRoleController {
      * @param articleId     article id
      */
     public void deleteUserRole(int userId, int articleId) throws Exception {
-        User user = null;
-        Article article = null;
-        ArticleRole articleRole = null;
-        try {
-            user = collector.findUser(userId);
-            article = collector.findArticle(articleId);
-        }catch (Exception e){
-            throw new DataBaseException();
+        int count = collector.getAttachedSectionCount(userId);
+        if (count == 1){
+            throw new RoleDeleteException();
         }
-        try{
-            articleRole = collector.findUserArticleRole(user, article).getArticleRole();
-        }catch (Exception e){
-            throw new RoleNotAssignedException();
-        }
-        deleteUserRole(user, article, articleRole);
+        deleteUserRoleFromDB(userId, articleId);
     }
 
     public void createBaseRoles() throws Exception{

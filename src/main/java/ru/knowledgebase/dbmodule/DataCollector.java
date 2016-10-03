@@ -287,12 +287,16 @@ public class DataCollector {
     public Token getUserToken(User user) throws Exception{
         return tokenService.getUserToken(user);
     }
+
+    public Token getUserToken(int userId) throws Exception{
+        return tokenService.getUserToken(userId);
+    }
     //END TOKEN METHODS
 
     //BEGIN ARTICLEROLE METHODS
 
-    public void addArticleRole(ArticleRole articleRole) throws Exception{
-        articleRoleService.create(articleRole);
+    public ArticleRole addArticleRole(ArticleRole articleRole) throws Exception{
+        return articleRoleService.create(articleRole);
     }
 
     public void updateArticleRole(ArticleRole role) throws Exception {
@@ -376,15 +380,22 @@ public class DataCollector {
         userArticleRoleService.delete(id);
     }
 
+    public void deleteUserArticleRole(int userId, int artilceId) throws Exception{
+        userArticleRoleService.delete(userId, artilceId);
+    }
     public UserArticleRole findUserArticleRole(User user, Article article) throws Exception{
         return userArticleRoleService.find(user, article);
+    }
+
+    public UserArticleRole findUserArticleRole(int userId, int articleId) throws Exception{
+        return userArticleRoleService.find(userId, articleId);
     }
 
     public List <User> findMistakeViewers(Article article) throws Exception{
         return userArticleRoleService.findMistakeViewers(article);
     }
 
-    public List <UserArticleRole> findUserArticleRoleByArticle(int articleId){
+    public List <UserArticleRole> findUserArticleRoleBySection(int articleId){
         return userArticleRoleService.findByArticle(articleId);
     }
 
@@ -392,8 +403,8 @@ public class DataCollector {
 
 
     //BEGIN GLOBALROLE METHODS
-    public void addGlobalRole(GlobalRole globalRole) throws Exception{
-        globalRoleService.create(globalRole);
+    public GlobalRole addGlobalRole(GlobalRole globalRole) throws Exception{
+        return globalRoleService.create(globalRole);
     }
 
     public void updateGlobalRole(GlobalRole globalRole) throws Exception{
@@ -430,8 +441,16 @@ public class DataCollector {
         return userGlobalRoleService.find(user);
     }
 
+    public UserGlobalRole findUserGlobalRole(int userId) throws Exception{
+        return userGlobalRoleService.find(userId);
+    }
+
     public void deleteUserGlobalRole(UserGlobalRole role) throws Exception{
         userGlobalRoleService.delete(role);
+    }
+
+    public void deleteUserGlobalRoleByUser(int userId) throws Exception{
+        userGlobalRoleService.deleteByUser(userId);
     }
 
     public void deleteUserGlobalRole(int id) throws Exception{
