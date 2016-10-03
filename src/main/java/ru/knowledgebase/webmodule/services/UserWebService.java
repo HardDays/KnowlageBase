@@ -86,6 +86,16 @@ public class UserWebService {
                           @FormParam(value = "role_id") int roleId){
         return userWrapper.assignSectionRole(adminId, adminToken, userId, sectionId, roleId);
     }
+
+    @POST
+    @Path("/delete_section_role")
+    public Response deleteSectionRole(@FormParam(value = "admin_id") int adminId,
+                                      @FormParam(value = "admin_token") String adminToken,
+                                      @FormParam(value = "user_id") int userId,
+                                      @FormParam(value = "section_id") int sectionId){
+        return userWrapper.deleteSectionRole(adminId, adminToken, userId, sectionId);
+    }
+
     /*
     @POST
     @Path("/assign_global_role")

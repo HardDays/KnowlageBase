@@ -119,7 +119,7 @@ public class GlobalRoleController {
     public GlobalRole findGlobalRole(int id) throws Exception{
         GlobalRole role = null;
         try {
-            collector.findGlobalRole(id);
+            role = collector.findGlobalRole(id);
         } catch (Exception e){
             throw new DataBaseException();
         }
@@ -132,7 +132,7 @@ public class GlobalRoleController {
     public void assignUserRole(UserGlobalRole role) throws Exception{
         UserGlobalRole existRole = null;
         try {
-            collector.findUserGlobalRole(role.getUser());
+            existRole = collector.findUserGlobalRole(role.getUser());
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -327,4 +327,7 @@ public class GlobalRoleController {
         return findUserRole(userId).isCanEditUserRole();
     }
 
+    public boolean isSuperUser(int userId) throws Exception{
+        return findUserRole(userId).isSuperUser();
+    }
 }

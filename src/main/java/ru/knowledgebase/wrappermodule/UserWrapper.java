@@ -32,7 +32,13 @@ public class UserWrapper {
      */
     public Response authorize(String login, String password) {
         try {
-            Token token = userController.authorizeLdap(login, password);
+            userController.authorizeLdap(login, password);
+            if (!userController.isLdapUserExists(login)){
+                User user = userController.copyLdapUser(login ,password);
+                globalRoleController.assignDefaultUserRole(user);
+                articleRoleController.assignDefaultUserRole(user);
+            }
+            Token token = userController.authorize(login, password);
             return ResponseBuilder.buildAuthorizedResponse(token);
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
@@ -146,7 +152,7 @@ public class UserWrapper {
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            //TODO: articleRoleController.deleteUserRole(userId, articleId, roleId);
+            articleRoleController.deleteUserRole(userId, articleId);
             return ResponseBuilder.buildUserRoleChangedResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
@@ -161,8 +167,13 @@ public class UserWrapper {
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            articleRoleController.assignUserRole(userId, articleId, roleId);
             globalRoleController.assignUserRole(userId, roleId);
+            //attach super user to root
+            if (globalRoleController.isSuperUser(userId)) {
+                articleRoleController.assignSuperUser(userId, articleId, roleId);
+            }else{
+                articleRoleController.assignUserRole(userId, articleId, roleId);
+            }
             return ResponseBuilder.buildUserRoleChangedResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);

@@ -96,31 +96,52 @@ public class UserController {
         return updateToken(user);
     }
     /**
-     * Authorize user in database and LDAP
+     * Authorize user through LDAP
      * @param login user login
      * @param password user password
-     * @return return user token
      */
-    public Token authorizeLdap(String login, String password) throws Exception{
+    public void authorizeLdap(String login, String password) throws Exception{
         try {
             ldapWorker.authorize(login, DigestUtils.md5Hex(password));
-            try{
-                find(login);
-            }catch (UserNotFoundException e){
-                User user = ldapWorker.getUserInfo(login);
-                user.setPassword(DigestUtils.md5Hex(password));
-                register(user);
-            }
         }catch (UserNotFoundException e){
         }
-        return authorize(login, password);
     }
+
+    public User copyLdapUser(String login, String password) throws Exception{
+        User user = ldapWorker.getUserInfo(login);
+        user.setPassword(DigestUtils.md5Hex(password));
+        try {
+            return collector.addUser(user);
+        }catch(org.springframework.dao.DataIntegrityViolationException e){
+            throw new UserAlreadyExistsException();
+        }catch(Exception e){
+            throw new DataBaseException();
+        }
+    }
+
+    public boolean isLdapUserExists(String login) throws Exception{
+        try{
+            find(login);
+        }catch (UserNotFoundException e){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Register new user in database and LDAP
      * @param user formed user object
      */
     public User register(User user) throws Exception{
       //  ldapWorker.createUser(user.getLogin(), user.getPassword());
+        User ldapUser = null;
+        try{
+            ldapUser = ldapWorker.getUserInfo(user.getLogin());
+        }catch (Exception e){
+
+        }
+        if (ldapUser != null)
+            throw new UserAlreadyExistsException();
         try {
             return collector.addUser(user);
         }catch(org.springframework.dao.DataIntegrityViolationException e){

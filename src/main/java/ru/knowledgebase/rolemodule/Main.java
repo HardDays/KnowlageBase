@@ -52,7 +52,9 @@ public class Main {
      //   ArticleController.getInstance().addArticle("c", "c", 1, 33, null, null, null, true);
      //   ArticleController.getInstance().addArticle("e", "e", 1, 33, null, null, null, true);
 
+        ArticleRoleController c = ArticleRoleController.getInstance();
 
+        c.deleteUserRole(1, 33);
 
     }
 

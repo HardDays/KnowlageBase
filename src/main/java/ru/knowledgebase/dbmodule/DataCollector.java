@@ -341,6 +341,10 @@ public class DataCollector {
         localStorage.addUserSection(uid, role.getArticle().getId());
     }
 
+    public Integer getAttachedSectionCount(int userId) throws Exception{
+        return localStorage.getUserSections(userId).size();
+    }
+
     public HashSet<Integer> getUserSections(int userId) throws Exception{
         HashSet <Integer> res = new HashSet<>();
         for (Integer section : localStorage.getUserSections(userId)){

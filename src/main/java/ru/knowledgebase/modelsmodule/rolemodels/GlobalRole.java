@@ -104,5 +104,8 @@ public class GlobalRole {
     public void setCanViewUser(boolean canViewUser) {
         this.canViewUser = canViewUser;
     }
-
+    //KOSTILI DETECTED
+    public boolean isSuperUser(){
+        return canViewUser && canDeleteUser && canEditUser && canEditUserRole && canViewUser;
+    }
 }

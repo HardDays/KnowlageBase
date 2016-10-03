@@ -306,7 +306,7 @@ public class ArticleRoleControllerTest {
         Article article = collector.getBaseArticle();
         role = collector.findArticleRole(role1Name);
         collector.addUserArticleRole(new UserArticleRole(user, article, role));
-        ArticleRoleController.getInstance().deleteUserRole(user.getId(), article.getId(), role.getId());
+        ArticleRoleController.getInstance().deleteUserRole(user.getId(), article.getId());
         assertTrue(collector.findUser(login1) != null);
         assertTrue(collector.getBaseArticle() != null);
         assertTrue(collector.findArticleRole(role1Name) != null);
@@ -320,7 +320,7 @@ public class ArticleRoleControllerTest {
         Article article = collector.getBaseArticle();
         role = collector.findArticleRole(role1Name);
         collector.addUserArticleRole(new UserArticleRole(user, article, role));
-        ArticleRoleController.getInstance().deleteUserRole(10000, article.getId(), role.getId());
+        ArticleRoleController.getInstance().deleteUserRole(10000, role.getId());
     }
 
     @Test(expected = ArticleNotFoundException.class)
@@ -331,7 +331,7 @@ public class ArticleRoleControllerTest {
         Article article = collector.getBaseArticle();
         role = collector.findArticleRole(role1Name);
         collector.addUserArticleRole(new UserArticleRole(user, article, role));
-        ArticleRoleController.getInstance().deleteUserRole(user.getId(), 10000, role.getId());
+        ArticleRoleController.getInstance().deleteUserRole(user.getId(), 10000);
     }
 
     @Test(expected = RoleNotFoundException.class)
@@ -342,7 +342,7 @@ public class ArticleRoleControllerTest {
         Article article = collector.getBaseArticle();
         role = collector.findArticleRole(role1Name);
         collector.addUserArticleRole(new UserArticleRole(user, article, role));
-        ArticleRoleController.getInstance().deleteUserRole(user.getId(), article.getId(), 10000);
+        ArticleRoleController.getInstance().deleteUserRole(user.getId(), article.getId());
     }
 
 

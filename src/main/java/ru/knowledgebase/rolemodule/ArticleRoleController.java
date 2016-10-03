@@ -4,13 +4,11 @@ import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
 import ru.knowledgebase.exceptionmodule.articleexceptions.NotASectionException;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
-import ru.knowledgebase.exceptionmodule.roleexceptions.AssignDefaultRoleException;
+import ru.knowledgebase.exceptionmodule.roleexceptions.*;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
-import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
-import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 
 import java.util.List;
@@ -230,12 +228,12 @@ public class ArticleRoleController {
                     break;
                 temp = collector.findArticle(temp.getSectionId());
             }
-            for (Article child : collector.getSectionTree(article.getId())){
-                UserArticleRole tempRole = collector.findUserArticleRole(role.getUser(), child);
+            User user = role.getUser();
+            for (Article child : collector.getUserSectionsObj(user.getId())){
+                UserArticleRole tempRole = collector.findUserArticleRole(user, child);
                 if (tempRole != null)
                     deleteUserRole(tempRole);
             }
-
             collector.addUserArticleRole(role);
         }catch (Exception e){
             e.printStackTrace();
@@ -276,15 +274,33 @@ public class ArticleRoleController {
         }
         assignUserRole(user, article, articleRole);
     }
+
+    public void assignSuperUser(int userId, int articleId, int articleRoleId) throws Exception{
+        User user = null;
+        Article article = null;
+        ArticleRole articleRole = null;
+        try {
+            user = collector.findUser(userId);
+            article = collector.getBaseArticle();
+            articleRole = collector.findArticleRole(articleRoleId);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        assignUserRole(user, article, articleRole);
+    }
+
     /**
      * Delete user role for specified article
      * @param role role formed object (important: id should be specified)
      */
     private void deleteUserRole(UserArticleRole role) throws Exception{
+        int count = collector.getAttachedSectionCount(role.getUser().getId());
+        if (count == 1){
+            throw new RoleDeleteException();
+        }
         try {
             collector.deleteUserArticleRole(role);
         }catch (Exception e){
-            e.printStackTrace();
             throw new DataBaseException();
         }
     }
@@ -301,7 +317,13 @@ public class ArticleRoleController {
             throw new ArticleNotFoundException();
         if (articleRole == null)
             throw new RoleNotFoundException();
-        deleteUserRole(new UserArticleRole(user, article, articleRole));
+        UserArticleRole role = null;
+        try{
+            role = collector.findUserArticleRole(user, article);
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
+        deleteUserRole(role);
     }
 
     /**
@@ -309,18 +331,21 @@ public class ArticleRoleController {
      *
      * @param userId        user id
      * @param articleId     article id
-     * @param articleRoleId article role id
      */
-    public void deleteUserRole(int userId, int articleId, int articleRoleId) throws Exception {
+    public void deleteUserRole(int userId, int articleId) throws Exception {
         User user = null;
         Article article = null;
         ArticleRole articleRole = null;
         try {
             user = collector.findUser(userId);
             article = collector.findArticle(articleId);
-            articleRole = collector.findArticleRole(articleRoleId);
         }catch (Exception e){
             throw new DataBaseException();
+        }
+        try{
+            articleRole = collector.findUserArticleRole(user, article).getArticleRole();
+        }catch (Exception e){
+            throw new RoleNotAssignedException();
         }
         deleteUserRole(user, article, articleRole);
     }
