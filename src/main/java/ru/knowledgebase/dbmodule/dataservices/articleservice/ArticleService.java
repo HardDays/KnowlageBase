@@ -68,7 +68,7 @@ public class ArticleService {
     @Transactional
     public List<Article> getAll(){ return articleRepository.getAll(); }
 
-    /**
+    /** Should be optimized!
      * Get all first-line children for current article
      * @param articleId
      * @return
@@ -77,10 +77,7 @@ public class ArticleService {
         List<ArticleConnection> ids = articleConnectionRepository.findByParentId(articleId);
         List<Integer> articles = new LinkedList<>();
         for (ArticleConnection i : ids) {
-            Article a = articleRepository.findOne(i.getChildId());
-            if(a != null) {
-                articles.add(a.getId());
-            }
+            articles.add(i.getChildId());
         }
         return articles;
     }

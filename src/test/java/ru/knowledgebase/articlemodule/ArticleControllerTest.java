@@ -73,7 +73,7 @@ public class ArticleControllerTest {
         parentArticle = base.getId();
         createTest = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
         createTest = ac.getArticle(createTest.getId());
-        printObject(createTest);
+        //printObject(createTest);
 
         ac.deleteArticle(createTest.getId());
     }
@@ -106,8 +106,8 @@ public class ArticleControllerTest {
     public void deleteBaseArticle() throws Exception {
         Article a = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
         Article b = ac.addArticle(title, body, u.getId(), a.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
-        printObject(a);
-        printObject(b);
+        //printObject(a);
+        //printObject(b);
 
         ac.deleteArticle(a.getId());
 
@@ -160,10 +160,10 @@ public class ArticleControllerTest {
         Article newArticle3 = ac.addArticle("A3", body, u.getId(), newArticle1.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
         List<Article> arts = sc.getNextLevelSections(newArticle1.getId());
         for (Article a : arts) {
-            printObject(a);
+            //printObject(a);
         }
         assertTrue(arts.size() == 2);
-        ac.deleteArticle(newArticle1.getId());
+        //ac.deleteArticle(newArticle1.getId());
     }
 
     @Transactional
@@ -174,10 +174,10 @@ public class ArticleControllerTest {
         Article newArticle3 = ac.addArticle("A3", body, u.getId(), newArticle2.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
         List<Article> arts = sc.getSectionTree(newArticle1.getId());
         for (Article a : arts) {
-            printObject(a);
+            //printObject(a);
         }
         assertTrue(arts.size() == 3);
-        ac.deleteArticle(newArticle1.getId());
+        //ac.deleteArticle(newArticle1.getId());
     }
 
     private void printObject(Article a) {

@@ -15,9 +15,6 @@ import java.sql.Timestamp;
 public class CRUDRecord extends ALogRecord {
     private final int articleID;
 
-    public int getArticleID() {
-        return articleID;
-    }
 
     public CRUDRecord(OPERATION CRUDOperation, int userID, int articleID) {
         this.operationType = CRUDOperation;
@@ -32,4 +29,8 @@ public class CRUDRecord extends ALogRecord {
         record.append(articleID);
 		return record.toString();
     }
+    public int getArticleID() {
+        return articleID;
+    }
+
 }

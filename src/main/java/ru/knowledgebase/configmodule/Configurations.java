@@ -13,6 +13,10 @@ public class Configurations {
         return config.getLogPath();
     }
 
+    public static String getReportFolder() {
+        return config.getReportFolder();
+    }
+
     public static String getImageFilePath(){
         return config.getImagePath();
     }

@@ -23,7 +23,7 @@ public class ArticleController {
 
     private DataCollector dataCollector = DataCollector.getInstance();
     private final int BASE_ARTICLE = -1;
-    private static boolean isBaseArticleCreated;
+    private static int baseArticleId = -1;
 
     private static ArticleController instance;
 
@@ -60,7 +60,7 @@ public class ArticleController {
         Article article = getFullArticleObject(title, body, authorId,
                 -1, createdTime, updatedTime, lifeTime, true);
 
-        if (isBaseArticleCreated) {
+        if (baseArticleId != BASE_ARTICLE) {
             throw new BaseArticleWasAlreadyCreatedException();
         }
         Article resultArticle = null;
@@ -74,7 +74,7 @@ public class ArticleController {
             throw new ArticleAddException();
         }
 
-        isBaseArticleCreated = true;
+        baseArticleId = resultArticle.getId();
 
         return resultArticle;
     }
@@ -124,6 +124,9 @@ public class ArticleController {
         }
         catch (Exception ex) {
            throw new ArticleDeleteException();
+        }
+        if (id == baseArticleId) {
+            baseArticleId = BASE_ARTICLE;
         }
     }
 

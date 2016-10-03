@@ -222,6 +222,21 @@
       <version>1.4.01</version>
     </dependency>
 
+    <!-- XLSX creating -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>3.10-FINAL</version>
+      <type>jar</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>3.10-FINAL</version>
+      <type>jar</type>
+    </dependency>
+
   </dependencies>
   <build>
     <finalName>knowledge-base</finalName>

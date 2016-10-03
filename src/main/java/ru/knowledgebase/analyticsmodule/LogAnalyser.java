@@ -20,7 +20,7 @@ public class LogAnalyser {
     private Analyser analyser = Analyser.getInstance();
     private List<ALogRecord> log;
 
-    public LogAnalyser() {
+    public LogAnalyser() throws Exception{
         log = LogReader.getInstance().getRecordsFromLog();
     }
 

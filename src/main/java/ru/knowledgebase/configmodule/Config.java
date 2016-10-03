@@ -13,6 +13,8 @@ public class Config {
     private String imagePath;
     private String imageFolder;
 
+    private String reportFolder;
+
     private String ldapURI;
     private String ldapContextFactory;
     private String ldapDomain;
@@ -70,5 +72,9 @@ public class Config {
 
     public void setLdapDomain(String ldapDomain) {
         this.ldapDomain = ldapDomain;
+    }
+
+    public String getReportFolder() {
+        return reportFolder;
     }
 }

@@ -1,5 +1,8 @@
 package ru.knowledgebase.loggermodule.Log;
 
+import ru.knowledgebase.exceptionmodule.loggerexceptions.LogReadingException;
+import ru.knowledgebase.exceptionmodule.loggerexceptions.LogWritingException;
+import ru.knowledgebase.exceptionmodule.loggerexceptions.UnableToFindLogException;
 import ru.knowledgebase.loggermodule.Constants.CONSTANTS;
 
 import java.io.*;
@@ -43,19 +46,23 @@ public class Log {
      * Writes all elements from input {@code buffer} to the {@code logFile}.
      * @param buffer
      */
-    public void writeBufferToLog(Queue<String> buffer) {
+    public void writeBufferToLog(Queue<String> buffer) throws Exception {
+
         try {
             writer = new FileWriter(logFile, true);
-            bufferedWriter = new BufferedWriter(writer, CONSTANTS.WRITER_BUFFER_SIZE);
+        } catch (IOException e) {
+            throw new UnableToFindLogException();
+        }
+        bufferedWriter = new BufferedWriter(writer, CONSTANTS.WRITER_BUFFER_SIZE);
 
+        try {
             while(!buffer.isEmpty())
                 bufferedWriter.append(addRecordSeparator(buffer.poll()));
             bufferedWriter.flush();
-
             bufferedWriter.close();
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogWritingException();
         }
     }
 
@@ -72,13 +79,14 @@ public class Log {
      * Reads all records from {@code logFile}.
      * @return a list of all records.
      */
-    public List<String> getAllRecordsFromLog(){
+    public List<String> getAllRecordsFromLog()
+            throws UnableToFindLogException, LogReadingException {
         LinkedList<String> stringRecords = new LinkedList<>();
         try {
             reader = new FileReader(logFile);
             bufferedReader = new BufferedReader(reader);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new UnableToFindLogException();
         }
 
         Stream<String> lines = bufferedReader.lines();
@@ -88,7 +96,7 @@ public class Log {
             reader.close();
             bufferedReader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogReadingException();
         }
         return stringRecords;
     }

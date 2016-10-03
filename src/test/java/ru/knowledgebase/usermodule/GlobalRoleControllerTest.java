@@ -38,23 +38,27 @@ public class GlobalRoleControllerTest {
 
     private DataCollector collector = DataCollector.getInstance();
 
+    @Before
     public void prepareUser() throws Exception{
         User user = collector.findUser(login1);
         if (user == null) {
-            ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
+            user = UserController.getInstance().register(login1, password1, "t1@m",
                     "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+        }
+        Article article = collector.getBaseArticle();
+        try {
+            if (article == null) {
+                ArticleController.getInstance().addBaseArticle("1", "2", user.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5));
+            }
+        }catch (Exception e){
+
         }
     }
 
-    public void afterUser() throws Exception{
-        User user = collector.findUser(login1);
-        if (user != null)
-            collector.deleteUser(user);
-    }
 
     @Before
     public void prepareGlobalRole() throws Exception{
-        GlobalRole role = collector.findGlobalRole(roleId);
+        GlobalRole role = collector.findGlobalRole(roleName);
         if (role == null){
             role = new GlobalRole(roleId);
             role.setName(roleName);
@@ -74,7 +78,6 @@ public class GlobalRoleControllerTest {
 
     @Before
     public void prepareRoles() throws Exception{
-        afterUser();
         GlobalRole role = collector.findGlobalRole(role1Name);
         if (role != null){
             collector.deleteGlobalRole(role);
@@ -86,13 +89,7 @@ public class GlobalRoleControllerTest {
         prepareUser();
     }
 
-    @Before
-    public void prepareArticle() throws Exception{
-        Article article = collector.findArticle(articleId);
-        if (article == null) {
-            ArticleController.getInstance().addBaseArticle("1", "2", 1, new Timestamp(5), new Timestamp(5), new Timestamp(5));
-        }
-    }
+
 
     @Test
     public void create1() throws Exception{

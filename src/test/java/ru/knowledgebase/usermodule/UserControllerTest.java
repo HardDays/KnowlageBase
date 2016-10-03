@@ -37,13 +37,7 @@ public class UserControllerTest {
     private  String roleName = "User";
     private DataCollector collector = DataCollector.getInstance();
 
-    @Before
-    public void prepareArticle() throws Exception{
-        Article article = collector.findArticle(articleId);
-        if (article == null) {
-            ArticleController.getInstance().addBaseArticle("1", "2", 1, new Timestamp(5), new Timestamp(5), new Timestamp(5));
-        }
-    }
+
 
     @Before
     public void prepareUser() throws Exception{
@@ -53,6 +47,18 @@ public class UserControllerTest {
         user = collector.findUser(login2);
         if (user != null)
             collector.deleteUser(user);
+        Article article = collector.getBaseArticle();
+        user = collector.findUser(login1 + "228");
+        if (user == null)
+            user = UserController.getInstance().register(login1 + "228", password1, "t1@m",
+                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+        try {
+            if (article == null) {
+                ArticleController.getInstance().addBaseArticle("1", "2", user.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5));
+            }
+        }catch (Exception e){
+
+        }
     }
 
     @Before
@@ -123,12 +129,7 @@ public class UserControllerTest {
         assertTrue(token != null);
     }
 
-    @Test
-    public void authorize3() throws Exception{
-        ru.knowledgebase.usermodule.UserController.getInstance().register(login1, password1, "t1@m",
-                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
-        ru.knowledgebase.usermodule.UserController.getInstance().authorizeLdap(login1, password1);
-    }
+
 
     @Test(expected = UserNotFoundException.class)
     public void authorize4() throws Exception{
@@ -207,7 +208,7 @@ public class UserControllerTest {
         assertTrue(user == null);
         GlobalRole globalRole = collector.findGlobalRole(roleId);
         assertTrue(globalRole != null);
-        Article article = collector.findArticle(articleId);
+        Article article = collector.getBaseArticle();
         assertTrue(article != null);
         ArticleRole articleRole = collector.findArticleRole(roleId);
         assertTrue(articleRole != null);
@@ -224,7 +225,7 @@ public class UserControllerTest {
         GlobalRole globalRole = collector.findGlobalRole(roleId);
         assertTrue(globalRole != null);
         assertTrue(globalRole.getName().equals(roleName));
-        Article article = collector.findArticle(articleId);
+        Article article = collector.getBaseArticle();
         assertTrue(article != null);
         ArticleRole articleRole = collector.findArticleRole(roleId);
         assertTrue(articleRole != null);
@@ -240,7 +241,7 @@ public class UserControllerTest {
         assertTrue(user == null);
         GlobalRole globalRole = collector.findGlobalRole(roleId);
         assertTrue(globalRole != null);
-        Article article = collector.findArticle(articleId);
+        Article article = collector.getBaseArticle();
         assertTrue(article != null);
         ArticleRole articleRole = collector.findArticleRole(roleId);
         assertTrue(articleRole != null);

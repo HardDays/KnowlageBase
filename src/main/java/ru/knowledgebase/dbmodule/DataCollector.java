@@ -683,6 +683,6 @@ public class DataCollector {
         return searchService.searchByBody(searchRequest);
     }
 
-    //END   SEARCH METHODS
+    //END SEARCH METHODS
 
 }

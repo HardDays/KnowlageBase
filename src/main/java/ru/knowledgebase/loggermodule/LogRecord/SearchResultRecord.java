@@ -12,6 +12,7 @@ import java.sql.Timestamp;
  * chosen by user.
  */
 public class SearchResultRecord extends ALogRecord {
+
     private int articleID;
 
     public SearchResultRecord(int userID, int articleID) {
@@ -32,7 +33,4 @@ public class SearchResultRecord extends ALogRecord {
         return articleID;
     }
 
-    public void setArticleID(int articleID) {
-        this.articleID = articleID;
-    }
 }

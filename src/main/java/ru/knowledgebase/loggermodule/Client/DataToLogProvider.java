@@ -69,8 +69,13 @@ public class DataToLogProvider {
 
             while (true){
                 synchronized (buffer){
-                    if(!buffer.isEmpty()){
-                        logWriter.writeToLog((List<String>) buffer);
+                    if(!buffer.isEmpty()) {
+                        try {
+                            logWriter.writeToLog((List<String>) buffer);
+                        }
+                        catch (Exception ex) {
+                            //Kostili:(
+                        }
                         buffer.clear();
                     }
                 }

@@ -154,6 +154,10 @@ public class User {
         this.userArticleRoles = userArticleRoles;
     }
 
+    public String getFullName() {
+        return lastName + " " + firstName + " " + middleName;
+    }
+
     public String getFirstName() {
         return firstName;
     }

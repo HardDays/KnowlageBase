@@ -29,7 +29,4 @@ public class SearchRequestRecord extends ALogRecord {
         return searchRequest;
     }
 
-    public void setSearchRequest(String searchRequest) {
-        this.searchRequest = searchRequest;
-    }
 }

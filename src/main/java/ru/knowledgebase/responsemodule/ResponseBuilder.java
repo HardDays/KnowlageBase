@@ -275,4 +275,18 @@ public class ResponseBuilder {
     public static Response buildUserNewsResponse() {
         return null;
     }
+
+    //TODO: should return list of articles
+    public static Response buildSearchResultResponse(List<Article> articles) {
+        return Response.status(400).build();
+    }
+
+    //TODO:
+    public Response buildReportResponse(String path) {
+        return Response.status(400).build();
+    }
+    //TODO:
+    public Response buidlReportBuildingError() {
+        return Response.status(400).build();
+    }
 }
