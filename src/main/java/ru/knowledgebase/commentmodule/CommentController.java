@@ -40,9 +40,9 @@ public class CommentController {
      * Add new comment object to database
      * @param comment comment
      */
-    public void add(Comment comment) throws Exception{
+    public Comment add(Comment comment) throws Exception{
         try{
-            collector.addComment(comment);
+            return collector.addComment(comment);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -54,7 +54,7 @@ public class CommentController {
      * @param comment comment of user
      * @param articleText text with mistake
      */
-    public void add(int userId, int articleId, String comment, String articleText) throws Exception{
+    public Comment add(int userId, int articleId, String comment, String articleText) throws Exception{
         User user = null;
         Article article = null;
         Article section = null;
@@ -78,7 +78,7 @@ public class CommentController {
         }catch (Exception e){
             throw new DataBaseException();
         }
-        add(new Comment(user, admin, article, comment, articleText));
+        return add(new Comment(user, admin, article, comment, articleText));
     }
     /**
      * Find list of comments sended to admin

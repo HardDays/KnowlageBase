@@ -32,12 +32,13 @@ public class UserWrapper {
      */
     public Response authorize(String login, String password) {
         try {
+            /*
             userController.authorizeLdap(login, password);
             if (!userController.isLdapUserExists(login)){
                 User user = userController.copyLdapUser(login ,password);
                 globalRoleController.assignDefaultUserRole(user);
                 articleRoleController.assignDefaultUserRole(user);
-            }
+            }*/
             Token token = userController.authorize(login, password);
             return ResponseBuilder.buildAuthorizedResponse(token);
         }catch (Exception e){

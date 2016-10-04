@@ -73,14 +73,32 @@ public class GlobalRoleControllerTest {
     public void deleteAll() throws Exception{
         try{
             collector.deleteArticle(article1.getId());
-            collector.deleteArticle(article2.getId());
-            //  collector.deleteArticle(article3.getId());
-            collector.deleteArticle(base.getId());
-            collector.deleteUser(user.getId());
-            collector.deleteGlobalRole(role.getId());
-            collector.deleteGlobalRole(role2.getId());
         }catch (Exception e){
-            e.printStackTrace();
+        }
+        try{
+            collector.deleteGlobalRole(role.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteGlobalRole(role2.getId());
+
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteUser(user.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteArticle(article2.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteArticle(article3.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteArticle(base.getId());
+        }catch (Exception e){
         }
     }
 

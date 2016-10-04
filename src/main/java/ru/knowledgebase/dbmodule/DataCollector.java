@@ -699,8 +699,8 @@ public class DataCollector {
     //END NEWS METHODS
 
     //BEGIN COMMENT CRUD METHODS
-    public void addComment(Comment comment) throws Exception{
-        commentService.create(comment);
+    public Comment addComment(Comment comment) throws Exception{
+        return commentService.create(comment);
     }
 
     public void updateComment(Comment comment) throws Exception{

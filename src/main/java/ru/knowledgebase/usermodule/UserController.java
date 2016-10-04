@@ -26,7 +26,7 @@ import java.util.List;
 public class UserController {
 
     private DataCollector collector = DataCollector.getInstance();
-    private LdapWorker ldapWorker = LdapWorker.getInstance();
+  //  private LdapWorker ldapWorker = LdapWorker.getInstance();
 
     private static volatile UserController instance;
 
@@ -93,11 +93,12 @@ public class UserController {
         }
         return updateToken(user);
     }
-    /**
+    /*
+
      * Authorize user through LDAP
      * @param login user login
      * @param password user password
-     */
+
     public void authorizeLdap(String login, String password) throws Exception{
         try {
             ldapWorker.authorize(login, DigestUtils.md5Hex(password));
@@ -117,6 +118,7 @@ public class UserController {
         }
     }
 
+
     public boolean isLdapUserExists(String login) throws Exception{
         try{
             find(login);
@@ -125,6 +127,7 @@ public class UserController {
         }
         return true;
     }
+    */
 
     /**
      * Register new user in database and LDAP
@@ -132,14 +135,14 @@ public class UserController {
      */
     public User register(User user) throws Exception{
       //  ldapWorker.createUser(user.getLogin(), user.getPassword());
-        User ldapUser = null;
+      /*  User ldapUser = null;
         try{
             ldapUser = ldapWorker.getUserInfo(user.getLogin());
         }catch (Exception e){
 
         }
         if (ldapUser != null)
-            throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistsException();*/
         try {
             return collector.addUser(user);
         }catch(org.springframework.dao.DataIntegrityViolationException e){
@@ -256,7 +259,7 @@ public class UserController {
                 || firstName.length() == 0 || lastName.length() == 0){
             throw new WrongUserDataException();
         }
-        User user = null, exist = null, ldapUser = null;
+        User user = null, exist = null;
         try{
             user = collector.findUser(userId);
             if (!user.getLogin().equals(login))
@@ -264,17 +267,20 @@ public class UserController {
         }catch (Exception e){
             throw new DataBaseException();
         }
+        /*
+        User ldapUser = null;
         try{
             ldapUser = ldapWorker.getUserInfo(user.getLogin());
         }catch (Exception e){
 
         }
+        if (ldapUser != null)
+            throw new LdapException();*/
         if (user == null)
             throw new UserNotFoundException();
         if (exist != null)
             throw new UserAlreadyExistsException();
-        if (ldapUser != null)
-            throw new LdapException();
+
         password = DigestUtils.md5Hex(password);
         user = new User(login, password, email,
                 firstName, middleName, lastName,

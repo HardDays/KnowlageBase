@@ -78,16 +78,73 @@ public class UserControllerTest {
     public void deleteAll() throws Exception{
         try{
             collector.deleteArticle(article1.getId());
-            collector.deleteArticle(article2.getId());
-            //  collector.deleteArticle(article3.getId());
-            collector.deleteArticle(base.getId());
-            collector.deleteUser(user.getId());
-            collector.deleteUser(user2.getId());
-            collector.deleteGlobalRole(role.getId());
+        }catch (Exception e){
+        }
+        try{
             collector.deleteArticleRole(role2.getId());
         }catch (Exception e){
-            e.printStackTrace();
+
         }
+        try{
+            collector.deleteGlobalRole(role.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteUser(user.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteUser(user2.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteArticle(article2.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteArticle(article3.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteArticle(base.getId());
+        }catch (Exception e){
+        }
+    }
+
+    @Test
+    public void authorize1() throws Exception{
+        Token t = c.authorize("testeeee1", "1");
+        assertTrue(c.checkUserToken(user.getId(), t.getToken()));
+    }
+
+    @Test(expected = WrongPasswordException.class)
+    public void authorize2() throws Exception{
+        c.authorize("testeeee1", "dssda");
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void authorize3() throws Exception{
+        c.authorize("testeeee1222222222", "dssda");
+    }
+
+    @Test(expected = UserAlreadyExistsException.class)
+    public void register1() throws Exception{
+        c.register("testeeee1", "1", "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+    }
+
+    @Test
+    public void update1() throws Exception{
+        c.update(user.getId(), "testeeee3", "1", "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+        Token t = c.authorize("testeeee3", "1");
+        assertTrue(c.checkUserToken(user.getId(), t.getToken()));
+    }
+
+    @Test(expected = UserAlreadyExistsException.class)
+    public void update2() throws Exception{
+        c.update(user.getId(), "testeeee2", "sdds", "t1@m",
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
     }
 
     @Test
