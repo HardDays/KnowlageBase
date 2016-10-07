@@ -48,4 +48,8 @@ public class SectionRoleStorage {
         }
         return userSections.get(userId);
     }
+
+    public void deleteAllSections(int userId){
+        userSections.put(userId, new HashSet<>());
+    }
 }

@@ -4,7 +4,6 @@ import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.AssignDefaultRoleException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotAssignedException;
-import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
@@ -297,6 +296,11 @@ public class GlobalRoleController {
         GlobalRole superVisor = new GlobalRole();
         superVisor.setName("Супервизор");
         create(superVisor);
+
+        GlobalRole banned = new GlobalRole();
+        banned.setName("Пользователь без прав");
+        banned.setBaseUser(true);
+        create(banned);
     }
 
     public boolean canAddUser(int userId) throws Exception{
@@ -319,7 +323,7 @@ public class GlobalRoleController {
         return findUserRole(userId).isCanEditUserRole();
     }
 
-    public boolean isSuperUser(int userId) throws Exception{
-        return findUserRole(userId).isSuperUser();
+    public boolean isBaseUser(int userId) throws Exception{
+        return findUserRole(userId).isBaseUser();
     }
 }

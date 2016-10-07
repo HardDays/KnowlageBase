@@ -37,6 +37,8 @@ public class GlobalRole {
     @Column
     private boolean canEditUserRole;
 
+    @Column boolean baseUser;
+
     public GlobalRole(){
 
     }
@@ -105,7 +107,11 @@ public class GlobalRole {
         this.canViewUser = canViewUser;
     }
     //KOSTILI DETECTED
-    public boolean isSuperUser(){
-        return canViewUser && canDeleteUser && canEditUser && canEditUserRole && canViewUser;
+    public boolean isBaseUser(){
+        return baseUser;
+    }
+
+    public void setBaseUser(boolean baseUser){
+        this.baseUser = baseUser;
     }
 }

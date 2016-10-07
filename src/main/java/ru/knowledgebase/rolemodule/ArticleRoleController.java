@@ -219,11 +219,12 @@ public class ArticleRoleController {
             while (true) {
                 if (temp.isSection()){
                     UserArticleRole tempRole = collector.findUserArticleRole(role.getUser(), temp);
-                    try{
-                        deleteUserRoleFromDB(role.getUser().getId(), temp.getId());
+                    if (tempRole != null) {
+                        try {
+                            deleteUserRoleFromDB(role.getUser().getId(), temp.getId());
+                        } catch (Exception e) {
+                        }
                         break;
-                    }catch (Exception e){
-
                     }
                 }
                 if (temp.getParentArticle() == -1)
@@ -277,7 +278,7 @@ public class ArticleRoleController {
         assignUserRole(user, article, articleRole);
     }
 
-    public void assignSuperUser(int userId, int articleId, int articleRoleId) throws Exception{
+    public void assignBaseUser(int userId, int articleId, int articleRoleId) throws Exception{
         User user = null;
         Article article = null;
         ArticleRole articleRole = null;
@@ -417,6 +418,10 @@ public class ArticleRoleController {
         superVisor.setCanAddArticle(true);
         superVisor.setCanGetEmployeesActionsReports(true);
         create(superVisor);
+
+        ArticleRole banned = new ArticleRole();
+        banned.setName("Пользователь без прав");
+        create(banned);
 
     }
 

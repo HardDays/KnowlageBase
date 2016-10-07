@@ -100,6 +100,7 @@ public class GlobalRoleControllerTest {
             collector.deleteArticle(base.getId());
         }catch (Exception e){
         }
+        collector.deleteAllUserSections(user.getId());
     }
 
     @Test
@@ -120,11 +121,6 @@ public class GlobalRoleControllerTest {
         c.assignUserRole(user.getId(), role.getId());
         c.deleteUserRole(user.getId());
         assertTrue(collector.findUserGlobalRole(user) == null);
-    }
-
-    @Test(expected = RoleNotAssignedException.class)
-    public void delete2() throws Exception{
-        c.deleteUserRole(user.getId());
     }
 
     @Test

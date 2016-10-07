@@ -3,21 +3,12 @@ package ru.knowledgebase.usermodule;
 import org.junit.*;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleDeleteException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotAssignedException;
-import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
-import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
-import ru.knowledgebase.exceptionmodule.roleexceptions.RoleAlreadyExistsException;
-import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotFoundException;
-import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
-
-import java.sql.Timestamp;
 
 import static org.junit.Assert.assertTrue;
 /**
@@ -98,6 +89,7 @@ public class ArticleRoleControllerTest {
             collector.deleteArticle(base.getId());
         }catch (Exception e){
         }
+        collector.deleteAllUserSections(user.getId());
     }
 
     @Test
@@ -108,7 +100,7 @@ public class ArticleRoleControllerTest {
 
     @Test
     public void assign2() throws Exception{
-        c.assignSuperUser(user.getId(), article2.getId(), role.getId());
+        c.assignBaseUser(user.getId(), article2.getId(), role.getId());
         assertTrue(c.findUserRole(user, article1).getId() == role.getId());
     }
 
@@ -150,11 +142,6 @@ public class ArticleRoleControllerTest {
     @Test(expected = RoleDeleteException.class)
     public void delete2() throws Exception{
         c.assignUserRole(user.getId(), article1.getId(), role.getId());
-        c.deleteUserRole(user.getId(), article1.getId());
-    }
-
-    @Test(expected = RoleNotAssignedException.class)
-    public void delete3() throws Exception{
         c.deleteUserRole(user.getId(), article1.getId());
     }
 

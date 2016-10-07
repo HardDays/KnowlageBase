@@ -95,6 +95,10 @@ public class LocalStorage {
         return sectionRoleStorage.getSections(userId);
     }
 
+    public void deleteAllUserSections(int userId){
+        sectionRoleStorage.deleteAllSections(userId);
+    }
+
     //END SectionRole METHODS
 
 

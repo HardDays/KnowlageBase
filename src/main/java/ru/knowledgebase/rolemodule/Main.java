@@ -61,7 +61,7 @@ public class Main {
         //UserController c = UserController.getInstance();
         //c.authorize("testeeee2", "2");
        // c.delete(user2);
-        createTest();
+       GlobalRoleController.getInstance().createBaseRoles();
     }
 
 

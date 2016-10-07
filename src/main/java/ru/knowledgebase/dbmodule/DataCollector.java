@@ -190,7 +190,6 @@ public class DataCollector {
         }
     }
 
-
     public Article updateArticle(Article article) throws Exception {
         localStorage.updateArticleInCache(article);
         return articleService.update(article);
@@ -347,6 +346,10 @@ public class DataCollector {
 
     public Integer getAttachedSectionCount(int userId) throws Exception{
         return localStorage.getUserSections(userId).size();
+    }
+
+    public void deleteAllUserSections(int userId){
+        localStorage.deleteAllUserSections(userId);
     }
 
     public HashSet<Integer> getUserSections(int userId) throws Exception{

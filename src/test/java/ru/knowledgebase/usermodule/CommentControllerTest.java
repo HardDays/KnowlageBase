@@ -6,17 +6,11 @@ import org.junit.Test;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.commentmodule.CommentController;
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.exceptionmodule.userexceptions.UserAlreadyExistsException;
-import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
-import ru.knowledgebase.exceptionmodule.userexceptions.WrongPasswordException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
-import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
-import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.rolemodule.ArticleRoleController;
-import ru.knowledgebase.rolemodule.GlobalRoleController;
 
 import java.util.List;
 
@@ -71,8 +65,8 @@ public class CommentControllerTest {
             article1 = ArticleController.getInstance().addArticle("1", "f", user.getId(), base.getId(), null, null, null, false);
             article2 = ArticleController.getInstance().addArticle("2", "f", user.getId(), base.getId(), null, null, null, false);
             article3 = ArticleController.getInstance().addArticle("3", "f", user.getId(), article2.getId(), null, null, null, false);
-            ArticleRoleController.getInstance().assignSuperUser(user.getId(), base.getId(), role.getId());
-            ArticleRoleController.getInstance().assignSuperUser(user2.getId(), article1.getId(), role2.getId());
+            ArticleRoleController.getInstance().assignBaseUser(user.getId(), base.getId(), role.getId());
+            ArticleRoleController.getInstance().assignBaseUser(user2.getId(), article1.getId(), role2.getId());
 
         }catch (Exception e){
             e.printStackTrace();
@@ -115,6 +109,9 @@ public class CommentControllerTest {
             collector.deleteArticle(base.getId());
         }catch (Exception e){
         }
+        collector.deleteAllUserSections(user.getId());
+        collector.deleteAllUserSections(user2.getId());
+
     }
 
     @Test

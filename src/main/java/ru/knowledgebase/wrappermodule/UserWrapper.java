@@ -170,8 +170,8 @@ public class UserWrapper {
                 return ResponseBuilder.buildNoAccessResponse();
             globalRoleController.assignUserRole(userId, roleId);
             //attach super user to root
-            if (globalRoleController.isSuperUser(userId)) {
-                articleRoleController.assignSuperUser(userId, articleId, roleId);
+            if (globalRoleController.isBaseUser(userId)) {
+                articleRoleController.assignBaseUser(userId, articleId, roleId);
             }else{
                 articleRoleController.assignUserRole(userId, articleId, roleId);
             }

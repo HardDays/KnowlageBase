@@ -109,6 +109,8 @@ public class UserControllerTest {
             collector.deleteArticle(base.getId());
         }catch (Exception e){
         }
+        collector.deleteAllUserSections(user.getId());
+        collector.deleteAllUserSections(user2.getId());
     }
 
     @Test
