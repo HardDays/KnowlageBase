@@ -4,6 +4,7 @@ package ru.knowledgebase.analyticsmodule.rank;
 /**
  * Created by vova on 07.09.16.
  */
+//count of operations and frequency
 public class OperationFrequency {
     private int count;
     private double frequency;

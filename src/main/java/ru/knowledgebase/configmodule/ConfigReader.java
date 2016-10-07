@@ -56,7 +56,7 @@ public class ConfigReader {
             throw new ConfigFileNotFoundError();
         }
     }
-
+    //parse json object from config
     private void initConfig() {
         try {
             JSONObject obj = new JSONObject(fileContent);

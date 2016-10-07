@@ -246,6 +246,10 @@ public class DataCollector {
         return userService.getAll();
     }
 
+    public List<User> getAllUsers(int offset, int limit) throws Exception{
+        return userService.getAll(offset, limit);
+    }
+
     public void deleteUser(User user) throws Exception{
         userService.delete(user);
     }
@@ -256,6 +260,14 @@ public class DataCollector {
 
     public void updateSuperVisor(Integer oldId, Integer newId) throws Exception{
         userService.updateSuperVisor(oldId, newId);
+    }
+
+    public List<User> findUserBySuperVisor(int superVisorId) throws Exception{
+        return userService.findBySuperVisor(superVisorId);
+    }
+
+    public List<User> findUserBySuperVisor(int superVisorId, int offset, int limit) throws Exception{
+        return userService.findBySuperVisor(superVisorId, offset, limit);
     }
     //END USER CRUD METHODS
 
@@ -316,10 +328,15 @@ public class DataCollector {
 
     //BEGIN USERARTICLEROLE METHODS
 
+    /**
+     * Delete from memcache and DB
+     * @param role - role to add
+     */
     public void addUserSectionRole(UserSectionRole role) throws Exception{
         userSectionRoleService.create(role);
         Integer uid = role.getUser().getId();
         Article temp = role.getArticle();
+       // Go through branch to root and delete all section roles from memcache
         while (true) {
             if (temp.isSection()){
                 localStorage.deleteUserSection(uid, temp.getId());
@@ -328,9 +345,11 @@ public class DataCollector {
                 break;
             temp = findArticle(temp.getSectionId());
         }
+        //Delete child sections
         for (Integer child : getSectionTreeIds(role.getArticle().getId())){
             localStorage.deleteUserSection(uid, child);
         }
+        //add to memcache
         localStorage.addUserSection(uid, role.getArticle().getId());
     }
 
@@ -342,6 +361,11 @@ public class DataCollector {
         localStorage.deleteAllUserSections(userId);
     }
 
+    /**
+     * Get sections to which user attached
+     * @param userId - id of user
+     * @return id's of sections
+     */
     public HashSet<Integer> getUserSections(int userId) throws Exception{
         HashSet <Integer> res = new HashSet<>();
         for (Integer section : localStorage.getUserSections(userId)){
@@ -352,7 +376,47 @@ public class DataCollector {
         }
         return res;
     }
-
+    /**
+     * Get sections to which user attached
+     * @param userId - id of user
+     * @param offset - from
+     * @param limit - to
+     * @return id's of sections
+     */
+    public List<Integer> getUserSections(int userId, int offset, int limit) throws Exception{
+        List <Integer> res = new LinkedList<>();
+        for (Integer section : localStorage.getUserSections(userId)){
+            res.add(section);
+            for (Integer child : getSectionTreeIds(section)){
+                res.add(child);
+            }
+        }
+        int to = Math.min(offset + limit, res.size());
+        return res.subList(offset, to);
+    }
+    /**
+     * Get sections to which user attached
+     * @param userId - id of user
+     * @param offset - from
+     * @param limit - to
+     * @return section objects
+     */
+    public List<Article> getUserSectionsObj(int userId, int offset, int limit) throws Exception{
+        List <Article> res = new LinkedList<>();
+        for (Integer section : localStorage.getUserSections(userId)){
+            res.add(findArticle(section));
+            for (Article child : getSectionTree(section)){
+                res.add(child);
+            }
+        }
+        int to = Math.min(offset + limit, res.size());
+        return res.subList(offset, to);
+    }
+    /**
+     * Get sections to which user attached
+     * @param userId - id of user
+     * @return section objects
+     */
     public HashSet<Article> getUserSectionsObj(int userId) throws Exception{
         HashSet <Article> res = new HashSet<>();
         for (Integer section : localStorage.getUserSections(userId)){
@@ -392,6 +456,9 @@ public class DataCollector {
         return userSectionRoleService.findByArticle(articleId);
     }
 
+    public List <UserSectionRole> findUserSectionRoleBySection(int articleId, int offset, int limit){
+        return userSectionRoleService.findByArticle(articleId, offset, limit);
+    }
 
 
     //END USERARTICLEROLE METHODS
@@ -652,8 +719,12 @@ public class DataCollector {
         commentService.delete(id);
     }
 
-    public List<Comment> findCommentsByAdmin(User admin) throws Exception{
+    public List<Comment> findCommentsByAdmin(int admin) throws Exception{
         return commentService.findByAdmin(admin);
+    }
+
+    public List<Comment> findCommentsByAdmin(int admin, int offset, int limit) throws Exception{
+        return commentService.findByAdmin(admin, offset, limit);
     }
 
     public void deleteComment(Comment comment) throws Exception{

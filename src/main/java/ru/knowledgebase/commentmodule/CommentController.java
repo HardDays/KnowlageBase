@@ -55,6 +55,8 @@ public class CommentController {
      * @param articleText text with mistake
      */
     public Comment add(int userId, int articleId, String comment, String articleText) throws Exception{
+        if (userId == 0 || articleId == 0 || comment == null || articleText == null)
+            throw new WrongUserDataException();
         User user = null;
         Article article = null;
         Article section = null;
@@ -85,16 +87,14 @@ public class CommentController {
      * @param adminId id of admin
      * @return list of comments
      */
-    public List<Comment> findByAdmin(int adminId) throws Exception{
-        User admin = null;
+    public List<Comment> findByAdmin(int adminId, int offset, int limit) throws Exception{
+        if (adminId == 0 || limit == 0)
+            throw new WrongUserDataException();
         try {
-            admin = collector.findUser(adminId);
+            return collector.findCommentsByAdmin(adminId, offset, limit);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        if (admin == null)
-            throw new UserNotFoundException();
-        return collector.findCommentsByAdmin(admin);
     }
     /**
      * Check can admin delete comment
@@ -103,6 +103,8 @@ public class CommentController {
      * @return true or false
      */
     public boolean canDeleteComment(int adminId, int commentId) throws Exception{
+        if (adminId == 0 || commentId == 0)
+            throw new WrongUserDataException();
         Comment comment = null;
         try {
             comment = collector.findComment(commentId);
@@ -131,6 +133,8 @@ public class CommentController {
      * @param id id of comment
      */
     public void delete(int id) throws Exception{
+        if (id == 0)
+            throw new WrongUserDataException();
         Comment comment = null;
         try{
             comment = collector.findComment(id);

@@ -5,6 +5,7 @@ import ru.knowledgebase.analyticsmodule.rank.Rank;
 /**
  * Created by vova on 07.09.16.
  */
+//rank of request
 public class RequestRank extends Rank {
 
     private String request;

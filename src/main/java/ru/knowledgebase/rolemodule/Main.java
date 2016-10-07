@@ -4,9 +4,11 @@ import ru.knowledgebase.articlemodule.ArticleController;
 
 import ru.knowledgebase.configmodule.ConfigReader;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.dbmodule.repositories.userrepositories.UserRepository;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.usermodule.UserController;
+import ru.knowledgebase.wrappermodule.UserWrapper;
 
 /**
  * Created by vova on 31.08.16.
@@ -46,15 +48,15 @@ public class Main {
         //c.authorize("testeeee2", "2");
         // c.delete(user2);
         //  GlobalRoleController.getInstance().createBaseRoles();
-        UserController.getInstance().delete(2);
+        RoleController.getInstance().assignUserRole(3006, 1, 2);
 
     }
 
     public static void createTest() throws Exception{
         User user = UserController.getInstance().register("user337", "pass", "t1@m",
-                                                "vov", "vas", "fam", "off", "222", "333", null, null);
+                                                "vov", "vas", "fam", "off", "222", "333", null, null, true, true, null);
         UserController.getInstance().register("user339", "pass", "t1@m",
-                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null, true, true, null);
         RoleController.getInstance().createBaseRoles();
      //  User user = new User();
        // user.setId(116);

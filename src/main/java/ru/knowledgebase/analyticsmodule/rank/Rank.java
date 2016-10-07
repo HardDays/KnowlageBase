@@ -3,6 +3,7 @@ package ru.knowledgebase.analyticsmodule.rank;
 /**
  * Created by vova on 07.09.16.
  */
+//simple pair class
 public class Rank {
 
     private Integer rank;

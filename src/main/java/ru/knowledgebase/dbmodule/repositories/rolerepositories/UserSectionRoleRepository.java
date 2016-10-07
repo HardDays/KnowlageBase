@@ -1,5 +1,6 @@
 package ru.knowledgebase.dbmodule.repositories.rolerepositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -28,6 +29,9 @@ public interface UserSectionRoleRepository extends CrudRepository<UserSectionRol
 
     @Query("select r from UserSectionRole r where r.article.id = ?1")
     public List<UserSectionRole> findByArticle(int articleId);
+
+    @Query("select r from UserSectionRole r where r.article.id = ?1")
+    public List<UserSectionRole> findByArticleOffset(int articleId, Pageable p);
 
     @Query("from UserSectionRole")
     public List<UserSectionRole> getAll() throws Exception;

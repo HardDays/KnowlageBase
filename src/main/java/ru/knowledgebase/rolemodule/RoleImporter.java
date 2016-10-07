@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class RoleImporter {
 
+    /** From JSON config to Role */
     public static List<Role> getRoles(){
         JSONArray jsonroles = ConfigReader.getInstance().getConfig().getRoles();
 

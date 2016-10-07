@@ -142,7 +142,10 @@ public class ResponseBuilder {
                 .add("phone1", checkNull(user.getPhone1()))
                 .add("phone2", checkNull(user.getPhone2()))
                 .add("recruitment_date", checkNull(user.getRecruitmentDate()))
-                .add("dismissal_date", checkNull(user.getDismissalDate()));
+                .add("dismissal_date", checkNull(user.getDismissalDate()))
+                .add("has_email_notifications", checkNull(user.isHasEmailNotifications()))
+                .add("has_site_notifications", checkNull(user.isHasSiteNotifications()))
+                .add("super_visor_id", checkNull(user.getSuperVisorId()));
 
     }
 
@@ -160,20 +163,25 @@ public class ResponseBuilder {
                             MediaType.APPLICATION_JSON).build();
     }
 
-    public static Response buildSectionUserListResponse(List <UserSectionRole> users){
+    public static Response buildSectionUserListResponse(List <UserSectionRole> roles){
         JsonArrayBuilder jarr = Json.createArrayBuilder();
-        for (UserSectionRole user : users){
-            jarr.add(buildUserInfo(user.getUser()));
+        for (UserSectionRole role : roles){
+          //  JsonObject object = Json.createObjectBuilder()
+                 //   .add("user", buildUserInfo(role.getUser()))
+                  //  .add("role", buildSecionPermissions(role.getRole())).build();
+            jarr.add(buildUserInfo(role.getUser()));
         }
         return Response.ok(jarr.build().toString(),
                 MediaType.APPLICATION_JSON).build();
     }
 
-    public static Response buildUserSectionsResponse(HashSet<Integer> sections){
+    public static Response buildUserSectionsResponse(List<Article> sections){
         JsonArrayBuilder jarr = Json.createArrayBuilder();
-        for (Integer section : sections){
+        for (Article section : sections){
             jarr.add(Json.createObjectBuilder()
-                    .add("section_id", section).build());
+                    .add("id", section.getId())
+                    .add("title", section.getTitle())
+                    .build());
         }
         return Response.ok(jarr.build().toString(),
                 MediaType.APPLICATION_JSON).build();

@@ -4,54 +4,42 @@
     <bookmark url="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ArticleWrapper.java" line="233" mnemonic="0" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f2b045f-781f-48e8-acd1-2cab79605ba8" name="Default" comment="New role structure">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/RoleService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserSectionRoleService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/RoleRepository.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/UserSectionRoleRepository.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/Role.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/UserSectionRole.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleImporter.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/ArticleRoleService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/GlobalRoleService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserArticleRoleService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserGlobalRoleService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/ArticleRoleRepository.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/GlobalRoleRepository.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/UserArticleRoleRepository.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/UserGlobalRoleRepository.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/ArticleRole.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/GlobalRole.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/UserArticleRole.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/UserGlobalRole.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/ArticleRoleController.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/GlobalRoleController.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/GlobalRoleControllerTest.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
+    <list default="true" id="0f2b045f-781f-48e8-acd1-2cab79605ba8" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/chunkrequest/ChunkRequest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/Config.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/Config.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/Analyser.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/Analyser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/RequestParser.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/RequestParser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/ArticleRank.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/ArticleRank.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/OperationFrequency.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/OperationFrequency.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/Rank.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/Rank.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/RequestRank.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/RequestRank.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/commentmodule/CommentController.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/commentmodule/CommentController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/ConfigReader.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/ConfigReader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/convertermodule/ArticleConverter.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/convertermodule/ArticleConverter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/DataCollector.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/DataCollector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/commentservice/CommentService.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/commentservice/CommentService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserSectionRoleService.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserSectionRoleService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/userservices/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/userservices/UserService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/commentrepositories/CommentRepository.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/commentrepositories/CommentRepository.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/UserSectionRoleRepository.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/UserSectionRoleRepository.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/UserRepository.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/UserRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/storages/LocalStorage.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/storages/LocalStorage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/commentmodels/Comment.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/commentmodels/Comment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/ldapmodule/LdapWorker.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/ldapmodule/LdapWorker.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/usermodels/User.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/usermodels/User.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/responsemodule/ResponseBuilder.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/responsemodule/ResponseBuilder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/Main.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleController.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleImporter.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleImporter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/usermodule/UserController.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/usermodule/UserController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/RolesWebService.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/RolesWebService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/CommentWebService.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/CommentWebService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/UserWebService.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/UserWebService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ArchiveWrapper.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ArchiveWrapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ArticleWrapper.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ArticleWrapper.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/CommentWrapper.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/CommentWrapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/NewsWrapper.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/NewsWrapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/RoleWrapper.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/RoleWrapper.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/UserWrapper.java" afterPath="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/UserWrapper.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArchiveArticleControllerTest.java" afterPath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArchiveArticleControllerTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArticleControllerTest.java" afterPath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArticleControllerTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/NewsControllerTest.java" afterPath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/NewsControllerTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/SectionControllerTest.java" afterPath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/SectionControllerTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/searchmodule/SearchServiceTest.java" afterPath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/searchmodule/SearchServiceTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/ArticleRoleControllerTest.java" afterPath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/ArticleRoleControllerTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/CommentControllerTest.java" afterPath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/CommentControllerTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/UserControllerTest.java" afterPath="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/UserControllerTest.java" />
@@ -111,102 +99,91 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="UserController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/usermodule/UserController.java">
+      <file leaf-file-name="ArticleRoleControllerTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/ArticleRoleControllerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="246" column="32" selection-start-line="246" selection-start-column="32" selection-end-line="246" selection-end-column="32" />
+            <state relative-caret-position="118">
+              <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="56" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/Main.java">
+      <file leaf-file-name="ArchiveArticleControllerTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArchiveArticleControllerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="97">
-              <caret line="48" column="45" selection-start-line="48" selection-start-column="45" selection-end-line="48" selection-end-column="45" />
+            <state relative-caret-position="-279">
+              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.public.users" pinned="false" current-in-tab="false">
-        <entry file="dbDummy://dbtable:/a82e4737/b826ea1f-41cf-4827-8d3f-6b818102860b/test.public.users">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
-            </state>
-          </provider>
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+      <file leaf-file-name="ArticleControllerTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArticleControllerTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="109">
+              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserSectionRoleService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserSectionRoleService.java">
+      <file leaf-file-name="CommentControllerTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/CommentControllerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RoleService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/RoleService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="33" column="28" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="28" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/userservices/UserService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="44">
-              <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+            <state relative-caret-position="199">
+              <caret line="63" column="27" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataCollector.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/DataCollector.java">
+      <file leaf-file-name="NewsControllerTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/NewsControllerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="257" column="0" selection-start-line="257" selection-start-column="0" selection-end-line="257" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/UserRepository.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="18" />
+            <state relative-caret-position="109">
+              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TokenRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/TokenRepository.java">
+      <file leaf-file-name="UserControllerTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/UserControllerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+            <state relative-caret-position="194">
+              <caret line="65" column="12" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="persistence.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="162">
+              <caret line="9" column="65" selection-start-line="9" selection-start-column="65" selection-end-line="9" selection-end-column="65" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ArticleController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/articlemodule/ArticleController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="109">
+              <caret line="119" column="0" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SearchServiceTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/searchmodule/SearchServiceTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -215,8 +192,8 @@
       <file leaf-file-name="RoleController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="185" column="46" selection-start-line="185" selection-start-column="46" selection-end-line="185" selection-end-column="46" />
+            <state relative-caret-position="100">
+              <caret line="271" column="0" selection-start-line="271" selection-start-column="0" selection-end-line="271" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -256,57 +233,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/exceptionmodule/roleexceptions/DeleteRoleException.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/ArticleRoleRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/exceptionmodule/roleexceptions/RoleNotAssignedException.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/GlobalRoleService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/TokenRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/userservices/TokenService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/ArticleRoleService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserArticleRoleService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/UserArticleRoleRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserGlobalRoleService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/UserGlobalRoleRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/commentmodule/CommentController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/ArticleRole.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/GlobalRole.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/ArticleRoleController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/storages/SectionRoleStorage.java" />
-        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/GlobalRoleControllerTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/GlobalRoleController.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/UserRole.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/UserSectionRoleRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserSectionRoleService.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/storages/LocalStorage.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/UserSectionRole.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/RoleWrapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/NewsWrapper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/CommentWrapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ArticleWrapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ArchiveWrapper.java" />
-        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/UserControllerTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/commentmodels/Comment.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/UserWebService.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/RolesWebService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/responsemodule/ResponseBuilder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/UserWrapper.java" />
-        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/ArticleRoleControllerTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/CommentControllerTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/Config.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/ConfigReader.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/Role.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleImporter.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/RoleRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/RoleService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleController.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/usermodels/User.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/DataCollector.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/usermodule/UserController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/ldapmodule/LdapWorker.java" />
+        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArchiveArticleControllerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArticleControllerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/NewsControllerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/SectionControllerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/searchmodule/SearchServiceTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserSectionRoleService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/UserSectionRoleRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/UserRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/responsemodule/ResponseBuilder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/commentservice/CommentService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/commentrepositories/CommentRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/CommentWrapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/userservices/UserService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/UserRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/CommentWebService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/ArticleRank.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/Rank.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/OperationFrequency.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/RequestRank.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/Analyser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/RequestParser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/ConfigReader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/convertermodule/ArticleConverter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/DataCollector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleImporter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/UserWrapper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/UserWebService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/usermodule/UserController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/commentmodule/CommentController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/chunkrequest/ChunkRequest.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" />
+        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/CommentControllerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/ArticleRoleControllerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/UserControllerTest.java" />
       </list>
     </option>
   </component>
@@ -509,6 +486,10 @@
               <option name="myItemId" value="knowledgebase" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="articlemodule" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -661,36 +642,6 @@
               <option name="myItemId" value="knowledgebase" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="usermodule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="knowladge-base" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="KnowledgeBaseNew" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="knowledgebase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -748,75 +699,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="modelsmodule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="knowladge-base" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="KnowledgeBaseNew" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="knowledgebase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="dbmodule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="knowladge-base" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="KnowledgeBaseNew" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="knowledgebase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dbmodule" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dataservices" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="userservices" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -888,7 +771,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="roleservices" />
+              <option name="myItemId" value="commentservice" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -926,37 +809,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="newsservice" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="knowladge-base" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="KnowledgeBaseNew" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="knowledgebase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="configmodule" />
+              <option name="myItemId" value="chunkrequest" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1000,17 +853,17 @@
       <recent name="ru.knowledgebase.imagemodule" />
       <recent name="ru.knowledgebase.dbmodule.dataservices" />
     </key>
-    <key name="CreateTestDialog.Recents.Supers">
+    <key name="ImportMappingsDialog.RecentPackages">
       <recent name="" />
     </key>
-    <key name="ImportMappingsDialog.RecentPackages">
+    <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.ru.knowledgebase in knowledge-base">
     <configuration default="false" name="ru.knowledgebase.usermodule in knowledge-base" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -1643,8 +1496,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.Main" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.ru.knowledgebase in knowledge-base" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.ru.knowledgebase in knowledge-base" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Main" />
         <item index="2" class="java.lang.String" itemvalue="JUnit.ArticleRoleControllerTest" />
         <item index="3" class="java.lang.String" itemvalue="JUnit.ru.knowledgebase.usermodule in knowledge-base" />
         <item index="4" class="java.lang.String" itemvalue="JUnit.ArticleRoleControllerTest.delete3" />
@@ -1682,7 +1535,7 @@
       <workItem from="1475420960712" duration="39435000" />
       <workItem from="1475509116432" duration="7512000" />
       <workItem from="1475594164336" duration="4538000" />
-      <workItem from="1475830113784" duration="18943000" />
+      <workItem from="1475830113784" duration="37631000" />
     </task>
     <task id="LOCAL-00001" summary="New branch">
       <created>1471340635302</created>
@@ -1852,7 +1705,14 @@
       <option name="project" value="LOCAL" />
       <updated>1475838374921</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="New role structure + user modified">
+      <created>1475850116866</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1475850116866</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1861,15 +1721,6 @@
     </history-entry>
     <history-entry file="ArticleRoleControllerTest - 2016.10.07 at 15h 03m 44s.xml">
       <configuration name="ArticleRoleControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ArticleRoleControllerTest_delete3 - 2016.10.07 at 13h 17m 00s.xml">
-      <configuration name="ArticleRoleControllerTest.delete3" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ArticleRoleControllerTest_delete3 - 2016.10.07 at 13h 18m 14s.xml">
-      <configuration name="ArticleRoleControllerTest.delete3" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ArticleRoleControllerTest_delete3 - 2016.10.07 at 13h 18m 15s.xml">
-      <configuration name="ArticleRoleControllerTest.delete3" configurationId="JUnit" />
     </history-entry>
     <history-entry file="ru_knowledgebase_in_knowledge-base - 2016.10.07 at 15h 07m 21s.xml">
       <configuration name="ru.knowledgebase in knowledge-base" configurationId="JUnit" />
@@ -1883,41 +1734,50 @@
     <history-entry file="ru_knowledgebase_in_knowledge-base - 2016.10.07 at 15h 49m 08s.xml">
       <configuration name="ru.knowledgebase in knowledge-base" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="ru_knowledgebase_in_knowledge-base - 2016.10.07 at 23h 33m 32s.xml">
+      <configuration name="ru.knowledgebase in knowledge-base" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ru_knowledgebase_in_knowledge-base - 2016.10.07 at 23h 35m 45s.xml">
+      <configuration name="ru.knowledgebase in knowledge-base" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ru_knowledgebase_in_knowledge-base - 2016.10.07 at 23h 43m 04s.xml">
+      <configuration name="ru.knowledgebase in knowledge-base" configurationId="JUnit" />
+    </history-entry>
     <history-entry file="ru_knowledgebase_usermodule_in_knowledge-base - 2016.10.07 at 13h 22m 16s.xml">
       <configuration name="ru.knowledgebase.usermodule in knowledge-base" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="409820000" />
+    <option name="totallyTimeSpent" value="428508000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="23" width="1368" height="722" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27653214" sideWeight="0.50292826" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41909385" sideWeight="0.17715959" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20717423" sideWeight="0.8074074" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20863836" sideWeight="0.8074074" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3802589" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45954692" sideWeight="0.8272328" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31553397" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31391585" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34142396" sideWeight="0.49707174" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41909385" sideWeight="0.8228404" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32884902" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.516129" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2774524" sideWeight="0.48387095" order="6" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2532943" sideWeight="0.48387095" order="6" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847896" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -1960,11 +1820,12 @@
     <MESSAGE value="Some optimize" />
     <MESSAGE value="Tests added" />
     <MESSAGE value="Roles recreate" />
-    <option name="LAST_COMMIT_MESSAGE" value="Roles recreate" />
+    <MESSAGE value="New role structure + user modified" />
+    <option name="LAST_COMMIT_MESSAGE" value="New role structure + user modified" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="107" />
+      <option name="time" value="112" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1973,189 +1834,147 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/ArchiveWrapper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/UserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+        <state relative-caret-position="175">
+          <caret line="31" column="39" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArchiveArticleControllerTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/userservices/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-695">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        <state relative-caret-position="121">
+          <caret line="53" column="30" selection-start-line="53" selection-start-column="30" selection-end-line="53" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArticleControllerTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/commentrepositories/CommentRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+        <state relative-caret-position="228">
+          <caret line="23" column="35" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/NewsControllerTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/CommentWrapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/imagemodule/ImageControllerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/GlobalRoleControllerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        <state relative-caret-position="211">
+          <caret line="54" column="61" selection-start-line="54" selection-start-column="61" selection-end-line="54" selection-end-column="61" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/RoleWrapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
+        <state relative-caret-position="132">
+          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/ArticleRank.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/Rank.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/OperationFrequency.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="35" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/rank/RequestRank.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/Analyser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5562">
+          <caret line="211" column="9" selection-start-line="211" selection-start-column="9" selection-end-line="211" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/LogAnalyser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1667">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
           <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/articlemodels/Article.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1721">
-          <caret line="77" column="50" selection-start-line="77" selection-start-column="50" selection-end-line="77" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/commentmodels/Comment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/RolesWebService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/RequestParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+        <state relative-caret-position="129">
+          <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/searchmodule/SearchServiceTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/Reports/SearchOperationsReport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/analyticsmodule/Reports/EmployeesActionsReport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-188">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-461">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/ConfigReader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="113">
-          <caret line="44" column="16" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="16" />
+          <caret line="58" column="12" selection-start-line="58" selection-start-column="12" selection-end-line="58" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/UserWebService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="137" column="26" selection-start-line="137" selection-start-column="26" selection-end-line="137" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/UserWrapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="170" column="38" selection-start-line="170" selection-start-column="38" selection-end-line="170" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/UserControllerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="789">
-          <caret line="97" column="9" selection-start-line="97" selection-start-column="9" selection-end-line="97" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/articlemodule/SectionController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/SectionControllerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.5.RELEASE/spring-beans-4.0.5.RELEASE.jar!/org/springframework/beans/BeanUtils.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.5.RELEASE/spring-beans-4.0.5.RELEASE.jar!/org/springframework/beans/factory/support/SimpleInstantiationStrategy.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.5.RELEASE/spring-beans-4.0.5.RELEASE.jar!/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="736" column="0" selection-start-line="736" selection-start-column="0" selection-end-line="736" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/CommentControllerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="68" column="73" selection-start-line="68" selection-start-column="73" selection-end-line="68" selection-end-column="73" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/ArticleRoleControllerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/responsemodule/Response.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/Configurations.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
@@ -2163,170 +1982,192 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/responsemodule/ResponseBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/convertermodule/ArticleConverter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="67" column="16" selection-start-line="67" selection-start-column="16" selection-end-line="86" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="-823">
+          <caret line="119" column="19" selection-start-line="119" selection-start-column="19" selection-end-line="119" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/Config.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/storages/LocalStorage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
-          <folding>
-            <element signature="e#704#705#0" expanded="true" />
-            <element signature="e#749#750#0" expanded="true" />
-            <element signature="e#783#784#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="126">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/UserSectionRole.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/storages/SectionStorage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="126">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/rolemodels/Role.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/storages/SectionRoleStorage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="54" column="28" selection-start-line="54" selection-start-column="28" selection-end-line="54" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1038#1039#0" expanded="true" />
-            <element signature="e#1079#1080#0" expanded="true" />
-            <element signature="e#1115#1116#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-542">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/rolerepositories/RoleRepository.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/ldapmodule/LdapWorker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="17" column="34" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="-6390">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="dbDummy://dbtable:/a82e4737/b826ea1f-41cf-4827-8d3f-6b818102860b/test.public.role">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="50" column="56" selection-start-line="50" selection-start-column="56" selection-end-line="50" selection-end-column="56" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleImporter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/configmodule/ConfigReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="67" column="50" selection-start-line="67" selection-start-column="50" selection-end-line="67" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/modelsmodule/usermodels/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="66" column="19" selection-start-line="66" selection-start-column="19" selection-end-line="66" selection-end-column="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5463#5464#0" expanded="true" />
-            <element signature="e#5507#5508#0" expanded="true" />
-            <element signature="e#5695#5696#0" expanded="true" />
-            <element signature="e#5738#5739#0" expanded="true" />
-            <element signature="e#5915#5916#0" expanded="true" />
-            <element signature="e#5950#5951#0" expanded="true" />
-            <element signature="e#6007#6008#0" expanded="true" />
-            <element signature="e#6055#6056#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/newsservice/NewsService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/commentrepositories/CommentRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/articlerepositories/ArticleRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/articlerepositories/ImageRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/archiverepositories/ArchiveArticleRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/newsrepositories/NewsRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/articlemodule/ArticleController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
-          <caret line="9" column="59" selection-start-line="9" selection-start-column="59" selection-end-line="9" selection-end-column="59" />
+          <caret line="17" column="33" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/CommentWebService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="34" column="32" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/core/jersey-server/2.10.1/jersey-server-2.10.1.jar!/org/glassfish/jersey/server/model/internal/AbstractJavaResourceMethodDispatcher.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/core/jersey-server/2.10.1/jersey-server-2.10.1.jar!/org/glassfish/jersey/server/model/ResourceMethodInvoker.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="255" column="0" selection-start-line="255" selection-start-column="0" selection-end-line="255" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/core/jersey-server/2.10.1/jersey-server-2.10.1.jar!/org/glassfish/jersey/server/ServerRuntime.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="280" column="0" selection-start-line="280" selection-start-column="0" selection-end-line="280" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/core/jersey-common/2.10.1/jersey-common-2.10.1.jar!/org/glassfish/jersey/internal/Errors.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/core/jersey-common/2.10.1/jersey-common-2.10.1.jar!/org/glassfish/jersey/process/internal/RequestScope.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="111" column="0" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/containers/jersey-container-servlet-core/2.10.1/jersey-container-servlet-core-2.10.1.jar!/org/glassfish/jersey/servlet/WebComponent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="146" column="0" selection-start-line="146" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/wrappermodule/UserWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="366" column="0" selection-start-line="366" selection-start-column="0" selection-end-line="366" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/webmodule/services/UserWebService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/usermodule/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="458" column="18" selection-start-line="458" selection-start-column="18" selection-end-line="458" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/commentmodule/CommentController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="135" column="19" selection-start-line="135" selection-start-column="19" selection-end-line="135" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/DataCollector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="416" column="33" selection-start-line="416" selection-start-column="33" selection-end-line="416" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/commentservice/CommentService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="44" column="33" selection-start-line="44" selection-start-column="33" selection-end-line="44" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/chunkrequest/ChunkRequest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="17" column="20" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/a82e4737/b826ea1f-41cf-4827-8d3f-6b818102860b/test.public.article_image">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+          <column-attributes>
+            <column name="ctid" enabled="false" />
+          </column-attributes>
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2344,108 +2185,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="dbDummy://dbtable:/a82e4737/b826ea1f-41cf-4827-8d3f-6b818102860b/test.public.usersectionrole">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="65" selection-start-line="9" selection-start-column="65" selection-end-line="9" selection-end-column="65" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/usermodule/UserController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/articlemodule/ArticleController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="246" column="32" selection-start-line="246" selection-start-column="32" selection-end-line="246" selection-end-column="32" />
+        <state relative-caret-position="109">
+          <caret line="119" column="0" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/UserSectionRoleService.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/searchmodule/SearchServiceTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/roleservices/RoleService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="33" column="28" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/DataCollector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="257" column="0" selection-start-line="257" selection-start-column="0" selection-end-line="257" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/UserRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/repositories/userrepositories/TokenRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/dbmodule/dataservices/userservices/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/a82e4737/b826ea1f-41cf-4827-8d3f-6b818102860b/test.public.users">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="100">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/RoleController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="185" column="46" selection-start-line="185" selection-start-column="46" selection-end-line="185" selection-end-column="46" />
+        <state relative-caret-position="100">
+          <caret line="271" column="0" selection-start-line="271" selection-start-column="0" selection-end-line="271" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ru/knowledgebase/rolemodule/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArchiveArticleControllerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
-          <caret line="48" column="45" selection-start-line="48" selection-start-column="45" selection-end-line="48" selection-end-column="45" />
+        <state relative-caret-position="-279">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/ArticleControllerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/articlemodule/NewsControllerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/CommentControllerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="63" column="27" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/ArticleRoleControllerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="56" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/ru/knowledgebase/usermodule/UserControllerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="65" column="12" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
           <folding />
         </state>
       </provider>

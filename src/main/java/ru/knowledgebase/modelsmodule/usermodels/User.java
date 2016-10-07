@@ -97,7 +97,8 @@ public class User {
     public User(String login, String password, String email,
                 String firstName, String middleName, String lastName,
                 String office, String phone1, String phone2,
-                Timestamp recruitmentDate, Timestamp dismissalDate) {
+                Timestamp recruitmentDate, Timestamp dismissalDate,
+                boolean hasEmailNotifications, boolean hasSiteNotifications, Integer superVisorId) {
         this.login = login;
         this.password = password;
         this.email = email;
@@ -110,6 +111,9 @@ public class User {
         this.phone2 = phone2;
         this.recruitmentDate = recruitmentDate;
         this.dismissalDate = dismissalDate;
+        this.hasEmailNotifications = hasEmailNotifications;
+        this.hasSiteNotifications = hasSiteNotifications;
+        this.superVisorId = superVisorId;
     }
 
     public User(){}

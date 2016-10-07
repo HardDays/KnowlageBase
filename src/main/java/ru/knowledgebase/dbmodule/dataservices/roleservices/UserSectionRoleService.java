@@ -3,6 +3,7 @@ package ru.knowledgebase.dbmodule.dataservices.roleservices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.knowledgebase.dbmodule.dataservices.chunkrequest.ChunkRequest;
 import ru.knowledgebase.dbmodule.repositories.rolerepositories.UserSectionRoleRepository;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
@@ -62,6 +63,10 @@ public class UserSectionRoleService {
 
     public List<UserSectionRole> findByArticle(int articleId){
         return userSectionRoleRepository.findByArticle(articleId);
+    }
+
+    public List<UserSectionRole> findByArticle(int articleId, int offset, int limit){
+        return userSectionRoleRepository.findByArticleOffset(articleId, new ChunkRequest(offset, limit));
     }
 
     @Transactional

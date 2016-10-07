@@ -29,8 +29,10 @@ public class CommentWebService {
     @POST
     @Path("/get_list")
     public Response add(@FormParam(value = "user_id") int userId,
-                        @FormParam(value = "user_token") String userToken){
-        return commentWrapper.get(userId, userToken);
+                        @FormParam(value = "user_token") String userToken,
+                        @FormParam(value = "offset") int offset,
+                        @FormParam(value = "limit") int limit){
+        return commentWrapper.get(userId, userToken, offset, limit);
     }
 
     @POST

@@ -5,6 +5,7 @@ import ru.knowledgebase.analyticsmodule.rank.Rank;
 /**
  * Created by vova on 07.09.16.
  */
+//contains pair and number of article visits
 public class ArticleRank extends Rank {
 
     private Integer id;

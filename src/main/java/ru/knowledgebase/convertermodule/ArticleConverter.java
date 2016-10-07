@@ -83,12 +83,15 @@ public class ArticleConverter {
         }
 
     }
-
+    /**
+     * Convert doc to html
+     * @param input - document
+     * other params - need for article creation
+     */
     public void convertDoc(InputStream input, String title,
                            int authorId, int parentArticle,
                            boolean isSection, Timestamp archiveTime,
-                           Timestamp createDate, Timestamp updateDate)
-                                    throws Exception{
+                           Timestamp createDate, Timestamp updateDate) throws Exception{
         String body = null;
         try {
             HWPFDocumentCore wordDocument = WordToHtmlUtils.loadDoc(input);
@@ -113,7 +116,11 @@ public class ArticleConverter {
 
         articleController.addArticle(title, body, authorId, parentArticle, createDate, updateDate, archiveTime, isSection);
     }
-
+    /**
+     * Convert docx to html
+     * @param input - document
+     * other params - need for article creation
+     */
     public void convertDocx(InputStream input, String title, int authorId, int parentArticle, Timestamp archiveTime,
                             Timestamp createDate, Timestamp updateDate, boolean isSection) throws Exception{
         String body = null;

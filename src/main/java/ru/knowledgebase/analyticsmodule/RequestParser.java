@@ -90,6 +90,7 @@ public class RequestParser {
                 if (array.length() == 0)
                     continue;
                 obj = (JSONObject) array.get(0);
+                //get base word
                 String base = (String) obj.get("lex");
                 String type = null;
 
@@ -99,7 +100,7 @@ public class RequestParser {
                 while (matcher.find()) {
                     type = matcher.group();
                 }
-
+                //synonmys, need to improve later
                 if (types.contains(type)){
                 //    if (synonyms.containsKey(base)){
                //         base = synonyms.get(base);

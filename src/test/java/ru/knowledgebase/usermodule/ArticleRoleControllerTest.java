@@ -36,7 +36,7 @@ public class ArticleRoleControllerTest {
         }
         if (user == null)
             user = collector.addUser(new User("test", "test", "t1@m",
-                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null));
+                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null, true, true, null));
         try{
             base = ArticleController.getInstance().getBaseArticle();
         }catch (Exception e){
@@ -46,8 +46,17 @@ public class ArticleRoleControllerTest {
             base = ArticleController.getInstance().addBaseArticle("s", "f", user.getId(), null, null, null);
 
         try{
-            role = collector.addRole(new Role());
-            role2 = collector.addRole(new Role());
+            Role r = new Role();
+            r.setRoleId(228);
+            role = collector.addRole(r);
+            r = new Role();
+            r.setRoleId(229);
+            role2 = collector.addRole(r);
+        }catch (Exception e){
+
+        }
+
+        try{
             article1 = ArticleController.getInstance().addArticle("1", "f", user.getId(), base.getId(), null, null, null, true);
             article2 = ArticleController.getInstance().addArticle("2", "f", user.getId(), base.getId(), null, null, null, true);
             article3 = ArticleController.getInstance().addArticle("3", "f", user.getId(), article2.getId(), null, null, null, true);

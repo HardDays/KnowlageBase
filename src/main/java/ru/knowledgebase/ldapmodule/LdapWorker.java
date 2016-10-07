@@ -168,7 +168,7 @@ public class LdapWorker {
                     NamingEnumeration e = attr.getAll();
                     while (e.hasMore()) {
                         String t = e.next().toString();
-                        user = new User(t, t, t, t, t, t, t, t, t, null, null);
+                        user = new User(t, t, t, t, t, t, t, t, t, null, null, true, true, null);
                         return user;
                     }
                 }

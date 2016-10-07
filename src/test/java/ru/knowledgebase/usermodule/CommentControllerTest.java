@@ -43,10 +43,10 @@ public class CommentControllerTest {
         }
         if (user == null)
             user = UserController.getInstance().register("testeeee1", "1", "t1@m",
-                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null, true, true, null);
         if (user2 == null)
             user2 = UserController.getInstance().register("testeeee2", "2", "t1@m",
-                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+                    "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null, true, true, null);
         try{
             base = ArticleController.getInstance().getBaseArticle();
         }catch (Exception e){
@@ -58,8 +58,10 @@ public class CommentControllerTest {
         try{
             Role r = new Role();
             r.setCanViewMistakes(true);
+            r.setRoleId(228);
             role = collector.addRole(r);
             r = new Role();
+            r.setRoleId(229);
             r.setCanAddMistakes(true);
             role2 = collector.addRole(r);
             article1 = ArticleController.getInstance().addArticle("1", "f", user.getId(), base.getId(), null, null, null, false);
@@ -125,7 +127,7 @@ public class CommentControllerTest {
     public void add2() throws Exception{
         Comment com = c.add(user2.getId(), article1.getId(), "dsffds", "fdsds");
         assertTrue(c.canDeleteComment(user.getId(), com.getId()));
-        List<Comment> l = c.findByAdmin(user.getId());
+        List<Comment> l = c.findByAdmin(user.getId(), 0, 100);
         assertTrue(l.size() == 1);
         assertTrue(l.get(0).getId() == com.getId());
         c.delete(com.getId());

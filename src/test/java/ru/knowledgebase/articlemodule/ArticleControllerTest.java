@@ -50,7 +50,7 @@ public class ArticleControllerTest {
         img = ic.addImage(img);
 
         u = new User("TestUser", "123", "t1@m",
-                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null);
+                "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null, true, true, null);
         u = dc.addUser(u);
         author = u.getId();
 

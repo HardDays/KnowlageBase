@@ -6,6 +6,7 @@ import ru.knowledgebase.exceptionmodule.articleexceptions.NotASectionException;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.*;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.WrongUserDataException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.Role;
 import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
@@ -20,8 +21,8 @@ public class RoleController {
 
     //ВНИМАНИЕ! ATTENTION! ACHTUNG! УВАГА!
     //KOSTILI DETECTED
-
     private int defaultRoleId = 5;
+    private int adminRoleId = 2;
 
     private DataCollector collector = DataCollector.getInstance();
     private static volatile RoleController instance;
@@ -96,9 +97,11 @@ public class RoleController {
      * Delete article role
      * @param articleRoleId id of article role
      */
-    public void delete(int articleRoleId) throws Exception{
+    public void delete(int roleId) throws Exception{
+        if (roleId == 0)
+            throw new WrongUserDataException();
         try{
-            collector.deleteRole(articleRoleId);
+            collector.deleteRole(roleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -146,6 +149,8 @@ public class RoleController {
      * @return article role object
      */
     public Role findUserRole(int userId, int articleId) throws Exception{
+        if (userId == 0 || articleId == 0)
+            throw new WrongUserDataException();
         User user = null;
         Article article = null;
         try{
@@ -178,6 +183,8 @@ public class RoleController {
      * @param userId user id
      */
     public void assignDefaultUserRole(int userId) throws Exception{
+        if (userId == 0)
+            throw new WrongUserDataException();
         Article article = null;
         Role role = null;
         User user = null;
@@ -193,6 +200,7 @@ public class RoleController {
         assignUserRole(user, article, role);
     }
 
+    //wtf
     private void removeParentRoles(User user, Article section) throws Exception{
         try{
             Article temp = collector.findArticle(section.getSectionId());
@@ -218,6 +226,7 @@ public class RoleController {
             throw new NotASectionException();
         try{
             Article temp = article;
+            //go through all branch to root and delete roles
             while (true) {
                 if (temp.isSection()){
                     UserSectionRole tempRole = collector.findUserSectionRole(role.getUser(), temp);
@@ -234,12 +243,17 @@ public class RoleController {
                 temp = collector.findArticle(temp.getSectionId());
             }
             User user = role.getUser();
+            //delete child roles
             for (Article child : collector.getSectionTree(article.getId())){
                 UserSectionRole tempRole = collector.findUserSectionRole(user, child);
                 if (tempRole != null)
                     deleteUserRoleFromDB(tempRole);
             }
             collector.addUserSectionRole(role);
+            //needed by TZ
+            if (role.getRole().getRoleId() == adminRoleId)
+                user.setSuperVisorId(user.getId());
+            collector.updateUser(user);
         }catch (Exception e){
             e.printStackTrace();
             throw new DataBaseException();
@@ -264,37 +278,48 @@ public class RoleController {
      * Create user role for specified section
      * @param userId user id
      * @param articleId article id
-     * @param articleRoleId article role id
+     * @param roleId article role id
      */
-    public void assignUserRole(int userId, int articleId, int articleRoleId) throws Exception{
+    public void assignUserRole(int userId, int articleId, int roleId) throws Exception{
+        if (userId == 0 || articleId == 0 || roleId == 0)
+            throw new WrongUserDataException();
         User user = null;
         Article article = null;
         Role role = null;
         try {
             user = collector.findUser(userId);
             article = collector.findArticle(articleId);
-            role = collector.findRole(articleRoleId);
+            role = collector.findRole(roleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
         assignUserRole(user, article, role);
     }
-    //KOSTILI DETECTED
-    //assign user role to root article
-    public void assignBaseUserRole(int userId, int articleRoleId) throws Exception{
+    /**
+     * KOSTILI DETECTED
+     * Create user role for root section
+     * @param userId user id
+     * @param roleId id of role
+     */
+    public void assignBaseUserRole(int userId, int roleId) throws Exception{
+        if (roleId == 0 || userId == 0)
+            throw new WrongUserDataException();
         User user = null;
         Article article = null;
         Role role = null;
         try {
             user = collector.findUser(userId);
             article = collector.getBaseArticle();
-            role = collector.findRole(articleRoleId);
+            role = collector.findRole(roleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
         assignUserRole(user, article, role);
     }
-
+    /**
+     * Delete role from db by object
+     * @param role - object
+     */
     private void deleteUserRoleFromDB(UserSectionRole role) throws Exception{
         try {
             collector.deleteUserSectionRole(role);
@@ -302,10 +327,16 @@ public class RoleController {
             throw new DataBaseException();
         }
     }
-
-    private void deleteUserRoleFromDB(int userId, int articleId) throws Exception{
+    /**
+     * Delete role from db
+     * @param userId - id of user
+     * @param sectionId - from
+     */
+    private void deleteUserRoleFromDB(int userId, int sectionId) throws Exception{
+        if (sectionId == 0 || userId == 0)
+            throw new WrongUserDataException();
         try {
-            collector.deleteUserSectionRole(userId, articleId);
+            collector.deleteUserSectionRole(userId, sectionId);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -346,11 +377,12 @@ public class RoleController {
 
     /**
      * Delete user role for specified article
-     *
      * @param userId        user id
      * @param articleId     article id
      */
     public void deleteUserRole(int userId, int articleId) throws Exception {
+        if (articleId == 0 || userId == 0)
+            throw new WrongUserDataException();
         int count = collector.getAttachedSectionCount(userId);
         if (count == 1){
             throw new RoleDeleteException();
@@ -358,6 +390,9 @@ public class RoleController {
         deleteUserRoleFromDB(userId, articleId);
     }
 
+    /**
+     * Add base roles do DB
+     */
     public void createBaseRoles() throws Exception{
         for (Role role : RoleImporter.getRoles()){
             Role exist = collector.findRoleByRoleId(role.getRoleId());

@@ -47,12 +47,12 @@ public class CommentWrapper {
      * @param token token of admin
      * @return Response object
      */
-    public Response get(int adminId, String token){
+    public Response get(int adminId, String token, int offset, int limit){
         try{
             boolean okToken = userController.checkUserToken(adminId, token);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
-            List<Comment> comments = commentController.findByAdmin(adminId);
+            List<Comment> comments = commentController.findByAdmin(adminId, offset, limit);
             return ResponseBuilder.buildCommentListResponse(comments);
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
