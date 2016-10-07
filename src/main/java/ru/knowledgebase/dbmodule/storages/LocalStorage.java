@@ -2,7 +2,7 @@ package ru.knowledgebase.dbmodule.storages;
 
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,8 +107,8 @@ public class LocalStorage {
         sectionStorage.setSectionsToMap(sectionMap);
     }
 
-    public void initSectionRoleStarage(List<UserArticleRole> userArticleRoles) throws Exception{
-        for (UserArticleRole role : userArticleRoles) {
+    public void initSectionRoleStarage(List<UserSectionRole> userArticleRoles) throws Exception{
+        for (UserSectionRole role : userArticleRoles) {
             sectionRoleStorage.add(role.getUser().getId(), role.getArticle().getId());
         }
     }

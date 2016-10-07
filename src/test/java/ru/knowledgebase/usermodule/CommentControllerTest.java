@@ -8,9 +8,9 @@ import ru.knowledgebase.commentmodule.CommentController;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
-import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.Role;
 import ru.knowledgebase.modelsmodule.usermodels.User;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
+import ru.knowledgebase.rolemodule.RoleController;
 
 import java.util.List;
 
@@ -25,8 +25,8 @@ public class CommentControllerTest {
 
     private User user;
     private User user2;
-    private ArticleRole role;
-    private ArticleRole role2;
+    private Role role;
+    private Role role2;
     private Article base;
     private Article article1;
     private Article article2;
@@ -56,17 +56,17 @@ public class CommentControllerTest {
             base = ArticleController.getInstance().addBaseArticle("s", "f", user.getId(), null, null, null);
 
         try{
-            ArticleRole r = new ArticleRole();
+            Role r = new Role();
             r.setCanViewMistakes(true);
-            role = collector.addArticleRole(r);
-            r = new ArticleRole();
+            role = collector.addRole(r);
+            r = new Role();
             r.setCanAddMistakes(true);
-            role2 = collector.addArticleRole(r);
+            role2 = collector.addRole(r);
             article1 = ArticleController.getInstance().addArticle("1", "f", user.getId(), base.getId(), null, null, null, false);
             article2 = ArticleController.getInstance().addArticle("2", "f", user.getId(), base.getId(), null, null, null, false);
             article3 = ArticleController.getInstance().addArticle("3", "f", user.getId(), article2.getId(), null, null, null, false);
-            ArticleRoleController.getInstance().assignBaseUser(user.getId(), base.getId(), role.getId());
-            ArticleRoleController.getInstance().assignBaseUser(user2.getId(), article1.getId(), role2.getId());
+            RoleController.getInstance().assignBaseUserRole(user.getId(), role.getId());
+            RoleController.getInstance().assignBaseUserRole(user2.getId(), role2.getId());
 
         }catch (Exception e){
             e.printStackTrace();
@@ -81,12 +81,12 @@ public class CommentControllerTest {
         }catch (Exception e){
         }
         try{
-            collector.deleteArticleRole(role2.getId());
+            collector.deleteRole(role2.getId());
         }catch (Exception e){
 
         }
         try{
-            collector.deleteArticleRole(role.getId());
+            collector.deleteRole(role.getId());
         }catch (Exception e){
         }
         try{

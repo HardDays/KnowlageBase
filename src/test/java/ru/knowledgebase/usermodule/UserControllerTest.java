@@ -5,23 +5,15 @@ import static org.junit.Assert.*;
 
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.exceptionmodule.ldapexceptions.LdapException;
-import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotAssignedException;
-import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
-import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
-import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
-import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
+import ru.knowledgebase.modelsmodule.rolemodels.Role;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserAlreadyExistsException;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
 import ru.knowledgebase.exceptionmodule.userexceptions.WrongPasswordException;
-import ru.knowledgebase.exceptionmodule.userexceptions.WrongUserDataException;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
-import ru.knowledgebase.rolemodule.GlobalRoleController;
 
-import java.sql.Timestamp;
+import ru.knowledgebase.rolemodule.RoleController;
 
 /**
  * Created by vova on 18.08.16.
@@ -32,8 +24,8 @@ public class UserControllerTest {
 
     private User user;
     private User user2;
-    private GlobalRole role;
-    private ArticleRole role2;
+    private Role role;
+    private Role role2;
     private Article base;
     private Article article1;
     private Article article2;
@@ -63,8 +55,8 @@ public class UserControllerTest {
             base = ArticleController.getInstance().addBaseArticle("s", "f", user.getId(), null, null, null);
 
         try{
-            role = collector.addGlobalRole(new GlobalRole());
-            role2 = collector.addArticleRole(new ArticleRole());
+            role = collector.addRole(new Role());
+            role2 = collector.addRole(new Role());
             article1 = ArticleController.getInstance().addArticle("1", "f", user.getId(), base.getId(), null, null, null, true);
             article2 = ArticleController.getInstance().addArticle("2", "f", user.getId(), base.getId(), null, null, null, true);
             article3 = ArticleController.getInstance().addArticle("3", "f", user.getId(), article2.getId(), null, null, null, true);
@@ -81,12 +73,12 @@ public class UserControllerTest {
         }catch (Exception e){
         }
         try{
-            collector.deleteArticleRole(role2.getId());
+            collector.deleteRole(role2.getId());
         }catch (Exception e){
 
         }
         try{
-            collector.deleteGlobalRole(role.getId());
+            collector.deleteRole(role.getId());
         }catch (Exception e){
         }
         try{
@@ -151,17 +143,11 @@ public class UserControllerTest {
 
     @Test
     public void delete1() throws Exception {
-        ArticleRoleController.getInstance().assignUserRole(user2.getId(), article1.getId(), role2.getId());
+        RoleController.getInstance().assignUserRole(user2.getId(), article1.getId(), role2.getId());
         c.delete(user2.getId());
-        assertTrue(collector.findUserArticleRole(user2, article1) == null);
+        assertTrue(collector.findUserSectionRole(user2, article1) == null);
     }
 
-    @Test
-    public void delete2() throws Exception {
-        GlobalRoleController.getInstance().assignUserRole(user2.getId(), role.getId());
-        c.delete(user2.getId());
-        assertTrue(collector.findUserGlobalRole(user2) == null);
-    }
 
     @Test
     public void delete3() throws Exception {

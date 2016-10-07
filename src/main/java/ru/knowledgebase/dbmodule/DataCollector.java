@@ -1,39 +1,29 @@
 package ru.knowledgebase.dbmodule;
 
-import jdk.internal.util.xml.impl.Pair;
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.dataservices.archiveservice.ArchiveArticleService;
 import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
 import ru.knowledgebase.dbmodule.dataservices.commentservice.CommentService;
 import ru.knowledgebase.dbmodule.dataservices.imageservice.ImageService;
 import ru.knowledgebase.dbmodule.dataservices.newsservice.NewsService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.ArticleRoleService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.GlobalRoleService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.UserArticleRoleService;
-import ru.knowledgebase.dbmodule.dataservices.roleservices.UserGlobalRoleService;
+import ru.knowledgebase.dbmodule.dataservices.roleservices.*;
 import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 import ru.knowledgebase.dbmodule.storages.LocalStorage;
-import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 import ru.knowledgebase.dbmodule.dataservices.userservices.TokenService;
 import ru.knowledgebase.dbmodule.dataservices.userservices.UserService;
-import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
-import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
-import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
+import ru.knowledgebase.modelsmodule.rolemodels.Role;
+import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
@@ -45,10 +35,8 @@ public class DataCollector {
     private TokenService tokenService;
     private UserService userService;
     private ImageService imageService;
-    private ArticleRoleService articleRoleService;
-    private GlobalRoleService globalRoleService;
-    private UserArticleRoleService userArticleRoleService;
-    private UserGlobalRoleService userGlobalRoleService;
+    private RoleService roleService;
+    private UserSectionRoleService userSectionRoleService;
     private ArchiveArticleService archiveArticleService;
     private NewsService newsService;
     private CommentService commentService;
@@ -85,10 +73,8 @@ public class DataCollector {
         tokenService = (TokenService) context.getBean("tokenService");
         userService = (UserService) context.getBean("userService");
         imageService = (ImageService) context.getBean("imageService");
-        articleRoleService = (ArticleRoleService) context.getBean("articleRoleService");
-        globalRoleService = (GlobalRoleService) context.getBean("globalRoleService");
-        userArticleRoleService = (UserArticleRoleService) context.getBean("userArticleRoleService");
-        userGlobalRoleService = (UserGlobalRoleService) context.getBean("userGlobalRoleService");
+        roleService = (RoleService) context.getBean("roleService");
+        userSectionRoleService = (UserSectionRoleService) context.getBean("userSectionRoleService");
         archiveArticleService = (ArchiveArticleService) context.getBean("archiveArticleService");
         newsService = (NewsService)context.getBean("newsService");
         commentService = (CommentService) context.getBean("commentService");
@@ -109,8 +95,8 @@ public class DataCollector {
         localStorage.initSectionRoleStarage(this.initSectionRoleStarage());
     }
 
-    private List<UserArticleRole> initSectionRoleStarage() throws Exception {
-        return userArticleRoleService.getAll();
+    private List<UserSectionRole> initSectionRoleStarage() throws Exception {
+        return userSectionRoleService.getAll();
     }
 
     private HashMap<Integer, LinkedList<Integer>> initSectionStorage() throws Exception {
@@ -267,6 +253,10 @@ public class DataCollector {
     public void deleteUser(int id) throws Exception {
         userService.delete(id);
     }
+
+    public void updateSuperVisor(Integer oldId, Integer newId) throws Exception{
+        userService.updateSuperVisor(oldId, newId);
+    }
     //END USER CRUD METHODS
 
     //BEGIN TOKEN METHODS
@@ -294,40 +284,40 @@ public class DataCollector {
 
     //BEGIN ARTICLEROLE METHODS
 
-    public ArticleRole addArticleRole(ArticleRole articleRole) throws Exception{
-        return articleRoleService.create(articleRole);
+    public Role addRole(Role articleRole) throws Exception{
+        return roleService.create(articleRole);
     }
 
-    public void updateArticleRole(ArticleRole role) throws Exception {
-        articleRoleService.update(role);
+    public void updateRole(Role role) throws Exception {
+        roleService.update(role);
     }
 
-    public void deleteArticleRole(ArticleRole role) throws Exception {
-        articleRoleService.delete(role);
+    public void deleteRole(Role role) throws Exception {
+        roleService.delete(role);
     }
 
-    public void deleteArticleRole(int id) throws Exception {
-        articleRoleService.delete(id);
+    public void deleteRole(int id) throws Exception {
+        roleService.delete(id);
     }
 
-    public List<ArticleRole> getArticleRoles() throws Exception{
-        return articleRoleService.getAll();
+    public List<Role> getRoles() throws Exception{
+        return roleService.getAll();
     }
 
-    public ArticleRole findArticleRole(String name) throws Exception{
-        return articleRoleService.find(name);
+    public Role findRole(int id) throws Exception{
+        return roleService.find(id);
     }
 
-    public ArticleRole findArticleRole(int id) throws Exception{
-        return articleRoleService.find(id);
+    public Role findRoleByRoleId(int id) throws Exception{
+        return roleService.findByRoleId(id);
     }
 
     //END ARTICLEROLE METHODS
 
     //BEGIN USERARTICLEROLE METHODS
 
-    public void addUserArticleRole(UserArticleRole role) throws Exception{
-        userArticleRoleService.create(role);
+    public void addUserSectionRole(UserSectionRole role) throws Exception{
+        userSectionRoleService.create(role);
         Integer uid = role.getUser().getId();
         Article temp = role.getArticle();
         while (true) {
@@ -374,94 +364,38 @@ public class DataCollector {
         return res;
     }
 
-    public void deleteUserArticleRole(UserArticleRole role) throws Exception{
-        userArticleRoleService.delete(role);
+    public void deleteUserSectionRole(UserSectionRole role) throws Exception{
+        userSectionRoleService.delete(role);
         localStorage.deleteUserSection(role.getUser().getId(), role.getArticle().getId());
     }
 
-    public void deleteUserArticleRole(int id) throws Exception{
-        userArticleRoleService.delete(id);
+    public void deleteUserSectionRole(int id) throws Exception{
+        userSectionRoleService.delete(id);
     }
 
-    public void deleteUserArticleRole(int userId, int artilceId) throws Exception{
-        userArticleRoleService.delete(userId, artilceId);
+    public void deleteUserSectionRole(int userId, int artilceId) throws Exception{
+        userSectionRoleService.delete(userId, artilceId);
     }
-    public UserArticleRole findUserArticleRole(User user, Article article) throws Exception{
-        return userArticleRoleService.find(user, article);
+    public UserSectionRole findUserSectionRole(User user, Article article) throws Exception{
+        return userSectionRoleService.find(user, article);
     }
 
-    public UserArticleRole findUserArticleRole(int userId, int articleId) throws Exception{
-        return userArticleRoleService.find(userId, articleId);
+    public UserSectionRole findUserSectionRole(int userId, int articleId) throws Exception{
+        return userSectionRoleService.find(userId, articleId);
     }
 
     public List <User> findMistakeViewers(Article article) throws Exception{
-        return userArticleRoleService.findMistakeViewers(article);
+        return userSectionRoleService.findMistakeViewers(article);
     }
 
-    public List <UserArticleRole> findUserArticleRoleBySection(int articleId){
-        return userArticleRoleService.findByArticle(articleId);
+    public List <UserSectionRole> findUserSectionRoleBySection(int articleId){
+        return userSectionRoleService.findByArticle(articleId);
     }
+
+
 
     //END USERARTICLEROLE METHODS
-
-
-    //BEGIN GLOBALROLE METHODS
-    public GlobalRole addGlobalRole(GlobalRole globalRole) throws Exception{
-        return globalRoleService.create(globalRole);
-    }
-
-    public void updateGlobalRole(GlobalRole globalRole) throws Exception{
-        globalRoleService.update(globalRole);
-    }
-
-    public void deleteGlobalRole(GlobalRole globalRole) throws Exception{
-        globalRoleService.delete(globalRole);
-    }
-
-    public void deleteGlobalRole(int id) throws Exception{
-        globalRoleService.delete(id);
-    }
-
-    public GlobalRole findGlobalRole(String name) throws Exception{
-        return globalRoleService.find(name);
-    }
-
-    public List<GlobalRole> getGlobalRoles() throws Exception{
-        return globalRoleService.getAll();
-    }
-
-    public GlobalRole findGlobalRole(int id) throws Exception{
-        return globalRoleService.find(id);
-    }
-    //END GLOBALROLE METHODS
-
-    //BEGIN USERGLOBALROLE METHODS
-    public void addUserGlobalRole(UserGlobalRole role) throws Exception{
-        userGlobalRoleService.create(role);
-    }
-
-    public UserGlobalRole findUserGlobalRole(User user) throws Exception{
-        return userGlobalRoleService.find(user);
-    }
-
-    public UserGlobalRole findUserGlobalRole(int userId) throws Exception{
-        return userGlobalRoleService.find(userId);
-    }
-
-    public void deleteUserGlobalRole(UserGlobalRole role) throws Exception{
-        userGlobalRoleService.delete(role);
-    }
-
-    public void deleteUserGlobalRoleByUser(int userId) throws Exception{
-        userGlobalRoleService.deleteByUser(userId);
-    }
-
-    public void deleteUserGlobalRole(int id) throws Exception{
-        userGlobalRoleService.delete(id);
-    }
-
-    //END USERGLOBALROLE METHODS
-
+    
     //BEGIN IMAGE CRUD METHODS
     public Image findImage(String id){
         return imageService.find(id);

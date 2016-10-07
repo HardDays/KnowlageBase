@@ -3,7 +3,7 @@ package ru.knowledgebase.wrappermodule;
 import ru.knowledgebase.commentmodule.CommentController;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
+import ru.knowledgebase.rolemodule.RoleController;
 import ru.knowledgebase.usermodule.UserController;
 
 import javax.ws.rs.core.Response;
@@ -16,7 +16,7 @@ public class CommentWrapper {
 
     private CommentController commentController = CommentController.getInstance();
     private UserController userController = UserController.getInstance();
-    private ArticleRoleController articleRoleController = ArticleRoleController.getInstance();
+    private RoleController roleController = RoleController.getInstance();
 
     /**
      * Add new comment
@@ -30,7 +30,7 @@ public class CommentWrapper {
     public Response add(int userId, String token, int articleId, String comment, String articleText){
         try {
             boolean okToken = userController.checkUserToken(userId, token);
-            boolean hasRights = articleRoleController.canAddMistakes(userId, articleId);
+            boolean hasRights = roleController.canAddMistakes(userId, articleId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)

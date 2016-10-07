@@ -22,11 +22,4 @@ public class RolesWebService {
                         @FormParam(value = "admin_token") String adminToken) {
         return roleWrapper.getSectionRoles(adminId, adminToken);
     }
-
-    @POST
-    @Path("/get_global_roles")
-    public Response getGlobalRoles(@FormParam(value = "admin_id") int adminId,
-                                    @FormParam(value = "admin_token") String adminToken) {
-        return roleWrapper.getGlobalRoles(adminId, adminToken);
-    }
 }

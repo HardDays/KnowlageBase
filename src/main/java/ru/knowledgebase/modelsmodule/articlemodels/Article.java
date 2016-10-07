@@ -10,7 +10,7 @@ import org.hibernate.search.annotations.Parameter;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.persistence.*;
@@ -75,7 +75,7 @@ public class Article {
     private int parentId;
 
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
-    private List<UserArticleRole> userArticleRole;
+    private List<UserSectionRole> userSectionRoles;
 
     /**
      * Date when article should be moved to Archive.

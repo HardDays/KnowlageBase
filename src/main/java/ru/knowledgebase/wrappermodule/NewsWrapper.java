@@ -1,11 +1,10 @@
 package ru.knowledgebase.wrappermodule;
 
 import ru.knowledgebase.articlemodule.NewsController;
-import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
 import javax.ws.rs.core.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
+import ru.knowledgebase.rolemodule.RoleController;
 import ru.knowledgebase.usermodule.UserController;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 public class NewsWrapper {
     private NewsController               newsController = NewsController.getInstance();
     private UserController               userController = UserController.getInstance();
-    private ArticleRoleController articleRoleController = ArticleRoleController.getInstance();
+    private RoleController roleController = RoleController.getInstance();
 
     public Response addNews(String token, int userId, int authorId, int sectionId,
                             String title, String body) {
@@ -25,7 +24,7 @@ public class NewsWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canAddNews(authorId, sectionId);
+            boolean hasRights = roleController.canAddNews(authorId, sectionId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -53,7 +52,7 @@ public class NewsWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canDeleteArticle(userId, sectionId);
+            boolean hasRights = roleController.canDeleteArticle(userId, sectionId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -73,7 +72,7 @@ public class NewsWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canViewArticle(userId, sectionId);
+            boolean hasRights = roleController.canViewArticle(userId, sectionId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -94,7 +93,7 @@ public class NewsWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canViewArticle(userId, sectionId);
+            boolean hasRights = roleController.canViewArticle(userId, sectionId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -114,7 +113,7 @@ public class NewsWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canAddNews(authorId, sectionId);
+            boolean hasRights = roleController.canAddNews(authorId, sectionId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }

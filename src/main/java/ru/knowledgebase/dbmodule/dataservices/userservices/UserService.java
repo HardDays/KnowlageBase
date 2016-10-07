@@ -45,6 +45,11 @@ public class UserService {
     }
 
     @Transactional
+    public Integer updateSuperVisor(Integer oldId, Integer newId) throws Exception{
+        return userRepository.updateSuperVisor(oldId, newId);
+    }
+
+    @Transactional
     public void delete(User user) throws Exception{
         userRepository.delete(user);
     }

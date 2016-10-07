@@ -3,8 +3,7 @@ package ru.knowledgebase.modelsmodule.usermodels;
 import org.hibernate.annotations.*;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
-import ru.knowledgebase.modelsmodule.rolemodels.UserGlobalRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -58,17 +57,21 @@ public class User {
     @Column(name = "dismissal_date")
     private Timestamp dismissalDate;
 
+    @Column
+    private boolean hasEmailNotifications;
+
+    @Column
+    private boolean hasSiteNotifications;
+
+    @Column
+    private Integer superVisorId;
 
     @OneToOne(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private Token token;
 
-  //  @OnDelete(action=OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
-    private List<UserGlobalRole> userGlobalRoles;
-
    // @OnDelete(action=OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
-    private List<UserArticleRole> userArticleRoles;
+    private List<UserSectionRole> userSectionRoles;
 
    // @OnDelete(action=OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "commentator", cascade = {CascadeType.REMOVE})
@@ -143,20 +146,12 @@ public class User {
         this.token = token;
     }
 
-    public List<UserGlobalRole> getUserGlobalRoles() {
-        return userGlobalRoles;
+    public List<UserSectionRole> getUserSectionRoles() {
+        return userSectionRoles;
     }
 
-    public void setUserGlobalRoles(List<UserGlobalRole> userGlobalRoles) {
-        this.userGlobalRoles = userGlobalRoles;
-    }
-
-    public List<UserArticleRole> getUserArticleRoles() {
-        return userArticleRoles;
-    }
-
-    public void setUserArticleRoles(List<UserArticleRole> userArticleRoles) {
-        this.userArticleRoles = userArticleRoles;
+    public void setUserSectionRoles(List<UserSectionRole> userSectionRoles) {
+        this.userSectionRoles = userSectionRoles;
     }
 
     public String getFirstName() {
@@ -229,6 +224,30 @@ public class User {
 
     public void setDismissalDate(Timestamp dismissalDate) {
         this.dismissalDate = dismissalDate;
+    }
+
+    public boolean isHasEmailNotifications() {
+        return hasEmailNotifications;
+    }
+
+    public void setHasEmailNotifications(boolean hasEmailNotifications) {
+        this.hasEmailNotifications = hasEmailNotifications;
+    }
+
+    public boolean isHasSiteNotifications() {
+        return hasSiteNotifications;
+    }
+
+    public void setHasSiteNotifications(boolean hasSiteNotifications) {
+        this.hasSiteNotifications = hasSiteNotifications;
+    }
+
+    public Integer getSuperVisorId() {
+        return superVisorId;
+    }
+
+    public void setSuperVisorId(Integer superVisorId) {
+        this.superVisorId = superVisorId;
     }
 
     @Override

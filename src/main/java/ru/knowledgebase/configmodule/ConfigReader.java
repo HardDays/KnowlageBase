@@ -66,6 +66,7 @@ public class ConfigReader {
             config.setLdapURI(obj.getString("ldapURI"));
             config.setLdapContextFactory(obj.getString("ldapContextFactory"));
             config.setLdapDomain(obj.getString("ldapDomain"));
+            config.setRoles(obj.getJSONArray("roles"));
         }catch (Exception e){
             throw new ConfigParseException();
         }

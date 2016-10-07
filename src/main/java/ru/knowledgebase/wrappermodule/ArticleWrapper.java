@@ -6,7 +6,7 @@ import ru.knowledgebase.articlemodule.SectionController;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import javax.ws.rs.core.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
+import ru.knowledgebase.rolemodule.RoleController;
 import ru.knowledgebase.usermodule.UserController;
 
 import java.sql.Timestamp;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ArticleWrapper {
 
-    private ArticleRoleController    articleRoleController = ArticleRoleController.getInstance();
+    private RoleController roleController = RoleController.getInstance();
     private ArticleController        articleController     = ArticleController.getInstance();
     private UserController           userController        = UserController.getInstance();
     private ArchiveArticleController archArticleController = ArchiveArticleController.getInstance();
@@ -44,7 +44,7 @@ public class ArticleWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canAddArticle(authorId, parentArticle);
+            boolean hasRights = roleController.canAddArticle(authorId, parentArticle);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -76,7 +76,7 @@ public class ArticleWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canEditArticle(authorId, parentArticle);
+            boolean hasRights = roleController.canEditArticle(authorId, parentArticle);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -103,7 +103,7 @@ public class ArticleWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canDeleteArticle(userId, articleId);
+            boolean hasRights = roleController.canDeleteArticle(userId, articleId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -135,7 +135,7 @@ public class ArticleWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canViewArticle(userId, articleId);
+            boolean hasRights = roleController.canViewArticle(userId, articleId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -162,7 +162,7 @@ public class ArticleWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canViewArticle(userId, articleId);
+            boolean hasRights = roleController.canViewArticle(userId, articleId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }

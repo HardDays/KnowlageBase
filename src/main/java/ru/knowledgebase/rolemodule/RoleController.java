@@ -5,36 +5,38 @@ import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundExcepti
 import ru.knowledgebase.exceptionmodule.articleexceptions.NotASectionException;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.*;
-import ru.knowledgebase.modelsmodule.articlemodels.Article;
-import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
-import ru.knowledgebase.modelsmodule.usermodels.User;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
+import ru.knowledgebase.modelsmodule.rolemodels.Role;
+import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
+import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import java.util.List;
 
 /**
- * Created by vova on 20.08.16.
+ * Created by vova on 07.10.16.
  */
-public class ArticleRoleController {
+public class RoleController {
 
-    private int defaultArticleRoleId = 1;
+    //ВНИМАНИЕ! ATTENTION! ACHTUNG! УВАГА!
+    //KOSTILI DETECTED
+
+    private int defaultRoleId = 5;
 
     private DataCollector collector = DataCollector.getInstance();
-
-    private static volatile ArticleRoleController instance;
+    private static volatile RoleController instance;
 
     /**
      * Get instance of a class
      * @return instance of a class
      */
-    public static ArticleRoleController getInstance() {
-        ArticleRoleController localInstance = instance;
+    public static RoleController getInstance() {
+        RoleController localInstance = instance;
         if (localInstance == null) {
-            synchronized (ArticleRoleController.class) {
+            synchronized (RoleController.class) {
                 localInstance = instance;
                 if (localInstance == null) {
-                    instance = localInstance = new ArticleRoleController();
+                    instance = localInstance = new RoleController();
                 }
             }
         }
@@ -44,10 +46,10 @@ public class ArticleRoleController {
      * Return all available section roles
      * @return list of roles
      */
-    public List<ArticleRole> getAll() throws Exception{
-        List <ArticleRole> roles = null;
+    public List<Role> getAll() throws Exception{
+        List <Role> roles = null;
         try{
-            roles = collector.getArticleRoles();
+            roles = collector.getRoles();
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -55,11 +57,11 @@ public class ArticleRoleController {
     }
     /**
      * Create new article role
-     * @param articleRole article role formed object
+     * @param role article role formed object
      */
-    public void create(ArticleRole articleRole) throws Exception{
+    public void create(Role role) throws Exception{
         try {
-            collector.addArticleRole(articleRole);
+            collector.addRole(role);
         }catch (org.springframework.dao.DataIntegrityViolationException e) {
             throw new RoleAlreadyExistsException();
         }catch (Exception e){
@@ -68,24 +70,24 @@ public class ArticleRoleController {
     }
     /**
      * Update article role
-     * @param articleRole article role object (important: id should be specified)
+     * @param role article role object (important: id should be specified)
      */
-    public void update(ArticleRole articleRole) throws Exception{
+    public void update(Role role) throws Exception{
         try{
-            collector.updateArticleRole(articleRole);
+            collector.updateRole(role);
         }catch (Exception e){
             throw new DataBaseException();
         }
     }
     /**
      * Delete article role
-     * @param articleRole article role object (important: id should be specified)
+     * @param role article role object (important: id should be specified)
      */
-    public void delete(ArticleRole articleRole) throws Exception{
-        if (articleRole == null)
+    public void delete(Role role) throws Exception{
+        if (role == null)
             throw new RoleNotFoundException();
         try{
-            collector.deleteArticleRole(articleRole);
+            collector.deleteRole(role);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -96,7 +98,7 @@ public class ArticleRoleController {
      */
     public void delete(int articleRoleId) throws Exception{
         try{
-            collector.deleteArticleRole(articleRoleId);
+            collector.deleteRole(articleRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -107,19 +109,19 @@ public class ArticleRoleController {
      * @param article article object (important: id should be specified)
      * @return article role object
      */
-    public ArticleRole findUserRole(User user, Article article) throws Exception{
+    public Role findUserRole(User user, Article article) throws Exception{
         if (user == null)
             throw new UserNotFoundException();
         if (article == null)
             throw new ArticleNotFoundException();
-        UserArticleRole role = null;
+        UserSectionRole userSectionRole = null;
         //go through tree and clear previous roles
         try {
             Article temp = article;
             while (true) {
                 if (temp.isSection()){
-                    role = collector.findUserArticleRole(user, temp);
-                    if (role != null) {
+                    userSectionRole = collector.findUserSectionRole(user, temp);
+                    if (userSectionRole != null) {
                         break;
                     }
                 }
@@ -130,12 +132,12 @@ public class ArticleRoleController {
         }catch (Exception e){
             throw  new DataBaseException();
         }
-        if (role == null)
+        if (userSectionRole == null)
             throw new RoleNotAssignedException();
-        ArticleRole articleRole = role.getArticleRole();
-        if (articleRole == null)
+        Role role = userSectionRole.getRole();
+        if (role == null)
             throw new RoleNotFoundException();
-        return articleRole;
+        return role;
     }
     /**
      * Find user role for article
@@ -143,7 +145,7 @@ public class ArticleRoleController {
      * @param articleId id of article
      * @return article role object
      */
-    public ArticleRole findUserRole(int userId, int articleId) throws Exception{
+    public Role findUserRole(int userId, int articleId) throws Exception{
         User user = null;
         Article article = null;
         try{
@@ -160,16 +162,16 @@ public class ArticleRoleController {
      */
     public void assignDefaultUserRole(User user) throws Exception{
         Article article = null;
-        ArticleRole articleRole = null;
+        Role role = null;
         try {
             article = collector.getBaseArticle();
-            articleRole = collector.findArticleRole(defaultArticleRoleId);
+            role = collector.findRoleByRoleId(defaultRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        if (article == null || articleRole == null)
+        if (article == null || role == null)
             throw new AssignDefaultRoleException();
-        assignUserRole(user, article, articleRole);
+        assignUserRole(user, article, role);
     }
     /**
      * Create default user role for root article
@@ -177,26 +179,26 @@ public class ArticleRoleController {
      */
     public void assignDefaultUserRole(int userId) throws Exception{
         Article article = null;
-        ArticleRole articleRole = null;
+        Role role = null;
         User user = null;
         try {
             article = collector.getBaseArticle();
-            articleRole = collector.findArticleRole(defaultArticleRoleId);
+            role = collector.findRoleByRoleId(defaultRoleId);
             user = collector.findUser(userId);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        if (article == null || articleRole == null || user == null)
+        if (article == null || role == null || user == null)
             throw new AssignDefaultRoleException();
-        assignUserRole(user, article, articleRole);
+        assignUserRole(user, article, role);
     }
 
     private void removeParentRoles(User user, Article section) throws Exception{
         try{
             Article temp = collector.findArticle(section.getSectionId());
             while (true){
-                UserArticleRole role = collector.findUserArticleRole(user, temp);
-                collector.deleteUserArticleRole(role);
+                UserSectionRole role = collector.findUserSectionRole(user, temp);
+                collector.deleteUserSectionRole(role);
                 if (temp.getParentArticle() == -1)
                     break;
                 temp = collector.findArticle(temp.getSectionId());
@@ -210,7 +212,7 @@ public class ArticleRoleController {
      * Create user role for specified article
      * @param role formed object
      */
-    public void assignUserRole(UserArticleRole role) throws Exception{
+    public void assignUserRole(UserSectionRole role) throws Exception{
         Article article = role.getArticle();
         if (!article.isSection())
             throw new NotASectionException();
@@ -218,7 +220,7 @@ public class ArticleRoleController {
             Article temp = article;
             while (true) {
                 if (temp.isSection()){
-                    UserArticleRole tempRole = collector.findUserArticleRole(role.getUser(), temp);
+                    UserSectionRole tempRole = collector.findUserSectionRole(role.getUser(), temp);
                     if (tempRole != null) {
                         try {
                             deleteUserRoleFromDB(role.getUser().getId(), temp.getId());
@@ -233,11 +235,11 @@ public class ArticleRoleController {
             }
             User user = role.getUser();
             for (Article child : collector.getSectionTree(article.getId())){
-                UserArticleRole tempRole = collector.findUserArticleRole(user, child);
+                UserSectionRole tempRole = collector.findUserSectionRole(user, child);
                 if (tempRole != null)
                     deleteUserRoleFromDB(tempRole);
             }
-            collector.addUserArticleRole(role);
+            collector.addUserSectionRole(role);
         }catch (Exception e){
             e.printStackTrace();
             throw new DataBaseException();
@@ -247,16 +249,16 @@ public class ArticleRoleController {
      * Create user role for specified article
      * @param user user object (important: id should be specified)
      * @param article article object (important: id should be specified)
-     * @param articleRole article role object (important: id should be specified)
+     * @param role article role object (important: id should be specified)
      */
-    public void assignUserRole(User user, Article article, ArticleRole articleRole) throws Exception{
+    public void assignUserRole(User user, Article article, Role role) throws Exception{
         if (user == null)
             throw new UserNotFoundException();
         if (article == null)
             throw new ArticleNotFoundException();
-        if (articleRole == null)
+        if (role == null)
             throw new RoleNotFoundException();
-        assignUserRole(new UserArticleRole(user, article, articleRole));
+        assignUserRole(new UserSectionRole(user, article, role));
     }
     /**
      * Create user role for specified section
@@ -267,34 +269,35 @@ public class ArticleRoleController {
     public void assignUserRole(int userId, int articleId, int articleRoleId) throws Exception{
         User user = null;
         Article article = null;
-        ArticleRole articleRole = null;
+        Role role = null;
         try {
             user = collector.findUser(userId);
             article = collector.findArticle(articleId);
-            articleRole = collector.findArticleRole(articleRoleId);
+            role = collector.findRole(articleRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        assignUserRole(user, article, articleRole);
+        assignUserRole(user, article, role);
     }
-
-    public void assignBaseUser(int userId, int articleId, int articleRoleId) throws Exception{
+    //KOSTILI DETECTED
+    //assign user role to root article
+    public void assignBaseUserRole(int userId, int articleRoleId) throws Exception{
         User user = null;
         Article article = null;
-        ArticleRole articleRole = null;
+        Role role = null;
         try {
             user = collector.findUser(userId);
             article = collector.getBaseArticle();
-            articleRole = collector.findArticleRole(articleRoleId);
+            role = collector.findRole(articleRoleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        assignUserRole(user, article, articleRole);
+        assignUserRole(user, article, role);
     }
 
-    private void deleteUserRoleFromDB(UserArticleRole role) throws Exception{
+    private void deleteUserRoleFromDB(UserSectionRole role) throws Exception{
         try {
-            collector.deleteUserArticleRole(role);
+            collector.deleteUserSectionRole(role);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -302,7 +305,7 @@ public class ArticleRoleController {
 
     private void deleteUserRoleFromDB(int userId, int articleId) throws Exception{
         try {
-            collector.deleteUserArticleRole(userId, articleId);
+            collector.deleteUserSectionRole(userId, articleId);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -312,7 +315,7 @@ public class ArticleRoleController {
      * Delete user role for specified article
      * @param role role formed object (important: id should be specified)
      */
-    private void deleteUserRole(UserArticleRole role) throws Exception{
+    private void deleteUserRole(UserSectionRole role) throws Exception{
         int count = collector.getAttachedSectionCount(role.getUser().getId());
         if (count == 1){
             throw new RoleDeleteException();
@@ -323,22 +326,22 @@ public class ArticleRoleController {
      * Create user role for specified article
      * @param user user object (important: id should be specified)
      * @param article article object (important: id should be specified)
-     * @param articleRole article role object (important: id should be specified)
+     * @param role article role object (important: id should be specified)
      */
-    public void deleteUserRole(User user, Article article, ArticleRole articleRole) throws Exception{
+    public void deleteUserRole(User user, Article article, Role role) throws Exception{
         if (user == null)
             throw new UserNotFoundException();
         if (article == null)
             throw new ArticleNotFoundException();
-        if (articleRole == null)
+        if (role == null)
             throw new RoleNotFoundException();
-        UserArticleRole role = null;
+        UserSectionRole userSectionRole = null;
         try{
-            role = collector.findUserArticleRole(user, article);
+            userSectionRole = collector.findUserSectionRole(user, article);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        deleteUserRole(role);
+        deleteUserRole(userSectionRole);
     }
 
     /**
@@ -356,7 +359,19 @@ public class ArticleRoleController {
     }
 
     public void createBaseRoles() throws Exception{
-        ArticleRole user = new ArticleRole();
+        for (Role role : RoleImporter.getRoles()){
+            Role exist = collector.findRoleByRoleId(role.getRoleId());
+            if (exist == null) {
+                collector.addRole(role);
+            }
+            else {
+                role.setId(exist.getId());
+                collector.updateRole(role);
+            }
+        }
+
+        /*
+        Role user = new Role();
         user.setName("Пользователь");
         user.setCanViewArticle(true);
         user.setCanAddMistakes(true);
@@ -364,13 +379,7 @@ public class ArticleRoleController {
         user.setCanAddArticle(true);
         create(user);
 
-        try{
-            defaultArticleRoleId = collector.findArticleRole("Пользователь").getId();
-        }catch (Exception e){
-            throw new DataBaseException();
-        }
-
-        ArticleRole superUser = new ArticleRole();
+        Role superUser = new Role();
         superUser.setName("Суперпользователь");
         superUser.setCanViewArticle(true);
         superUser.setCanAddMistakes(true);
@@ -390,7 +399,7 @@ public class ArticleRoleController {
         superUser.setCanViewMistakes(true);
         create(superUser);
 
-        ArticleRole admin = new ArticleRole();
+        Role admin = new Role();
         admin.setName("Администратор раздела");
         admin.setCanViewArticle(true);
         admin.setCanAddMistakes(true);
@@ -410,7 +419,7 @@ public class ArticleRoleController {
         admin.setCanViewMistakes(true);
         create(admin);
 
-        ArticleRole superVisor = new ArticleRole();
+        Role superVisor = new Role();
         superVisor.setName("Супервизор");
         superVisor.setCanViewArticle(true);
         superVisor.setCanAddMistakes(true);
@@ -419,18 +428,18 @@ public class ArticleRoleController {
         superVisor.setCanGetEmployeesActionsReports(true);
         create(superVisor);
 
-        ArticleRole banned = new ArticleRole();
+        Role banned = new Role();
         banned.setName("Пользователь без прав");
         create(banned);
-
+        */
     }
 
-    public int getDefaultArticleRoleId() {
-        return defaultArticleRoleId;
+    public int getDefaultRoleId() {
+        return defaultRoleId;
     }
 
-    public void setDefaultArticleRoleId(int defaultArticleRoleId) {
-        this.defaultArticleRoleId = defaultArticleRoleId;
+    public void setDefaultRoleId(int defaultRoleId) {
+        this.defaultRoleId = defaultRoleId;
     }
 
     public boolean canAddArticle(int userId, int articleId) throws Exception {
@@ -490,8 +499,8 @@ public class ArticleRoleController {
     }
 
     /** Indicates if user has an access to all those sections
-    @param userID @param sections
-    @return */
+     @param userID @param sections
+     @return */
     public boolean hasAccessToSections(int userID, List<Integer> sections) throws Exception{
         try {
             boolean res = true;
@@ -504,4 +513,42 @@ public class ArticleRoleController {
         }
     }
 
+    public boolean canAddUser(int userId) throws Exception{
+        try {
+            return findUserRole(userId, collector.getBaseArticle().getId()).isCanAddUser();
+        } catch (RoleNotAssignedException e){
+            return false;
+        }
+    }
+
+    public boolean canEditUser(int userId) throws Exception{
+        return findUserRole(userId, collector.getBaseArticle().getId()).isCanEditUser();
+    }
+
+    public boolean canDeleteUser(int userId) throws Exception{
+        try {
+            return findUserRole(userId, collector.getBaseArticle().getId()).isCanDeleteUser();
+        } catch (RoleNotAssignedException e){
+            return false;
+        }
+    }
+
+    public boolean canViewUser(int userId) throws Exception{
+        try {
+            return findUserRole(userId, collector.getBaseArticle().getId()).isCanViewUser();
+        } catch (RoleNotAssignedException e){
+            return false;
+        }
+    }
+
+    public boolean canEditUserRole(int userId) throws Exception {
+        try {
+            return findUserRole(userId, collector.getBaseArticle().getId()).isCanEditUserRole();
+        } catch (RoleNotAssignedException e){
+            return false;
+        }
+    }
+    public boolean isBaseRole(int roleId) throws Exception{
+        return collector.findRole(roleId).isBaseRole();
+    }
 }

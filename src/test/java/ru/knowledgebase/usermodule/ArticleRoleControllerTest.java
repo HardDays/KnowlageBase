@@ -6,9 +6,9 @@ import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleDeleteException;
 import ru.knowledgebase.exceptionmodule.roleexceptions.RoleNotAssignedException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
-import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.Role;
 import ru.knowledgebase.modelsmodule.usermodels.User;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
+import ru.knowledgebase.rolemodule.RoleController;
 
 import static org.junit.Assert.assertTrue;
 /**
@@ -17,11 +17,11 @@ import static org.junit.Assert.assertTrue;
 public class ArticleRoleControllerTest {
 
     private DataCollector collector = DataCollector.getInstance();
-    private ArticleRoleController c = ArticleRoleController.getInstance();
+    private RoleController c = RoleController.getInstance();
 
     private User user;
-    private ArticleRole role;
-    private ArticleRole role2;
+    private Role role;
+    private Role role2;
     private Article base;
     private Article article1;
     private Article article2;
@@ -46,8 +46,8 @@ public class ArticleRoleControllerTest {
             base = ArticleController.getInstance().addBaseArticle("s", "f", user.getId(), null, null, null);
 
         try{
-            role = collector.addArticleRole(new ArticleRole());
-            role2 = collector.addArticleRole(new ArticleRole());
+            role = collector.addRole(new Role());
+            role2 = collector.addRole(new Role());
             article1 = ArticleController.getInstance().addArticle("1", "f", user.getId(), base.getId(), null, null, null, true);
             article2 = ArticleController.getInstance().addArticle("2", "f", user.getId(), base.getId(), null, null, null, true);
             article3 = ArticleController.getInstance().addArticle("3", "f", user.getId(), article2.getId(), null, null, null, true);
@@ -64,12 +64,12 @@ public class ArticleRoleControllerTest {
         }catch (Exception e){
         }
         try{
-            collector.deleteArticleRole(role.getId());
+            collector.deleteRole(role.getId());
         }catch (Exception e){
 
         }
         try{
-            collector.deleteArticleRole(role2.getId());
+            collector.deleteRole(role2.getId());
         }catch (Exception e){
 
         }
@@ -100,7 +100,7 @@ public class ArticleRoleControllerTest {
 
     @Test
     public void assign2() throws Exception{
-        c.assignBaseUser(user.getId(), article2.getId(), role.getId());
+        c.assignBaseUserRole(user.getId(), role.getId());
         assertTrue(c.findUserRole(user, article1).getId() == role.getId());
     }
 
@@ -120,7 +120,7 @@ public class ArticleRoleControllerTest {
         assertTrue(c.findUserRole(user, article3).getId() == role.getId());
         c.assignUserRole(user.getId(), base.getId(), role.getId());
         assertTrue(c.findUserRole(user, article3).getId() == role.getId());
-        assertTrue(collector.findUserArticleRole(user, article3) == null);
+        assertTrue(collector.findUserSectionRole(user, article3) == null);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class ArticleRoleControllerTest {
         c.assignUserRole(user.getId(), article1.getId(), role.getId());
         c.assignUserRole(user.getId(), article2.getId(), role.getId());
         c.deleteUserRole(user.getId(), article1.getId());
-        assertTrue(collector.findUserArticleRole(user, article1) == null);
+        assertTrue(collector.findUserSectionRole(user, article1) == null);
     }
 
     @Test(expected = RoleDeleteException.class)
@@ -150,7 +150,7 @@ public class ArticleRoleControllerTest {
         int id = role.getId();
         role.setCanViewMistakes(true);
         c.update(role);
-        assertTrue(collector.findArticleRole(id) != null);
-        assertTrue(collector.findArticleRole(id).isCanViewMistakes() == true);
+        assertTrue(collector.findRole(id) != null);
+        assertTrue(collector.findRole(id).isCanViewMistakes() == true);
     }
 }

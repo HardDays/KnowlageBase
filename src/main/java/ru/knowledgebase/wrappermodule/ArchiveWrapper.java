@@ -7,7 +7,7 @@ import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import javax.ws.rs.core.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
+import ru.knowledgebase.rolemodule.RoleController;
 import ru.knowledgebase.usermodule.UserController;
 
 /**
@@ -15,7 +15,7 @@ import ru.knowledgebase.usermodule.UserController;
  */
 public class ArchiveWrapper {
 
-    private ArticleRoleController articleRoleController = ArticleRoleController.getInstance();
+    private RoleController roleController = RoleController.getInstance();
     private ArticleController articleController     = ArticleController.getInstance();
     private UserController userController        = UserController.getInstance();
     private ArchiveArticleController archArticleController = ArchiveArticleController.getInstance();
@@ -27,7 +27,7 @@ public class ArchiveWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canEditArticle(userId, articleId);
+            boolean hasRights = roleController.canEditArticle(userId, articleId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -49,7 +49,7 @@ public class ArchiveWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canEditArticle(userId, articleId);
+            boolean hasRights = roleController.canEditArticle(userId, articleId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
@@ -67,7 +67,7 @@ public class ArchiveWrapper {
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
-            boolean hasRights = articleRoleController.canEditArticle(userId, articleId);
+            boolean hasRights = roleController.canEditArticle(userId, articleId);
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }

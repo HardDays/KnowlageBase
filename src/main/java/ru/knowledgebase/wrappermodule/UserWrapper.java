@@ -1,13 +1,12 @@
 package ru.knowledgebase.wrappermodule;
 
-import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
-import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.Role;
+import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
-import ru.knowledgebase.rolemodule.ArticleRoleController;
-import ru.knowledgebase.rolemodule.GlobalRoleController;
+
+import ru.knowledgebase.rolemodule.RoleController;
 import ru.knowledgebase.usermodule.UserController;
 
 import javax.ws.rs.core.Response;
@@ -21,8 +20,7 @@ import java.util.List;
 public class UserWrapper {
 
     private UserController userController = UserController.getInstance();
-    private ArticleRoleController articleRoleController = ArticleRoleController.getInstance();
-    private GlobalRoleController globalRoleController = GlobalRoleController.getInstance();
+    private RoleController roleController = RoleController.getInstance();
 
     /**
      * Authorize user
@@ -36,8 +34,8 @@ public class UserWrapper {
             userController.authorizeLdap(login, password);
             if (!userController.isLdapUserExists(login)){
                 User user = userController.copyLdapUser(login ,password);
-                globalRoleController.assignDefaultUserRole(user);
-                articleRoleController.assignDefaultUserRole(user);
+                roleController.assignDefaultUserRole(user);
+                roleController.assignDefaultUserRole(user);
             }*/
             Token token = userController.authorize(login, password);
             return ResponseBuilder.buildAuthorizedResponse(token);
@@ -59,7 +57,7 @@ public class UserWrapper {
                              Timestamp recruitmentDate, Timestamp dismissalDate) {
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canAddUser(adminId);
+            boolean hasRights = roleController.canAddUser(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
@@ -68,8 +66,8 @@ public class UserWrapper {
                                                 firstName, middleName, lastName,
                                                 office, phone1, phone2,
                                                 recruitmentDate, dismissalDate);
-            globalRoleController.assignDefaultUserRole(user);
-            articleRoleController.assignDefaultUserRole(user);
+            roleController.assignDefaultUserRole(user);
+            roleController.assignDefaultUserRole(user);
             return ResponseBuilder.buildRegisteredResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
@@ -110,7 +108,7 @@ public class UserWrapper {
     public Response update(int adminId, String adminToken, int userId, String newLogin, String newPassword) {
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canEditUser(adminId);
+            boolean hasRights = roleController.canEditUser(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
@@ -132,7 +130,7 @@ public class UserWrapper {
     public Response delete(int adminId, String adminToken, int userId) {
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canDeleteUser(adminId);
+            boolean hasRights = roleController.canDeleteUser(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
@@ -148,12 +146,12 @@ public class UserWrapper {
     public Response deleteSectionRole(int adminId, String adminToken, int userId, int articleId) {
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canEditUserRole(adminId);
+            boolean hasRights = roleController.canEditUserRole(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            articleRoleController.deleteUserRole(userId, articleId);
+            roleController.deleteUserRole(userId, articleId);
             return ResponseBuilder.buildUserRoleChangedResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
@@ -163,17 +161,16 @@ public class UserWrapper {
     public Response assignSectionRole(int adminId, String adminToken, int userId, int articleId, int roleId) {
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canEditUserRole(adminId);
+            boolean hasRights = roleController.canEditUserRole(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            globalRoleController.assignUserRole(userId, roleId);
             //attach super user to root
-            if (globalRoleController.isBaseUser(userId)) {
-                articleRoleController.assignBaseUser(userId, articleId, roleId);
+            if (roleController.isBaseRole(roleId)) {
+                roleController.assignBaseUserRole(userId, roleId);
             }else{
-                articleRoleController.assignUserRole(userId, articleId, roleId);
+                roleController.assignUserRole(userId, articleId, roleId);
             }
             return ResponseBuilder.buildUserRoleChangedResponse();
         }catch (Exception e){
@@ -191,59 +188,18 @@ public class UserWrapper {
     public Response assignGlobalRole(int adminId, String adminToken, int userId, int roleId) {
         try{
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canEditUserRole(adminId);
+            boolean hasRights = roleController.canEditUserRole(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            globalRoleController.assignUserRole(userId, roleId);
+            roleController.assignUserRole(userId, roleId);
             return ResponseBuilder.buildUserRoleChangedResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
         }
     }*/
-    /**
-     * Get global permissions of user
-     * @param userId id of user
-     * @param token user token
-     * @return Response object
-     */
-    public Response getGlobalPermissions(int userId, String token){
-        try{
-            boolean okToken = userController.checkUserToken(userId, token);
-            if (!okToken)
-                return ResponseBuilder.buildWrongTokenResponse();
-            GlobalRole role = globalRoleController.findUserRole(userId);
-            if (role == null)
-                return ResponseBuilder.buildRoleNotAssigned();
-            return ResponseBuilder.buildGlobalPermissionsResponse(role);
-        }catch (Exception e){
-            return ResponseBuilder.buildResponse(e);
-        }
-    }
-    /**
-     * Get global permissions of user by admin
-     * @param adminId id of admin who want to view user permissions
-     * @param adminToken token of admin
-     * @param userId id of user
-     * @return Response object
-     */
-    public Response getGlobalPermissions(int adminId, String adminToken, int userId){
-        try{
-            boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canEditUserRole(adminId);
-            if (!okToken)
-                return ResponseBuilder.buildWrongTokenResponse();
-            if (!hasRights)
-                return ResponseBuilder.buildNoAccessResponse();
-            GlobalRole role = globalRoleController.findUserRole(userId);
-            if (role == null)
-                return ResponseBuilder.buildRoleNotAssigned();
-            return ResponseBuilder.buildGlobalPermissionsResponse(role);
-        }catch (Exception e){
-            return ResponseBuilder.buildResponse(e);
-        }
-    }
+
     /**
      * Get user section permissions
      * @param userId id of user
@@ -256,7 +212,7 @@ public class UserWrapper {
             boolean okToken = userController.checkUserToken(userId, token);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
-            ArticleRole role = articleRoleController.findUserRole(userId, sectionId);
+            Role role = roleController.findUserRole(userId, sectionId);
             if (role == null)
                 return ResponseBuilder.buildRoleNotAssigned();
             return ResponseBuilder.buildSectionPermissionsResponse(role);
@@ -275,12 +231,12 @@ public class UserWrapper {
     public Response getSectionPermissions(int adminId, String adminToken, int userId, int sectionId){
         try{
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canEditUserRole(adminId);
+            boolean hasRights = roleController.canEditUserRole(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            ArticleRole role = articleRoleController.findUserRole(userId, sectionId);
+            Role role = roleController.findUserRole(userId, sectionId);
             if (role == null)
                 return ResponseBuilder.buildRoleNotAssigned();
             return ResponseBuilder.buildSectionPermissionsResponse(role);
@@ -298,7 +254,7 @@ public class UserWrapper {
     public Response getUserInfo(int adminId, String adminToken, int userId){
         try{
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canViewUser(adminId);
+            boolean hasRights = roleController.canViewUser(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
@@ -330,7 +286,7 @@ public class UserWrapper {
     public Response findUser(int adminId, String adminToken, String userLogin){
         try{
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canViewUser(adminId);
+            boolean hasRights = roleController.canViewUser(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
@@ -350,7 +306,7 @@ public class UserWrapper {
     public Response getUserList(int adminId, String adminToken){
         try{
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canViewUser(adminId);
+            boolean hasRights = roleController.canViewUser(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
@@ -371,12 +327,12 @@ public class UserWrapper {
     public Response getSectionUsers(int adminId, String adminToken, int sectionId){
         try{
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canViewUser(adminId);
+            boolean hasRights = roleController.canViewUser(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            List<UserArticleRole> users = userController.getSectionUsers(sectionId);
+            List<UserSectionRole> users = userController.getSectionUsers(sectionId);
             return ResponseBuilder.buildSectionUserListResponse(users);
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
@@ -386,7 +342,7 @@ public class UserWrapper {
     public Response getUserSections(int adminId, String adminToken, int userId){
         try{
             boolean okToken = userController.checkUserToken(adminId, adminToken);
-            boolean hasRights = globalRoleController.canViewUser(adminId);
+            boolean hasRights = roleController.canViewUser(adminId);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)

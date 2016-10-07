@@ -1,5 +1,6 @@
 package ru.knowledgebase.configmodule;
 
+import org.json.JSONArray;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -17,8 +18,17 @@ public class Config {
     private String ldapContextFactory;
     private String ldapDomain;
 
+    private JSONArray roles;
+
     private static ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
 
+    public JSONArray getRoles() {
+        return roles;
+    }
+
+    public void setRoles(JSONArray roles) {
+        this.roles = roles;
+    }
 
     public String getLogPath() {
         return logPath;

@@ -5,7 +5,7 @@ import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.ldapexceptions.LdapException;
 import ru.knowledgebase.ldapmodule.LdapWorker;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.exceptionmodule.userexceptions.UserAlreadyExistsException;
@@ -223,6 +223,11 @@ public class UserController {
         }catch (Exception e){
             throw new DataBaseException();
         }
+        try{
+            collector.updateSuperVisor(user.getId(), null);
+        }catch (Exception e){
+
+        }
     }
 
     /**
@@ -232,6 +237,12 @@ public class UserController {
     public void delete(int id) throws Exception{
         try {
             collector.deleteUser(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new DataBaseException();
+        }
+        try{
+            collector.updateSuperVisor(id, null);
         }catch (Exception e){
             e.printStackTrace();
             throw new DataBaseException();
@@ -373,10 +384,10 @@ public class UserController {
      * Return list of all users
      * @return list with user objects
      */
-    public List <UserArticleRole> getSectionUsers(int sectionId) throws Exception{
-        List <UserArticleRole> roles = null;
+    public List <UserSectionRole> getSectionUsers(int sectionId) throws Exception{
+        List <UserSectionRole> roles = null;
         try{
-            roles = collector.findUserArticleRoleBySection(sectionId);
+            roles = collector.findUserSectionRoleBySection(sectionId);
         }catch (Exception e){
             throw new DataBaseException();
         }

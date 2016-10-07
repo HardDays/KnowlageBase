@@ -7,9 +7,8 @@ import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
-import ru.knowledgebase.modelsmodule.rolemodels.ArticleRole;
-import ru.knowledgebase.modelsmodule.rolemodels.GlobalRole;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+import ru.knowledgebase.modelsmodule.rolemodels.Role;
+import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
@@ -63,22 +62,8 @@ public class ResponseBuilder {
         return Response.ok().build();
     }
 
-    private static JsonObjectBuilder buildGlobalPermissions(GlobalRole role) {
-         return Json.createObjectBuilder()
-                .add("id", role.getId())
-                .add("name", role.getName())
-                .add("can_add_user", role.isCanAddUser())
-                .add("can_delete_user", role.isCanDeleteUser())
-                .add("can_edit_user", role.isCanEditUser())
-                .add("can_edit_user_role", role.isCanEditUserRole())
-                .add("can_view_user", role.isCanViewUser());
-    }
 
-    public static Response buildGlobalPermissionsResponse(GlobalRole role){
-        return Response.ok(buildGlobalPermissions(role).build().toString(), MediaType.APPLICATION_JSON).build();
-    }
-
-    private static JsonObjectBuilder buildSecionPermissions(ArticleRole role){
+    private static JsonObjectBuilder buildSecionPermissions(Role role){
         return Json.createObjectBuilder()
                 .add("id", role.getId())
                 .add("name", role.getName())
@@ -94,10 +79,15 @@ public class ResponseBuilder {
                 .add("can_off_on_notifications", role.isCanOnOffNotifications())
                 .add("can_search", role.isCanSearch())
                 .add("can_view_articles", role.isCanViewArticle())
-                .add("can_view_mistakes", role.isCanViewMistakes());
+                .add("can_view_mistakes", role.isCanViewMistakes())
+                .add("can_add_user", role.isCanAddUser())
+                .add("can_delete_user", role.isCanDeleteUser())
+                .add("can_edit_user", role.isCanEditUser())
+                .add("can_edit_user_role", role.isCanEditUserRole())
+                .add("can_view_user", role.isCanViewUser());
     }
 
-    public static Response buildSectionPermissionsResponse(ArticleRole role){
+    public static Response buildSectionPermissionsResponse(Role role){
         return Response.ok(buildSecionPermissions(role).build().toString(), MediaType.APPLICATION_JSON).build();
     }
 
@@ -170,19 +160,10 @@ public class ResponseBuilder {
                             MediaType.APPLICATION_JSON).build();
     }
 
-    public static Response buildSectionUserListResponse(List <UserArticleRole> users){
+    public static Response buildSectionUserListResponse(List <UserSectionRole> users){
         JsonArrayBuilder jarr = Json.createArrayBuilder();
-        for (UserArticleRole user : users){
+        for (UserSectionRole user : users){
             jarr.add(buildUserInfo(user.getUser()));
-        }
-        return Response.ok(jarr.build().toString(),
-                MediaType.APPLICATION_JSON).build();
-    }
-
-    public static Response buildGlobalRoleListResponse(List <GlobalRole> roles){
-        JsonArrayBuilder jarr = Json.createArrayBuilder();
-        for (GlobalRole role : roles){
-            jarr.add(buildGlobalPermissions(role));
         }
         return Response.ok(jarr.build().toString(),
                 MediaType.APPLICATION_JSON).build();
@@ -198,9 +179,9 @@ public class ResponseBuilder {
                 MediaType.APPLICATION_JSON).build();
     }
 
-    public static Response buildSectionRoleListResponse(List <ArticleRole> roles){
+    public static Response buildSectionRoleListResponse(List <Role> roles){
         JsonArrayBuilder jarr = Json.createArrayBuilder();
-        for (ArticleRole role : roles){
+        for (Role role : roles){
             jarr.add(buildSecionPermissions(role));
         }
         return Response.ok(jarr.build().toString(),

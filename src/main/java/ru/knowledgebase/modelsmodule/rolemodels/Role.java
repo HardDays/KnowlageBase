@@ -4,24 +4,130 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Created by vova on 19.08.16.
+ * Created by vova on 07.10.16.
  */
-@Entity
-public class ArticleRole {
 
+@Entity
+public class Role {
     @Id
-    @SequenceGenerator(name="section_role_id_seq",
-            sequenceName="section_role_id_seq",
+    @SequenceGenerator(name="role_id_seq",
+            sequenceName="role_id_seq",
             allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator="section_role_id_seq")
+            generator="role_id_seq")
     private int id;
 
-    @OneToMany(mappedBy = "articleRole", cascade = {CascadeType.REMOVE})
-    private List<UserArticleRole> userArticleRoles;
+    @OneToMany(mappedBy = "role", cascade = {CascadeType.REMOVE})
+    private List<UserSectionRole> userSectionRoles;
 
     @Column(unique = true)
     private String name;
+
+    @Column(unique = true)
+    private int roleId;
+
+    @Column
+    private boolean canAddUser;
+
+    @Column
+    private boolean canEditUser;
+
+    @Column
+    private boolean canViewUser;
+
+    @Column
+    private boolean canDeleteUser;
+
+    @Column
+    private boolean canEditUserRole;
+
+    @Column
+    boolean baseRole;
+
+    public Role(){
+
+    }
+
+    public Role(int id){
+        this.id = id;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isCanAddUser() {
+        return canAddUser;
+    }
+
+    public void setCanAddUser(boolean canAddUser) {
+        this.canAddUser = canAddUser;
+    }
+
+    public boolean isCanEditUser() {
+        return canEditUser;
+    }
+
+    public void setCanEditUser(boolean canEditUser) {
+        this.canEditUser = canEditUser;
+    }
+
+    public boolean isCanDeleteUser() {
+        return canDeleteUser;
+    }
+
+    public void setCanDeleteUser(boolean canDeleteUser) {
+        this.canDeleteUser = canDeleteUser;
+    }
+
+    public boolean isCanEditUserRole() {
+        return canEditUserRole;
+    }
+
+    public void setCanEditUserRole(boolean canEditUserRoles) {
+        this.canEditUserRole = canEditUserRoles;
+    }
+
+    public Role(String name){
+        this.name = name;
+    }
+
+    public boolean isCanViewUser() {
+        return canViewUser;
+    }
+
+    public void setCanViewUser(boolean canViewUser) {
+        this.canViewUser = canViewUser;
+    }
+
+    //KOSTILI DETECTED
+    public boolean isBaseRole(){
+        return baseRole;
+    }
+
+    public void setBaseRole(boolean baseUser){
+        this.baseRole = baseUser;
+    }
 
     @Column
     private boolean canAddArticle;
@@ -61,35 +167,6 @@ public class ArticleRole {
 
     @Column
     private boolean canSearch;
-
-    public ArticleRole(){
-
-    }
-
-    public ArticleRole(int id){
-        this.id = id;
-    }
-
-    public ArticleRole(String name){
-        this.name = name;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
-
-    public String getName(){
-        return name;
-    }
-
-    public void setId(int id){
-        this.id = id;
-    }
-
-    public int getId(){
-        return id;
-    }
-
 
     public boolean isCanAddArticle() {
         return canAddArticle;
@@ -179,14 +256,6 @@ public class ArticleRole {
         this.canGetNotifications = canGetNotifications;
     }
 
-    public List<UserArticleRole> getUserArticleRoles() {
-        return userArticleRoles;
-    }
-
-    public void setUserArticleRoles(List<UserArticleRole> userArticleRoles) {
-        this.userArticleRoles = userArticleRoles;
-    }
-
     public boolean isCanGetSearchOperationsReports() {
         return canGetSearchOperationsReports;
     }
@@ -203,4 +272,3 @@ public class ArticleRole {
         this.canGetEmployeesActionsReports = canGetHistoryReports;
     }
 }
-

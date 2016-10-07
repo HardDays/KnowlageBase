@@ -123,20 +123,7 @@ public class UserWebService {
         return userWrapper.getSectionPermissions(userId, userToken, sectionId);
     }
 
-    @POST
-    @Path("/get_global_permissions")
-    public Response getGlobalPermissions(@FormParam(value = "admin_id") int adminId,
-                                          @FormParam(value = "admin_token") String adminToken,
-                                          @FormParam(value = "user_id") int userId){
-        return userWrapper.getGlobalPermissions(adminId, adminToken, userId);
-    }
 
-    @POST
-    @Path("/get_my_global_permissions")
-    public Response getGlobalPermissions(@FormParam(value = "user_id") int userId,
-                                         @FormParam(value = "user_token") String userToken){
-        return userWrapper.getGlobalPermissions(userId, userToken);
-    }
 
     @POST
     @Path("/find")

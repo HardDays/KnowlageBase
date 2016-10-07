@@ -6,19 +6,17 @@ import ru.knowledgebase.modelsmodule.usermodels.User;
 import javax.persistence.*;
 
 /**
- * Created by root on 17.08.16.
+ * Created by vova on 07.10.16.
  */
-
-
 @Entity
-public class UserArticleRole {
+public class UserSectionRole {
 
     @Id
-    @SequenceGenerator(name="user_article_role_id_seq",
-            sequenceName="user_article_role_id_seq",
+    @SequenceGenerator(name="user_section_role_id_seq",
+            sequenceName="user_section_role_id_seq",
             allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator="user_article_role_id_seq")
+            generator="user_section_role_id_seq")
     private int id;
 
     @ManyToOne
@@ -28,16 +26,16 @@ public class UserArticleRole {
     private Article article;
 
     @ManyToOne
-    private ArticleRole articleRole;
+    private Role role;
 
-    public UserArticleRole(){
+    public UserSectionRole(){
 
     }
 
-    public UserArticleRole(User user, Article article, ArticleRole articleRole){
+    public UserSectionRole(User user, Article article, Role role){
         this.user = user;
-        this.articleRole = articleRole;
         this.article = article;
+        this.role = role;
     }
 
     public User getUser() {
@@ -56,12 +54,12 @@ public class UserArticleRole {
         this.article = article;
     }
 
-    public ArticleRole getArticleRole() {
-        return articleRole;
+    public Role getRole() {
+        return role;
     }
 
-    public void setArticleRole(ArticleRole articleRole) {
-        this.articleRole = articleRole;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public int getId() {
