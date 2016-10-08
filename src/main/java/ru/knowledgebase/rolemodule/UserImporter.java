@@ -1,5 +1,6 @@
 package ru.knowledgebase.rolemodule;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.knowledgebase.configmodule.Configurations;
@@ -24,7 +25,7 @@ public class UserImporter{
                 if (obj.has("login"))
                     user.setLogin(obj.getString("login"));
                 if (obj.has("password"))
-                    user.setPassword(obj.getString("password"));
+                    user.setPassword(DigestUtils.md5Hex(obj.getString("password")));
                 users.add(user);
             }
             return users;
