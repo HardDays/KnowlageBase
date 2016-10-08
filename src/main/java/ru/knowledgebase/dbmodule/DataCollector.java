@@ -411,15 +411,15 @@ public class DataCollector {
     //END USERGLOBALROLE METHODS
 
     //BEGIN IMAGE CRUD METHODS
-    public Image findImage(String id){
+    public Image findImage(String id) throws  Exception {
         return imageService.find(id);
     }
 
-    public Image addImage(Image image) {
+    public Image addImage(Image image) throws Exception {
         return imageService.create(image);
     }
 
-    public void deleteImage(String id) {
+    public void deleteImage(String id) throws  Exception {
         imageService.delete(id);
     }
 
@@ -440,7 +440,7 @@ public class DataCollector {
         return images;
     }
 
-    public List<Image> addAllImages() {
+    public List<Image> addAllImages() throws Exception {
         return imageService.getAllImages();
     }
     //END IMAGE CRUD METHODS
@@ -450,15 +450,15 @@ public class DataCollector {
         archiveArticleService.createAll(archArticles);
     }
 
-    public void deleteArchiveArticle(int id) {
+    public void deleteArchiveArticle(int id) throws Exception {
         archiveArticleService.delete(id);
     }
 
-    public List<ArchiveArticle> getSectionArchive(int sectionId) {
+    public List<ArchiveArticle> getSectionArchive(int sectionId) throws Exception {
         return archiveArticleService.getSectionArchive(sectionId);
     }
 
-    public ArchiveArticle getArchiveArticle(int archiveArticleId) {
+    public ArchiveArticle getArchiveArticle(int archiveArticleId) throws Exception {
         return archiveArticleService.findById(archiveArticleId);
     }
 
@@ -651,7 +651,7 @@ public class DataCollector {
         return newsService.updateNews(news);
     }
 
-    public List<News> getSectionNewsFromDate(Integer i, Timestamp date) {
+    public List<News> getSectionNewsFromDate(Integer i, Timestamp date) throws Exception {
         return newsService.getSectionNewsFromDate(i, date);
     }
 

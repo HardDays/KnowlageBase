@@ -38,7 +38,7 @@ public class UserGlobalRoleService {
     }
 
     @Transactional
-    public void delete(int id) throws Exception{
+    public void delete(int id) throws Exception {
         userGlobalRoleRepository.delete(id);
     }
 }

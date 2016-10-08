@@ -290,6 +290,17 @@ public class ResponseBuilder {
                 MediaType.APPLICATION_JSON).build();
     }
 
+    public static Response buildImagePathResponse(String path) {
+        JsonObjectBuilder job = Json.createObjectBuilder()
+                .add("path", path);
+        return Response.ok(job.build().toString(),
+                MediaType.APPLICATION_JSON).build();
+    }
+
+    public static Response buildImagesDeletedResponse() {
+        return Response.ok().entity("Image has been deleted.").build();
+    }
+
     public static Response buildGetAllImagesResponse(List<Image> images) {
         JsonArrayBuilder jarr = Json.createArrayBuilder();
         for (Image image : images){

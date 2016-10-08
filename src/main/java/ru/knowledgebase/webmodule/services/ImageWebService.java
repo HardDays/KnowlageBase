@@ -32,6 +32,29 @@ public class ImageWebService {
         return imageWrapper.addImage(userToken, authorId, uploadedInputStream, fileDetail.getFileName());
     }
 
+    @POST
+    @Path("/get_image")
+    public Response getImage(@FormParam(value = "author_id") int authorId,
+                             @FormParam(value = "token") String userToken,
+                             @FormParam(value = "id") String imageId) {
+        return imageWrapper.getImage(userToken, authorId, imageId);
+    }
+
+    @POST
+    @Path("/get_all_image")
+    public Response getImage(@FormParam(value = "author_id") int authorId,
+                             @FormParam(value = "token") String userToken) {
+        return imageWrapper.getAllImages(userToken, authorId);
+    }
+
+    @POST
+    @Path("/delete_image")
+    public Response deleteImage(@FormParam(value = "author_id") int authorId,
+                             @FormParam(value = "token") String userToken,
+                               @FormParam(value = "token") String imageId) {
+        return imageWrapper.deleteImage(userToken, authorId, imageId);
+    }
+
 
 
 }

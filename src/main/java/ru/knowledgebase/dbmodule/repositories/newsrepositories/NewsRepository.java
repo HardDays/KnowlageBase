@@ -23,6 +23,6 @@ public interface NewsRepository extends CrudRepository<News, Integer> {
     @Query("delete from News where sectionId = ?1")
     void deleteBySectionId(int sectionId);
 
-    @Query("from News where sectionId=?1 and createDate >= ?2")
+    @Query("from News where sectionId=?1 and creationDate >= ?2")
     List<News> getSectionNewsByDate(Integer i, Timestamp date);
 }
