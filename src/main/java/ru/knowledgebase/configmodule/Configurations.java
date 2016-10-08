@@ -1,5 +1,7 @@
 package ru.knowledgebase.configmodule;
 
+import org.json.JSONArray;
+
 /**
  * Created by root on 01.09.16.
  */
@@ -13,8 +15,16 @@ public class Configurations {
         return config.getLogPath();
     }
 
-    public static String getUploadPath(){
+    public static String getUploadPath() {
         return config.getUploadPath();
+    }
+
+    public static JSONArray getRoles(){
+        return config.getRoles();
+    }
+
+    public static JSONArray getUsers(){
+        return config.getUsers();
     }
 
     public static String getImageFolderPath(){

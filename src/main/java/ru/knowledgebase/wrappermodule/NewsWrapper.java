@@ -46,7 +46,7 @@ public class NewsWrapper {
      * @return
      * @throws Exception
      */
-    public Response deleteNews(String token, int userId, int newsId, int sectionId) throws Exception {
+    public Response deleteNews(String token, int userId, int newsId, int sectionId)  {
         try {
             boolean okToken = userController.checkUserToken(userId, token);
             if (okToken != true) {
@@ -86,7 +86,7 @@ public class NewsWrapper {
         return ResponseBuilder.buildGetNewsResponse(news);
     }
 
-    public Response getNewsBySection(int id, String token, int userId, int sectionId) {
+    public Response getNewsBySection(String token, int userId, int sectionId) {
         List<News> news = null;
         try {
             boolean okToken = userController.checkUserToken(userId, token);

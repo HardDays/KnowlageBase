@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.knowledgebase.configmodule.Config;
 import ru.knowledgebase.configmodule.ConfigReader;
+import ru.knowledgebase.configmodule.Configurations;
 import ru.knowledgebase.modelsmodule.rolemodels.Role;
 
 import javax.json.JsonObject;
@@ -17,7 +18,7 @@ public class RoleImporter {
 
     /** From JSON config to Role */
     public static List<Role> getRoles(){
-        JSONArray jsonroles = ConfigReader.getInstance().getConfig().getRoles();
+        JSONArray jsonroles = Configurations.getRoles();
 
         LinkedList <Role> roles = new LinkedList();
 

@@ -398,15 +398,13 @@ public class RoleController {
             //ATTENTION! KOSTILI DETECTED
             //Create some super admin to get ability  create new users
             //delete this user after all
-            User user = collector.findUser("admin_1337");
-            if (user == null) {
-                user = new User();
-                user.setLogin("admin_1337");
-                user.setPassword(DigestUtils.md5Hex("admin_1337_password"));
-                user = collector.addUser(user);
+            for (User user1 : UserImporter.getUsers()) {
+                User user = collector.findUser(user1.getLogin());
+                if (user == null) {
+                    user = collector.addUser(user1);
+                }
+                assignUserRole(user.getId(), collector.getBaseArticle().getId(), superUserId);
             }
-            assignUserRole(user.getId(), collector.getBaseArticle().getId(), superUserId);
-
         }catch (Exception e){
             e.printStackTrace();
         }

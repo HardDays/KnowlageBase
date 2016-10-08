@@ -18,9 +18,18 @@ public class Config {
     private String ldapContextFactory;
     private String ldapDomain;
 
-    private JSONArray roles;
+    private JSONArray roles = new JSONArray();
+    private JSONArray users = new JSONArray();
 
     private static ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
+
+    public JSONArray getUsers() {
+        return users;
+    }
+
+    public void setUsers(JSONArray users) {
+        this.users = users;
+    }
 
     public JSONArray getRoles() {
         return roles;
