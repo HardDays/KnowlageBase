@@ -11,7 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Config {
     private String logPath;
 
-    private String imagePath;
+    private String uploadPath;
     private String imageFolder;
 
     private String ldapURI;
@@ -42,12 +42,12 @@ public class Config {
         return context;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getUploadPath() {
+        return uploadPath;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setUploadPath(String imagePath) {
+        this.uploadPath = imagePath;
     }
 
     public String getImageFolder() {

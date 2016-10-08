@@ -61,7 +61,7 @@ public class ConfigReader {
         try {
             JSONObject obj = new JSONObject(fileContent);
             config.setLogPath(obj.getString("logPath"));
-            config.setImagePath(obj.getString("imagePath"));
+            config.setUploadPath(obj.getString("uploadPath"));
             config.setImageFolder(obj.getString("imageFolder"));
             config.setLdapURI(obj.getString("ldapURI"));
             config.setLdapContextFactory(obj.getString("ldapContextFactory"));

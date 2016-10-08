@@ -1,5 +1,6 @@
 package ru.knowledgebase.rolemodule;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
 import ru.knowledgebase.exceptionmodule.articleexceptions.NotASectionException;
@@ -23,6 +24,7 @@ public class RoleController {
     //KOSTILI DETECTED
     private int defaultRoleId = 5;
     private int adminRoleId = 2;
+    private int superUserId = 1;
 
     private DataCollector collector = DataCollector.getInstance();
     private static volatile RoleController instance;
@@ -95,7 +97,7 @@ public class RoleController {
     }
     /**
      * Delete article role
-     * @param articleRoleId id of article role
+     * @param roleId id of article role
      */
     public void delete(int roleId) throws Exception{
         if (roleId == 0)
@@ -221,6 +223,15 @@ public class RoleController {
      * @param role formed object
      */
     public void assignUserRole(UserSectionRole role) throws Exception{
+        //kostili detected
+        //if role is banned user, superuser etc - attach it to root
+        try {
+            if (role.getRole().isBaseRole()) {
+                role.setArticle(collector.getBaseArticle());
+            }
+        }catch (Exception e){
+            throw new DataBaseException();
+        }
         Article article = role.getArticle();
         if (!article.isSection())
             throw new NotASectionException();
@@ -251,9 +262,10 @@ public class RoleController {
             }
             collector.addUserSectionRole(role);
             //needed by TZ
-            if (role.getRole().getRoleId() == adminRoleId)
+            if (role.getRole().getRoleId() == adminRoleId) {
                 user.setSuperVisorId(user.getId());
-            collector.updateUser(user);
+                collector.updateUser(user);
+            }
         }catch (Exception e){
             e.printStackTrace();
             throw new DataBaseException();
@@ -289,27 +301,6 @@ public class RoleController {
         try {
             user = collector.findUser(userId);
             article = collector.findArticle(articleId);
-            role = collector.findRole(roleId);
-        }catch (Exception e){
-            throw new DataBaseException();
-        }
-        assignUserRole(user, article, role);
-    }
-    /**
-     * KOSTILI DETECTED
-     * Create user role for root section
-     * @param userId user id
-     * @param roleId id of role
-     */
-    public void assignBaseUserRole(int userId, int roleId) throws Exception{
-        if (roleId == 0 || userId == 0)
-            throw new WrongUserDataException();
-        User user = null;
-        Article article = null;
-        Role role = null;
-        try {
-            user = collector.findUser(userId);
-            article = collector.getBaseArticle();
             role = collector.findRole(roleId);
         }catch (Exception e){
             throw new DataBaseException();
@@ -394,15 +385,30 @@ public class RoleController {
      * Add base roles do DB
      */
     public void createBaseRoles() throws Exception{
-        for (Role role : RoleImporter.getRoles()){
-            Role exist = collector.findRoleByRoleId(role.getRoleId());
-            if (exist == null) {
-                collector.addRole(role);
+        try {
+            for (Role role : RoleImporter.getRoles()) {
+                Role exist = collector.findRoleByRoleId(role.getRoleId());
+                if (exist == null) {
+                    collector.addRole(role);
+                } else {
+                    role.setId(exist.getId());
+                    collector.updateRole(role);
+                }
             }
-            else {
-                role.setId(exist.getId());
-                collector.updateRole(role);
+            //ATTENTION! KOSTILI DETECTED
+            //Create some super admin to get ability  create new users
+            //delete this user after all
+            User user = collector.findUser("admin_1337");
+            if (user == null) {
+                user = new User();
+                user.setLogin("admin_1337");
+                user.setPassword(DigestUtils.md5Hex("admin_1337_password"));
+                user = collector.addUser(user);
             }
+            assignUserRole(user.getId(), collector.getBaseArticle().getId(), superUserId);
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         /*

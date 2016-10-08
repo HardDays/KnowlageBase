@@ -13,8 +13,8 @@ public class Configurations {
         return config.getLogPath();
     }
 
-    public static String getImageFilePath(){
-        return config.getImagePath();
+    public static String getUploadPath(){
+        return config.getUploadPath();
     }
 
     public static String getImageFolderPath(){

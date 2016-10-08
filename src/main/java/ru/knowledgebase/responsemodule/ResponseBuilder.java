@@ -154,6 +154,15 @@ public class ResponseBuilder {
                             MediaType.APPLICATION_JSON).build();
     }
 
+    public static Response buildSuperVisorInfo(User user){
+        return Response.ok(buildUserInfo(user).build().toString(),
+                MediaType.APPLICATION_JSON).build();
+    }
+
+    public static Response buildNoSuperVisor(){
+        return Response.ok("No supervisor!").build();
+    }
+
     public static Response buildUserListResponse(List <User> users){
         JsonArrayBuilder jarr = Json.createArrayBuilder();
         for (User user : users){
@@ -166,10 +175,11 @@ public class ResponseBuilder {
     public static Response buildSectionUserListResponse(List <UserSectionRole> roles){
         JsonArrayBuilder jarr = Json.createArrayBuilder();
         for (UserSectionRole role : roles){
-          //  JsonObject object = Json.createObjectBuilder()
-                 //   .add("user", buildUserInfo(role.getUser()))
-                  //  .add("role", buildSecionPermissions(role.getRole())).build();
-            jarr.add(buildUserInfo(role.getUser()));
+            JsonObject object = Json.createObjectBuilder()
+                    .add("user", buildUserInfo(role.getUser()))
+                    .add("role_id", role.getRole().getId())
+                    .add("role_name", role.getRole().getName()).build();
+            jarr.add(object);
         }
         return Response.ok(jarr.build().toString(),
                 MediaType.APPLICATION_JSON).build();

@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -45,13 +46,14 @@ public class UserWebService {
                             @FormParam(value = "dismissal_date")Timestamp dismissalDate,
                             @FormParam(value = "has_email_notifications")boolean hasEmailNotifications,
                             @FormParam(value = "has_site_notifications")boolean hasSiteNotifications,
-                            @FormParam(value = "super_visor_id")Integer superVisorId){
+                            @FormParam(value = "super_visor_id")Integer superVisorId,
+                            @FormParam(value = "sections")List <Integer> sections,
+                            @FormParam(value = "roles")List <Integer> roles){
 
         return userWrapper.register(adminId, adminToken, login, password, email,
-                firstName, middleName, lastName,
-                office, phone1, phone2,
-                recruitmentDate, dismissalDate,
-                hasEmailNotifications, hasSiteNotifications, superVisorId);
+                firstName, middleName, lastName, office, phone1, phone2,
+                recruitmentDate, dismissalDate, hasEmailNotifications,
+                hasSiteNotifications, superVisorId, sections, roles);
     }
 
     @POST
@@ -74,8 +76,7 @@ public class UserWebService {
                              @FormParam(value = "super_visor_id")Integer superVisorId){
         return userWrapper.update(userId, userToken, login, password, email,
                 firstName, middleName, lastName,
-                office, phone1, phone2,
-                recruitmentDate, dismissalDate,
+                office, phone1, phone2, recruitmentDate, dismissalDate,
                 hasEmailNotifications, hasSiteNotifications, superVisorId);
     }
 
@@ -98,10 +99,12 @@ public class UserWebService {
                            @FormParam(value = "dismissal_date")Timestamp dismissalDate,
                            @FormParam(value = "has_email_notifications")boolean hasEmailNotifications,
                            @FormParam(value = "has_site_notifications")boolean hasSiteNotifications,
-                           @FormParam(value = "super_visor_id")Integer superVisorId){
+                           @FormParam(value = "super_visor_id")Integer superVisorId,
+                           @FormParam(value = "sections")List <Integer> sections,
+                           @FormParam(value = "roles")List <Integer> roles){
         return userWrapper.update(adminId, adminToken, userId, userToken, login, password, email,
                 firstName, middleName, lastName, office, phone1, phone2, recruitmentDate, dismissalDate,
-                hasEmailNotifications, hasSiteNotifications, superVisorId);
+                hasEmailNotifications, hasSiteNotifications, superVisorId, sections, roles);
     }
 
     @POST
@@ -146,6 +149,13 @@ public class UserWebService {
                                           @FormParam(value = "user_token") String userToken,
                                           @FormParam(value = "section_id") int sectionId){
         return userWrapper.getSectionPermissions(userId, userToken, sectionId);
+    }
+
+    @POST
+    @Path("/get_my_supervisor")
+    public Response getSuperVisor(@FormParam(value = "user_id") int userId,
+                                          @FormParam(value = "user_token") String userToken){
+        return userWrapper.getSuperVisor(userId, userToken);
     }
 
     @POST
@@ -217,12 +227,6 @@ public class UserWebService {
                                      @FormParam(value = "offset") int offset,
                                      @FormParam(value = "limit") int limit){
         return userWrapper.findUsersBySupervisor(adminId, adminToken, superVisorId, offset, limit);
-    }
-    @POST
-    @Path("/test")
-    public Response test(@FormParam(value = "a")List<Integer> a){
-       System.out.println("sdffssss" + a.get(0));
-       return  Response.ok(a.get(0)).build();
     }
 }
 

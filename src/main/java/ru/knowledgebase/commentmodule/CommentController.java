@@ -10,6 +10,7 @@ import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -54,12 +55,13 @@ public class CommentController {
      * @param comment comment of user
      * @param articleText text with mistake
      */
-    public Comment add(int userId, int articleId, String comment, String articleText) throws Exception{
+    public LinkedList <Comment> add(int userId, int articleId, String comment, String articleText) throws Exception{
         if (userId == 0 || articleId == 0 || comment == null || articleText == null)
             throw new WrongUserDataException();
         User user = null;
         Article article = null;
         Article section = null;
+        LinkedList <Comment> comments = new LinkedList<>();
         if (articleText.length() == 0 || comment.length() == 0)
             throw new WrongUserDataException();
         try{
@@ -74,13 +76,16 @@ public class CommentController {
             throw new UserNotFoundException();
         if (article == null)
             throw new ArticleNotFoundException();
-        User admin = null;
         try {
-            admin = collector.findMistakeViewers(section).get(0);
+            List <User> admins =  collector.findMistakeViewers(section);
+            for (int i = 0; i < admins.size(); i++) {
+                Comment com = add(new Comment(user, admins.get(i), article, comment, articleText));
+                comments.add(com);
+            }
         }catch (Exception e){
             throw new DataBaseException();
         }
-        return add(new Comment(user, admin, article, comment, articleText));
+        return comments;
     }
     /**
      * Find list of comments sended to admin

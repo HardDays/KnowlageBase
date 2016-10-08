@@ -109,7 +109,7 @@ public class ArticleRoleControllerTest {
 
     @Test
     public void assign2() throws Exception{
-        c.assignBaseUserRole(user.getId(), role.getId());
+        c.assignUserRole(user.getId(), article1.getId(), role.getId());
         assertTrue(c.findUserRole(user, article1).getId() == role.getId());
     }
 

@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jsoup.Jsoup;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,7 +44,7 @@ public class ArticleConverter {
     private ArticleController articleController = ArticleController.getInstance();
     private ImageController imageController = ImageController.getInstance();
 
-    private String imagePath = Configurations.getImageFilePath();
+    private String uploadPath = Configurations.getUploadPath();
     private String imageFolder = Configurations.getImageFolderPath();
 
     private static volatile ArticleConverter instance;
@@ -124,7 +123,7 @@ public class ArticleConverter {
     public void convertDocx(InputStream input, String title, int authorId, int parentArticle, Timestamp archiveTime,
                             Timestamp createDate, Timestamp updateDate, boolean isSection) throws Exception{
         String body = null;
-        String curPath = imagePath + title;
+        String curPath = uploadPath + title;
         List <String> images = new LinkedList<String>();
         try {
             XWPFDocument document = new XWPFDocument(input);

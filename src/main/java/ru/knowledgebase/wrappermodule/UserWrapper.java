@@ -1,5 +1,7 @@
 package ru.knowledgebase.wrappermodule;
 
+import ru.knowledgebase.exceptionmodule.userexceptions.UserNotFoundException;
+import ru.knowledgebase.exceptionmodule.userexceptions.WrongUserDataException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.Role;
 import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
@@ -49,7 +51,8 @@ public class UserWrapper {
                              String firstName, String middleName, String lastName,
                              String office, String phone1, String phone2,
                              Timestamp recruitmentDate, Timestamp dismissalDate,
-                             boolean hasEmailNotifications, boolean hasSiteNotifications, Integer superVisorId) {
+                             boolean hasEmailNotifications, boolean hasSiteNotifications,
+                             Integer superVisorId, List<Integer> sections, List<Integer> roles) {
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
             boolean hasRights = roleController.canAddUser(adminId);
@@ -63,6 +66,11 @@ public class UserWrapper {
                                                 recruitmentDate, dismissalDate,
                                                 hasEmailNotifications, hasSiteNotifications, superVisorId);
             roleController.assignDefaultUserRole(user);
+            if (sections.size() != roles.size())
+                return ResponseBuilder.buildResponse(new WrongUserDataException());
+            for (int i = 0; i < sections.size(); i++){
+                roleController.assignUserRole(user.getId(), sections.get(i), roles.get(i));
+            }
             return ResponseBuilder.buildRegisteredResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
@@ -78,15 +86,14 @@ public class UserWrapper {
                            String firstName, String middleName, String lastName,
                            String office, String phone1, String phone2,
                            Timestamp recruitmentDate, Timestamp dismissalDate,
-                           boolean hasEmailNotifications, boolean hasSiteNotifications, Integer superVisorId) {
+                           boolean hasEmailNotifications, boolean hasSiteNotifications, Integer superVisorId){
         try {
             boolean okToken = userController.checkUserToken(userId, token);
             if (!okToken)
                 return ResponseBuilder.buildWrongTokenResponse();
             userController.update(userId, login, password, email,
                                   firstName, middleName, lastName,
-                                  office, phone1, phone2,
-                                  recruitmentDate, dismissalDate,
+                                  office, phone1, phone2, recruitmentDate, dismissalDate,
                                   hasEmailNotifications, hasSiteNotifications, superVisorId);
             return ResponseBuilder.buildUserChangedResponse();
         }catch (Exception e){
@@ -104,7 +111,8 @@ public class UserWrapper {
                            String firstName, String middleName, String lastName,
                            String office, String phone1, String phone2,
                            Timestamp recruitmentDate, Timestamp dismissalDate,
-                           boolean hasEmailNotifications, boolean hasSiteNotifications, Integer superVisorId) {
+                           boolean hasEmailNotifications, boolean hasSiteNotifications,
+                           Integer superVisorId, List<Integer> sections, List<Integer> roles) {
         try {
             boolean okToken = userController.checkUserToken(adminId, adminToken);
             boolean hasRights = roleController.canEditUser(adminId);
@@ -114,9 +122,13 @@ public class UserWrapper {
                 return ResponseBuilder.buildNoAccessResponse();
             userController.update(userId, login, password, email,
                     firstName, middleName, lastName,
-                    office, phone1, phone2,
-                    recruitmentDate, dismissalDate,
+                    office, phone1, phone2, recruitmentDate, dismissalDate,
                     hasEmailNotifications, hasSiteNotifications, superVisorId);
+            if (sections.size() != roles.size())
+                return ResponseBuilder.buildResponse(new WrongUserDataException());
+            for (int i = 0; i < sections.size(); i++){
+                roleController.assignUserRole(userId, sections.get(i), roles.get(i));
+            }
             return ResponseBuilder.buildUserChangedResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
@@ -184,18 +196,34 @@ public class UserWrapper {
                 return ResponseBuilder.buildWrongTokenResponse();
             if (!hasRights)
                 return ResponseBuilder.buildNoAccessResponse();
-            //attach super user to root
-            if (roleController.isBaseRole(roleId)) {
-                roleController.assignBaseUserRole(userId, roleId);
-            }else{
-                roleController.assignUserRole(userId, sectionId, roleId);
-            }
+            roleController.assignUserRole(userId, sectionId, roleId);
             return ResponseBuilder.buildUserRoleChangedResponse();
         }catch (Exception e){
             return ResponseBuilder.buildResponse(e);
         }
     }
-
+    /**
+     * Get user section permissions
+     * @param userId id of user
+     * @param token token of user
+     * @return Response object
+     */
+    public Response getSuperVisor(int userId, String token){
+        try{
+            boolean okToken = userController.checkUserToken(userId, token);
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+            User user = userController.find(userId);
+            if (user.getSuperVisorId() == null)
+                return ResponseBuilder.buildNoSuperVisor();
+            User superVisor = userController.find(user.getSuperVisorId());
+            if (superVisor == null)
+                return ResponseBuilder.buildResponse(new UserNotFoundException());
+            return ResponseBuilder.buildSuperVisorInfo(superVisor);
+        }catch (Exception e){
+            return ResponseBuilder.buildResponse(e);
+        }
+    }
     /**
      * Get user section permissions
      * @param userId id of user

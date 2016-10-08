@@ -64,11 +64,11 @@ public class CommentControllerTest {
             r.setRoleId(229);
             r.setCanAddMistakes(true);
             role2 = collector.addRole(r);
-            article1 = ArticleController.getInstance().addArticle("1", "f", user.getId(), base.getId(), null, null, null, false);
-            article2 = ArticleController.getInstance().addArticle("2", "f", user.getId(), base.getId(), null, null, null, false);
-            article3 = ArticleController.getInstance().addArticle("3", "f", user.getId(), article2.getId(), null, null, null, false);
-            RoleController.getInstance().assignBaseUserRole(user.getId(), role.getId());
-            RoleController.getInstance().assignBaseUserRole(user2.getId(), role2.getId());
+            article1 = ArticleController.getInstance().addArticle("1", "f", user.getId(), base.getId(), null, null, null, true);
+            article2 = ArticleController.getInstance().addArticle("2", "f", user.getId(), base.getId(), null, null, null, true);
+            article3 = ArticleController.getInstance().addArticle("3", "f", user.getId(), article2.getId(), null, null, null, true);
+            RoleController.getInstance().assignUserRole(user.getId(), base.getId(), role.getId());
+            RoleController.getInstance().assignUserRole(user2.getId(), base.getId(), role2.getId());
 
         }catch (Exception e){
             e.printStackTrace();
@@ -118,14 +118,14 @@ public class CommentControllerTest {
 
     @Test
     public void add1() throws Exception{
-        Comment com = c.add(user2.getId(), article1.getId(), "dsffds", "fdsds");
+        Comment com = c.add(user2.getId(), article1.getId(), "dsffds", "fdsds").get(0);
         c.delete(com.getId());
         assertTrue(collector.findComment(com.getId()) == null);
     }
 
     @Test
     public void add2() throws Exception{
-        Comment com = c.add(user2.getId(), article1.getId(), "dsffds", "fdsds");
+        Comment com = c.add(user2.getId(), article1.getId(), "dsffds", "fdsds").get(0);
         assertTrue(c.canDeleteComment(user.getId(), com.getId()));
         List<Comment> l = c.findByAdmin(user.getId(), 0, 100);
         assertTrue(l.size() == 1);

@@ -93,7 +93,6 @@ public class UserController {
         }
         return updateToken(user);
     }
-
     /**
      * Register new user in database and LDAP
      * @param user formed user object

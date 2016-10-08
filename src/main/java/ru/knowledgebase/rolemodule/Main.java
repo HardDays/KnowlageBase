@@ -48,7 +48,8 @@ public class Main {
         //c.authorize("testeeee2", "2");
         // c.delete(user2);
         //  GlobalRoleController.getInstance().createBaseRoles();
-        RoleController.getInstance().assignUserRole(3006, 1, 2);
+        //createTest();
+        RoleController.getInstance().createBaseRoles();
 
     }
 
