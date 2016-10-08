@@ -219,7 +219,7 @@ public class ArticleController {
     }
 
     public List<Article> findArticleByTitle(String title) throws Exception{
-        return this.dataCollector.findArticleByTitle(title);
+        return (List)this.dataCollector.findArticleByTitle(title);
     }
 
     /**

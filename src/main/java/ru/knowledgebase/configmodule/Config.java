@@ -4,6 +4,8 @@ import org.springframework.cglib.beans.BeanMap;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.persistence.EntityManagerFactory;
+
 /**
  * Created by root on 01.09.16.
  */
@@ -19,7 +21,8 @@ public class Config {
     private String ldapContextFactory;
     private String ldapDomain;
 
-    private static ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
+    private static ApplicationContext context;
+
 
 
     public String getLogPath() {
@@ -31,8 +34,12 @@ public class Config {
     }
 
     public static ApplicationContext getContext() {
+        if (context == null) {
+            context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
+        }
         return context;
     }
+
 
     public String getImagePath() {
         return imagePath;

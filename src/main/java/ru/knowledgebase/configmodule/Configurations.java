@@ -1,11 +1,13 @@
 package ru.knowledgebase.configmodule;
 
+import org.springframework.context.ApplicationContext;
+
 /**
  * Created by root on 01.09.16.
  */
 public class Configurations {
 
-    private static Config config = ConfigReader.getInstance().getConfig();
+    private static Config config;
 
     private Configurations(){}
 
@@ -35,6 +37,13 @@ public class Configurations {
 
     public static String getLdapDomain() {
         return config.getLdapDomain();
+    }
+
+    public static ApplicationContext getApplicationContext() {
+        if (config == null) {
+            config = ConfigReader.getInstance().getConfig();
+        }
+        return config.getContext();
     }
 
 }

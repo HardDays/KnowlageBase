@@ -12,8 +12,9 @@ public class ArticleProcessor {
      * @param body - article body with html tags
      * @return - body without tags
      */
-    public static String getPureBody(String body) {
+    public static String getPureBody(String body) throws Exception {
         String clearBody = Jsoup.parse(body).text();
-        return clearBody;
+        TextProcessor textProcessor = new TextProcessor();
+        return textProcessor.getTextWithOnlyKeywords(clearBody);
     }
 }

@@ -76,7 +76,7 @@ public class RequestParser {
      * @param request string with request
      * @return list of keywords
      */
-    public List<String> getRequestKeywords(String request) throws Exception {
+    public List<String> getRequestKeywords(String request) throws ParseKeywordException {
         try {
             Iterable<Info> result = JavaConversions.asJavaIterable(mystemAnalyzer
                     .analyze(Request.apply(request))

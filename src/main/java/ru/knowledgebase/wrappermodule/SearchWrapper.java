@@ -25,11 +25,11 @@ public class SearchWrapper {
      * @param searchRequest
      * @return Response with list of {@code Article} having words from search request in title
      */
-    public Response searchByTitle(int userID, String searchRequest){
+    public Response searchByTitle(int userID, String searchRequest, int numArticles){
         writeToLog(userID, searchRequest);
         try{
             return responseBuilder.buildSearchResultResponse(
-                    searchController.searchByTitle(userID, searchRequest));
+                    searchController.searchByTitle(userID, searchRequest, numArticles));
         }catch (Exception ex) {
             return responseBuilder.buildResponse(ex);
         }
@@ -42,11 +42,11 @@ public class SearchWrapper {
      * @param searchRequest
      * @return Response with list of {@code Article} having words from search request in body
      */
-    public Response searchByBody(int userID, String searchRequest){
+    public Response searchByBody(int userID, String searchRequest, int numArticles){
         writeToLog(userID, searchRequest);
         try{
             return ResponseBuilder.buildSearchResultResponse(
-                    searchController.searchByBody(userID, searchRequest));
+                    searchController.searchByBody(userID, searchRequest, numArticles));
         }catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }

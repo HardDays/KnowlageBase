@@ -46,6 +46,10 @@ public class Main {
      //   GlobalRoleController.getInstance().createBaseRoles();
      //   ArticleRoleController.getInstance().createBaseRoles();
     //    LdapWorker.getInstance().getUserInfo("dssddssdsa");
+        UserController.getInstance().register("228user", "1pass", "t1@m",
+                                                            "vov", "vas", "fam", "off", "222", "333", null, null);
+        UserController.getInstance().authorize("228user", "1pass");
+        UserController.getInstance().delete(1);
     }
 
 

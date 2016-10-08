@@ -21,8 +21,7 @@ public class ArticleService {
     @Autowired
     private ArticleConnectionRepository articleConnectionRepository;
 
-    @Transactional
-    public Article create(Article article) {
+    public Article create(Article article) throws Exception {
         Article ar = articleRepository.save(article);
         ArticleConnection ac = new ArticleConnection(ar.getParentArticle(),
                     ar.getId());
@@ -30,19 +29,17 @@ public class ArticleService {
         return ar;
     }
 
-    public Article findById(int articleId){
+    public Article findById(int articleId)throws Exception {
         return articleRepository.findOne(articleId);
     }
 
-    @Transactional
-    public Article update(Article article) {
+    public Article update(Article article) throws Exception {
         Article oldActicle = articleRepository.findOne(article.getId());
         oldActicle.copy(article);
         return articleRepository.save(oldActicle);
     }
 
-    @Transactional
-    public void delete(Integer id) {
+    public void delete(Integer id) throws Exception {
         List<Integer> deleteArticleOrder = getArticleHierarchyTree(id);
         List<ArticleConnection> deleteArticleConnection = getAllConnectionsOfList(deleteArticleOrder);
 
@@ -55,25 +52,22 @@ public class ArticleService {
         }
     }
 
-    @Transactional
-    public boolean exists(int id) {
+    public boolean exists(int id) throws Exception  {
         return articleRepository.exists(id);
     }
 
-    @Transactional
-    public List<Article> findByTitle(String title) {
+    public Iterable<Article> findByTitle(String title) throws Exception {
         return articleRepository.findByTitle(title);
     }
 
-    @Transactional
-    public List<Article> getAll(){ return articleRepository.getAll(); }
+    public List<Article> getAll() throws Exception { return articleRepository.getAll(); }
 
     /** Should be optimized!
      * Get all first-line children for current article
      * @param articleId
      * @return
      */
-    public List<Integer> getChildrenIds(int articleId) {
+    public List<Integer> getChildrenIds(int articleId) throws Exception {
         List<ArticleConnection> ids = articleConnectionRepository.findByParentId(articleId);
         List<Integer> articles = new LinkedList<>();
         for (ArticleConnection i : ids) {
@@ -82,11 +76,11 @@ public class ArticleService {
         return articles;
     }
 
-    public Article getParentArticle(Article article) {
+    public Article getParentArticle(Article article) throws Exception {
         return articleRepository.findOne(article.getId());
     }
 
-    private List<ArticleConnection> getAllConnections(int articleId) {
+    private List<ArticleConnection> getAllConnections(int articleId) throws Exception {
         return articleConnectionRepository.findConnectionsById(articleId);
     }
 
@@ -95,7 +89,7 @@ public class ArticleService {
      * @param ids
      * @return list of parents for ids articles
      */
-    private List<ArticleConnection> getAllConnectionsOfList(List<Integer> ids) {
+    private List<ArticleConnection> getAllConnectionsOfList(List<Integer> ids) throws Exception {
         List<ArticleConnection> connections = new LinkedList<>();
         for (Integer id : ids) {
             List<ArticleConnection> ac = articleConnectionRepository.findConnectionsById(id);
@@ -106,7 +100,7 @@ public class ArticleService {
         return connections;
     }
 
-    public List<Integer> getArticleHierarchyTree(int rootId) {
+    public List<Integer> getArticleHierarchyTree(int rootId) throws Exception {
         List<Integer> tree = new LinkedList<>();
         Queue<Integer> queue = new LinkedList<>();
 
@@ -126,7 +120,11 @@ public class ArticleService {
         return tree;
     }
 
-    public Article getBaseArticle() {
+    public Article getBaseArticle() throws Exception {
         return articleRepository.getBaseArticle();
+    }
+
+    public boolean isSection(int articleId) throws Exception {
+        return articleRepository.isSection(articleId);
     }
 }

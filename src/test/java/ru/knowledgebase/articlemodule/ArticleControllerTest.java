@@ -5,6 +5,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.DataCollector;
+import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 import ru.knowledgebase.dbmodule.storages.SectionStorage;
 import ru.knowledgebase.exceptionmodule.articleexceptions.ArticleNotFoundException;
 import ru.knowledgebase.exceptionmodule.sectionexceptions.ArticleCanNotBeSectionException;
@@ -42,8 +43,17 @@ public class ArticleControllerTest {
 
     private static Image img;
 
+    //t
+    private static String[] titles = {
+            "Summary form only given, as follows right left no yes",
+            "Simple tokenizer that splits the text stream on whitespace ",
+            "Внимание! С 7 сентября Агентством транспорта Финляндии были введены ограничения скорости ",
+            "Ориентировочное опоздание скоростных поездов Аллегро в указанный период отправления "};
+
+    private static Article addArticle;
+    //t
+
     @BeforeClass
-    @Transactional
     public static void init() throws Exception{
 
         img = new Image("home/path", "some");
@@ -58,6 +68,7 @@ public class ArticleControllerTest {
 
         parentArticle = base.getId();
         updateArticle = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
+        addArticle = updateArticle;
     }
 
     @AfterClass
@@ -67,41 +78,30 @@ public class ArticleControllerTest {
         ic.deleteImage(img.getId());
     }
 
-    @Transactional
+
     @Test
     public void addArticle() throws Exception {
         parentArticle = base.getId();
         createTest = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
         createTest = ac.getArticle(createTest.getId());
-        //printObject(createTest);
+        assertTrue(createTest != null);
 
         ac.deleteArticle(createTest.getId());
     }
 
-    @Transactional
-    @Test
+    @Test(expected = ArticleNotFoundException.class)
     public void deleteArticle() throws Exception {
         Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
         ac.deleteArticle(a.getId());
-        try {
-            ac.getArticle(a.getId());
-        }
-        catch (Exception ex) {
-            assertTrue(true);
-            return;
-        }
-        assertTrue(false);
-        return;
+        ac.getArticle(a.getId());
     }
 
-    @Transactional
     @Test
     public void childrenArticle() throws Exception {
         Article a = ac.addArticle(title, body, author, parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
         assertTrue(ac.getArticleChildrenIds(base.getId()).size() == 2);
     }
 
-    @Transactional
     @Test
     public void deleteBaseArticle() throws Exception {
         Article a = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
@@ -122,7 +122,6 @@ public class ArticleControllerTest {
         return;
     }
 
-    @Transactional
     @Test
     public void updateArticle() throws Exception {
         String newString = "new string";
@@ -143,7 +142,6 @@ public class ArticleControllerTest {
         //ac.deleteArticle(updateArticle.getId());
     }
 
-    @Transactional
     @Test(expected = ArticleCanNotBeSectionException.class)
     public void sectionOrganization() throws Exception{
         Article newArticle1 = ac.addArticle(title, body, u.getId(), updateArticle.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
@@ -152,7 +150,6 @@ public class ArticleControllerTest {
 
     }
 
-    @Transactional
     @Test
     public void getNextLevelSections() throws Exception {
         Article newArticle1 = ac.addArticle("A1", body, u.getId(), base.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
@@ -166,7 +163,6 @@ public class ArticleControllerTest {
         //ac.deleteArticle(newArticle1.getId());
     }
 
-    @Transactional
     @Test
     public void getSectionTree() throws Exception {
         Article newArticle1 = ac.addArticle("A1", body, u.getId(), base.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5), true);

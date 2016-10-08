@@ -1,14 +1,11 @@
 package ru.knowledgebase.searchmodule;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.searchexceptions.SearchException;
 import ru.knowledgebase.exceptionmodule.searchexceptions.WrongSearchParametersException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,10 +13,8 @@ import java.util.List;
  * Created by Мария on 07.09.2016.
  */
 
-@Controller
 public class SearchController {
 
-    @Autowired
     private DataCollector dataCollector = DataCollector.getInstance();
 
     private static SearchController instance;
@@ -46,62 +41,53 @@ public class SearchController {
      * Searches in articles titles for appearances of words of a given string {@code searchRequest}
      * @param userID
      * @param searchRequest
+     * @param numArticles
      * @return List of {@code Article} having words from search request in title
      * @throws SearchException
      */
-    public List<Article> searchByTitle(int userID, String searchRequest) throws Exception {
-        List<Article> result;
+    public List<Article> searchByTitle(int userID, String searchRequest, int numArticles) throws Exception {
         if(isWrongRequestFormat(searchRequest))
             throw new WrongSearchParametersException();
         try{
-            result = dataCollector.searchByTitle(searchRequest);
+            return dataCollector.searchByTitle(searchRequest, getSectionsAvailableToUser(userID),  numArticles);
         }catch (Exception ex){
             throw new SearchException();
         }
-
-        return getArticlesAvailableToUser(result, userID);
     }
 
     /**
      * Searches in articles bodies for appearances of words of a given string {@code searchRequest}
      * @param userID
      * @param searchRequest
+     * @param numArticles
      * @return List of {@code Article} having words from search request in body
      * @throws SearchException
      */
-    public List<Article> searchByBody(int userID, String searchRequest) throws Exception {
-        List<Article> result;
+    public List<Article> searchByBody(int userID, String searchRequest, int numArticles) throws Exception {
         if(isWrongRequestFormat(searchRequest))
             throw new WrongSearchParametersException();
         try{
-            result =  dataCollector.searchByBody(searchRequest);
+            return dataCollector.searchByBody(searchRequest, getSectionsAvailableToUser(userID),  numArticles);
         }catch (Exception ex){
             throw new SearchException();
         }
-        return getArticlesAvailableToUser(result, userID);
     }
 
     /**
-     * Traverse through given list of articles and finds those to which user {@code userID} has access to
-     * @param articles
+     * Finds a list of sections which user as access to.
      * @param userID
-     * @return
+     * @return list of sections available to user
      * @throws DataBaseException
      */
-    private List<Article> getArticlesAvailableToUser(List<Article> articles, Integer userID)
+    private List<Integer> getSectionsAvailableToUser(int userID)
             throws DataBaseException {
-        if(articles.isEmpty()) return articles;
-        List<Article> articlesUserHasAccessTo = new LinkedList<>();
         try {
-            HashSet<Integer> usersSections = dataCollector.getUserSections(userID);
-            for(Article article : articles){
-                if(usersSections.contains(article.getId()))
-                    articlesUserHasAccessTo.add(article);
-            }
+            List<Integer> list = new LinkedList<>();
+            list.addAll(dataCollector.getUserSections(userID));
+            return list;
         } catch (Exception e) {
             throw new DataBaseException();
         }
-        return articlesUserHasAccessTo;
     }
 
     /**

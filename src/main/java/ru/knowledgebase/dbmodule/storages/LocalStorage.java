@@ -34,6 +34,7 @@ public class LocalStorage {
 
     private SectionStorage sectionStorage = SectionStorage.getInstance();
     private SectionRoleStorage sectionRoleStorage = SectionRoleStorage.getInstance();
+    private Article baseArticle = null;
 
     //BEGIN SECTION METHODS
 
@@ -93,13 +94,23 @@ public class LocalStorage {
 
     //END SectionRole METHODS
 
+    //BEGIN LOCAL METHODS
+    public Article getBaseArticle() {
+        return baseArticle;
+    }
+
+    public void setBaseArticle(Article baseArticle) {
+        this.baseArticle = baseArticle;
+    }
+    //END LOCAL METHODS
+
 
     //BEGIN INIT ACTIONS
     public void initSectionMapStorage(HashMap<Integer, LinkedList<Integer>> sectionMap) throws Exception{
         sectionStorage.setSectionsToMap(sectionMap);
     }
 
-    public void initSectionRoleStarage(List<UserArticleRole> userArticleRoles) throws Exception{
+    public void initSectionRoleStorage(List<UserArticleRole> userArticleRoles) throws Exception{
         for (UserArticleRole role : userArticleRoles) {
             sectionRoleStorage.add(role.getUser().getId(), role.getArticle().getId());
         }

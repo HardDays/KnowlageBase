@@ -9,6 +9,7 @@ import ru.knowledgebase.rolemodule.ArticleRoleController;
 import ru.knowledgebase.usermodule.UserController;
 
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -88,7 +89,7 @@ public class NewsWrapper {
         return ResponseBuilder.buildGetNewsResponse(news);
     }
 
-    public Response getNewsBySection(int id, String token, int userId, int sectionId) {
+    public Response getNewsBySection(String token, int userId, int sectionId) {
         List<News> news = null;
         try {
             boolean okToken = userController.checkUserToken(userId, token);
@@ -129,17 +130,18 @@ public class NewsWrapper {
     }
 
     public Response getUserNews(int userId, String token, Timestamp day) {
+        List<News> news = new LinkedList<>();
         try {
             boolean okToken = userController.checkUserToken(userId, token);
             if (okToken != true) {
                 return ResponseBuilder.buildWrongTokenResponse();
             }
 
-            List<News> news = newsController.getUserNewsFromDate(userId, day);
+            news = newsController.getUserNewsFromDate(userId, day);
         }
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
-        return ResponseBuilder.buildUserNewsResponse();
+        return ResponseBuilder.buildUserNewsResponse(news);
     }
 }

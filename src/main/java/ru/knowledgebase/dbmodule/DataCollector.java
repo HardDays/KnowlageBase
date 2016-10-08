@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.articlemodule.ArticleController;
+import ru.knowledgebase.configmodule.Configurations;
 import ru.knowledgebase.dbmodule.dataservices.archiveservice.ArchiveArticleService;
 import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
 import ru.knowledgebase.dbmodule.dataservices.commentservice.CommentService;
@@ -17,6 +18,7 @@ import ru.knowledgebase.dbmodule.dataservices.roleservices.UserArticleRoleServic
 import ru.knowledgebase.dbmodule.dataservices.roleservices.UserGlobalRoleService;
 import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 import ru.knowledgebase.dbmodule.storages.LocalStorage;
+import ru.knowledgebase.exceptionmodule.analyticsexceptions.ParseKeywordException;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
@@ -81,7 +83,7 @@ public class DataCollector {
     //BEGIN PRIVATE METHODS
 
     private DataCollector(){
-        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
+        ApplicationContext context = Configurations.getApplicationContext();
         articleService = (ArticleService) context.getBean("articleService");
         tokenService = (TokenService) context.getBean("tokenService");
         userService = (UserService) context.getBean("userService");
@@ -93,7 +95,7 @@ public class DataCollector {
         archiveArticleService = (ArchiveArticleService) context.getBean("archiveArticleService");
         newsService = (NewsService)context.getBean("newsService");
         commentService = (CommentService) context.getBean("commentService");
-        searchService = SearchService.getInstance();
+        searchService = (SearchService) context.getBean("searchService");
 
         try {
             initLocalStorage();
@@ -107,10 +109,10 @@ public class DataCollector {
     private void initLocalStorage() throws Exception {
         localStorage = LocalStorage.getInstance();
         localStorage.initSectionMapStorage(this.initSectionStorage());
-        localStorage.initSectionRoleStarage(this.initSectionRoleStarage());
+        localStorage.initSectionRoleStorage(this.initSectionRoleStorage());
     }
 
-    private List<UserArticleRole> initSectionRoleStarage() throws Exception {
+    private List<UserArticleRole> initSectionRoleStorage() throws Exception {
         return userArticleRoleService.getAll();
     }
 
@@ -140,7 +142,12 @@ public class DataCollector {
     //BEGIN ARTICLE CRUD METHODS
 
     public Article getBaseArticle() throws Exception {
-        return articleService.getBaseArticle();
+        Article base = localStorage.getBaseArticle();
+        if (base == null) {
+            base = articleService.getBaseArticle();
+            localStorage.setBaseArticle(base);
+        }
+        return base;
     }
 
     public Article findArticle(int articleId) throws Exception {
@@ -171,11 +178,10 @@ public class DataCollector {
     public void deleteArticle(Integer id) throws Exception {
         Article art = this.findArticle(id);
         if(art.isSection()) {
-            List<Integer> tree = getSectionTreeIds(id);
-            for (Integer i : tree) {
-                deleteAllNewsBySection(i);
-            }
             List<Article> articles = this.getSectionTree(id);
+            for (Article i : articles) {
+                deleteAllNewsBySection(i.getId());
+            }
             Integer parentId = art.getParentArticle();
             if (parentId == BASE_ARTICLE) {
                 parentId = null;
@@ -205,7 +211,6 @@ public class DataCollector {
      * @return
      * @throws Exception
      */
-    @Transactional
     public List<Article> getChildren(int articleId, int from, int to) throws Exception {
         List<Integer> children = articleService.getChildrenIds(articleId);
         if (to > children.size()) {
@@ -235,7 +240,7 @@ public class DataCollector {
         return articleService.getArticleHierarchyTree(article);
     }
 
-    public List<Article> findArticleByTitle(String title) {
+    public Iterable<Article> findArticleByTitle(String title) throws Exception {
         return articleService.findByTitle(title);
     }
 
@@ -613,6 +618,10 @@ public class DataCollector {
         return sectionHierarchy;
     }
 
+    public boolean isArticleSection(int articleId) throws Exception {
+        return articleService.isSection(articleId);
+    }
+
 
     //END SECTION METHODS
 
@@ -675,12 +684,12 @@ public class DataCollector {
     //END COMMENT CRUD METHODS
 
     //BEGIN SEARCH METHODS
-    public List<Article> searchByTitle(String searchRequest) {
-        return searchService.searchByTitle(searchRequest);
+    public List<Article> searchByTitle(String searchRequest, List<Integer> sectionsAvailableToUser, int numArticles) throws ParseKeywordException {
+        return searchService.searchByTitle(searchRequest, sectionsAvailableToUser, numArticles);
     }
 
-    public List<Article> searchByBody(String searchRequest) {
-        return searchService.searchByBody(searchRequest);
+    public List<Article> searchByBody(String searchRequest, List<Integer> sectionsAvailableToUser, int numArticles) throws ParseKeywordException {
+        return searchService.searchByBody(searchRequest, sectionsAvailableToUser, numArticles);
     }
 
     //END SEARCH METHODS

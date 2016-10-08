@@ -23,6 +23,7 @@ public class ReportWrapper {
 
     public Response getSystemActionsReport(int userID, String token, Timestamp from, Timestamp to,
                                            List<Integer> sections){
+        String reportType = "Отчет о действиях в системе";
         try{
         boolean okToken = userController.checkUserToken(userID, token);
         boolean hasRights = articleRoleController.hasAccessToSections(userID, sections);
@@ -37,7 +38,7 @@ public class ReportWrapper {
             return responseBuilder.buildNoAccessResponse();
 
         return responseBuilder.buildReportResponse(
-                    reportController.getSystemActionsReport(userID, from, to, sections));
+                    reportController.getSystemActionsReport(userID, from, to, sections), reportType);
         }catch(Exception ex){
             return ResponseBuilder.buildResponse(ex);
         }
@@ -45,6 +46,7 @@ public class ReportWrapper {
 
     public Response getEmployeesActionsReport(int supervisorID, String token, Timestamp from, Timestamp to,
                                               List<Integer> sections) {
+        String reportType = "Отчет о действиях подчиненных";
         try {
             boolean okToken = userController.checkUserToken(supervisorID, token);
             boolean hasRights = articleRoleController.hasAccessToSections(supervisorID, sections);
@@ -59,7 +61,7 @@ public class ReportWrapper {
                 return responseBuilder.buildNoAccessResponse();
 
             return responseBuilder.buildReportResponse(
-                    reportController.getEmployeesActionsReport(supervisorID, from, to, sections));
+                    reportController.getEmployeesActionsReport(supervisorID, from, to, sections), reportType);
         } catch (UnableToCreateReportExeption ex){
             return responseBuilder.buildResponse(ex);
         } catch (Exception ex) {
@@ -69,6 +71,7 @@ public class ReportWrapper {
 
     public Response getSearchActionsReport(int userID, String token, Timestamp from, Timestamp to,
                                               List<Integer> sections){
+        String reportType = "Отчео о поиске в системе";
         try{
             boolean okToken = userController.checkUserToken(userID, token);
             boolean hasRights = articleRoleController.hasAccessToSections(userID, sections);
@@ -83,7 +86,7 @@ public class ReportWrapper {
                 return responseBuilder.buildNoAccessResponse();
 
             return responseBuilder.buildReportResponse(
-                    reportController.getSearchActionsReport(userID, from, to, sections));
+                    reportController.getSearchActionsReport(userID, from, to, sections), reportType);
         }catch(Exception ex){
             return ResponseBuilder.buildResponse(ex);
         }

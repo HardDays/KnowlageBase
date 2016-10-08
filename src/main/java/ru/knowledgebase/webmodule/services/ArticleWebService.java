@@ -29,10 +29,9 @@ public class ArticleWebService {
                         @FormParam(value = "updated_time") Timestamp updatedTime,
                         @FormParam(value = "life_time") Timestamp lifeTime,
                         @FormParam(value = "is_section") boolean isSection) {
-           // return articleWrapper.addArticle(token, title, body, authorId,
-           //         parentArticleId, createdTime, updatedTime, lifeTime
-           //         isSection, new LinkedList<String>());
-        return Response.ok().build();
+            return articleWrapper.addArticle(userToken, title, body, authorId,
+                    parentArticleId, createdTime, updatedTime, lifeTime,
+                    isSection);
     }
 
     @POST
@@ -47,19 +46,16 @@ public class ArticleWebService {
                         @FormParam(value = "updated_time") Timestamp updatedTime,
                         @FormParam(value = "life_time") Timestamp lifeTime,
                         @FormParam(value = "is_section") boolean isSection) {
-        // return articleWrapper.updateArticle(token, articleId, title, body, authorId,
-        //         parentArticleId, createdTime, updatedTime, lifeTime
-        //         isSection, new LinkedList<String>());
-        return Response.ok().build();
+         return articleWrapper.updateArticle(userToken, articleId, title, body, authorId,
+                 parentArticleId, createdTime, updatedTime, lifeTime);
     }
 
     @POST
     @Path("/delete_article")
     public Response deleteArticle(@FormParam(value = "user_id") int authorId,
-                        @FormParam(value = "token") String userToken,
+                                  @FormParam(value = "token") String userToken,
                         @FormParam(value = "article_id") int articleId) {
-        // return articleWrapper.deleteArticle(token, userId, articleId);
-        return Response.ok().build();
+        return articleWrapper.deleteArticle(userToken, authorId, articleId);
     }
 
     @POST
@@ -67,8 +63,7 @@ public class ArticleWebService {
     public Response getArticle(@FormParam(value = "user_id") int authorId,
                            @FormParam(value = "token") String userToken,
                            @FormParam(value = "article_id") int articleId) {
-        // return articleWrapper.getArticle(token, userId, articleId);
-        return Response.ok().build();
+        return articleWrapper.getArticle(userToken, authorId, articleId);
     }
 
     @POST
@@ -78,8 +73,7 @@ public class ArticleWebService {
                                @FormParam(value = "article_id") int articleId,
                                @FormParam(value = "from") int from,
                                @FormParam(value = "to") int to) {
-        // return articleWrapper.getNextLevelArticles(token, userId, articleId, from, to);
-        return Response.ok().build();
+        return articleWrapper.getNextLevelArticles(userToken, authorId, articleId, from, to);
     }
 
     @POST
@@ -87,24 +81,21 @@ public class ArticleWebService {
     public Response getNextLevelSections(@FormParam(value = "user_id") int authorId,
                                          @FormParam(value = "token") String userToken,
                                          @FormParam(value = "sectionId") int sectionId){
-        // return articleWrapper.getNextLevelSections(token, userId, sectionId);
-        return Response.ok().build();
+        return articleWrapper.getNextLevelSections(userToken, authorId, sectionId);
     }
 
     @POST
     @Path("/get_first_level_articles")
     public Response getFirstLevelArticles(@FormParam(value = "user_id") int authorId,
                                          @FormParam(value = "token") String userToken){
-        // return articleWrapper.getFirstLevelArticles(token, userId);
-        return Response.ok().build();
+        return articleWrapper.getFirstLevelArticles(userToken, authorId);
     }
 
     @POST
     @Path("/get_section_hierarchy")
     public Response getSectionHierarchy(@FormParam(value = "user_id") int authorId,
                                           @FormParam(value = "token") String userToken){
-        // return articleWrapper.getSectionHierarchy(token, userId);
-        return Response.ok().build();
+        return articleWrapper.getSectionHierarchy(userToken, authorId);
     }
 
 }
