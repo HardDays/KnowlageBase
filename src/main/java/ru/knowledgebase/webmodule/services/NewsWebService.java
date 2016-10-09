@@ -67,4 +67,12 @@ public class NewsWebService {
                                @FormParam(value = "section_id") int sectionId) {
         return newsWrapper.getNewsBySection(token, userId, sectionId);
     }
+
+    @POST
+    @Path("/get_user_news")
+    public Response getUserNews(@FormParam(value = "user_id") int userId,
+                                  @FormParam(value = "token") String token,
+                                  @FormParam(value = "day") Timestamp day) {
+        return newsWrapper.getUserNews(userId, token, day);
+    }
 }

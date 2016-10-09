@@ -4,7 +4,6 @@ import ru.knowledgebase.articlemodule.ArticleController;
 
 import ru.knowledgebase.configmodule.ConfigReader;
 import ru.knowledgebase.dbmodule.DataCollector;
-import ru.knowledgebase.dbmodule.repositories.userrepositories.UserRepository;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 import ru.knowledgebase.usermodule.UserController;
