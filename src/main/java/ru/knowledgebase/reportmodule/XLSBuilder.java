@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.knowledgebase.configmodule.Config;
+import ru.knowledgebase.configmodule.Configurations;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,14 +22,14 @@ public class XLSBuilder {
     private XSSFWorkbook workbook;
     private String excelFileName;
 
-    public XLSBuilder(String fileName) {
+    public XLSBuilder(String fileName) throws Exception {
 
         this.fileName = fileName;
         workbook = new XSSFWorkbook();
     }
 
-    public void saveXLS() throws IOException, InvalidFormatException {
-        String pathToFolder = Config.getReportPath();
+    public void saveXLS() throws Exception {
+        String pathToFolder = Configurations.getReportFolder();
         excelFileName = pathToFolder + "/" + fileName;
         FileOutputStream fos = new FileOutputStream(excelFileName);
         workbook.write(fos);
@@ -36,12 +37,12 @@ public class XLSBuilder {
         fos.close();
     }
 
-    public String addSheetToXLS(String sheetName){
+    public String addSheetToXLS(String sheetName)throws Exception{
         Sheet sheet = workbook.createSheet(sheetName);
         return sheetName;
     }
 
-    public void printToSheet(String sheetName, List<Object[]> newData){
+    public void printToSheet(String sheetName, List<Object[]> newData) throws Exception{
         Sheet sheet = workbook.getSheet(sheetName);
         int roeNum = 0;
         for (Object[] objArr : newData) {

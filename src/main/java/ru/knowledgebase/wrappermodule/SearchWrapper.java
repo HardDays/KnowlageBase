@@ -1,22 +1,20 @@
 package ru.knowledgebase.wrappermodule;
 
-import ru.knowledgebase.dbmodule.DataCollector;
+import org.hibernate.search.test.util.impl.ReflectionHelperTest;
 import ru.knowledgebase.loggermodule.LogRecord.LogRecordFactory;
 import ru.knowledgebase.loggermodule.Server.Logger;
 import javax.ws.rs.core.Response;
 
-import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.searchmodule.SearchController;
-
-import java.util.List;
-
+import ru.knowledgebase.usermodule.UserController;
 
 public class SearchWrapper {
     private SearchController    searchController    = SearchController.getInstance();
     private Logger              logger              = Logger.getInstance();
     private LogRecordFactory    logRecordFactory    = new LogRecordFactory();
     private ResponseBuilder     responseBuilder     = new ResponseBuilder();
+    private UserController      userController      = new UserController();
 
     /**
      * Writes to log about search requests, searches in articles titles for appearances of words of
@@ -25,14 +23,20 @@ public class SearchWrapper {
      * @param searchRequest
      * @return Response with list of {@code Article} having words from search request in title
      */
-    public Response searchByTitle(int userID, String searchRequest){
-        writeToLog(userID, searchRequest);
+    public Response searchByTitle(String token, int userID, String searchRequest, int numArticles){
+        Response r;
         try{
-            return responseBuilder.buildSearchResultResponse(
-                    searchController.searchByTitle(userID, searchRequest));
+            boolean okToken = userController.checkUserToken(userID, token);
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+
+            writeToLog(userID, searchRequest);
+            r = responseBuilder.buildSearchResultResponse(
+                    searchController.searchByTitle(userID, searchRequest, numArticles));
         }catch (Exception ex) {
             return responseBuilder.buildResponse(ex);
         }
+        return r;
     }
 
     /**
@@ -42,14 +46,20 @@ public class SearchWrapper {
      * @param searchRequest
      * @return Response with list of {@code Article} having words from search request in body
      */
-    public Response searchByBody(int userID, String searchRequest){
-        writeToLog(userID, searchRequest);
+    public Response searchByBody(String token, int userID, String searchRequest, int numArticles){
+        Response r;
         try{
-            return ResponseBuilder.buildSearchResultResponse(
-                    searchController.searchByBody(userID, searchRequest));
+            boolean okToken = userController.checkUserToken(userID, token);
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+
+            writeToLog(userID, searchRequest);
+            r =  ResponseBuilder.buildSearchResultResponse(
+                    searchController.searchByBody(userID, searchRequest, numArticles));
         }catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
+        return r;
     }
 
     /**
@@ -57,7 +67,7 @@ public class SearchWrapper {
      * @param userID
      * @param searchRequest
      */
-    private void writeToLog(int userID, String searchRequest) {
+    private void writeToLog(int userID, String searchRequest) throws Exception{
         logger.writeToLog(
                 logRecordFactory.generateSearchRequestRecord(
                         userID,

@@ -1,5 +1,6 @@
 package ru.knowledgebase.reportmodule;
 
+import org.hibernate.search.test.util.impl.ReflectionHelperTest;
 import ru.knowledgebase.analyticsmodule.rank.RequestRank;
 import ru.knowledgebase.exceptionmodule.reportexception.UnableToCreateReportExeption;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
@@ -38,7 +39,7 @@ public class ReportBuilder {
     public String buildSearchActionsReport(int userID, Timestamp from, Timestamp to, int numSearchActions,
                                            Map<String, Map<String, LinkedList<String>>> sectionUsersRequests,
                                            Map<String, LinkedList<RequestRank>> sectionsRequests)
-                                            throws UnableToCreateReportExeption {
+                                           throws Exception {
         String reportType = "Отчео о поиске в системе";
         String dates = getDate(from, to);
         String reportName = getReportName(userID, dates, reportType);
@@ -131,7 +132,7 @@ public class ReportBuilder {
      */
     public String buildEmployeesActionsReport(int userID, Timestamp from, Timestamp to,
                                               Map<String, Map<String, Integer>> usersArticlesNumViews)
-                                                throws UnableToCreateReportExeption {
+                                              throws Exception {
         String reportType = "Отчет о действиях подчиненных";
         String dates = getDate(from, to);
         String reportName = getReportName(userID, dates, reportType);
@@ -169,23 +170,6 @@ public class ReportBuilder {
         return saveReport();
     }
 
-    private String saveReport() throws UnableToCreateReportExeption {
-        try {
-            xlsBuilder.saveXLS();
-        } catch (Exception e) {
-            throw new UnableToCreateReportExeption();
-        }
-        return xlsBuilder.getPath();
-    }
-
-    private String getDate(Timestamp from, Timestamp to) {
-        return from.toString() + " - " + to.toString();
-    }
-
-    private String getReportName(int userID, String date, String reportType){
-        return reportType + "-" + userID + "-" + date;
-    }
-
     /**
      * Составляет отчет о действия в системе за данный период. Создает xlsx файл и размечает поля в соответствии
      * со структурой отчетв.
@@ -209,7 +193,7 @@ public class ReportBuilder {
      */
     public String buildSystemActionsReport(int userID, Timestamp from, Timestamp to,
                                            Map<String, List<Article>> levelArticle)
-                                            throws UnableToCreateReportExeption {
+                                           throws Exception {
         String reportType = "Отчет о действиях в системе";
         String dates = getDate(from, to);
         String reportName = getReportName(userID, dates, reportType);
@@ -252,17 +236,35 @@ public class ReportBuilder {
         return saveReport();
     }
 
-    private String[] createRow(String ... cellValues){
+    private String[] createRow(String ... cellValues)throws Exception{
         return cellValues;
     }
-    private void createReport(String reportName) {
+    private void createReport(String reportName) throws Exception {
         xlsBuilder = new XLSBuilder(reportName);
     }
 
-    private void createSheet(List<Object[]> rows, String sheetName) {
+    private void createSheet(List<Object[]> rows, String sheetName) throws Exception{
         xlsBuilder.printToSheet(
                 xlsBuilder.addSheetToXLS(sheetName),
                 rows
         );
     }
+
+    private String saveReport() throws Exception {
+        try {
+            xlsBuilder.saveXLS();
+        } catch (Exception e) {
+            throw new UnableToCreateReportExeption();
+        }
+        return xlsBuilder.getPath();
+    }
+
+    private String getDate(Timestamp from, Timestamp to) {
+        return from.toString() + " - " + to.toString();
+    }
+
+    private String getReportName(int userID, String date, String reportType){
+        return reportType + "-" + userID + "-" + date;
+    }
+
 }

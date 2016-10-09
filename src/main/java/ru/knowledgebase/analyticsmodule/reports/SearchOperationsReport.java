@@ -1,4 +1,4 @@
-package ru.knowledgebase.analyticsmodule.reports;
+package ru.knowledgebase.analyticsmodule.Reports;
 
 import ru.knowledgebase.analyticsmodule.rank.ArticleRank;
 

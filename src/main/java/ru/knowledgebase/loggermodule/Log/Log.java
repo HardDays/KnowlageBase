@@ -1,5 +1,7 @@
 package ru.knowledgebase.loggermodule.Log;
 
+import ru.knowledgebase.configmodule.Configurations;
+import ru.knowledgebase.exceptionmodule.loggerexceptions.LogAccessException;
 import ru.knowledgebase.exceptionmodule.loggerexceptions.LogReadingException;
 import ru.knowledgebase.exceptionmodule.loggerexceptions.LogWritingException;
 import ru.knowledgebase.exceptionmodule.loggerexceptions.UnableToFindLogException;
@@ -22,7 +24,7 @@ import java.util.stream.Stream;
 public class Log {
     private static Log ourInstance = new Log();
 
-    private File logFile = new File("Log.txt");
+    private File logFile = new File(Configurations.getLogFilePath());
     private FileWriter writer;
     private BufferedWriter bufferedWriter;
     private FileReader reader;
@@ -33,12 +35,12 @@ public class Log {
     /**
      * Deletes all records from {@code logFile}.
      */
-    public void clearLog(){
+    public void clearLog() throws Exception {
         try {
             writer = new FileWriter(logFile);
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogAccessException();
         }
     }
 
@@ -80,7 +82,7 @@ public class Log {
      * @return a list of all records.
      */
     public List<String> getAllRecordsFromLog()
-            throws UnableToFindLogException, LogReadingException {
+            throws Exception {
         LinkedList<String> stringRecords = new LinkedList<>();
         try {
             reader = new FileReader(logFile);

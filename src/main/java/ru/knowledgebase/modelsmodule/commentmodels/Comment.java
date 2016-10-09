@@ -2,7 +2,6 @@ package ru.knowledgebase.modelsmodule.commentmodels;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.persistence.*;

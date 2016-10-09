@@ -1,50 +1,27 @@
 package ru.knowledgebase.modelsmodule.articlemodels;
 
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.core.StopFilterFactory;
-import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
-import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
-import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.hibernate.search.annotations.*;
-import org.hibernate.search.annotations.Parameter;
-import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.modelsmodule.commentmodels.Comment;
-import ru.knowledgebase.modelsmodule.imagemodels.Image;
-import ru.knowledgebase.modelsmodule.rolemodels.UserArticleRole;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.elasticsearch.annotations.*;
+import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
-import java.sql.Timestamp;
-import java.util.LinkedList;
 import java.util.List;
+
+import java.sql.Timestamp;
+
+import static org.springframework.data.elasticsearch.annotations.FieldIndex.analyzed;
 
 /**
  * Created by root on 10.08.16.
  */
 @Entity
-@Indexed
-@AnalyzerDef(name = "customanalyzer",
-        tokenizer =
-        @TokenizerDef(factory = StandardTokenizerFactory.class),
-        filters = {
-                @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-                @TokenFilterDef(factory = StopFilterFactory.class),
-//                @TokenFilterDef(factory = SynonymFilterFactory.class, params = {
-//                        @Parameter(name = "language", value = "Russian")
-//                }),
-//                @TokenFilterDef(factory = SynonymFilterFactory.class, params = {
-//                        @Parameter(name = "language", value = "English")
-//                }),
-                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
-                        @Parameter(name = "language", value = "Russian")
-                }),
-                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
-                        @Parameter(name = "language", value = "English")
-                })
-        })
+@Document(indexName = "articles", type = "article", shards = 1, replicas = 0, refreshInterval = "-1")
+@Setting(settingPath = "./elasticsearch/analyser.json")
 public class Article {
 
     @Id
@@ -53,69 +30,83 @@ public class Article {
             allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator="article_id_seq")
+    @JsonIgnore
     private int id;
 
-    @Field
-    @Analyzer(definition = "customanalyzer")
+    @Field(
+            analyzer = "standard",
+            index = analyzed,
+            searchAnalyzer = "standard",
+            store = true
+    )
     @Column(length = 256)
     private String title;
 
-    @Column(length = 100000)
+    @Column(length = 1200000)
     private String body;
 
     @ManyToOne
+    @JsonIgnore
     private User author;
 
-    @Field
-    @Analyzer(definition = "customanalyzer")
-    @Column(length = 100000)
+    @Field(
+            analyzer = "standard",
+            index = analyzed,
+            searchAnalyzer = "standard",
+            store = true
+    )
+    @Column(length = 1200000)
     private String clearBody;
 
-    @Column
+
+    @JsonIgnore
     private boolean isSection;
 
-    //*
-    @ManyToOne
-    private Article parentArticle;
-    //*/
 
-    @OneToMany(mappedBy="parentArticle", cascade = {CascadeType.ALL})
-    private List<Article> children;
+    @JsonIgnore
+    private int parentId;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    List<Image> images;
 
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
-    private List<UserArticleRole> userArticleRole;
+    @JsonIgnore
+    private List<UserSectionRole> userSectionRole;
 
-    @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
-    private List<Comment> comments;
+    /**
+     * Date when article should be moved to Archive.
+     */
+    @JsonIgnore
+    private Timestamp lifeTime;
 
+    @JsonIgnore
     private Timestamp createdTime;
 
+    @JsonIgnore
     private Timestamp updatedTime;
 
-    private Integer sectionID;
+    @JsonIgnore
+    private int sectionId;
+
     //BEGIN CONSTRUCTORS
-    public Article(){}
+    public Article(){
+    }
 
     public Article(int id) {
         this.id = id;
     }
 
     public Article(String title, String body, String clearBody,
-                   User author, Article parentArticle, boolean isSection, List<Image> images) {
+                   User author, int parentId, Timestamp createdDate,
+                   Timestamp updatedTime, Timestamp lifeTime, boolean isSection) {
         this.title         = title;
         this.body          = body;
         this.clearBody     = clearBody;
         this.author        = author;
-        this.parentArticle = parentArticle;
-        this.isSection = isSection;
-        if (images != null) {
-            this.images = images;
-        } else {
-            this.images = new LinkedList<Image>();
-        }
+        this.parentId      = parentId;
+        this.lifeTime      = lifeTime;
+        this.isSection     = isSection;
+        this.createdTime   = createdDate;
+        this.updatedTime   = updatedTime;
+
     }
 
     //END CONSTRUCTORS
@@ -123,21 +114,36 @@ public class Article {
 
     //BEGIN SG METHODS
 
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdDate) {
+        this.createdTime = createdDate;
+    }
+
+    public Timestamp getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Timestamp updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public boolean isSection() {
+        return isSection;
+    }
+
+    public void setSection(boolean section) {
+        isSection = section;
+    }
+
     public User getAuthor() {
         return author;
     }
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    @Transactional
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
     }
 
     public int getId() {
@@ -172,26 +178,34 @@ public class Article {
         this.clearBody = clearBody;
     }
 
-    public Article getParentArticle() {
-        return parentArticle;
+    public int getParentArticle() {
+        return parentId;
     }
 
-    public void setParentArticle(Article parentArticle) {
-        this.parentArticle = parentArticle;
+    public void setParentArticle(int parentId) {
+        this.parentId = parentId;
     }
 
-    public boolean isSection() {
-        return isSection;
+    public void setSectionId(int sectionId) {
+        this.sectionId = sectionId;
     }
 
-    public void setIsSection(boolean hasAdmin) {
-        this.isSection = hasAdmin;
+    public int getSectionId() {
+        return this.sectionId;
     }
 
+    public Timestamp getLifeTime() {
+        return lifeTime;
+    }
+
+    public void setLifeTime(Timestamp lifeTime) {
+        this.lifeTime = lifeTime;
+    }
     //END SG METHODS
 
 
     //BEGIN SUPPORT METHODS
+
     public void copy(Article article) {
         if (article == null)
             return;
@@ -200,9 +214,9 @@ public class Article {
         this.title         = article.title;
         this.clearBody     = article.clearBody;
         this.body          = article.body;
-        this.parentArticle = article.parentArticle;
-        this.images        = article.images;
-        this.isSection = article.isSection;
+        this.parentId      = article.parentId;
+        this.lifeTime      = article.lifeTime;
+        this.isSection     = article.isSection;
     }
 
     @Override
@@ -214,30 +228,30 @@ public class Article {
         res &= this.author.equals(comp.author);
         res &= this.id == comp.id;
         res &= this.title.equals(comp.title);
+        res &= this.lifeTime == comp.lifeTime;
         res &= this.clearBody.equals(comp.clearBody);
         res &= this.body.equals(comp.body);
-        if (this.images == comp.images && comp.images != null)
-            res &= this.images.equals(comp.images);
-        if (this.parentArticle == comp.parentArticle && comp.parentArticle != null)
-            res &= this.parentArticle.getId() == comp.parentArticle.getId();
+        res &= this.parentId == comp.parentId;
+        res &= this.isSection == comp.isSection;
         return res;
     }
 
-    public Timestamp getCreatedTime() {
-        return createdTime;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setUpdatedTime(Timestamp updatedTime) {
-        this.updatedTime = updatedTime;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
-    public Timestamp getUpdatedTime() {
-        return updatedTime;
+    public List<UserSectionRole> getUserSectionRole() {
+        return userSectionRole;
     }
 
-    public Integer getSectionID() {
-        return sectionID;
+    public void setUserSectionRole(List<UserSectionRole> userArticleRole) {
+        this.userSectionRole = userArticleRole;
     }
+
 
     //END SUPPORT METHODS
 

@@ -1,9 +1,11 @@
 package ru.knowledgebase.dbmodule.dataservices.userservices;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.dbmodule.repositories.userrepositories.UserRepository;
+import ru.knowledgebase.dbmodule.dataservices.chunkrequest.ChunkRequest;
+import ru.knowledgebase.dbmodule.repositories.JPA.userrepositories.UserRepository;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import java.util.HashMap;
@@ -27,7 +29,12 @@ public class UserService {
         return userRepository.getAll();
     }
 
+    public List<User> getAll(int offset, int limit) throws Exception{
+        return userRepository.getWithOffset(new ChunkRequest(offset, limit));
+    }
+
     public User find(String login) throws Exception{
+
         List<User> res = userRepository.findByLogin(login);
         if (res.size() == 1){
             return res.get(0);
@@ -39,9 +46,22 @@ public class UserService {
         return userRepository.findOne(id);
     }
 
+    public List<User> findBySuperVisor(int superVisorId) throws Exception{
+        return userRepository.findBySuperVisor(superVisorId);
+    }
+
+    public List<User> findBySuperVisor(int superVisorId, int offset, int limit) throws Exception{
+        return userRepository.findBySuperVisorOffset(superVisorId, new ChunkRequest(offset, limit));
+    }
+
     @Transactional
     public void update(User user) throws Exception{
         userRepository.save(user);
+    }
+
+    @Transactional
+    public Integer updateSuperVisor(Integer oldId, Integer newId) throws Exception{
+        return userRepository.updateSuperVisor(oldId, newId);
     }
 
     @Transactional

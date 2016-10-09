@@ -1,14 +1,12 @@
 package ru.knowledgebase.searchmodule;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.exceptionmodule.searchexceptions.SearchException;
 import ru.knowledgebase.exceptionmodule.searchexceptions.WrongSearchParametersException;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,11 +14,10 @@ import java.util.List;
  * Created by Мария on 07.09.2016.
  */
 
-@Controller
 public class SearchController {
 
     @Autowired
-    private DataCollector dataCollector = new DataCollector();
+    private DataCollector dataCollector = DataCollector.getInstance();
 
     private static SearchController instance;
 
@@ -41,7 +38,6 @@ public class SearchController {
         return localInstance;
     }
 
-
     /**
      * Searches in articles titles for appearances of words of a given string {@code searchRequest}
      * @param userID
@@ -49,59 +45,59 @@ public class SearchController {
      * @return List of {@code Article} having words from search request in title
      * @throws SearchException
      */
-    public List<Article> searchByTitle(int userID, String searchRequest) throws Exception {
-        List<Article> result;
+    public List<Article> searchByTitle(int userID, String searchRequest, int numArticles) throws Exception {
         if(isWrongRequestFormat(searchRequest))
             throw new WrongSearchParametersException();
         try{
-            result = dataCollector.searchByTitle(searchRequest);
+            return getArticlesAvailableToUser(userID, dataCollector.searchByTitle(searchRequest)).subList(0, numArticles);
         }catch (Exception ex){
             throw new SearchException();
         }
-
-        return getArticlesAvailableToUser(result, userID);
     }
 
     /**
      * Searches in articles bodies for appearances of words of a given string {@code searchRequest}
      * @param userID
      * @param searchRequest
+     * @param numArticles
      * @return List of {@code Article} having words from search request in body
      * @throws SearchException
      */
-    public List<Article> searchByBody(int userID, String searchRequest) throws Exception {
-        List<Article> result;
+    public List<Article> searchByBody(int userID, String searchRequest, int numArticles) throws Exception {
         if(isWrongRequestFormat(searchRequest))
             throw new WrongSearchParametersException();
         try{
-            result =  dataCollector.searchByBody(searchRequest);
+            return getArticlesAvailableToUser(userID, dataCollector.searchByBody(searchRequest)).subList(0, numArticles);
         }catch (Exception ex){
             throw new SearchException();
         }
-        return getArticlesAvailableToUser(result, userID);
+    }
+
+    private List<Article> getArticlesAvailableToUser(int userID, List<Article> articles) throws Exception {
+        List<Integer> sections = getSectionsAvailableToUser(userID);
+        List<Article> result = new LinkedList<>();
+        for (Article article : articles) {
+            if (sections.contains(article.getSectionId())) {
+                result.add(article);
+            }
+        }
+        return result;
     }
 
     /**
-     * Traverse through given list of articles and finds those to which user {@code userID} has access to
-     * @param articles
+     * Finds a list of sections which user as access to.
      * @param userID
-     * @return
+     * @return list of sections available to user
      * @throws DataBaseException
      */
-    private List<Article> getArticlesAvailableToUser(List<Article> articles, Integer userID)
-            throws DataBaseException {
-        if(articles.isEmpty()) return articles;
-        List<Article> articlesUserHasAccessTo = new LinkedList<>();
+    private List<Integer> getSectionsAvailableToUser(int userID) throws Exception {
         try {
-            HashSet<Integer> usersSections = dataCollector.getUserSections(userID);
-            for(Article article : articles){
-                if(usersSections.contains(article.getId()))
-                    articlesUserHasAccessTo.add(article);
-            }
+            List<Integer> list = new LinkedList<>();
+            list.addAll(dataCollector.getUserSections(userID));
+            return list;
         } catch (Exception e) {
             throw new DataBaseException();
         }
-        return articlesUserHasAccessTo;
     }
 
     /**
@@ -109,7 +105,7 @@ public class SearchController {
      * @param searchRequest
      * @return {@code true} if format of request is wrong, {@code false} vise versa.
      */
-    private boolean isWrongRequestFormat(String searchRequest) {
+    private boolean isWrongRequestFormat(String searchRequest) throws Exception {
         if ((searchRequest.replaceAll("[^a-zA-Z ]", "").isEmpty()))
             return true;
         return false;

@@ -16,10 +16,10 @@ public class SearchResultRecord extends ALogRecord {
     private int articleID;
 
     public SearchResultRecord(int userID, int articleID) {
-        this.time = time;
         this.articleID = articleID;
         this.operationType = OPERATION.SEARCH_RESULT;
         this.userID = userID;
+        this.time = new Timestamp(System.currentTimeMillis());
     }
 
     @Override

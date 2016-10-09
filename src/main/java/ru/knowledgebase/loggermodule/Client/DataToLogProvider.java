@@ -57,7 +57,6 @@ public class DataToLogProvider {
                     }
                 }
             } catch (Exception e) {
-                System.out.println(e);
             }
         }).start();
 
@@ -65,16 +64,23 @@ public class DataToLogProvider {
          * Writer thread
          */
         new Thread(() -> {
-            LogWriter logWriter = LogWriter.getInstance();
+            try{
+                LogWriter logWriter = LogWriter.getInstance();
 
-            while (true){
-                synchronized (buffer){
-                    if(!buffer.isEmpty()){
-                        logWriter.writeToLog((List<String>) buffer);
-                        buffer.clear();
+                while (true){
+                    synchronized (buffer){
+                        if(!buffer.isEmpty()) {
+                            try {
+                                logWriter.writeToLog((List<String>) buffer);
+                            }
+                            catch (Exception ex) {
+                                //Kostili:(
+                            }
+                            buffer.clear();
+                        }
                     }
                 }
-            }
+            }catch (Exception ex){}
         }).start();
     }
 }

@@ -5,6 +5,6 @@ package ru.knowledgebase.exceptionmodule.loggerexceptions;
  */
 public class LogReadingException extends Exception {
     public LogReadingException() {
-        super("Error happened wile reading the log.");
+        super("Error happened while reading the log.");
     }
 }

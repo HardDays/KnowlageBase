@@ -19,7 +19,7 @@ public class LogReader {
     private Log log;
     private LinkedList<ALogRecord> logRecords;
 
-    public LogReader getInstance(){ return ourInstance;}
+    public static  LogReader getInstance(){ return ourInstance;}
 
     public LogReader(){
         log = Log.getInstance();
@@ -30,7 +30,7 @@ public class LogReader {
      * {@code ALogRecord} class.
      * @return a list of records from log
      */
-    public LinkedList<ALogRecord> getRecordsFromLog() throws LogReadingException, UnableToFindLogException {
+    public LinkedList<ALogRecord> getRecordsFromLog() throws Exception {
         logRecords = new LinkedList<ALogRecord>();
 
         LogRecordFactory logRecordFactory = new LogRecordFactory();
@@ -46,7 +46,7 @@ public class LogReader {
      * @param logRecordFactory
      * @param record
      */
-    private void createCorrespondingLogRecord(LogRecordFactory logRecordFactory, String record) {
+    private void createCorrespondingLogRecord(LogRecordFactory logRecordFactory, String record) throws Exception {
         String[] recordParameters = record.split(CONSTANTS.INSIDE_RECORD_SEPARATOR);
         ALogRecord logRecord = logRecordFactory.generateRecord(recordParameters);
         if(logRecord != null){

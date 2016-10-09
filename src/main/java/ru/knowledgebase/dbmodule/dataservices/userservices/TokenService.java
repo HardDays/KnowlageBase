@@ -3,7 +3,7 @@ package ru.knowledgebase.dbmodule.dataservices.userservices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.dbmodule.repositories.userrepositories.TokenRepository;
+import ru.knowledgebase.dbmodule.repositories.JPA.userrepositories.TokenRepository;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
@@ -31,6 +31,13 @@ public class TokenService {
 
     public Token getUserToken(User user) throws Exception{
         List<Token> tokens = tokenRepository.getUserToken(user);
+        if (tokens.size() == 1)
+            return tokens.get(0);
+        return null;
+    }
+
+    public Token getUserToken(int userId) throws Exception{
+        List<Token> tokens = tokenRepository.getUserToken(userId);
         if (tokens.size() == 1)
             return tokens.get(0);
         return null;

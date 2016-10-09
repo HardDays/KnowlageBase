@@ -10,20 +10,10 @@
 
   <properties>
     <jersey.version>2.10.1</jersey.version>
-    <org.springframework.version>4.0.5.RELEASE</org.springframework.version>
-    <org.hibernate.version>4.3.11.Final</org.hibernate.version>
+    <org.springframework.version>4.2.8.RELEASE</org.springframework.version>
+    <org.hibernate.version>5.1.0.Final</org.hibernate.version>
   </properties>
-  <repositories>
 
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>bintray-akuznetsov-russianmorphology</id>
-      <name>bintray</name>
-      <url>http://dl.bintray.com/akuznetsov/russianmorphology</url>
-    </repository>
-  </repositories>
   <dependencies>
 
     <!--PostgreSQL-->
@@ -38,7 +28,7 @@
     <dependency>
       <groupId>org.hibernate.common</groupId>
       <artifactId>hibernate-commons-annotations</artifactId>
-      <version>4.0.5.Final</version>
+      <version>5.0.1.Final</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -73,6 +63,7 @@
       <version>${org.springframework.version}</version>
     </dependency>
 
+
     <!--Commons-->
     <dependency>
       <groupId>commons-dbcp</groupId>
@@ -104,23 +95,11 @@
     </dependency>
 
     <dependency>
-      <groupId>xml-apis</groupId>
-      <artifactId>xml-apis</artifactId>
-      <version>1.4.01</version>
-    </dependency>
-
-    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>15.0</version>
+      <version>18.0</version>
     </dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet</artifactId>
@@ -132,6 +111,7 @@
       <artifactId>jersey-media-multipart</artifactId>
       <version>${jersey.version}</version>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -142,7 +122,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-jpa</artifactId>
-      <version>1.0.2.RELEASE</version>
+      <version>1.10.4.RELEASE</version>
     </dependency>
 
     <dependency>
@@ -158,6 +138,7 @@
       <scope>provided</scope>
     </dependency>
 
+
     <!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
     <dependency>
       <groupId>javax.json</groupId>
@@ -171,18 +152,39 @@
       <version>1.0.4</version>
     </dependency>
 
-    <!--Hibernate search-->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-search-orm</artifactId>
-      <version>5.3.0.Final</version>
-    </dependency>
+    <!--Elasticsearch-->
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-elasticsearch</artifactId>
+        <version>2.0.4.RELEASE</version>
+      </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.infinispan/infinispan-directory-provider -->
     <dependency>
       <groupId>org.infinispan</groupId>
       <artifactId>infinispan-directory-provider</artifactId>
       <version>7.2.5.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>fr.opensagres.xdocreport</groupId>
+      <artifactId>org.apache.poi.xwpf.converter.pdf</artifactId>
+      <version>1.0.5</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom -->
+    <dependency>
+      <groupId>net.sf.cssbox</groupId>
+      <artifactId>pdf2dom</artifactId>
+      <version>1.6</version>
+    </dependency>
+
+    <dependency>
+      <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.9.2</version>
     </dependency>
 
     <!--- NLP -->
@@ -207,6 +209,12 @@
       <version>1.0.5</version>
     </dependency>
 
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <version>1.4.01</version>
+    </dependency>
+
     <!-- XLSX creating -->
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -214,6 +222,7 @@
       <version>3.10-FINAL</version>
       <type>jar</type>
     </dependency>
+
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml</artifactId>
@@ -221,10 +230,43 @@
       <type>jar</type>
     </dependency>
 
+
+
+
+
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.6.2</version>
+    </dependency>
+
+    <!-- Hibernate c3p0 connection pool -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-c3p0</artifactId>
+      <version>3.6.3.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aspects</artifactId>
+      <version>${org.springframework.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-ehcache</artifactId>
+      <version>4.1.9.Final</version>
+    </dependency>
+
+
   </dependencies>
+
   <build>
     <finalName>knowledge-base</finalName>
     <plugins>
+
       <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
         <artifactId>tomcat7-maven-plugin</artifactId>
@@ -234,6 +276,7 @@
           <path>/knowledge-base</path>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -244,5 +287,6 @@
         </configuration>
       </plugin>
     </plugins>
+
   </build>
 </project>

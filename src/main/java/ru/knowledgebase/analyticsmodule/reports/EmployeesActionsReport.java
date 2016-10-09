@@ -1,4 +1,4 @@
-package ru.knowledgebase.analyticsmodule.reports;
+package ru.knowledgebase.analyticsmodule.Reports;
 
 import java.sql.Timestamp;
 import java.util.HashMap;

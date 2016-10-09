@@ -3,7 +3,8 @@ package ru.knowledgebase.dbmodule.dataservices.commentservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.dbmodule.repositories.commentrepositories.CommentRepository;
+import ru.knowledgebase.dbmodule.dataservices.chunkrequest.ChunkRequest;
+import ru.knowledgebase.dbmodule.repositories.JPA.commentrepositories.CommentRepository;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
@@ -35,8 +36,13 @@ public class CommentService {
     }
 
     @Transactional
-    public List<Comment> findByAdmin(User admin) throws Exception{
+    public List<Comment> findByAdmin(int admin) throws Exception{
         return commentRepository.findByAdmin(admin);
+    }
+
+    @Transactional
+    public List<Comment> findByAdmin(int admin, int offset, int limit) throws Exception{
+        return commentRepository.findByAdminOffset(admin, new ChunkRequest(offset, limit));
     }
 
     @Transactional

@@ -10,13 +10,14 @@ import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by vova on 01.09.16.
  */
 public class CommentController {
-    private DataCollector collector = new DataCollector();
+    private DataCollector collector = DataCollector.getInstance();
 
     private static volatile CommentController instance;
 
@@ -40,9 +41,9 @@ public class CommentController {
      * Add new comment object to database
      * @param comment comment
      */
-    public void add(Comment comment) throws Exception{
+    public Comment add(Comment comment) throws Exception{
         try{
-            collector.addComment(comment);
+            return collector.addComment(comment);
         }catch (Exception e){
             throw new DataBaseException();
         }
@@ -54,14 +55,19 @@ public class CommentController {
      * @param comment comment of user
      * @param articleText text with mistake
      */
-    public void add(int userId, int articleId, String comment, String articleText) throws Exception{
+    public LinkedList <Comment> add(int userId, int articleId, String comment, String articleText) throws Exception{
+        if (userId == 0 || articleId == 0 || comment == null || articleText == null)
+            throw new WrongUserDataException();
         User user = null;
         Article article = null;
+        Article section = null;
+        LinkedList <Comment> comments = new LinkedList<>();
         if (articleText.length() == 0 || comment.length() == 0)
             throw new WrongUserDataException();
         try{
             user = collector.findUser(userId);
             article = collector.findArticle(articleId);
+            section = collector.findArticle(article.getSectionId());
         }catch (Exception e){
             e.printStackTrace();
             throw new DataBaseException();
@@ -70,33 +76,30 @@ public class CommentController {
             throw new UserNotFoundException();
         if (article == null)
             throw new ArticleNotFoundException();
-        Article temp = article;
-        while(!temp.isSection()){
-            temp = temp.getParentArticle();
-        }
-        User admin = null;
         try {
-            admin = collector.findMistakeViewers(temp).get(0);
+            List <User> admins =  collector.findMistakeViewers(section);
+            for (int i = 0; i < admins.size(); i++) {
+                Comment com = add(new Comment(user, admins.get(i), article, comment, articleText));
+                comments.add(com);
+            }
         }catch (Exception e){
             throw new DataBaseException();
         }
-        add(new Comment(user, admin, article, comment, articleText));
+        return comments;
     }
     /**
      * Find list of comments sended to admin
      * @param adminId id of admin
      * @return list of comments
      */
-    public List<Comment> findByAdmin(int adminId) throws Exception{
-        User admin = null;
+    public List<Comment> findByAdmin(int adminId, int offset, int limit) throws Exception{
+        if (adminId == 0 || limit == 0)
+            throw new WrongUserDataException();
         try {
-            admin = collector.findUser(adminId);
+            return collector.findCommentsByAdmin(adminId, offset, limit);
         }catch (Exception e){
             throw new DataBaseException();
         }
-        if (admin == null)
-            throw new UserNotFoundException();
-        return collector.findCommentsByAdmin(admin);
     }
     /**
      * Check can admin delete comment
@@ -105,6 +108,8 @@ public class CommentController {
      * @return true or false
      */
     public boolean canDeleteComment(int adminId, int commentId) throws Exception{
+        if (adminId == 0 || commentId == 0)
+            throw new WrongUserDataException();
         Comment comment = null;
         try {
             comment = collector.findComment(commentId);
@@ -133,6 +138,8 @@ public class CommentController {
      * @param id id of comment
      */
     public void delete(int id) throws Exception{
+        if (id == 0)
+            throw new WrongUserDataException();
         Comment comment = null;
         try{
             comment = collector.findComment(id);

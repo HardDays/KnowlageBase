@@ -17,15 +17,14 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * Created by vova on 07.09.16.
  */
 public class RequestParser {
 
     private MyStem mystemAnalyzer = new Factory("-iw --format json").newMyStem("3.0", Option.<File>empty()).get();
-    private String synonymPath = "/home/vova/Project BZ/syn.txt";
-    private HashMap<String, String> synonyms = new HashMap<>();
+   // private String synonymPath = "/home/vova/Project BZ/syn.txt";
+   // private HashMap<String, String> synonyms = new HashMap<>();
 
     private static volatile RequestParser instance;
 
@@ -41,7 +40,7 @@ public class RequestParser {
         }
         return localInstance;
     }
-
+/*
     public void init(){
         File file = new File(synonymPath);
         RequestParser parser = RequestParser.getInstance();
@@ -57,7 +56,7 @@ public class RequestParser {
         }catch (Exception e){
 
         }
-    }
+    }*/
 
     private final Set<String> types = new HashSet<String>() {{
         add("A");
@@ -91,6 +90,7 @@ public class RequestParser {
                 if (array.length() == 0)
                     continue;
                 obj = (JSONObject) array.get(0);
+                //get base word
                 String base = (String) obj.get("lex");
                 String type = null;
 
@@ -100,7 +100,7 @@ public class RequestParser {
                 while (matcher.find()) {
                     type = matcher.group();
                 }
-
+                //synonmys, need to improve later
                 if (types.contains(type)){
                 //    if (synonyms.containsKey(base)){
                //         base = synonyms.get(base);

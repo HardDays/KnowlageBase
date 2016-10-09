@@ -1,0 +1,91 @@
+{
+	logPath : "/home/log",
+
+	uploadPath : "/home/vova/Project BZ/trash/image_folder/",
+	imageFolder : "/word/media/",
+
+	ldapURI : "ldap://localhost",
+    ldapContextFactory : "com.sun.jndi.ldap.LdapCtxFactory",
+	ldapDomain : "dc=knowledge,dc=base",
+
+	users : [
+		{
+			login : "admin_1337",
+			password : "admin_1337_password"
+		}
+	],
+
+	roles : [
+		{
+			name : "Суперпользователь",
+			role_id : 1,
+			can_add_article : true,
+			can_add_mistakes : true,
+			can_add_news : true,
+			can_delete_article : true,
+			can_edit_article : true,
+			can_get_notifications : true,
+			can_get_employees_actions_reports : true,
+			can_get_search_operations_reports : true,
+			can_get_system_actions_reports : true,
+			can_off_on_notifications : true,
+			can_search : true,
+			can_view_mistakes : true,
+			can_view_articles : true,
+			can_add_user : true,
+			can_delete_user : true,
+			can_edit_user : true,
+			can_edit_user_role : true,
+			can_view_user : true,
+			base_role : true
+		},
+		{
+			name : "Администратор раздела",
+			role_id : 2,
+			can_add_article : true,
+			can_add_mistakes : true,
+			can_add_news : true,
+			can_delete_article : true,
+			can_edit_article : true,
+			can_get_notifications : true,
+			can_get_employees_actions_reports : true,
+			can_get_search_operations_reports : true,
+			can_get_system_actions_reports : true,
+			can_off_on_notifications : true,
+			can_search : true,
+			can_view_mistakes : true,
+			can_view_articles : true,
+			can_view_user : true,
+			base_role : false
+		},
+		{
+			name : "Супервизор",
+			role_id : 3,
+			can_add_mistakes : true,
+			can_get_notifications : true,
+			can_get_employees_actions_reports : true,
+			can_search : true,
+			can_view_mistakes : true,
+			can_view_articles : true,
+			can_view_user : true,
+			base_role : false
+		},
+		{
+			name : "Пользователь",
+			role_id : 4,
+			can_add_mistakes : true,
+			can_get_notifications : true,
+			can_search : true,
+			can_view_articles : true,
+			base_role : false 
+		},
+		{
+			name : "Пользователь без прав",
+			role_id : 5,
+			base_role : true 
+		}
+
+
+	]
+	
+}

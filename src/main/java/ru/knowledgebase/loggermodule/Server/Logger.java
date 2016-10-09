@@ -18,7 +18,7 @@ public class Logger {
 
     DataProvider dataProvider = DataProvider.getInstance();
 
-    public void writeToLog(ALogRecord record){
+    public void writeToLog(ALogRecord record)throws Exception{
         dataProvider.sendRecord(record);
     }
 }
