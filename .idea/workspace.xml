@@ -208,7 +208,7 @@
     <push-targets>
       <push-target-info repo="$PROJECT_DIR$" source="article-crud" target-remote="HardDays" target-branch="master" />
       <push-target-info repo="$PROJECT_DIR$" source="master" target-remote="origin" target-branch="archive" />
-      <push-target-info repo="$PROJECT_DIR$" source="search-by-title" target-remote="origin" target-branch="master" />
+      <push-target-info repo="$PROJECT_DIR$" source="search-by-title" target-remote="origin" target-branch="reports" />
     </push-targets>
   </component>
   <component name="GradleLocalSettings">
@@ -1080,7 +1080,7 @@
       <workItem from="1475581563796" duration="4667000" />
       <workItem from="1475833126659" duration="25590000" />
       <workItem from="1475872256114" duration="72292000" />
-      <workItem from="1475977591654" duration="290000" />
+      <workItem from="1475977591654" duration="331000" />
     </task>
     <task id="LOCAL-00001" summary="New branch">
       <created>1471340635302</created>
@@ -1264,7 +1264,14 @@
       <option name="project" value="LOCAL" />
       <updated>1475977827780</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Merged!">
+      <created>1475977895409</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1475977895409</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1300,7 +1307,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="459883000" />
+    <option name="totallyTimeSpent" value="459924000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
