@@ -63,7 +63,7 @@ public class ImageWrapper {
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
-        return ResponseBuilder.buildImageCreatedResponse(path);
+        return ResponseBuilder.buildImagePathResponse(path);
     }
 
     /**
@@ -84,6 +84,20 @@ public class ImageWrapper {
             return ResponseBuilder.buildResponse(ex);
         }
         return ResponseBuilder.buildGetAllImagesResponse(images);
+    }
+
+    public Response deleteImage(String token, int userId, String imageId) {
+        try {
+            boolean okToken = userController.checkUserToken(userId, token);
+            if (okToken != true) {
+                return ResponseBuilder.buildWrongTokenResponse();
+            }
+            imageController.deleteImage(imageId);
+        }
+        catch (Exception ex) {
+            return ResponseBuilder.buildResponse(ex);
+        }
+        return ResponseBuilder.buildImagesDeletedResponse();
     }
 
 }

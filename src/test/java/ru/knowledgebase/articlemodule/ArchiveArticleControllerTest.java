@@ -49,7 +49,6 @@ public class ArchiveArticleControllerTest {
     @AfterClass
     public static void clear() throws Exception{
         ac.deleteArticle(base.getId());
-
         dc.deleteUser(u.getId());
     }
 

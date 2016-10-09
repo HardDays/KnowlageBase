@@ -13,7 +13,7 @@ public class Config {
 
     private String uploadPath;
     private String imageFolder;
-
+    private String reportFolder;
     private String ldapURI;
     private String ldapContextFactory;
     private String ldapDomain;
@@ -21,7 +21,22 @@ public class Config {
     private JSONArray roles = new JSONArray();
     private JSONArray users = new JSONArray();
 
-    private static ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
+    private static ApplicationContext context = null; //ext("META-INF/spring-config.xml");
+
+    public static ApplicationContext getContext() {
+        if (context == null) {
+            context = new ClassPathXmlApplicationContext("META-INF/spring-config.xml");
+        }
+        return context;
+    }
+
+    public String getReportFolder() {
+        return reportFolder;
+    }
+
+    public void setReportFolder(String reportFolder) {
+        this.reportFolder = reportFolder;
+    }
 
     public JSONArray getUsers() {
         return users;
@@ -47,9 +62,6 @@ public class Config {
         this.logPath = logPath;
     }
 
-    public static ApplicationContext getContext() {
-        return context;
-    }
 
     public String getUploadPath() {
         return uploadPath;

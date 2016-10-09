@@ -76,7 +76,19 @@ public class UserControllerTest {
     @After
     public void deleteAll() throws Exception{
         try{
-            collector.deleteArticle(article1.getId());
+            ArticleController.getInstance().deleteArticle(article1.getId());
+        }catch (Exception e){
+        }
+        try{
+            ArticleController.getInstance().deleteArticle(article2.getId());
+        }catch (Exception e){
+        }
+        try{
+            ArticleController.getInstance().deleteArticle(article3.getId());
+        }catch (Exception e){
+        }
+        try{
+            ArticleController.getInstance().deleteArticle(base.getId());
         }catch (Exception e){
         }
         try{
@@ -96,18 +108,7 @@ public class UserControllerTest {
             collector.deleteUser(user2.getId());
         }catch (Exception e){
         }
-        try{
-            collector.deleteArticle(article2.getId());
-        }catch (Exception e){
-        }
-        try{
-            collector.deleteArticle(article3.getId());
-        }catch (Exception e){
-        }
-        try{
-            collector.deleteArticle(base.getId());
-        }catch (Exception e){
-        }
+
         collector.deleteAllUserSections(user.getId());
         collector.deleteAllUserSections(user2.getId());
     }

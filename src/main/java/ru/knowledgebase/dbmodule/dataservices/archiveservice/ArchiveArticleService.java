@@ -17,26 +17,26 @@ public class ArchiveArticleService {
     private ArchiveArticleRepository archiveArticleRepository;
 
 
-    public ArchiveArticle create(ArchiveArticle archArticle) {
+    public ArchiveArticle create(ArchiveArticle archArticle) throws Exception {
         return archiveArticleRepository.save(archArticle);
     }
 
     @Transactional
-    public void createAll(List<ArchiveArticle> archiveArticles) {
+    public void createAll(List<ArchiveArticle> archiveArticles) throws Exception {
         for (ArchiveArticle arch : archiveArticles) {
             archiveArticleRepository.save(arch);
         }
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws Exception {
         archiveArticleRepository.delete(id);
     }
 
-    public List<ArchiveArticle> getSectionArchive(int sectionId) {
+    public List<ArchiveArticle> getSectionArchive(int sectionId) throws Exception {
         return archiveArticleRepository.getSectionArchive(sectionId);
     }
 
-    public ArchiveArticle findById(int archiveArticleId) {
+    public ArchiveArticle findById(int archiveArticleId) throws Exception {
         return archiveArticleRepository.findOne(archiveArticleId);
     }
 }

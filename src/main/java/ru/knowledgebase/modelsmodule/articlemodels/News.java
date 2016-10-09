@@ -3,6 +3,7 @@ package ru.knowledgebase.modelsmodule.articlemodels;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * Created by root on 12.09.16.
@@ -32,14 +33,18 @@ public class News {
     @ManyToOne
     private User author;
 
+    private Timestamp creationDate;
+
     public News(){}
 
-    public News(String title, String body, String clearBody, User author, int sectionId) {
+    public News(String title, String body, String clearBody, User author,
+                                    int sectionId, Timestamp creationDate) {
         this.title = title;
         this.body = body;
         this.clearBody = clearBody;
         this.author = author;
         this.sectionId = sectionId;
+        this.creationDate = creationDate;
     }
 
     public int getId() {
@@ -54,39 +59,15 @@ public class News {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public String getClearBody() {
         return clearBody;
-    }
-
-    public void setClearBody(String clearBody) {
-        this.clearBody = clearBody;
-    }
-
-    public int getSectionId() {
-        return sectionId;
-    }
-
-    public void setSectionId(int sectionId) {
-        this.sectionId = sectionId;
     }
 
     public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public Timestamp getCreationDate() {
+        return creationDate;
     }
 }

@@ -210,75 +210,184 @@ public class ResponseBuilder {
         return Response.status(403).entity("No permissions!").build();
     }
 
+
+
     public static Response buildArtilceCreatedResponse() {
+
         return Response.ok().build();
     }
 
     public static Response buildArticleMovedToArchiveResponse() {
-        return null;
+        return Response.ok().entity("Article has been moved to archive.").build();
     }
 
     public static Response buildArchiveArticleContentResponse(ArchiveArticle arch) {
-        return null;
+        JsonObjectBuilder job = Json.createObjectBuilder()
+                .add("id", arch.getId())
+                .add("title", arch.getTitle())
+                .add("body", arch.getClearBody())
+                .add("author", arch.getAuthor().getFullName());
+        return Response.ok(job.build().toString(),
+                MediaType.APPLICATION_JSON).build();
     }
 
+
     public static Response buildArchiveArticleDeletedResponse() {
-        return null;
+        return Response.ok().entity("Article has been deleted from archive.").build();
     }
 
     public static Response buildArticleCreatedResponse() {
-        return null;
+        return Response.ok().entity("Article has been created.").build();
     }
 
     public static Response buildArticleUpdatedResponse() {
-        return null;
+        return Response.ok().entity("Article has been updated.").build();
     }
 
     public static Response buildArticleDeletedResponse() {
-        return null;
+        return Response.ok().entity("Article has been deleted.").build();
     }
 
+
     public static Response buildArticleContentResponse(Article article) {
-        return null;
+      /*  return Json.createObjectBuilder()
+                .add("id", article.getId())
+                .add("Title", article.getTitle())
+                .add("user_id", role.isCanAddArticle())
+                .add("can_add_mistakes", role.isCanAddMistakes())
+                .add("can_add_news", role.isCanAddNews())
+                .add("can_delete_article", role.isCanDeleteArticle())
+                .add("can_edit_article", role.isCanEditArticle())
+                .add("can_get_employees_actions_reports", role.isCanGetEmployeesActionsReports())
+                .add("can_get_notifications", role.isCanGetNotifications())
+                .add("can_get_search_operations_reports", role.isCanGetSearchOperationsReports())
+                .add("can_get_system_actions_reports", role.isCanGetSystemActionsReports())
+                .add("can_off_on_notifications", role.isCanOnOffNotifications())
+                .add("can_search", role.isCanSearch())
+                .add("can_view_articles", role.isCanViewArticle())
+                .add("can_view_mistakes", role.isCanViewMistakes());*/
+        return Response.ok(getArticleContents(article).build().toString(),
+                MediaType.APPLICATION_JSON).build();
+        //TODO: check if it is all we need to pass
     }
 
     public static Response buildArticleChildrenResponse(List<Article> articles) {
-        return null;
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (Article article : articles){
+            jarr.add(getArticleContents(article));
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildSectionsResponse(List<Article> sections) {
-        return null;
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (Article article : sections){
+            jarr.add(getArticleContents(article));
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
     }
 
-    public static Response buildSectionHierarchyResponse(HashMap<Integer, HashMap<Article, List<Article>>> sections) {
+    public static Response buildSectionHierarchyResponse(
+            HashMap<Integer, HashMap<Article, List<Article>>> sections) {
+        //TODO
         return null;
     }
 
     public static Response buildImageCreatedResponse(String id) {
-        return null;
+        JsonObjectBuilder job = Json.createObjectBuilder()
+                .add("id", id);
+        return Response.ok(job.build().toString(),
+                MediaType.APPLICATION_JSON).build();
+    }
+
+    public static Response buildImagePathResponse(String path) {
+        JsonObjectBuilder job = Json.createObjectBuilder()
+                .add("path", path);
+        return Response.ok(job.build().toString(),
+                MediaType.APPLICATION_JSON).build();
+    }
+
+    public static Response buildImagesDeletedResponse() {
+        return Response.ok().entity("Image has been deleted.").build();
     }
 
     public static Response buildGetAllImagesResponse(List<Image> images) {
-        return null;
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (Image image : images){
+            jarr.add(Json.createObjectBuilder()
+                    .add("id", image.getId())
+                    .add("name", image.getName())
+                    .add("path", image.getPath()));
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildNewsCreatedResponse() {
-        return null;
+
+        return Response.ok().entity("News have been created.").build();
     }
 
     public static Response buildDeleteNewsResponse() {
-        return null;
+
+        return Response.ok().entity("News have been deleted.").build();
     }
 
     public static Response buildGetNewsResponse(News news) {
-        return null;
+        return Response.ok(getNewsContents(news).build(), MediaType.APPLICATION_JSON).build();
+
     }
 
     public static Response buildGetSectionNewsResponse(List<News> news) {
-        return null;
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (News n : news){
+            jarr.add(getNewsContents(n));
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
     }
 
     public static Response buildNewsUpdatedResponse() {
-        return null;
+        return Response.ok().entity("News have been updated.").build();
+    }
+
+
+    public static Response buildUserNewsResponse(List<News> news) {
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (News n : news){
+            jarr.add(getNewsContents(n));
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
+    }
+
+
+    public Response buildReportResponse(String path, String reportName) {
+        return Response.ok().entity("Report " + reportName +
+                "had been created. Path to report: " + path).build();
+    }
+
+
+    private static JsonObjectBuilder getArticleContents(Article article) {
+        return Json.createObjectBuilder()
+                .add("id", article.getId())
+                .add("title", article.getTitle())
+                .add("body", article.getClearBody())
+                .add("author", article.getAuthor().getFullName())
+                .add("life time", article.getLifeTime().toString())
+                .add("created time", article.getCreatedTime().toString())
+                .add("updated time", article.getUpdatedTime().toString());
+    }
+
+    private static JsonObjectBuilder getNewsContents(News news) {
+        JsonObjectBuilder job = Json.createObjectBuilder()
+                .add("id", news.getId())
+                .add("title", news.getTitle())
+                .add("body", news.getClearBody())
+                .add("author", news.getAuthor().getFullName())
+                .add("creation date", news.getCreationDate().toString());
+        return job;
     }
 }

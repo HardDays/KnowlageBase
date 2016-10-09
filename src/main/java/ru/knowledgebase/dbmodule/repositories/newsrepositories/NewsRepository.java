@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -21,4 +22,7 @@ public interface NewsRepository extends CrudRepository<News, Integer> {
     @Transactional
     @Query("delete from News where sectionId = ?1")
     void deleteBySectionId(int sectionId);
+
+    @Query("from News where sectionId=?1 and creationDate >= ?2")
+    List<News> getSectionNewsByDate(Integer i, Timestamp date);
 }

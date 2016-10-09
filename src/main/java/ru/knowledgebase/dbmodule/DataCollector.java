@@ -17,6 +17,7 @@ import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.List;
 
@@ -92,10 +93,10 @@ public class DataCollector {
     private void initLocalStorage() throws Exception {
         localStorage = LocalStorage.getInstance();
         localStorage.initSectionMapStorage(this.initSectionStorage());
-        localStorage.initSectionRoleStarage(this.initSectionRoleStarage());
+        localStorage.initSectionRoleStarage(this.initSectionRoleStorage());
     }
 
-    private List<UserSectionRole> initSectionRoleStarage() throws Exception {
+    private List<UserSectionRole> initSectionRoleStorage() throws Exception {
         return userSectionRoleService.getAll();
     }
 
@@ -125,7 +126,12 @@ public class DataCollector {
     //BEGIN ARTICLE CRUD METHODS
 
     public Article getBaseArticle() throws Exception {
-        return articleService.getBaseArticle();
+        Article base = localStorage.getBaseArticle();
+        if (base == null) {
+            base = articleService.getBaseArticle();
+            localStorage.setBaseArticle(base);
+        }
+        return base;
     }
 
     public Article findArticle(int articleId) throws Exception {
@@ -156,11 +162,10 @@ public class DataCollector {
     public void deleteArticle(Integer id) throws Exception {
         Article art = this.findArticle(id);
         if(art.isSection()) {
-            List<Integer> tree = getSectionTreeIds(id);
-            for (Integer i : tree) {
-                deleteAllNewsBySection(i);
-            }
             List<Article> articles = this.getSectionTree(id);
+            for (Article i : articles) {
+                deleteAllNewsBySection(i.getId());
+            }
             Integer parentId = art.getParentArticle();
             if (parentId == BASE_ARTICLE) {
                 parentId = null;
@@ -169,6 +174,7 @@ public class DataCollector {
         }
         articleService.delete(id);
     }
+
 
     public void deleteAllArticles(List<Integer> ids) throws Exception{
         for (Integer i : ids) {
@@ -219,10 +225,9 @@ public class DataCollector {
         return articleService.getArticleHierarchyTree(article);
     }
 
-    public List<Article> findArticleByTitle(String title) {
+    public List<Article> findArticleByTitle(String title) throws Exception {
         return articleService.findByTitle(title);
     }
-
     //END ARTICLE CRUD METHODS
 
     //BEGIN USER CRUD METHODS
@@ -464,15 +469,15 @@ public class DataCollector {
     //END USERARTICLEROLE METHODS
     
     //BEGIN IMAGE CRUD METHODS
-    public Image findImage(String id){
+    public Image findImage(String id) throws  Exception {
         return imageService.find(id);
     }
 
-    public Image addImage(Image image) {
+    public Image addImage(Image image) throws Exception {
         return imageService.create(image);
     }
 
-    public void deleteImage(String id) {
+    public void deleteImage(String id) throws  Exception {
         imageService.delete(id);
     }
 
@@ -493,7 +498,7 @@ public class DataCollector {
         return images;
     }
 
-    public List<Image> addAllImages() {
+    public List<Image> addAllImages() throws Exception {
         return imageService.getAllImages();
     }
     //END IMAGE CRUD METHODS
@@ -503,15 +508,15 @@ public class DataCollector {
         archiveArticleService.createAll(archArticles);
     }
 
-    public void deleteArchiveArticle(int id) {
+    public void deleteArchiveArticle(int id) throws Exception {
         archiveArticleService.delete(id);
     }
 
-    public List<ArchiveArticle> getSectionArchive(int sectionId) {
+    public List<ArchiveArticle> getSectionArchive(int sectionId) throws Exception {
         return archiveArticleService.getSectionArchive(sectionId);
     }
 
-    public ArchiveArticle getArchiveArticle(int archiveArticleId) {
+    public ArchiveArticle getArchiveArticle(int archiveArticleId) throws Exception {
         return archiveArticleService.findById(archiveArticleId);
     }
 
@@ -626,6 +631,7 @@ public class DataCollector {
         return sectionTree;
     }
 
+
     public HashMap<Integer, HashMap<Article, List<Article>>> getSectionHierarchy() throws Exception {
         Article root = getBaseArticle();
         HashMap<Integer, HashMap<Article, List<Article>>> sectionHierarchy = new HashMap<>();
@@ -671,6 +677,9 @@ public class DataCollector {
         return sectionHierarchy;
     }
 
+    public boolean isArticleSection(int articleId) throws Exception {
+        return articleService.isSection(articleId);
+    }
 
     //END SECTION METHODS
 
@@ -699,6 +708,11 @@ public class DataCollector {
     public News updateNews(News news) throws Exception{
         return newsService.updateNews(news);
     }
+
+    public List<News> getSectionNewsFromDate(Integer i, Timestamp date) throws Exception {
+        return newsService.getSectionNewsFromDate(i, date);
+    }
+
 
     //END NEWS METHODS
 

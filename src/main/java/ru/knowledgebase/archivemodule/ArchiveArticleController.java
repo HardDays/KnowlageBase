@@ -174,7 +174,7 @@ public class ArchiveArticleController {
         archive.setAuthor(article.getAuthor());
 
         try {
-            archive.setSectionId((dataCollector.getSectionByArticle(article)).getId());
+            archive.setSectionId(article.getSectionId());
         }
         catch (Exception ex) {
             throw new DataBaseException();

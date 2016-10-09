@@ -1,5 +1,6 @@
 package ru.knowledgebase.imagemodule;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
@@ -96,6 +97,7 @@ public class ImageController {
     public void deleteImage(String id) throws Exception{
         try {
             dataCollector.deleteImage(id);
+
         }
         catch (Exception ex) {
             throw new DataBaseException();

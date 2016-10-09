@@ -1,9 +1,13 @@
 package ru.knowledgebase.imagemodule;
 
+import ru.knowledgebase.configmodule.Configurations;
+
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Created by root on 31.08.16.
@@ -20,21 +24,8 @@ public class ImageProcessor {
      */
     public static String saveImage(InputStream uploadedInputStream, String filename)
                                     throws Exception {
-        String fileLocation = "/home/pisatel/Documents/KBuploads/" + filename;
-        //saving to file
-        File yourFile = new File(fileLocation);
-        if (!yourFile.exists()) {
-            yourFile.createNewFile();
-        }
-        FileOutputStream out = new FileOutputStream(yourFile, false);
-        int read = 0;
-        byte[] bytes = new byte[1024];//WHY??
-        while ((read = uploadedInputStream.read(bytes)) != -1) {
-            out.write(bytes, 0, read);
-        }
-        out.flush();
-        out.close();
-
+        String fileLocation = Configurations.getUploadPath() + filename;
+        Files.copy(uploadedInputStream, Paths.get(fileLocation));
         return fileLocation;
     }
 }

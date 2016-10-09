@@ -3,6 +3,8 @@ package ru.knowledgebase.wrappermodule;
 import ru.knowledgebase.archivemodule.ArchiveArticleController;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.articlemodule.SectionController;
+import ru.knowledgebase.loggermodule.LogRecord.LogRecordFactory;
+import ru.knowledgebase.loggermodule.Server.Logger;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import javax.ws.rs.core.Response;
 import ru.knowledgebase.responsemodule.ResponseBuilder;
@@ -23,6 +25,8 @@ public class ArticleWrapper {
     private UserController           userController        = UserController.getInstance();
     private ArchiveArticleController archArticleController = ArchiveArticleController.getInstance();
     private SectionController        sectionController     = SectionController.getInstance();
+    private Logger                   logger                = Logger.getInstance();
+    private LogRecordFactory         logRecordFactory      = new LogRecordFactory();
 
     //BEGIN PUBLIC METHODS
 
@@ -39,6 +43,7 @@ public class ArticleWrapper {
     public Response addArticle(String token, String title, String body,
                                int authorId, int parentArticle, Timestamp createdTime, Timestamp updatedTime,
                                Timestamp lifeTime, boolean isSection) {
+        Article art = null;
         try {
             boolean okToken = userController.checkUserToken(authorId, token);
             if (okToken != true) {
@@ -49,12 +54,15 @@ public class ArticleWrapper {
                 return ResponseBuilder.buildNoAccessResponse();
             }
 
-            Article art = articleController.addArticle(title, body, authorId, parentArticle, createdTime, updatedTime, lifeTime, isSection);
+            art = articleController.addArticle(title, body, authorId, parentArticle, createdTime, updatedTime, lifeTime, isSection);
             archArticleController.addArchivationTime(art);
         }
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
+        logger.writeToLog(
+                logRecordFactory.generateOnCreateRecord(authorId, art.getId())
+        );
         return ResponseBuilder.buildArticleCreatedResponse();
     }
 
@@ -71,6 +79,7 @@ public class ArticleWrapper {
     public Response updateArticle(String token, int  id, String title, String body,
                                int authorId, int parentArticle, Timestamp createdTime, Timestamp updatedTime,
                                Timestamp lifeTime) {
+        Article art = null;
         try {
             boolean okToken = userController.checkUserToken(authorId, token);
             if (okToken != true) {
@@ -80,12 +89,15 @@ public class ArticleWrapper {
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
-            Article art = articleController.updateArticle(id, title, body, authorId, parentArticle, createdTime, updatedTime, lifeTime);
+            art = articleController.updateArticle(id, title, body, authorId, parentArticle, createdTime, updatedTime, lifeTime);
             archArticleController.changeArchivationTime(art);
         }
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
+        logger.writeToLog(
+                logRecordFactory.generateOnUpdateRecord(authorId, art.getId())
+        );
         return ResponseBuilder.buildArticleUpdatedResponse();
     }
 
@@ -98,6 +110,7 @@ public class ArticleWrapper {
      * @return response for web-service
      */
     public Response deleteArticle(String token, int userId, int articleId) {
+        Article art = null;
         try {
             boolean okToken = userController.checkUserToken(userId, token);
             if (okToken != true) {
@@ -107,7 +120,7 @@ public class ArticleWrapper {
             if (hasRights != true) {
                 return ResponseBuilder.buildNoAccessResponse();
             }
-            Article art = articleController.getArticle(articleId);
+            art = articleController.getArticle(articleId);
             articleController.deleteArticle(articleId);
             archArticleController.deleteArchivationTime(articleId);
             if (art.isSection()) {
@@ -117,6 +130,9 @@ public class ArticleWrapper {
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
+        logger.writeToLog(
+                logRecordFactory.generateOnDeleteRecord(userId, art.getId())
+        );
         return ResponseBuilder.buildArticleDeletedResponse();
     }
 
@@ -228,6 +244,20 @@ public class ArticleWrapper {
     }
 
 
-
     //END PUBLIC METHODS
+
+    //BEGIN PRIVATE METHODS
+    /**
+     * Writes to log information of article requests in the system
+     * @param userID
+     * @param searchRequest
+     */
+    private void writeToLog(int userID, String searchRequest) {
+        logger.writeToLog(
+                logRecordFactory.generateSearchRequestRecord(
+                        userID,
+                        searchRequest
+                ));
+    }
+    //END PRIVATE MATHODS
 }

@@ -23,6 +23,7 @@ public class ArticleController {
 
     private DataCollector dataCollector = DataCollector.getInstance();
     private final int BASE_ARTICLE = -1;
+    private int baseArticleId = -1;
 
     private static ArticleController instance;
 
@@ -59,6 +60,9 @@ public class ArticleController {
         Article article = getFullArticleObject(title, body, authorId,
                 -1, createdTime, updatedTime, lifeTime, true);
 
+        if (baseArticleId != BASE_ARTICLE) {
+            throw new BaseArticleWasAlreadyCreatedException();
+        }
         Article resultArticle = null;
         try {
             resultArticle = dataCollector.addArticle(article);
@@ -69,6 +73,8 @@ public class ArticleController {
         if (resultArticle == null) {
             throw new ArticleAddException();
         }
+
+        baseArticleId = resultArticle.getId();
 
         return resultArticle;
     }
@@ -118,6 +124,9 @@ public class ArticleController {
         }
         catch (Exception ex) {
            throw new ArticleDeleteException();
+        }
+        if (id == baseArticleId) {
+            baseArticleId = BASE_ARTICLE;
         }
     }
 
@@ -277,6 +286,8 @@ public class ArticleController {
         if (author == null) {
             throw new UserNotFoundException();
         }
+
+
 
         article.setBody(body);
         article.setTitle(title);

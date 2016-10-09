@@ -110,7 +110,9 @@ public class SectionStorage {
     }
 
     public Article getSectionFromCache(int articleId) {
-        return this.cache.get(articleId);
+        synchronized (this.cache) {
+            return this.cache.get(articleId);
+        }
     }
 
     public void updateArticleInCache(Article article) {

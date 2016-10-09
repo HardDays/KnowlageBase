@@ -42,9 +42,12 @@ public class ArticleRoleControllerTest {
         }catch (Exception e){
 
         }
-        if (base == null)
-            base = ArticleController.getInstance().addBaseArticle("s", "f", user.getId(), null, null, null);
-
+        try {
+            if (base == null)
+                base = ArticleController.getInstance().addBaseArticle("s", "f", user.getId(), null, null, null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         try{
             Role r = new Role();
             r.setRoleId(228);
@@ -69,7 +72,7 @@ public class ArticleRoleControllerTest {
     @After
     public void deleteAll() throws Exception{
         try{
-            collector.deleteArticle(article1.getId());
+            ArticleController.getInstance().deleteArticle(article1.getId());
         }catch (Exception e){
         }
         try{
@@ -83,22 +86,23 @@ public class ArticleRoleControllerTest {
 
         }
         try{
-            collector.deleteUser(user.getId());
+            ArticleController.getInstance().deleteArticle(article2.getId());
         }catch (Exception e){
         }
         try{
-            collector.deleteArticle(article2.getId());
+            ArticleController.getInstance().deleteArticle(article3.getId());
         }catch (Exception e){
         }
         try{
-            collector.deleteArticle(article3.getId());
-        }catch (Exception e){
-        }
-        try{
-            collector.deleteArticle(base.getId());
+            ArticleController.getInstance().deleteArticle(base.getId());
         }catch (Exception e){
         }
         collector.deleteAllUserSections(user.getId());
+        try{
+            collector.deleteUser(user.getId());
+        }catch (Exception e){
+        }
+
     }
 
     @Test

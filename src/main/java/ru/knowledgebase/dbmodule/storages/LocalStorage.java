@@ -34,6 +34,7 @@ public class LocalStorage {
 
     private SectionStorage sectionStorage = SectionStorage.getInstance();
     private SectionRoleStorage sectionRoleStorage = SectionRoleStorage.getInstance();
+    private Article baseArticle = null;
 
     //BEGIN SECTION METHODS
 
@@ -111,6 +112,17 @@ public class LocalStorage {
         for (UserSectionRole role : userArticleRoles) {
             sectionRoleStorage.add(role.getUser().getId(), role.getArticle().getId());
         }
+    }
+
+    public Article getBaseArticle() {
+        return baseArticle;
+    }
+    public void deleteBaseArticle() {
+        baseArticle = null;
+    }
+
+    public void setBaseArticle(Article baseArticle) {
+        this.baseArticle = baseArticle;
     }
 
 

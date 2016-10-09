@@ -96,21 +96,22 @@ public class CommentControllerTest {
         }catch (Exception e){
         }
         try{
+            ArticleController.getInstance().deleteArticle(article2.getId());
+        }catch (Exception e){
+        }
+        try{
+            ArticleController.getInstance().deleteArticle(article3.getId());
+        }catch (Exception e){
+        }
+        try{
+            ArticleController.getInstance().deleteArticle(base.getId());
+        }catch (Exception e){
+        }
+        try{
             collector.deleteUser(user2.getId());
         }catch (Exception e){
         }
-        try{
-            collector.deleteArticle(article2.getId());
-        }catch (Exception e){
-        }
-        try{
-            collector.deleteArticle(article3.getId());
-        }catch (Exception e){
-        }
-        try{
-            collector.deleteArticle(base.getId());
-        }catch (Exception e){
-        }
+
         collector.deleteAllUserSections(user.getId());
         collector.deleteAllUserSections(user2.getId());
 

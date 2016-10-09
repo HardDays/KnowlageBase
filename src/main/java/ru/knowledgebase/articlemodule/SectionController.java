@@ -61,9 +61,9 @@ public class SectionController {
     public List<Article> getNextLevelSections(int sectionId) throws Exception{
         List<Article> sections = null;
         try {
-            Article section = dataCollector.findArticle(sectionId);
-            if (section.isSection()) {
-                sections = dataCollector.getNextLevelSections(section.getId());
+            boolean section = dataCollector.isArticleSection(sectionId);
+            if (section) {
+                sections = dataCollector.getNextLevelSections(sectionId);
             }
             else {
                 throw new NoSectionsException();
