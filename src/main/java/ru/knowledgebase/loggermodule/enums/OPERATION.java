@@ -9,6 +9,7 @@ package ru.knowledgebase.loggermodule.enums;
  */
 public enum OPERATION {
     CREATE,
+    READ,
     UPDATE,
     DELETE,
     SEARCH_REQUEST,

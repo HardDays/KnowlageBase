@@ -2,8 +2,7 @@ package ru.knowledgebase.dbmodule.dataservices.newsservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.knowledgebase.dbmodule.repositories.articlerepositories.ImageRepository;
-import ru.knowledgebase.dbmodule.repositories.newsrepositories.NewsRepository;
+import ru.knowledgebase.dbmodule.repositories.JPA.newsrepositories.NewsRepository;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
 
 import java.sql.Timestamp;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.dataservices.chunkrequest.ChunkRequest;
-import ru.knowledgebase.dbmodule.repositories.rolerepositories.UserSectionRoleRepository;
+import ru.knowledgebase.dbmodule.repositories.JPA.rolerepositories.UserSectionRoleRepository;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;

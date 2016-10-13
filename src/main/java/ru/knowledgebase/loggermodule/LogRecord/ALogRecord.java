@@ -24,6 +24,19 @@ public abstract class ALogRecord {
      */
 	protected String addRecordSeparator(String word){ return word + CONSTANTS.INSIDE_RECORD_SEPARATOR; }
 
+	/**
+	 * Creates a {@code StringBuilder} of class' fields {@code operationType}, {@code time} and
+	 * {@code userID}.
+	 * @return
+     */
+	protected StringBuilder getRecordBase() {
+		StringBuilder recordBase = new StringBuilder();
+		recordBase.append(addRecordSeparator(operationType.toString()));
+		recordBase.append(addRecordSeparator(time.toString()));
+		recordBase.append(addRecordSeparator(Integer.toString(userID)));
+		return recordBase;
+	}
+
 	public OPERATION getOperationType() {
 		return operationType;
 	}
@@ -46,18 +59,5 @@ public abstract class ALogRecord {
 
 	public void setUserID(int userID) {
 		this.userID = userID;
-	}
-
-	/**
-	 * Creates a {@code StringBuilder} of class' fields {@code operationType}, {@code time} and
-	 * {@code userID}.
-	 * @return
-     */
-	protected StringBuilder getRecordBase() {
-		StringBuilder recordBase = new StringBuilder();
-		recordBase.append(addRecordSeparator(operationType.toString()));
-		recordBase.append(addRecordSeparator(time.toString()));
-		recordBase.append(addRecordSeparator(Integer.toString(userID)));
-		return recordBase;
 	}
 }

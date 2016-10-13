@@ -55,9 +55,7 @@ public class DataProvider {
                         isActive = true;
                     }
                 }
-            } catch(Exception x) {
-                x.printStackTrace();
-            }
+            } catch(Exception x) { }
         }).start();
 
         /**
@@ -66,18 +64,20 @@ public class DataProvider {
          * {@code isActive} false.
          */
         new Thread(() -> {
-            while(true) {
-                synchronized(logRecordQueue) {
-                    if(!logRecordQueue.isEmpty() && isActive) {
-                        ALogRecord recordToSend = logRecordQueue.peek();
-                        if(isRecordSent(recordToSend)){
-                            logRecordQueue.poll();
-                        }else{
-                            isActive = false;
+            try {
+                while (true) {
+                    synchronized (logRecordQueue) {
+                        if (!logRecordQueue.isEmpty() && isActive) {
+                            ALogRecord recordToSend = logRecordQueue.peek();
+                            if (isRecordSent(recordToSend)) {
+                                logRecordQueue.poll();
+                            } else {
+                                isActive = false;
+                            }
                         }
                     }
                 }
-            }
+            }catch(Exception ex){}
         }).start();
     }
 
@@ -85,7 +85,7 @@ public class DataProvider {
      * Adds input record {@code logRecord} to queue of records.
      * @param logRecord
      */
-    public static void sendRecord(ALogRecord logRecord) {
+    public static void sendRecord(ALogRecord logRecord) throws Exception{
         synchronized(logRecordQueue) {
             logRecordQueue.add(logRecord);
         }
@@ -98,7 +98,7 @@ public class DataProvider {
      * @return {@code true} if record was sent and {@code false} in an error
      * occurred.
      */
-    private static boolean isRecordSent(ALogRecord logRecord) {
+    private static boolean isRecordSent(ALogRecord logRecord) throws Exception{
         out.println(logRecord.toString());
         out.flush();
         if(out.checkError()){

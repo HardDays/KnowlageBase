@@ -107,8 +107,8 @@ public class Main {
         an.getAverageRequestTime(log);
         */
         RequestParser parser = RequestParser.getInstance();
-        parser.init();
-        for (String s : parser.getRequestKeywords("банковский карты продажа купля поиск дом квартира номер карточки")){
+        //parser.init();
+        for (String s : parser.getRequestKeywords("banks   32232 cups,,,  !!!!/ marks base cup   fdf bank     банковский карты продажа купля поиск дом квартира номер карточки")){
             System.out.println(s);
         }
 

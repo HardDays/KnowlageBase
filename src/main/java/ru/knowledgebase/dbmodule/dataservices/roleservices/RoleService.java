@@ -3,7 +3,7 @@ package ru.knowledgebase.dbmodule.dataservices.roleservices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.dbmodule.repositories.rolerepositories.RoleRepository;
+import ru.knowledgebase.dbmodule.repositories.JPA.rolerepositories.RoleRepository;
 import ru.knowledgebase.modelsmodule.rolemodels.Role;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 

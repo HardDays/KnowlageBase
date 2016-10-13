@@ -1,5 +1,6 @@
 package ru.knowledgebase.loggermodule.Log;
 
+import ru.knowledgebase.exceptionmodule.loggerexceptions.LogWritingException;
 import ru.knowledgebase.loggermodule.Constants.CONSTANTS;
 
 import java.util.LinkedList;
@@ -34,10 +35,15 @@ public class LogWriter {
      * of records to {@code Log}.
      * @param inputBuffer
      */
-    public void writeToLog(List<String> inputBuffer) {
+    public void writeToLog(List<String> inputBuffer) throws Exception {
         buffer.addAll(inputBuffer);
-        if(buffer.size() >= CONSTANTS.MIN_BUFFER_SIZE){
-            log.writeBufferToLog(buffer);
+        try {
+            if (buffer.size() >= CONSTANTS.MIN_BUFFER_SIZE) {
+                log.writeBufferToLog(buffer);
+            }
+        }
+        catch (Exception ex) {
+            throw new LogWritingException();
         }
     }
 }

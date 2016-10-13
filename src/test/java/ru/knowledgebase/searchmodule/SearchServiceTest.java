@@ -1,10 +1,14 @@
 package ru.knowledgebase.searchmodule;
 
+import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.hibernate.search.exception.EmptyQueryException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import ru.knowledgebase.articlemodule.ArticleController;
+import ru.knowledgebase.configmodule.Config;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 import ru.knowledgebase.imagemodule.ImageController;
@@ -28,7 +32,7 @@ public class SearchServiceTest {
     private static Integer parentArticle = 1;
     private static List<String> imgs = new LinkedList<String>();
     private static ArticleController ac = new ArticleController();
-    private static SearchService searchService = SearchService.getInstance();
+    private static SearchService searchService = (SearchService) Config.getContext().getBean("searchService");;
 
     private static User u;
     private static Article base;
@@ -38,20 +42,24 @@ public class SearchServiceTest {
             "Summary form only given, as follows right left no yes",
             "Simple tokenizer that splits the text stream on whitespace ",
             "Внимание! С 7 сентября Агентством транспорта Финляндии были введены ограничения скорости ",
-            "Ориентировочное опоздание скоростных поездов Аллегро в указанный период отправления "};
+            "Ориентировочное опоздание скоростных поездов Аллегро в указанный период отправления "
+    };
 
     private static Article addArticle;
+
 
     @BeforeClass
     public static void init() throws Exception {
 
-        u = new User("TestUser2", "8555", "t1@m",
+        u = new User("TestUser", "123", "t1@m",
                 "rrr", "ttt", "aaaa", "ssss", "111", "444", null, null, true, true, null);
         u = dc.addUser(u);
         author = u.getId();
-        base = ac.addBaseArticle("Base title", "Base body", u.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5));
+        base = ac.addBaseArticle("1", "2", u.getId(), new Timestamp(5), new Timestamp(5), new Timestamp(5));
         parentArticle = base.getId();
         createArticles();
+
+
     }
 
     @AfterClass
@@ -62,90 +70,95 @@ public class SearchServiceTest {
 
     private static void createArticles() throws Exception {
         for (String title : titles) {
-            addArticle = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), false);
+            addArticle = ac.addArticle(title, body, u.getId(), parentArticle, new Timestamp(5), new Timestamp(5), new Timestamp(5), true);
         }
     }
 
     @Test
-    public void searchByTitleInRussian() throws Exception {
+    public void searchByPartOfTitleInRussian() throws Exception {
         System.out.println("Fuzzy search");
-        String searchString = "Агентством транспорта Финляндии";
+        String searchString = "опоздание скоростных поездов Аллегро";
         List<Article> result = searchService.searchByTitle(searchString);
-        assertFalse("Resulting list is null", result == null);
-        String rightArticle = titles[2];
-        boolean foundRightArticle = false;
-        for (Article a : result
-                ) {
-            if(rightArticle.equals(a.getTitle())) foundRightArticle = true;
-        }
-        assertFalse("Right article was not found", foundRightArticle);
+        checkResult(result, titles[3]);
+    }
+
+    @Test
+    public void searchByPartOfTitleInRussianWithMistake() throws Exception {
+        System.out.println("Fuzzy search");
+        String searchString = "опозfание";
+        List<Article> result = searchService.searchByTitle(searchString);
+        checkResult(result, titles[3]);
+    }
+
+    @Test
+    public void searchByPartOfTitleInRussianWithMissingWordsInPhrase() throws Exception {
+        System.out.println("Fuzzy search");
+        String searchString = "опоздание Аллегро";
+        List<Article> result = searchService.searchByTitle(searchString);
+        checkResult(result, titles[3]);
+    }
+
+    @Test
+    public void searchByPartOfTitleInRussianWithPhraseSeparatedWithOtherWords() throws Exception {
+        System.out.println("Fuzzy search");
+        String searchString = "опоздание бла бла бла Аллегро";
+        List<Article> result = searchService.searchByTitle(searchString);
+        checkResult(result, titles[3]);
     }
 
     @Test
     public void searchByTitleInEnglish() throws Exception {
         System.out.println("Fuzzy search");
-        String searchString = "tokenizer that splits";
+        String searchString = "tokenizer bla bla  splits";
         List<Article> result = searchService.searchByTitle(searchString);
-        assertFalse("Resulting list is null", result == null);
-        String rightArticle = titles[1];
-        boolean foundRightArticle = false;
-        for (Article a : result
-                ) {
-            if(rightArticle.equals(a.getTitle())) foundRightArticle = true;
-        }
-        assertFalse("Right article was not found", foundRightArticle);
-    }
-
-    @Test
-    public void searchByTitleWithSpellingMistakes() throws Exception {
-        System.out.println("Fuzzy search");
-        String searchString = "tokкenizer tt sуыits";
-        List<Article> result = searchService.searchByTitle(searchString);
-        assertFalse("Resulting list is null", result == null);
-        String rightArticle = titles[1];
-        boolean foundRightArticle = false;
-        for (Article a : result
-                ) {
-            if(rightArticle.equals(a.getTitle())) foundRightArticle = true;
-        }
-        assertFalse("Right article was not found", foundRightArticle);
-    }
-
-    @Test
-    public void searchByTitleWithRightWordsSeparatedWithOthers() throws Exception {
-        System.out.println("Fuzzy search");
-        String searchString = "Ориентировочное аооаоао отаот лььо тоо лльо Аллегро";
-        List<Article> result = searchService.searchByTitle(searchString);
-        assertFalse("Resulting list is null", result == null);
-        String rightArticle = titles[2];
-        boolean foundRightArticle = false;
-        for (Article a : result
-                ) {
-            if(rightArticle.equals(a.getTitle())) foundRightArticle = true;
-        }
-        assertFalse("Right article was not found", foundRightArticle);
-    }
-
-    @Test(expected = EmptyQueryException.class)
-    public void searchByTitleWithWrongRequest(){
-        System.out.println("Fuzzy search");
-        String searchString = "!@#$%%^&*(\\){}:\"~";
-        List<Article> result = searchService.searchByTitle(searchString);
-        assertFalse("Resulting list is null", result != null);
+        checkResult(result, titles[1]);
     }
 
     @Test
     public void searchByBody() throws Exception {
         System.out.println("searchByBody");
-        String searchString = "ИКТ";
+        String searchString = body;
         List<Article> result = searchService.searchByBody(searchString);
-        assertFalse("Resulting list is null", result == null);
-        String rightArticle = titles[2];
+        checkResult(result, titles[0]);
+    }
+
+    @Test
+    public void searchByTitleWith1SpellingMistake() throws Exception {
+        System.out.println("Fuzzy search");
+        String searchString = "torenizer";
+        List<Article> result = searchService.searchByTitle(searchString);
+        checkResult(result, titles[1]);
+    }
+
+    @Test
+    public void searchByTitleWith2SpellingMistakes() throws Exception {
+        System.out.println("Fuzzy search");
+        String searchString = "toеeniнer";
+        List<Article> result = searchService.searchByTitle(searchString);
+        checkResult(result, titles[1]);
+    }
+
+    @Test
+    public void searchByPartOfTitleInEnglishWithPhraseSeparatedWithOtherWords() throws Exception {
+        System.out.println("Fuzzy search");
+        String searchString = "Summary kjfbkj ksjdkjd kjbdksj follows";
+        List<Article> result = searchService.searchByTitle(searchString);
+        checkResult(result, titles[0]);
+    }
+
+    @Test(expected = SearchPhaseExecutionException.class)
+    public void searchByTitleWithWrongRequest() throws Exception {
+        System.out.println("Fuzzy search");
+        String searchString = "!@#$%%^&*(\\){}:\"~";
+        List<Article> rYesult = searchService.searchByTitle(searchString);
+    }
+
+    private void checkResult(List<Article> result, String rightArticle) {
+        assertFalse("Resulting list is null", result.isEmpty());
         boolean foundRightArticle = false;
-        for (Article a : result
-                ) {
+        for (Article a : result) {
             if(rightArticle.equals(a.getTitle())) foundRightArticle = true;
         }
-        assertFalse("Right article was not found", foundRightArticle);
+        assertTrue("Right article was not found", foundRightArticle);
     }
 }

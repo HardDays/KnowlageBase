@@ -21,7 +21,10 @@ public class LogAnalyser {
     private List<ALogRecord> log;
 
     public LogAnalyser() {
-        log = LogReader.getInstance().getRecordsFromLog();
+        try{
+            log = LogReader.getInstance().getRecordsFromLog();
+        }catch (Exception e){
+        }
     }
 
     public List<ArticleRank> getPopularArticles() {

@@ -3,7 +3,7 @@ package ru.knowledgebase.dbmodule.dataservices.userservices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.dbmodule.repositories.userrepositories.TokenRepository;
+import ru.knowledgebase.dbmodule.repositories.JPA.userrepositories.TokenRepository;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 

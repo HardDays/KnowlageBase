@@ -33,6 +33,7 @@ import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.configmodule.Configurations;
 import ru.knowledgebase.exceptionmodule.converterexceptions.ConvertException;
 import ru.knowledgebase.imagemodule.ImageController;
+import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
 
@@ -87,10 +88,10 @@ public class ArticleConverter {
      * @param input - document
      * other params - need for article creation
      */
-    public void convertDoc(InputStream input, String title,
-                           int authorId, int parentArticle,
-                           boolean isSection, Timestamp archiveTime,
-                           Timestamp createDate, Timestamp updateDate) throws Exception{
+    public Article convertDoc(InputStream input, String title,
+                              int authorId, int parentArticle,
+                              boolean isSection, Timestamp archiveTime,
+                              Timestamp createDate, Timestamp updateDate) throws Exception{
         String body = null;
         try {
             HWPFDocumentCore wordDocument = WordToHtmlUtils.loadDoc(input);
@@ -113,15 +114,15 @@ public class ArticleConverter {
             throw new ConvertException();
         }
 
-        articleController.addArticle(title, body, authorId, parentArticle, createDate, updateDate, archiveTime, isSection);
+        return articleController.addArticle(title, body, authorId, parentArticle, createDate, updateDate, archiveTime, isSection);
     }
     /**
      * Convert docx to html
      * @param input - document
      * other params - need for article creation
      */
-    public void convertDocx(InputStream input, String title, int authorId, int parentArticle, Timestamp archiveTime,
-                            Timestamp createDate, Timestamp updateDate, boolean isSection) throws Exception{
+    public Article convertDocx(InputStream input, String title, int authorId, int parentArticle , boolean isSection, Timestamp archiveTime,
+                            Timestamp createDate, Timestamp updateDate) throws Exception{
         String body = null;
         String curPath = uploadPath + title;
         List <String> images = new LinkedList<String>();
@@ -177,6 +178,6 @@ public class ArticleConverter {
             throw new ConvertException();
         }
 
-        articleController.addArticle(title, body, authorId, parentArticle, createDate, updateDate, archiveTime, isSection);
+        return articleController.addArticle(title, body, authorId, parentArticle, createDate, updateDate, archiveTime, isSection);
     }
 }

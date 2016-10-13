@@ -3,7 +3,7 @@ package ru.knowledgebase.dbmodule.dataservices.archiveservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.dbmodule.repositories.archiverepositories.ArchiveArticleRepository;
+import ru.knowledgebase.dbmodule.repositories.JPA.archiverepositories.ArchiveArticleRepository;
 import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
  */
 @Service("archiveArticleService")
 public class ArchiveArticleService {
+
     @Autowired
     private ArchiveArticleRepository archiveArticleRepository;
 

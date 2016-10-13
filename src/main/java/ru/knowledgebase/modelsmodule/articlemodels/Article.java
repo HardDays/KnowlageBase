@@ -1,15 +1,8 @@
 package ru.knowledgebase.modelsmodule.articlemodels;
 
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.core.StopFilterFactory;
-import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
-import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
-import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.hibernate.search.annotations.*;
-import org.hibernate.search.annotations.Parameter;
-import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.modelsmodule.commentmodels.Comment;
-import ru.knowledgebase.modelsmodule.imagemodels.Image;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.elasticsearch.annotations.*;
 import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
@@ -17,31 +10,18 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import java.sql.Timestamp;
-import java.util.LinkedList;
-import java.util.List;
+
+import static org.springframework.data.elasticsearch.annotations.FieldIndex.analyzed;
 
 /**
  * Created by root on 10.08.16.
  */
 @Entity
-@Indexed
-@AnalyzerDef(name = "customanalyzer",
-        tokenizer =
-        @TokenizerDef(factory = StandardTokenizerFactory.class),
-        filters = {
-                @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-                @TokenFilterDef(factory = StopFilterFactory.class),
-                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
-                        @Parameter(name = "language", value = "Russian")
-                }),
-                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
-                        @Parameter(name = "language", value = "English")
-                })
-        })
+@Document(indexName = "articles", type = "article", shards = 1, replicas = 0, refreshInterval = "-1")
+@Setting(settingPath = "./elasticsearch/analyser.json")
 public class Article {
 
     @Id
@@ -50,10 +30,15 @@ public class Article {
             allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator="article_id_seq")
+    @JsonIgnore
     private int id;
 
-    @Field
-    @Analyzer(definition = "customanalyzer")
+    @Field(
+            analyzer = "standard",
+            index = analyzed,
+            searchAnalyzer = "standard",
+            store = true
+    )
     @Column(length = 256)
     private String title;
 
@@ -61,31 +46,44 @@ public class Article {
     private String body;
 
     @ManyToOne
+    @JsonIgnore
     private User author;
 
-    @Field
-    @Analyzer(definition = "customanalyzer")
+    @Field(
+            analyzer = "standard",
+            index = analyzed,
+            searchAnalyzer = "standard",
+            store = true
+    )
     @Column(length = 1200000)
     private String clearBody;
 
 
-    @Column
+    @JsonIgnore
     private boolean isSection;
 
+
+    @JsonIgnore
     private int parentId;
 
+
     @OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
-    private List<UserSectionRole> userSectionRoles;
+    @JsonIgnore
+    private List<UserSectionRole> userSectionRole;
 
     /**
      * Date when article should be moved to Archive.
      */
+    @JsonIgnore
     private Timestamp lifeTime;
 
+    @JsonIgnore
     private Timestamp createdTime;
 
+    @JsonIgnore
     private Timestamp updatedTime;
 
+    @JsonIgnore
     private int sectionId;
 
     //BEGIN CONSTRUCTORS
@@ -207,6 +205,7 @@ public class Article {
 
 
     //BEGIN SUPPORT METHODS
+
     public void copy(Article article) {
         if (article == null)
             return;
@@ -235,6 +234,22 @@ public class Article {
         res &= this.parentId == comp.parentId;
         res &= this.isSection == comp.isSection;
         return res;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+
+    public List<UserSectionRole> getUserSectionRole() {
+        return userSectionRole;
+    }
+
+    public void setUserSectionRole(List<UserSectionRole> userArticleRole) {
+        this.userSectionRole = userArticleRole;
     }
 
 

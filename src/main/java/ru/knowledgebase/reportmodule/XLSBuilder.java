@@ -22,13 +22,13 @@ public class XLSBuilder {
     private XSSFWorkbook workbook;
     private String excelFileName;
 
-    public XLSBuilder(String fileName) {
+    public XLSBuilder(String fileName) throws Exception {
 
         this.fileName = fileName;
         workbook = new XSSFWorkbook();
     }
 
-    public void saveXLS() throws IOException, InvalidFormatException {
+    public void saveXLS() throws Exception {
         String pathToFolder = Configurations.getReportFolder();
         excelFileName = pathToFolder + "/" + fileName;
         FileOutputStream fos = new FileOutputStream(excelFileName);
@@ -37,12 +37,12 @@ public class XLSBuilder {
         fos.close();
     }
 
-    public String addSheetToXLS(String sheetName){
+    public String addSheetToXLS(String sheetName)throws Exception{
         Sheet sheet = workbook.createSheet(sheetName);
         return sheetName;
     }
 
-    public void printToSheet(String sheetName, List<Object[]> newData){
+    public void printToSheet(String sheetName, List<Object[]> newData) throws Exception{
         Sheet sheet = workbook.getSheet(sheetName);
         int roeNum = 0;
         for (Object[] objArr : newData) {

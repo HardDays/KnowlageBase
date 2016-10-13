@@ -4,30 +4,57 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+       xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/data/elasticsearch
+       http://www.springframework.org/schema/data/elasticsearch/spring-elasticsearch-1.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--@Transaction annotation support -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <context:component-scan base-package="ru.knowledgebase.modelsmodule" />
-    <context:component-scan base-package="ru.knowledgebase.dbmodule.dataservices" />
 
-    <jpa:repositories base-package="ru.knowledgebase.dbmodule.repositories" />
 
-    <!--Activates various annotations to be detected in bean classes: Spring's @Required and @Autowired and so on-->
-    <context:annotation-config/>
+    <context:component-scan base-package="ru.knowledgebase" />
+
+    <jpa:repositories base-package="ru.knowledgebase.dbmodule.repositories.JPA" />
+
+    <elasticsearch:repositories base-package="ru.knowledgebase.dbmodule.repositories.ES" repository-impl-postfix="Impl"/>
+
+
+     <!--<bean name="ElasticSearchConfig" class="ru.knowledgebase.configmodule.ElasticSearchConfig" />-->
+
+
+    <elasticsearch:node-client id="client" local="true" path-home="./"/>
+
+    <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
+        <constructor-arg name="client" ref="client"/>
+    </bean>
+
+
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
-    <!-- Datasource. Источник данных - база PostgreSQL -->
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/test"/>
-        <property name="username" value="postgres"/>
-        <property name="password" value="root"/>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <!-- Connection properties -->
+        <property name="driverClass" value="org.postgresql.Driver" />
+        <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/postgres" />
+        <property name="user" value="postgres" />
+        <property name="password" value="root" />
+        <!-- Pool properties -->
+        <property name="minPoolSize" value="5" />
+        <property name="maxPoolSize" value="20" />
+        <property name="acquireIncrement" value="1" />
+        <property name="maxStatements" value="50" />
+        <property name="idleConnectionTestPeriod" value="3000" />
+        <property name="loginTimeout" value="300" />
     </bean>
 
     <bean id="jpaVendorAdapter"
@@ -55,6 +82,26 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaDialect" ref="jpaDialect"/>
     </bean>
+
+    <bean id="entityManager"
+          class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+    <tx:advice id="pmabTxAdvice" transaction-manager="transactionManager">
+        <!-- the transactional semantics... -->
+        <tx:attributes>
+            <!-- all methods starting with 'get' are read-only -->
+            <!-- other methods use the default transaction settings (see below) -->
+            <tx:method name="*" propagation="REQUIRED" read-only="false"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="serviceOperation"
+                      expression="execution(* ru.knowledgebase.*.*.*(..))" />
+        <aop:advisor advice-ref="pmabTxAdvice" pointcut-ref="serviceOperation" />
+    </aop:config>
 
 
 </beans>

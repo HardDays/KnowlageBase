@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.knowledgebase.dbmodule.repositories.articlerepositories.ImageRepository;
+import ru.knowledgebase.dbmodule.repositories.JPA.articlerepository.ImageRepository;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
 import java.nio.file.Files;

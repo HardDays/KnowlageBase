@@ -23,29 +23,32 @@ public class ReportWrapper {
 
     public Response getSystemActionsReport(int userID, String token, Timestamp from, Timestamp to,
                                            List<Integer> sections){
+        Response r;
         String reportType = "Отчет о действиях в системе";
         try{
-        boolean okToken = userController.checkUserToken(userID, token);
-        boolean hasRights = roleController.hasAccessToSections(userID, sections);
-        boolean canMakeThatReport = true;
-            for (Integer section : sections) {
-                canMakeThatReport = canMakeThatReport &&
-                        roleController.canGetSystemActionsReports(userID, section);
-            }
-        if (!okToken)
-            return ResponseBuilder.buildWrongTokenResponse();
-        if(!hasRights)
-            return responseBuilder.buildNoAccessResponse();
+            boolean okToken = userController.checkUserToken(userID, token);
+            boolean hasRights = roleController.hasAccessToSections(userID, sections);
+            boolean canMakeThatReport = true;
+                for (Integer section : sections) {
+                    canMakeThatReport = canMakeThatReport &&
+                            roleController.canGetSystemActionsReports(userID, section);
+                }
+            if (!okToken)
+                return ResponseBuilder.buildWrongTokenResponse();
+            if(!(hasRights && canMakeThatReport))
+                return responseBuilder.buildNoAccessResponse();
 
-        return responseBuilder.buildReportResponse(
-                    reportController.getSystemActionsReport(userID, from, to, sections), reportType);
+            r = responseBuilder.buildReportResponse(
+                        reportController.getSystemActionsReport(userID, from, to, sections), reportType);
         }catch(Exception ex){
             return ResponseBuilder.buildResponse(ex);
         }
+        return r;
     }
 
     public Response getEmployeesActionsReport(int supervisorID, String token, Timestamp from, Timestamp to,
                                               List<Integer> sections) {
+        Response r;
         String reportType = "Отчет о действиях подчиненных";
         try {
             boolean okToken = userController.checkUserToken(supervisorID, token);
@@ -60,17 +63,19 @@ public class ReportWrapper {
             if (!(hasRights && canMakeThatReport))
                 return responseBuilder.buildNoAccessResponse();
 
-            return responseBuilder.buildReportResponse(
+            r = responseBuilder.buildReportResponse(
                     reportController.getEmployeesActionsReport(supervisorID, from, to, sections), reportType);
         } catch (UnableToCreateReportExeption ex){
             return responseBuilder.buildResponse(ex);
         } catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
+        return r;
     }
 
     public Response getSearchActionsReport(int userID, String token, Timestamp from, Timestamp to,
                                               List<Integer> sections){
+        Response r;
         String reportType = "Отчео о поиске в системе";
         try{
             boolean okToken = userController.checkUserToken(userID, token);
@@ -85,11 +90,11 @@ public class ReportWrapper {
             if(!(hasRights && canMakeThatReport))
                 return responseBuilder.buildNoAccessResponse();
 
-            return responseBuilder.buildReportResponse(
+            r =  responseBuilder.buildReportResponse(
                     reportController.getSearchActionsReport(userID, from, to, sections), reportType);
         }catch(Exception ex){
             return ResponseBuilder.buildResponse(ex);
         }
+        return r;
     }
-
 }

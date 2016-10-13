@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.dataservices.chunkrequest.ChunkRequest;
-import ru.knowledgebase.dbmodule.repositories.commentrepositories.CommentRepository;
+import ru.knowledgebase.dbmodule.repositories.JPA.commentrepositories.CommentRepository;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 

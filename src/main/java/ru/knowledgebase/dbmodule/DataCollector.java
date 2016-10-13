@@ -1,8 +1,12 @@
 package ru.knowledgebase.dbmodule;
 
+import jdk.internal.util.xml.impl.Pair;
+import jdk.nashorn.internal.runtime.ECMAException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
+import ru.knowledgebase.articlemodule.ArticleController;
+import ru.knowledgebase.configmodule.Config;
 import ru.knowledgebase.dbmodule.dataservices.archiveservice.ArchiveArticleService;
 import ru.knowledgebase.dbmodule.dataservices.articleservice.ArticleService;
 import ru.knowledgebase.dbmodule.dataservices.commentservice.CommentService;
@@ -11,20 +15,21 @@ import ru.knowledgebase.dbmodule.dataservices.newsservice.NewsService;
 import ru.knowledgebase.dbmodule.dataservices.roleservices.*;
 import ru.knowledgebase.dbmodule.dataservices.searchservices.SearchService;
 import ru.knowledgebase.dbmodule.storages.LocalStorage;
+import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
 import ru.knowledgebase.modelsmodule.archivemodels.ArchiveArticle;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.articlemodels.News;
 import ru.knowledgebase.modelsmodule.commentmodels.Comment;
 import ru.knowledgebase.modelsmodule.imagemodels.Image;
 
+import java.awt.*;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.List;
 
 import ru.knowledgebase.dbmodule.dataservices.userservices.TokenService;
 import ru.knowledgebase.dbmodule.dataservices.userservices.UserService;
-import ru.knowledgebase.modelsmodule.rolemodels.Role;
-import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
+import ru.knowledgebase.modelsmodule.rolemodels.*;
 import ru.knowledgebase.modelsmodule.usermodels.Token;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
@@ -79,7 +84,7 @@ public class DataCollector {
         archiveArticleService = (ArchiveArticleService) context.getBean("archiveArticleService");
         newsService = (NewsService)context.getBean("newsService");
         commentService = (CommentService) context.getBean("commentService");
-        searchService = SearchService.getInstance();
+        searchService = (SearchService) context.getBean("searchService");
 
         try {
             initLocalStorage();
@@ -341,7 +346,7 @@ public class DataCollector {
         userSectionRoleService.create(role);
         Integer uid = role.getUser().getId();
         Article temp = role.getArticle();
-       // Go through branch to root and delete all section roles from memcache
+        // Go through branch to root and delete all section roles from memcache
         while (true) {
             if (temp.isSection()){
                 localStorage.deleteUserSection(uid, temp.getId());
@@ -467,7 +472,7 @@ public class DataCollector {
 
 
     //END USERARTICLEROLE METHODS
-    
+
     //BEGIN IMAGE CRUD METHODS
     public Image findImage(String id) throws  Exception {
         return imageService.find(id);
@@ -746,14 +751,15 @@ public class DataCollector {
     }
     //END COMMENT CRUD METHODS
 
-    //BEGIN SERCH METHODS
-    public List<Article> searchByTitle(String searchRequest) {
+    //BEGIN SEARCH METHODS
+    public List<Article> searchByTitle(String searchRequest) throws Exception {
         return searchService.searchByTitle(searchRequest);
     }
 
-    public List<Article> searchByBody(String searchRequest) {
+    public List<Article> searchByBody(String searchRequest) throws Exception {
         return searchService.searchByBody(searchRequest);
     }
-    //END   SERCH METHODS
+
+    //END SEARCH METHODS
 
 }

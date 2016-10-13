@@ -1,21 +1,16 @@
 package ru.knowledgebase.reportmodule;
 
-import org.hibernate.search.test.util.impl.ReflectionHelperTest;
 import ru.knowledgebase.analyticsmodule.Analyser;
 import ru.knowledgebase.analyticsmodule.rank.ArticleRank;
 import ru.knowledgebase.analyticsmodule.rank.RequestRank;
 import ru.knowledgebase.dbmodule.DataCollector;
 import ru.knowledgebase.exceptionmodule.analyticsexceptions.UnableToPerformAnalyticsException;
 import ru.knowledgebase.exceptionmodule.databaseexceptions.DataBaseException;
-import ru.knowledgebase.exceptionmodule.loggerexceptions.LogReadingException;
-import ru.knowledgebase.exceptionmodule.loggerexceptions.UnableToFindLogException;
-import ru.knowledgebase.exceptionmodule.reportexception.UnableToCreateReportExeption;
 import ru.knowledgebase.loggermodule.Log.LogReader;
 import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
 import ru.knowledgebase.modelsmodule.rolemodels.UserSectionRole;
 
-import javax.xml.crypto.Data;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -88,29 +83,6 @@ public class ReportController {
     }
 
     /**
-     * Возвращает название секции
-     * @param section
-     * @return
-     */
-    private String getArticleTitle(Integer section) throws Exception {
-        return getArticleByID(section).getTitle();
-    }
-
-    private HashSet<Integer> getIDsOfArticlesCreatedDuringPeriod(Timestamp from, Timestamp to)
-            throws UnableToPerformAnalyticsException {
-        HashSet<Integer> articlesIDs = null;
-        try {
-            articlesIDs = analyser.getUploadedArticles(
-                    getRecordsFromLog(),
-                    from,
-                    to);
-        } catch (Exception e) {
-            throw new UnableToPerformAnalyticsException();
-        }
-        return articlesIDs;
-    }
-
-    /**
      * Составляет отчет о действия подчиненных супервизора за данный период. Создает xlsx файл и размечает поля в соответствии
      * со структурой отчетв.
      * В отчете:
@@ -131,72 +103,7 @@ public class ReportController {
         List<UserSectionRole> users = getUsersOfEachSection(sections);
         return reportBuilder.buildEmployeesActionsReport(
                 userID, from, to,
-                getArticlesEachUserViewedAndNumberOfViews(from, to, users));
-    }
-
-    private Map<String, Map<String, Integer>> getArticlesEachUserViewedAndNumberOfViews(Timestamp from, Timestamp to,
-                                                                                        List<UserSectionRole> users)
-            throws Exception {
-
-        Map<String, Map<String, Integer>> usersArticlesNumViews = new HashMap<>();
-        for (UserSectionRole userRole: users) {
-            usersArticlesNumViews.put(
-                    getUsersFullName(userRole),
-                    getArticlesUserViewedWithNumOfViews(userRole, from, to));
-        }
-        return usersArticlesNumViews;
-    }
-
-    /**
-     * Находит пользователь которые работают с данными разделами
-     * @param sections
-     * @return
-     * @throws Exception
-     */
-    private List<UserSectionRole> getUsersOfEachSection(List<Integer> sections) {
-        List <UserSectionRole> users = new LinkedList<>();
-        for (Integer section : sections) {
-            users.addAll(dataCollector.findUserSectionRoleBySection(section));
-        }
-        return users;
-    }
-
-    private Map<String, Integer> getArticlesUserViewedWithNumOfViews(UserSectionRole userRole,
-                                                                     Timestamp from, Timestamp to)
-            throws Exception {
-
-        List<ArticleRank> articlesViewed = analyser.getUserViews(
-                getRecordsFromLog(),
-                userRole.getUser().getId(),
-                from, to);
-        Map<String, Integer> articlesUserViewedWithNumOfViews = new HashMap<>();
-        for(ArticleRank article : articlesViewed){
-            articlesUserViewedWithNumOfViews.put(
-                    getArticleTitle(article.getId()),
-                    article.getRank());
-        }
-        return articlesUserViewedWithNumOfViews;
-    }
-
-    private Article getArticleByID(int articleID) throws Exception {
-        try {
-            return dataCollector.findArticle(articleID);
-        }
-        catch (Exception ex) {
-            throw new DataBaseException();
-        }
-    }
-
-    /**
-     * Достает все записи из лога
-     * @return
-     * @throws LogReadingException
-     * @throws UnableToFindLogException
-     */
-    private LinkedList<ALogRecord> getRecordsFromLog() throws LogReadingException, UnableToFindLogException {
-        if(logRecords == null)
-            logRecords = logReader.getRecordsFromLog();
-        return logRecords;
+                getArticlesEachUserViewedWithNumberOfViews(from, to, users));
     }
 
     /**
@@ -281,6 +188,17 @@ public class ReportController {
                 levelUsersRequests, levelPopularRequests);
     }
 
+    /**
+     * Достает все записи из лога и создает для каждой соответствующую LogRecord.
+     * @return все записи из лога
+     * @throws Exception
+     */
+    private LinkedList<ALogRecord> getRecordsFromLog() throws Exception {
+        if(logRecords == null)
+            logRecords = logReader.getRecordsFromLog();
+        return logRecords;
+    }
+
     private String getUsersFullName(UserSectionRole userOfSection) {
         return userOfSection.getUser().getFullName();
     }
@@ -300,7 +218,7 @@ public class ReportController {
         return sectionsOnLevel;
     }
 
-    private Integer numTimesSearchWasMade(Timestamp from, Timestamp to) throws UnableToPerformAnalyticsException {
+    private Integer numTimesSearchWasMade(Timestamp from, Timestamp to) throws Exception {
         Integer numSearchActions = null;
         try {
             numSearchActions = analyser.getSearchUsage(getRecordsFromLog(), from, to);
@@ -311,10 +229,10 @@ public class ReportController {
     }
 
     /**
-     * Возвращает Map с разделами и статьями, которые находятся в этих разделах
-     * @return
+     * @return Map с разделами и статьями, которые находятся в этих разделах
+     * @throws Exception
      */
-    public Map<Integer, LinkedList<Integer>> getListOfSectionsForEachLevel() throws DataBaseException {
+    public Map<Integer, LinkedList<Integer>> getListOfSectionsForEachLevel() throws Exception {
         //all first-level articles
         List<Article> sections;
         HashMap<Integer, LinkedList<Integer>> hierarchy = new HashMap<>();
@@ -322,11 +240,7 @@ public class ReportController {
         try {
             Article base = dataCollector.getBaseArticle();
             sections = dataCollector.getNextLevelSections(base.getId());
-        }
-        catch (Exception ex) {
-            throw new DataBaseException();
-        }
-        try {
+
             for (Article a : sections) {
                 hierarchy.put(a.getId(), (LinkedList)dataCollector.getSectionTreeIds(a.getId()));
             }
@@ -334,7 +248,81 @@ public class ReportController {
         catch (Exception ex) {
             throw new DataBaseException();
         }
-
         return hierarchy;
+    }
+
+    /**
+     * Находит пользователь которые работают с данными разделами
+     * @param sections
+     * @return лист пользователей
+     * @throws Exception
+     */
+    private List<UserSectionRole> getUsersOfEachSection(List<Integer> sections) throws Exception{
+        List <UserSectionRole> users = new LinkedList<>();
+        for (Integer section : sections) {
+            users.addAll(dataCollector.findUserSectionRoleBySection(section));
+        }
+        return users;
+    }
+
+    private Map<String, Map<String, Integer>> getArticlesEachUserViewedWithNumberOfViews(Timestamp from, Timestamp to,
+                                                                                         List<UserSectionRole> users)
+            throws Exception {
+
+        Map<String, Map<String, Integer>> usersArticlesNumViews = new HashMap<>();
+        for (UserSectionRole userRole: users) {
+            usersArticlesNumViews.put(
+                    getUsersFullName(userRole),
+                    getArticlesUserViewedWithNumOfViews(userRole, from, to));
+        }
+        return usersArticlesNumViews;
+    }
+
+    private Map<String, Integer> getArticlesUserViewedWithNumOfViews(UserSectionRole userRole,
+                                                                     Timestamp from, Timestamp to)
+            throws Exception {
+
+        List<ArticleRank> articlesViewed = analyser.getUserViews(
+                getRecordsFromLog(),
+                userRole.getUser().getId(),
+                from, to);
+        Map<String, Integer> articlesUserViewedWithNumOfViews = new HashMap<>();
+        for(ArticleRank article : articlesViewed){
+            articlesUserViewedWithNumOfViews.put(
+                    getArticleTitle(article.getId()),
+                    article.getRank());
+        }
+        return articlesUserViewedWithNumOfViews;
+    }
+
+    private Article getArticleByID(int articleID) throws Exception {
+        try {
+            return dataCollector.findArticle(articleID);
+        }
+        catch (Exception ex) {
+            throw new DataBaseException();
+        }
+    }
+
+    /**
+     * Возвращает название секции
+     * @param section
+     * @return
+     */
+    private String getArticleTitle(Integer section) throws Exception {
+        return getArticleByID(section).getTitle();
+    }
+
+    private HashSet<Integer> getIDsOfArticlesCreatedDuringPeriod(Timestamp from, Timestamp to) throws Exception {
+        HashSet<Integer> articlesIDs = null;
+        try {
+            articlesIDs = analyser.getUploadedArticles(
+                    getRecordsFromLog(),
+                    from,
+                    to);
+        } catch (Exception e) {
+            throw new UnableToPerformAnalyticsException();
+        }
+        return articlesIDs;
     }
 }

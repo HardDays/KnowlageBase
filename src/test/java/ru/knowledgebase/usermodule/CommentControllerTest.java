@@ -92,10 +92,6 @@ public class CommentControllerTest {
         }catch (Exception e){
         }
         try{
-            collector.deleteUser(user.getId());
-        }catch (Exception e){
-        }
-        try{
             ArticleController.getInstance().deleteArticle(article2.getId());
         }catch (Exception e){
         }
@@ -105,6 +101,10 @@ public class CommentControllerTest {
         }
         try{
             ArticleController.getInstance().deleteArticle(base.getId());
+        }catch (Exception e){
+        }
+        try{
+            collector.deleteUser(user.getId());
         }catch (Exception e){
         }
         try{

@@ -5,7 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.knowledgebase.dbmodule.dataservices.chunkrequest.ChunkRequest;
-import ru.knowledgebase.dbmodule.repositories.userrepositories.UserRepository;
+import ru.knowledgebase.dbmodule.repositories.JPA.userrepositories.UserRepository;
 import ru.knowledgebase.modelsmodule.usermodels.User;
 
 import java.util.HashMap;

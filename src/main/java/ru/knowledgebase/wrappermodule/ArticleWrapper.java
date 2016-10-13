@@ -1,8 +1,11 @@
 package ru.knowledgebase.wrappermodule;
 
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import ru.knowledgebase.archivemodule.ArchiveArticleController;
 import ru.knowledgebase.articlemodule.ArticleController;
 import ru.knowledgebase.articlemodule.SectionController;
+import ru.knowledgebase.convertermodule.ArticleConverter;
 import ru.knowledgebase.loggermodule.LogRecord.LogRecordFactory;
 import ru.knowledgebase.loggermodule.Server.Logger;
 import ru.knowledgebase.modelsmodule.articlemodels.Article;
@@ -11,6 +14,7 @@ import ru.knowledgebase.responsemodule.ResponseBuilder;
 import ru.knowledgebase.rolemodule.RoleController;
 import ru.knowledgebase.usermodule.UserController;
 
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +31,7 @@ public class ArticleWrapper {
     private SectionController        sectionController     = SectionController.getInstance();
     private Logger                   logger                = Logger.getInstance();
     private LogRecordFactory         logRecordFactory      = new LogRecordFactory();
+    private ArticleConverter         articleConverter      = ArticleConverter.getInstance();
 
     //BEGIN PUBLIC METHODS
 
@@ -60,9 +65,12 @@ public class ArticleWrapper {
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
-        logger.writeToLog(
-                logRecordFactory.generateOnCreateRecord(authorId, art.getId())
-        );
+        try {
+            logger.writeToLog(
+                    logRecordFactory.generateOnCreateRecord(authorId, art.getId())
+            );
+        }catch (Exception e){
+        }
         return ResponseBuilder.buildArticleCreatedResponse();
     }
 
@@ -94,10 +102,12 @@ public class ArticleWrapper {
         }
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
-        }
+        }try{
         logger.writeToLog(
                 logRecordFactory.generateOnUpdateRecord(authorId, art.getId())
         );
+        }catch (Exception e){
+        }
         return ResponseBuilder.buildArticleUpdatedResponse();
     }
 
@@ -130,9 +140,12 @@ public class ArticleWrapper {
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
         }
+        try{
         logger.writeToLog(
                 logRecordFactory.generateOnDeleteRecord(userId, art.getId())
         );
+        }catch (Exception e){
+        }
         return ResponseBuilder.buildArticleDeletedResponse();
     }
 
@@ -160,6 +173,12 @@ public class ArticleWrapper {
         }
         catch (Exception ex) {
             return ResponseBuilder.buildResponse(ex);
+        }
+        try{
+            logger.writeToLog(
+                    logRecordFactory.generateOnReadRecord(userId, articleId)
+            );
+        }catch (Exception e){
         }
         return ResponseBuilder.buildArticleContentResponse(article);
     }
@@ -243,21 +262,47 @@ public class ArticleWrapper {
         return ResponseBuilder.buildSectionHierarchyResponse(sections);
     }
 
+    public Response addDocumentedArticle(String token, String title,
+                               int authorId, int parentArticle, Timestamp createdTime, Timestamp updatedTime,
+                               Timestamp lifeTime, boolean isSection, InputStream uploadedInputStream,
+                               FormDataContentDisposition fileDetail) {
+        Article art = null;
+        try {
+            boolean okToken = userController.checkUserToken(authorId, token);
+            if (okToken != true) {
+                return ResponseBuilder.buildWrongTokenResponse();
+            }
+            boolean hasRights = roleController.canAddArticle(authorId, parentArticle);
+            if (hasRights != true) {
+                return ResponseBuilder.buildNoAccessResponse();
+            }
+
+            String[] args = fileDetail.getFileName().split(".");
+
+            if (args[args.length-1].equals("doc")) {
+                art = articleConverter.convertDoc(uploadedInputStream, title, authorId, parentArticle, isSection, lifeTime, createdTime, updatedTime);
+            }
+            else if (args[args.length-1].equals("docx")) {
+                art =articleConverter.convertDocx(uploadedInputStream, title, authorId, parentArticle, isSection, lifeTime, createdTime, updatedTime);
+            }
+
+            archArticleController.addArchivationTime(art);
+        }
+        catch (Exception ex) {
+            return ResponseBuilder.buildResponse(ex);
+        }
+        try {
+            logger.writeToLog(
+                    logRecordFactory.generateOnCreateRecord(authorId, art.getId())
+            );
+        }catch (Exception e){
+        }
+        return ResponseBuilder.buildArticleCreatedResponse();
+    }
 
     //END PUBLIC METHODS
 
     //BEGIN PRIVATE METHODS
-    /**
-     * Writes to log information of article requests in the system
-     * @param userID
-     * @param searchRequest
-     */
-    private void writeToLog(int userID, String searchRequest) {
-        logger.writeToLog(
-                logRecordFactory.generateSearchRequestRecord(
-                        userID,
-                        searchRequest
-                ));
-    }
+
     //END PRIVATE MATHODS
 }

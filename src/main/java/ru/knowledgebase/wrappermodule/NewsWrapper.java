@@ -17,6 +17,7 @@ import java.util.List;
 public class NewsWrapper {
     private NewsController               newsController = NewsController.getInstance();
     private UserController               userController = UserController.getInstance();
+
     private RoleController roleController = RoleController.getInstance();
 
     public Response addNews(String token, int userId, int authorId, int sectionId,

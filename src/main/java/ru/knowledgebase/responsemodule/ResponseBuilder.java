@@ -363,6 +363,14 @@ public class ResponseBuilder {
                 MediaType.APPLICATION_JSON).build();
     }
 
+    public static Response buildSearchResultResponse(List<Article> articles) {
+        JsonArrayBuilder jarr = Json.createArrayBuilder();
+        for (Article article : articles){
+            jarr.add(getArticleContents(article));
+        }
+        return Response.ok(jarr.build().toString(),
+                MediaType.APPLICATION_JSON).build();
+    }
 
     public Response buildReportResponse(String path, String reportName) {
         return Response.ok().entity("Report " + reportName +

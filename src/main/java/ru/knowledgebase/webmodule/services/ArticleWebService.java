@@ -1,5 +1,7 @@
 package ru.knowledgebase.webmodule.services;
 
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import ru.knowledgebase.wrappermodule.ArticleWrapper;
 import ru.knowledgebase.wrappermodule.UserWrapper;
 
@@ -7,6 +9,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 
@@ -44,8 +47,7 @@ public class ArticleWebService {
                         @FormParam(value = "parent_article_id") int parentArticleId,
                         @FormParam(value = "created_time") Timestamp createdTime,
                         @FormParam(value = "updated_time") Timestamp updatedTime,
-                        @FormParam(value = "life_time") Timestamp lifeTime,
-                        @FormParam(value = "is_section") boolean isSection) {
+                        @FormParam(value = "life_time") Timestamp lifeTime) {
          return articleWrapper.updateArticle(userToken, articleId, title, body, authorId,
                  parentArticleId, createdTime, updatedTime, lifeTime);
     }
@@ -96,6 +98,23 @@ public class ArticleWebService {
     public Response getSectionHierarchy(@FormParam(value = "user_id") int authorId,
                                           @FormParam(value = "token") String userToken){
         return articleWrapper.getSectionHierarchy(userToken, authorId);
+    }
+
+    @POST
+    @Path("/send_document")
+    public  Response sendDocument(@FormParam(value = "author_id") int authorId,
+                                  @FormParam(value = "token") String userToken,
+                                  @FormParam(value = "title") String title,
+                                  @FormParam(value = "parent_article_id") int parentArticleId,
+                                  @FormParam(value = "created_time") Timestamp createdTime,
+                                  @FormParam(value = "updated_time") Timestamp updatedTime,
+                                  @FormParam(value = "life_time") Timestamp lifeTime,
+                                  @FormParam(value = "is_section") boolean isSection,
+                                  @FormDataParam("file") InputStream uploadedInputStream,
+                                  @FormDataParam("file") FormDataContentDisposition fileDetail) {
+        return articleWrapper.addDocumentedArticle(userToken, title, authorId,
+                parentArticleId, createdTime, updatedTime, lifeTime,
+                isSection, uploadedInputStream, fileDetail);
     }
 
 }

@@ -1,5 +1,7 @@
 package ru.knowledgebase.loggermodule.Log;
 
+import ru.knowledgebase.exceptionmodule.loggerexceptions.LogReadingException;
+import ru.knowledgebase.exceptionmodule.loggerexceptions.UnableToFindLogException;
 import ru.knowledgebase.loggermodule.Constants.CONSTANTS;
 import ru.knowledgebase.loggermodule.LogRecord.ALogRecord;
 import ru.knowledgebase.loggermodule.LogRecord.LogRecordFactory;
@@ -17,7 +19,7 @@ public class LogReader {
     private Log log;
     private LinkedList<ALogRecord> logRecords;
 
-    public static LogReader getInstance(){ return ourInstance;}
+    public static  LogReader getInstance(){ return ourInstance;}
 
     public LogReader(){
         log = Log.getInstance();
@@ -28,7 +30,7 @@ public class LogReader {
      * {@code ALogRecord} class.
      * @return a list of records from log
      */
-    public LinkedList<ALogRecord> getRecordsFromLog(){
+    public LinkedList<ALogRecord> getRecordsFromLog() throws Exception {
         logRecords = new LinkedList<ALogRecord>();
 
         LogRecordFactory logRecordFactory = new LogRecordFactory();
@@ -44,7 +46,7 @@ public class LogReader {
      * @param logRecordFactory
      * @param record
      */
-    private void createCorrespondingLogRecord(LogRecordFactory logRecordFactory, String record) {
+    private void createCorrespondingLogRecord(LogRecordFactory logRecordFactory, String record) throws Exception {
         String[] recordParameters = record.split(CONSTANTS.INSIDE_RECORD_SEPARATOR);
         ALogRecord logRecord = logRecordFactory.generateRecord(recordParameters);
         if(logRecord != null){

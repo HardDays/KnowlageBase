@@ -13,9 +13,9 @@ public class SearchRequestRecord extends ALogRecord {
 
     public SearchRequestRecord(int userID, String searchRequest) {
         this.operationType = OPERATION.SEARCH_REQUEST;
-        this.time = time;
         this.userID = userID;
         this.searchRequest = searchRequest;
+        this.time = new Timestamp(System.currentTimeMillis());
     }
 
     @Override
@@ -29,7 +29,4 @@ public class SearchRequestRecord extends ALogRecord {
         return searchRequest;
     }
 
-    public void setSearchRequest(String searchRequest) {
-        this.searchRequest = searchRequest;
-    }
 }
