@@ -321,12 +321,19 @@ public class Analyser {
             Integer id = getArticleId(rec);
             if (id != -1){
                 try {
-                    //check section article
+                    //check section of article
                     Article article = dataCollector.findArticle(id);
-                    if (!article.isSection()){
-                        Article section = dataCollector.findArticle(article.getSectionId());
-                        if (article.getSectionId() == sectionId){
+                    if (article.getSectionId() == -1)
+                        continue;
+                    Article section = dataCollector.findArticle(article.getSectionId());
+                    while(true){
+                        if (section.getId() == sectionId){
                             newLog.add(rec);
+                            break;
+                        }else{
+                            if (section.getParentArticle() == -1)
+                                break;
+                            section = dataCollector.findArticle(section.getParentArticle());
                         }
                     }
                 }catch (Exception e){

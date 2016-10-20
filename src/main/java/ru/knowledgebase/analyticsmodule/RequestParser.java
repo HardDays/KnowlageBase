@@ -117,6 +117,7 @@ public class RequestParser {
                     englishStemmer.add(word.toCharArray(), word.length());
                     englishStemmer.stem();
                     String keyWord = new String(englishStemmer.getResultBuffer(), 0, englishStemmer.getResultLength());
+                    keywords.add(keyWord);
                 }
             }
             return keywords;
