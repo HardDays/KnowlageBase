@@ -1,10 +1,13 @@
 package ru.knowledgebase.webmodule.services;
 
+import org.json.JSONObject;
 import ru.knowledgebase.wrappermodule.RoleWrapper;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -18,8 +21,14 @@ public class RolesWebService {
 
     @POST
     @Path("/get_section_roles")
-    public Response getSectionRoles(@FormParam(value = "admin_id") int adminId,
-                        @FormParam(value = "admin_token") String adminToken) {
-        return roleWrapper.getSectionRoles(adminId, adminToken);
+        @Consumes(MediaType.APPLICATION_JSON)
+    public Response getSectionRoles(String param) {
+        try {
+            JSONObject obj = new JSONObject(param);
+            return roleWrapper.getSectionRoles(obj.getInt("admin_id"),
+                    obj.getString("admin_token"));
+        }catch (org.json.JSONException e){
+            return Response.status(400).entity("Wrong parameters!").build();
+        }
     }
 }

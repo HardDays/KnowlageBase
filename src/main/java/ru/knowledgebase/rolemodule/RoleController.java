@@ -384,7 +384,7 @@ public class RoleController {
     /**
      * Add base roles do DB
      */
-    public void createBaseRoles() throws Exception{
+    public void  createBaseRoles() throws Exception{
         try {
             for (Role role : RoleImporter.getRoles()) {
                 Role exist = collector.findRoleByRoleId(role.getRoleId());

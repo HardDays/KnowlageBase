@@ -40,6 +40,7 @@ public class ResponseBuilder {
 
     public static Response buildAuthorizedResponse(Token token) {
         JsonObject json = Json.createObjectBuilder()
+                        .add("id", token.getUser().getId())
                         .add("token", token.getToken())
                         .build();
         return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();

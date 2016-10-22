@@ -107,7 +107,7 @@ public class UserWrapper {
      * @param userId id of user
      * @return Response object
      */
-    public Response update(int adminId, String adminToken, int userId, String token, String login, String password, String email,
+    public Response update(int adminId, String adminToken, int userId,  String login, String password, String email,
                            String firstName, String middleName, String lastName,
                            String office, String phone1, String phone2,
                            Timestamp recruitmentDate, Timestamp dismissalDate,

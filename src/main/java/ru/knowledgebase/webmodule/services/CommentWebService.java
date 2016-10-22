@@ -1,11 +1,14 @@
 package ru.knowledgebase.webmodule.services;
 
+import org.json.JSONObject;
 import ru.knowledgebase.wrappermodule.CommentWrapper;
 import ru.knowledgebase.wrappermodule.UserWrapper;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -18,28 +21,46 @@ public class CommentWebService {
 
     @POST
     @Path("/add")
-    public Response add(@FormParam(value = "user_id") int userId,
-                        @FormParam(value = "user_token") String userToken,
-                        @FormParam(value = "article_id") int articleId,
-                        @FormParam(value = "comment") String comment,
-                        @FormParam(value = "article_text") String articleText) {
-        return commentWrapper.add(userId, userToken, articleId, comment, articleText);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response add(String param) {
+        try {
+            JSONObject obj = new JSONObject(param);
+            return commentWrapper.add(obj.getInt("user_id"),
+                                      obj.getString("user_token"),
+                                      obj.getInt("article_id"),
+                                      obj.getString("comment"),
+                                      obj.getString("article_text"));
+        }catch (org.json.JSONException e){
+            return Response.status(400).entity("Wrong parameters!").build();
+        }
     }
 
     @POST
     @Path("/get_list")
-    public Response add(@FormParam(value = "user_id") int userId,
-                        @FormParam(value = "user_token") String userToken,
-                        @FormParam(value = "offset") int offset,
-                        @FormParam(value = "limit") int limit){
-        return commentWrapper.get(userId, userToken, offset, limit);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getList(String param){
+        try {
+            JSONObject obj = new JSONObject(param);
+            return commentWrapper.get(obj.getInt("user_id"),
+                    obj.getString("user_token"),
+                    obj.getInt("offset"),
+                    obj.getInt("limit"));
+        }catch (org.json.JSONException e){
+            return Response.status(400).entity("Wrong parameters!").build();
+        }
     }
 
     @POST
     @Path("/delete")
-    public Response add(@FormParam(value = "user_id") int userId,
-                        @FormParam(value = "user_token") String userToken,
-                        @FormParam(value = "comment_id") int commentId){
-        return commentWrapper.delete(userId, userToken, commentId);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response delete(String param){
+        try {
+            JSONObject obj = new JSONObject(param);
+            return commentWrapper.delete(obj.getInt("user_id"),
+                    obj.getString("user_token"),
+                    obj.getInt("comment_id"));
+        }catch (org.json.JSONException e){
+            return Response.status(400).entity("Wrong parameters!").build();
+        }
     }
 }

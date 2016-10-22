@@ -16,7 +16,7 @@ import java.util.List;
 public class ConfigReader {
 
     private static ConfigReader instance;
-    private String filePath = "C:\\Users\\Мария\\Documents\\GitHub\\KnowledgeBase - elastic\\KnowledgeBase-master\\config.cnf";
+    private String filePath = "./config.cnf";
     private String fileContent;
     private Config config = new Config();
 

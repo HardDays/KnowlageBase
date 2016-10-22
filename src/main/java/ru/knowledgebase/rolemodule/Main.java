@@ -50,6 +50,7 @@ public class Main {
         //createTest();
         RoleController.getInstance().createBaseRoles();
 
+
     }
 
     public static void createTest() throws Exception{

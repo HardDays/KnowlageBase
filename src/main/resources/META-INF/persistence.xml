@@ -7,7 +7,7 @@
     <persistence-unit name="NewPersistenceUnit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <!-- Hibernate-search-->
             <!-- use a file system based index -->
             <!-- directory where the indexes will be stored -->
